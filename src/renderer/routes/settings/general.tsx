@@ -675,8 +675,8 @@ const ImportExportDataSection = () => {
               )
             )
           : !result.boundedMemory
-            ? String(t('This browser does not support streaming downloads, so the backup was buffered before saving.'))
-            : '',
+          ? String(t('This browser does not support streaming downloads, so the backup was buffered before saving.'))
+          : '',
       ]
         .filter(Boolean)
         .join('\n')
@@ -688,12 +688,12 @@ const ImportExportDataSection = () => {
               body: warningBody,
             }
           : warningCount > 0 || !result.boundedMemory
-            ? {
-                color: 'yellow',
-                title: String(t('Backup exported with warnings')),
-                body: warningBody,
-              }
-            : { color: 'green', title: String(t('Backup exported successfully')) }
+          ? {
+              color: 'yellow',
+              title: String(t('Backup exported with warnings')),
+              body: warningBody,
+            }
+          : { color: 'green', title: String(t('Backup exported successfully')) }
       )
     } catch (error) {
       if (error instanceof DOMException && error.name === 'AbortError') {
@@ -785,7 +785,9 @@ const ImportExportDataSection = () => {
   const [storageEstimate, setStorageEstimate] = useState<StorageEstimate>()
   const storageInfo = useMemo(
     () =>
-      `Storage persisted: ${storagePersisted}; Storage Estimate: { quota: ${formatFileSize(storageEstimate?.quota || 0)}, usage: ${formatFileSize(storageEstimate?.usage || 0)} }`,
+      `Storage persisted: ${storagePersisted}; Storage Estimate: { quota: ${formatFileSize(
+        storageEstimate?.quota || 0
+      )}, usage: ${formatFileSize(storageEstimate?.usage || 0)} }`,
     [storagePersisted, storageEstimate]
   )
   useEffect(() => {
@@ -982,7 +984,7 @@ const ExportLogsSection = () => {
         </Text>
       </Stack>
       <Flex gap="md">
-        <Button variant="primary" onClick={handleExportLogs} disabled={isExporting} loading={isExporting}>
+        <Button variant="filled" onClick={handleExportLogs} disabled={isExporting} loading={isExporting}>
           {isExporting ? t('Exporting...') : t('Export Logs')}
         </Button>
         {/* <Button variant="subtle" color="red" onClick={handleClearLogs} disabled={isExporting}>

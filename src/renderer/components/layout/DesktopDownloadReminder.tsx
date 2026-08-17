@@ -114,6 +114,7 @@ export default function DesktopDownloadReminder() {
           ) : (
             <Button
               size="compact-sm"
+              variant="filled"
               leftSection={<ScalableIcon icon={IconDownload} size={14} />}
               className="mx-2"
               onClick={() =>

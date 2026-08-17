@@ -146,7 +146,7 @@ const CustomServersSection: FC<Props> = (props) => {
           shadow="xs"
           radius="lg"
           withBorder
-          bd="1px dashed var(--chatbox-border-primary)"
+          bd="var(--chatbox-border-width) dashed var(--chatbox-border-primary)"
           p="sm"
           className="cursor-pointer"
           onClick={spotlight.open}

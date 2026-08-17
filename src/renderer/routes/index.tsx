@@ -603,7 +603,7 @@ const CopilotItem = ({
       gap={isSmallScreen ? 'xxs' : 'xs'}
       py="xs"
       px={isSmallScreen ? 'xs' : 'md'}
-      bd={selected ? 'none' : '1px solid var(--chatbox-border-primary)'}
+      bd={selected ? 'none' : 'var(--chatbox-border-width) solid var(--chatbox-border-primary)'}
       bg={selected ? 'var(--chatbox-background-brand-secondary)' : 'transparent'}
       className={clsx(
         'max-w-[75vw] sm:max-w-[50vw] cursor-pointer shrink-0 shadow-[0px_2px_12px_0px_rgba(0,0,0,0.04)]',

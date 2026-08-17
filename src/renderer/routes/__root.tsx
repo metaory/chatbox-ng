@@ -7,6 +7,7 @@ import {
   colorsTuple,
   createTheme,
   type CSSVariablesResolver,
+  defaultVariantColorsResolver,
   type DefaultMantineColor,
   Drawer,
   Flex,
@@ -274,7 +275,7 @@ function Root() {
             }}
           >
             <Box
-              className={`h-full overflow-hidden border-[0.5px] border-solid border-chatbox-border-primary ${
+              className={`h-full overflow-hidden border border-solid border-chatbox-border-primary ${
                 hasBackgroundImage ? 'bg-transparent' : 'bg-chatbox-background-primary'
               }`}
               sx={{
@@ -328,6 +329,16 @@ const creteMantineTheme = (scale = 1) =>
     scale,
     defaultRadius: 'lg',
     primaryColor: 'chatbox-brand',
+    variantColorResolver: (input) => {
+      const resolved = defaultVariantColorsResolver(input)
+      const variant = input.variant || 'filled'
+      if (variant !== 'filled' && variant !== 'gradient') return resolved
+      return {
+        ...resolved,
+        color: 'var(--chatbox-tint-black)',
+        hoverColor: 'var(--chatbox-tint-black)',
+      }
+    },
     colors: {
       dark: colorsTuple([
         'var(--chatbox-tint-primary)',
@@ -441,12 +452,16 @@ const creteMantineTheme = (scale = 1) =>
       Button: Button.extend({
         defaultProps: {
           color: 'chatbox-brand',
+          variant: 'filled',
         },
-        styles: () => ({
+        styles: (_theme, props) => ({
           root: {
             '--button-height-sm': rem('32px'),
             '--button-height-compact-xs': rem('24px'),
             fontWeight: '400',
+            ...(!props.variant || props.variant === 'filled' || props.variant === 'gradient'
+              ? { '--button-color': 'var(--chatbox-tint-black)' }
+              : {}),
           },
         }),
       }),
@@ -614,6 +629,7 @@ const mantineCssVariablesResolver: CSSVariablesResolver = () => {
     '--mantine-color-default-color': 'var(--chatbox-tint-primary)',
     '--mantine-color-default-border': 'var(--chatbox-border-primary)',
     '--mantine-color-body': 'var(--chatbox-background-primary)',
+    '--mantine-primary-color-contrast': 'var(--chatbox-tint-black)',
   }
   return {
     variables: {},

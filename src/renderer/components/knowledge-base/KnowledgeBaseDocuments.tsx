@@ -771,7 +771,7 @@ const KnowledgeBaseDocuments: React.FC<KnowledgeBaseDocumentsProps> = ({ knowled
                     title={t('Some files were not uploaded')}
                     styles={{
                       root: {
-                        border: '1px solid var(--chatbox-border-primary)',
+                        border: 'var(--chatbox-border-width) solid var(--chatbox-border-primary)',
                         borderLeft: '3px solid var(--chatbox-tint-error)',
                         background: 'var(--chatbox-background-primary)',
                       },

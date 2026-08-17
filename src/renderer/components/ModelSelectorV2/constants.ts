@@ -12,13 +12,13 @@ export const EMPTY_MODEL_IDS: string[] = []
 
 export const CARD_SURFACE_STYLE: CSSProperties = {
   background: 'var(--chatbox-background-primary)',
-  borderColor: 'color-mix(in srgb, var(--chatbox-border-secondary), transparent 18%)',
+  borderColor: 'var(--chatbox-border-primary)',
   boxShadow: '0 14px 36px rgb(0 0 0 / 0.14)',
 }
 
 export const DRAWER_SURFACE_STYLE: CSSProperties = {
   background: 'var(--chatbox-background-primary)',
-  borderColor: 'color-mix(in srgb, var(--chatbox-border-secondary), transparent 12%)',
+  borderColor: 'var(--chatbox-border-primary)',
 }
 
 export const MOBILE_TAP_RESET_STYLE: CSSProperties = {

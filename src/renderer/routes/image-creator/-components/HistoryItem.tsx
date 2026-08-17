@@ -54,7 +54,7 @@ export function HistoryItem({ record, isActive, isMobile, modelDisplayName, onCl
       {/* Thumbnail — clickable */}
       <UnstyledButton
         onClick={onClick}
-        style={{ borderWidth: 1, borderStyle: 'solid' }}
+        style={{ borderWidth: 'var(--chatbox-border-width)', borderStyle: 'solid' }}
         className={`w-full aspect-square rounded-lg overflow-hidden transition-colors duration-150 ${
           isActive
             ? 'border-[var(--chatbox-tint-brand)]'

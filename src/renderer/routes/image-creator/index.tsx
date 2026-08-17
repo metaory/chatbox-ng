@@ -609,7 +609,7 @@ function ImageCreatorPage() {
 
               <Box
                 className="rounded-lg bg-[var(--chatbox-background-secondary)] px-3 py-2"
-                style={{ border: '1px solid var(--chatbox-border-primary)' }}
+                style={{ border: 'var(--chatbox-border-width) solid var(--chatbox-border-primary)' }}
               >
                 <Stack gap="xs">
                   {/* Input Row */}
@@ -651,7 +651,7 @@ function ImageCreatorPage() {
                       radius="lg"
                       onClick={isCurrentlyGenerating ? cancelGeneration : handleSubmit}
                       disabled={(!prompt.trim() || !selectedModel) && !isCurrentlyGenerating}
-                      className={`shrink-0 mb-1 ${(!prompt.trim() || !selectedModel) && !isCurrentlyGenerating ? 'disabled:!opacity-100 !text-white' : ''}`}
+                      className={`shrink-0 mb-1 ${(!prompt.trim() || !selectedModel) && !isCurrentlyGenerating ? 'disabled:!opacity-100 !text-black' : ''}`}
                       style={{
                         cursor: isCurrentlyGenerating ? 'pointer' : undefined,
                         ...((!prompt.trim() || !selectedModel) && !isCurrentlyGenerating

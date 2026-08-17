@@ -85,6 +85,7 @@ export function getThemeDesign(
       mode: realTheme,
       primary: {
         main: brandColor,
+        contrastText: '#000000',
       },
       ...(realTheme === 'light'
         ? {}
@@ -97,6 +98,28 @@ export function getThemeDesign(
           }),
     },
     components: {
+      MuiPaper: {
+        styleOverrides: {
+          outlined: {
+            borderWidth: 'var(--chatbox-border-width)',
+            borderColor: 'var(--chatbox-border-primary)',
+          },
+        },
+      },
+      MuiOutlinedInput: {
+        styleOverrides: {
+          notchedOutline: {
+            borderWidth: 'var(--chatbox-border-width)',
+          },
+        },
+      },
+      MuiButton: {
+        styleOverrides: {
+          outlined: {
+            borderWidth: 'var(--chatbox-border-width)',
+          },
+        },
+      },
       MuiSnackbarContent: {
         styleOverrides: {
           root: {

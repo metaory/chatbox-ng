@@ -16,7 +16,10 @@ const isSmallScreenViewport = () => {
 }
 
 const storedInitialTheme = localStorage.getItem('initial-theme')
-const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+const systemTheme =
+  typeof window.matchMedia === 'function' && window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? 'dark'
+    : 'light'
 
 // UI store for managing UI-related state
 // 不能使用immer middleware，会导致RefObject出问题

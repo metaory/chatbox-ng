@@ -458,7 +458,7 @@ export const WebSearchGroupUI: FC<{ parts: MessageToolCallPart[] }> = ({ parts }
     : expanded
       ? 'var(--chatbox-background-brand-secondary)'
       : 'var(--chatbox-background-gray-secondary)'
-  const border = isFailState ? 'none' : expanded ? '1px solid var(--chatbox-border-brand)' : 'none'
+  const border = isFailState ? 'none' : expanded ? 'var(--chatbox-border-width) solid var(--chatbox-border-brand)' : 'none'
 
   return (
     <Stack gap={4} mb={4}>
@@ -550,9 +550,9 @@ const ParseLinkUI: FC<{ part: MessageToolCallPart }> = ({ part }) => {
       ? 'var(--chatbox-background-brand-secondary)'
       : 'var(--chatbox-background-gray-secondary)'
   const border = isError
-    ? '1px solid var(--chatbox-border-error)'
+    ? 'var(--chatbox-border-width) solid var(--chatbox-border-error)'
     : expanded
-      ? '1px solid var(--chatbox-border-brand)'
+      ? 'var(--chatbox-border-width) solid var(--chatbox-border-brand)'
       : 'none'
 
   return (
@@ -1049,7 +1049,7 @@ const UserExecUI: FC<{ part: MessageToolCallPart }> = ({ part }) => {
           style={{
             borderRadius: 'var(--mantine-radius-md)',
             backgroundColor: bgColor,
-            border: '1px solid transparent',
+            border: 'var(--chatbox-border-width) solid transparent',
             display: 'inline-flex',
           }}
         >

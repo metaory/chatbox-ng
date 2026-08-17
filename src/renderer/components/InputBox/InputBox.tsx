@@ -1401,7 +1401,7 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
               'relative flex flex-col justify-between gap-xs rounded-lg bg-chatbox-background-secondary px-3 py-2 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_20px_-2px_rgba(0,0,0,0.3)]',
               !isSmallScreen && 'min-h-[92px]'
             )}
-            style={{ border: '0.5px solid var(--chatbox-border-primary)' }}
+            style={{ border: 'var(--chatbox-border-width) solid var(--chatbox-border-primary)' }}
           >
             {/*
               skill 列表：Portal + Floating UI autoUpdate
@@ -1491,7 +1491,7 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
                   color={generating ? 'dark' : 'chatbox-brand'}
                   radius="lg"
                   onClick={generating ? onStopGenerating : () => handleSubmit()}
-                  className={cn('shrink-0 mb-1', !generating && submitBlocked && 'disabled:!opacity-100 !text-white')}
+                  className={cn('shrink-0 mb-1', !generating && submitBlocked && 'disabled:!opacity-100 !text-black')}
                   style={!generating && submitBlocked ? { backgroundColor: 'rgba(222, 226, 230, 1)' } : undefined}
                 >
                   {generating ? (
@@ -1518,7 +1518,7 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
                     gap={8}
                     className="w-full rounded-lg px-2.5 py-2 mb-1"
                     style={{
-                      border: '1px solid var(--chatbox-border-primary)',
+                      border: 'var(--chatbox-border-width) solid var(--chatbox-border-primary)',
                       borderLeft: '3px solid var(--chatbox-tint-warning)',
                       background: 'var(--chatbox-background-primary)',
                     }}
@@ -1549,7 +1549,7 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
                     gap={8}
                     className="w-full rounded-lg px-2.5 py-2 mb-1"
                     style={{
-                      border: '1px solid var(--chatbox-border-primary)',
+                      border: 'var(--chatbox-border-width) solid var(--chatbox-border-primary)',
                       borderLeft: '3px solid var(--chatbox-tint-warning)',
                       background: 'var(--chatbox-background-primary)',
                     }}

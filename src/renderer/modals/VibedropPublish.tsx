@@ -100,7 +100,6 @@ const VibedropPublish = NiceModal.create(({ html, uniqueId }: VibedropPublishPro
                 onClick={publish}
                 loading={stage === 'publishing'}
                 leftSection={<ScalableIcon icon={IconWorldUpload} size={16} />}
-                c="white"
               >
                 {t('Publish')}
               </Button>
@@ -116,7 +115,7 @@ const VibedropPublish = NiceModal.create(({ html, uniqueId }: VibedropPublishPro
               <Button variant="default" onClick={onClose}>
                 {t('Close')}
               </Button>
-              <Button onClick={() => setStage('form')} c="white">
+              <Button onClick={() => setStage('form')}>
                 {t('Try Again')}
               </Button>
             </AdaptiveModal.Actions>
@@ -150,7 +149,6 @@ const VibedropPublish = NiceModal.create(({ html, uniqueId }: VibedropPublishPro
                 target="_blank"
                 rel="noopener noreferrer"
                 leftSection={<ScalableIcon icon={IconExternalLink} size={16} />}
-                c="white"
               >
                 {t('Open')}
               </Button>

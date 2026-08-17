@@ -130,14 +130,14 @@ function TieredPricingTag({
         tooltip: {
           background: 'var(--chatbox-background-primary)',
           color: 'var(--chatbox-tint-primary)',
-          border: '1px solid var(--chatbox-border-primary)',
+          border: 'var(--chatbox-border-width) solid var(--chatbox-border-primary)',
           borderRadius: 8,
           boxShadow: '0 12px 30px rgb(0 0 0 / 0.12)',
           padding: 12,
         },
         arrow: {
           background: 'var(--chatbox-background-primary)',
-          border: '1px solid var(--chatbox-border-primary)',
+          border: 'var(--chatbox-border-width) solid var(--chatbox-border-primary)',
         },
       }}
     >

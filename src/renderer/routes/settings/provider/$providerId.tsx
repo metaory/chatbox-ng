@@ -1083,7 +1083,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
               ff="monospace"
               p="md"
               bg="var(--chatbox-background-secondary)"
-              bd="1px solid var(--chatbox-border-primary)"
+              bd="var(--chatbox-border-width) solid var(--chatbox-border-primary)"
               style={{ borderRadius: 'var(--mantine-radius-md)', letterSpacing: '0.2em', userSelect: 'all' }}
             >
               {deviceUserCode}
@@ -1137,7 +1137,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
                       direction="column"
                       gap="md"
                       bg="var(--chatbox-background-secondary)"
-                      bd="1px solid var(--chatbox-border-primary)"
+                      bd="var(--chatbox-border-width) solid var(--chatbox-border-primary)"
                       p="xs"
                     >
                       <Flex align="center" gap="xs">

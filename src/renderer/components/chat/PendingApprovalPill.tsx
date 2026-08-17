@@ -42,7 +42,7 @@ const PendingApprovalPill: FC<{ session: Session }> = ({ session }) => {
               gap: 10,
               maxWidth: '100%',
               backgroundColor: 'var(--chatbox-background-primary)',
-              border: '1px solid var(--chatbox-border-primary)',
+              border: 'var(--chatbox-border-width) solid var(--chatbox-border-primary)',
               borderRadius: 999,
               padding: '6px 8px 6px 14px',
               boxShadow: '0 8px 24px -6px rgba(0,0,0,0.18)',

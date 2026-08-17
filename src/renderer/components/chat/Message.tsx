@@ -666,7 +666,7 @@ const _Message: FC<Props> = (props) => {
             ? cn(
                 'px-4 py-1 rounded-lg',
                 msg.role === 'user'
-                  ? 'bg-[var(--mantine-color-chatbox-brand-filled)] text-white'
+                  ? 'bg-[var(--mantine-color-chatbox-brand-filled)] text-black'
                   : msg.role === 'assistant'
                     ? msg.error
                       ? isErrorReminder
@@ -961,7 +961,7 @@ const _Message: FC<Props> = (props) => {
         gap={0}
         className={
           isSmallScreen
-            ? 'p-xxs bg-chatbox-background-primary rounded-lg border-[0.5px] border-solid border-chatbox-border-primary shadow-sm'
+            ? 'p-xxs bg-chatbox-background-primary rounded-lg border border-solid border-chatbox-border-primary shadow-sm'
             : ''
         }
       >
@@ -986,7 +986,7 @@ const _Message: FC<Props> = (props) => {
         gap={0}
         className={
           isSmallScreen
-            ? 'p-xxs bg-chatbox-background-primary rounded-lg border-[0.5px] border-solid border-chatbox-border-primary shadow-sm'
+            ? 'p-xxs bg-chatbox-background-primary rounded-lg border border-solid border-chatbox-border-primary shadow-sm'
             : ''
         }
       >

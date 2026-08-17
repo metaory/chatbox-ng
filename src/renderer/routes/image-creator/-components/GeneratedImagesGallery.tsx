@@ -256,7 +256,7 @@ function GeneratedImageGalleryItem({
             ref={ref}
             styles={{
               root: {
-                border: '1px solid var(--mantine-color-gray-3)',
+                border: 'var(--chatbox-border-width) solid var(--mantine-color-gray-3)',
               },
             }}
           />

@@ -123,6 +123,9 @@ module.exports = {
         xl: 'var(--chatbox-spacing-xl)',
         xxl: 'var(--chatbox-spacing-xxl)',
       },
+      borderWidth: {
+        DEFAULT: 'var(--chatbox-border-width)',
+      },
       borderRadius: {
         none: 'var(--chatbox-radius-none)',
         xs: 'var(--chatbox-radius-xs)',

@@ -11,6 +11,7 @@
   --chatbox-radius-lg: 1rem;
   --chatbox-radius-xl: 1.5rem;
   --chatbox-radius-xxl: 2rem;
+  --chatbox-border-width: 4px;
 
   /* spacing */
   --chatbox-spacing-none: 0rem;
@@ -71,16 +72,8 @@
     var(--chatbox-background-secondary),
     var(--chatbox-background-tertiary) 40%
   );
-  --chatbox-border-primary: color-mix(
-    in srgb,
-    var(--chatbox-background-tertiary),
-    var(--chatbox-tint-primary) 14%
-  );
-  --chatbox-border-secondary: color-mix(
-    in srgb,
-    var(--chatbox-background-tertiary),
-    var(--chatbox-tint-primary) 28%
-  );
+  --chatbox-border-primary: color-mix(in srgb, var(--chatbox-tint-primary) 5%, transparent);
+  --chatbox-border-secondary: color-mix(in srgb, var(--chatbox-tint-primary) 10%, transparent);
   --chatbox-input-bg: var(--chatbox-background-primary);
 
   --chatbox-background-brand-primary: var(--chatbox-brand);
@@ -133,7 +126,7 @@
   --ring: var(--chatbox-tint-brand);
 }
 
-:root[data-mantine-color-scheme="dark"] {
+:root[data-mantine-color-scheme='dark'] {
   /* colors */
   --chatbox-tint-primary: #ffffff;
   --chatbox-tint-secondary: #ced4da;
@@ -191,8 +184,8 @@
   --chatbox-background-mask-lighten: rgb(173, 181, 189, 0.48);
 }
 
-:root[data-mantine-color-scheme="light"][data-mantine-color-scheme],
-:root[data-mantine-color-scheme="dark"][data-mantine-color-scheme] {
+:root[data-mantine-color-scheme='light'][data-mantine-color-scheme],
+:root[data-mantine-color-scheme='dark'][data-mantine-color-scheme] {
   /* brand */
   --mantine-color-chatbox-brand-text: var(--chatbox-tint-brand);
   --mantine-color-chatbox-brand-filled: var(--chatbox-background-brand-primary);
@@ -253,6 +246,43 @@
   --mantine-color-chatbox-primary-outline-hover: color-mix(in srgb, var(--chatbox-border-primary), transparent 95%);
 }
 
+.mantine-Button-root:where([data-variant='filled'], [data-variant='gradient']),
+.mantine-ActionIcon-root:where([data-variant='filled'], [data-variant='gradient']) {
+  --button-color: var(--chatbox-tint-black);
+  --ai-color: var(--chatbox-tint-black);
+  color: var(--chatbox-tint-black);
+}
+
+[data-mantine-color-scheme] .mantine-Paper-root,
+[data-mantine-color-scheme] .mantine-Card-root {
+  --paper-border-color: var(--chatbox-border-primary);
+}
+
+.mantine-Paper-root[data-with-border],
+.mantine-Card-root[data-with-border],
+.mantine-Input-input,
+.mantine-NativeSelect-input,
+.mantine-Button-root:where([data-variant='default'], [data-variant='outline']),
+.mantine-ActionIcon-root:where([data-variant='default'], [data-variant='outline']),
+.mantine-Badge-root:where([data-variant='outline']),
+.mantine-Checkbox-input,
+.mantine-Radio-radio,
+.mantine-Alert-root,
+.mantine-Popover-dropdown,
+.mantine-Menu-dropdown,
+.mantine-Combobox-dropdown,
+.MuiPaper-outlined,
+.MuiOutlinedInput-notchedOutline,
+.MuiButton-outlined,
+.MuiChip-outlined,
+.MuiToggleButton-root {
+  border-width: var(--chatbox-border-width);
+}
+
+.mantine-NumberInput-control {
+  --control-border: var(--chatbox-border-width) solid var(--input-bd);
+}
+
 .mantine-Spotlight-actionsGroup {
   margin-bottom: 2rem;
 }
@@ -302,11 +332,11 @@
 }
 
 /* Dark mode scrollbar */
-[data-mantine-color-scheme="dark"] .katex-display::-webkit-scrollbar-thumb {
+[data-mantine-color-scheme='dark'] .katex-display::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.2);
 }
 
-[data-mantine-color-scheme="dark"] .katex-display:hover::-webkit-scrollbar-thumb {
+[data-mantine-color-scheme='dark'] .katex-display:hover::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.3);
 }
 
@@ -319,10 +349,10 @@
   margin-top: var(--mobile-safe-area-inset-top);
   -webkit-app-region: no-drag;
 }
-html[data-need-room-for-mac-controls="true"] .pswp__counter {
+html[data-need-room-for-mac-controls='true'] .pswp__counter {
   padding-top: 1rem;
 }
-html[data-need-room-for-windows-controls="true"] .pswp__top-bar {
+html[data-need-room-for-windows-controls='true'] .pswp__top-bar {
   padding-right: 9rem;
 }
 .pswp {
@@ -358,7 +388,7 @@ div[data-vaul-drawer] {
    segment travels around a faint ring. Without @property support the ring degrades
    to a static gradient border. */
 @property --chatbox-approval-ring-angle {
-  syntax: "<angle>";
+  syntax: '<angle>';
   initial-value: 0deg;
   inherits: false;
 }
@@ -376,7 +406,7 @@ div[data-vaul-drawer] {
 /* The band is drawn just inside the card edge (inset: 0), because ancestor containers
    (Collapse, virtualized list items) clip anything that sticks out of the card. */
 .chatbox-approval-ring::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
@@ -387,13 +417,9 @@ div[data-vaul-drawer] {
     color-mix(in srgb, var(--chatbox-tint-warning) 95%, transparent) 12%,
     color-mix(in srgb, var(--chatbox-tint-warning) 18%, transparent) 30%
   );
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
-  mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
   animation: chatbox-approval-ring-spin 2.5s linear infinite;
   pointer-events: none;
