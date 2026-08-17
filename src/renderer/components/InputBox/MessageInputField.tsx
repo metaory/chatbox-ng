@@ -73,32 +73,41 @@ export const MessageInputField = memo(
       )
 
       return (
-        <Textarea
-          unstyled={true}
-          styles={{ input: { fontSize: 14 } }}
-          classNames={{
-            root: 'flex-1',
-            wrapper: 'flex-1',
-            input:
-              'block w-full outline-none border-none px-2 py-1 resize-none bg-transparent text-chatbox-tint-primary leading-6',
-          }}
-          size="sm"
-          id={dom.messageInputID}
-          ref={inputRef}
-          placeholder={placeholder}
-          aria-label={ariaLabel}
-          bg="transparent"
-          autosize={true}
-          minRows={2}
-          maxRows={Math.max(4, Math.floor(viewportHeight / 100))}
-          value={messageInput}
-          autoFocus={autoFocus}
-          readOnly={isReadOnly}
-          onChange={onChange}
-          onKeyDown={onKeyDown}
-          onPaste={onPaste}
-          data-testid={TestId.chat.messageInput}
-        />
+        <div className="relative flex-1">
+          <Textarea
+            unstyled={true}
+            styles={{ input: { fontSize: 14 } }}
+            classNames={{
+              root: 'flex-1',
+              wrapper: 'flex-1',
+              input:
+                'block w-full outline-none border-none px-2 py-1 resize-none bg-transparent text-chatbox-tint-primary leading-6',
+            }}
+            size="sm"
+            id={dom.messageInputID}
+            ref={inputRef}
+            aria-label={ariaLabel}
+            bg="transparent"
+            autosize={true}
+            minRows={2}
+            maxRows={Math.max(4, Math.floor(viewportHeight / 100))}
+            value={messageInput}
+            autoFocus={autoFocus}
+            readOnly={isReadOnly}
+            onChange={onChange}
+            onKeyDown={onKeyDown}
+            onPaste={onPaste}
+            data-testid={TestId.chat.messageInput}
+          />
+          {!messageInput && (
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-x-2 top-1 z-10 text-[14px] leading-6 text-chatbox-tint-secondary"
+            >
+              {placeholder}
+            </span>
+          )}
+        </div>
       )
     }
   )

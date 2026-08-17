@@ -1,5 +1,5 @@
-import { Avatar, type AvatarProps, type PolymorphicComponentProps } from '@mantine/core'
-import { IconMessageCircle, IconPhoto, IconSettingsFilled, IconUser } from '@tabler/icons-react'
+import { Avatar, type AvatarProps, type PolymorphicComponentProps, useComputedColorScheme } from '@mantine/core'
+import { IconMessageCircle, IconPhoto, IconSettingsFilled, IconUserSquareRounded } from '@tabler/icons-react'
 import clsx from 'clsx'
 import type { FC } from 'react'
 import { useSettingsStore } from '@/stores/settingsStore'
@@ -39,7 +39,8 @@ export type UserAvatarProps = {
 
 export const UserAvatar: FC<UserAvatarProps> = ({ size = 'md', avatarKey, className, ...avatarProps }) => {
   const realSize = typeof size === 'number' ? size : { xs: 18, sm: 20, md: 28, lg: 32, xl: 36 }[size]
-  const iconSize = Math.ceil(realSize / 2) + 2
+  const iconSize = Math.ceil(realSize / 2) + 8
+  const colorScheme = useComputedColorScheme('light')
 
   return (
     <Avatar
@@ -48,15 +49,16 @@ export const UserAvatar: FC<UserAvatarProps> = ({ size = 'md', avatarKey, classN
       bd={0}
       className={clsx('overflow-hidden', avatarProps.onClick ? 'cursor-pointer' : '', className)}
       classNames={{
-        placeholder: 'border-0 bg-transparent !text-white flex flex-row items-center justify-center',
+        placeholder: 'border-0 bg-transparent !text-inherit flex flex-row items-center justify-center',
       }}
-      bg={avatarKey ? undefined : 'chatbox-tertiary'}
+      bg={avatarKey ? undefined : colorScheme === 'dark' ? 'gray.3' : 'gray.8'}
+      c={colorScheme === 'dark' ? 'gray.8' : 'white'}
       {...avatarProps}
     >
       {avatarKey ? (
         <ImageInStorage storageKey={avatarKey} className="object-cover object-center w-full h-full" />
       ) : (
-        <ScalableIcon icon={IconUser} size={iconSize} className="!text-inherit" />
+        <ScalableIcon icon={IconUserSquareRounded} size={iconSize} className="!text-inherit" />
       )}
     </Avatar>
   )
@@ -97,10 +99,10 @@ export const AssistantAvatar: FC<AssistantAvatarProps> = ({
         avatarKey || picUrl || defaultAssistantAvatarKey
           ? undefined
           : type === 'chat'
-            ? undefined
-            : sessionType === 'picture'
-              ? 'violet'
-              : 'chatbox-brand'
+          ? undefined
+          : sessionType === 'picture'
+          ? 'violet'
+          : 'chatbox-brand'
       }
       color={type === 'chat' ? 'chatbox-primary' : 'white'}
       {...avatarProps}
