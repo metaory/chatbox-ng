@@ -1,5 +1,10 @@
 import { createTheme, type ThemeOptions } from '@mui/material/styles'
-import { getDefaultInterfaceColors, resolveInterfaceBrandColor } from '@shared/theme-colors'
+import {
+  getDefaultInterfaceColors,
+  INITIAL_INTERFACE_COLORS_KEY,
+  resolveInterfaceBrandColor,
+  toSplashColorCache,
+} from '@shared/theme-colors'
 import { useLayoutEffect, useMemo } from 'react'
 import { settingsStore, useSettingsStore } from '@/stores/settingsStore'
 import { uiStore, useUIStore } from '@/stores/uiStore'
@@ -58,6 +63,7 @@ export default function useAppTheme() {
     rootStyle.setProperty('--chatbox-background-secondary', colors.backgroundSecondary)
     rootStyle.setProperty('--chatbox-background-tertiary', colors.backgroundTertiary)
     rootStyle.setProperty('--chatbox-brand', brandColor)
+    localStorage.setItem(INITIAL_INTERFACE_COLORS_KEY, JSON.stringify(toSplashColorCache(interfaceColors)))
   }, [interfaceColors, realTheme])
 
   const themeObj = useMemo(
@@ -85,8 +91,8 @@ export function getThemeDesign(
         : {
             // MUI 内部无法处理 css 变量，需要使用具体颜色值
             background: {
-              default: '#242424',
-              paper: '#242424',
+              default: '#1a1226',
+              paper: '#1a1226',
             },
           }),
     },

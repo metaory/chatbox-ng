@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, useTheme } from '@mui/material'
+import { Dialog, DialogContent } from '@mui/material'
 import type { Session } from '@shared/types'
 import { useAtomValue } from 'jotai'
 import { Loader2, ScanSearch } from 'lucide-react'
@@ -28,7 +28,6 @@ export default function SearchDialog(props: Props) {
   const [searchInput, _setSearchInput] = useState('')
   const [searchResult, setSearchResult] = useState<Session[]>([])
   const [searchResultMarks, setSearchResultMarks] = useState<string[]>([])
-  const theme = useTheme()
   const { t } = useTranslation()
   const ref = useRef<HTMLInputElement>(null)
 
@@ -85,7 +84,7 @@ export default function SearchDialog(props: Props) {
             value={searchInput}
             onInput={onSearchInput}
             onKeyDown={onKeyDown}
-            className={cn('border-none', 'shadow-none', theme.palette.mode === 'dark' ? 'text-white' : 'text-black')}
+            className={cn('border-none', 'shadow-none', 'text-chatbox-tint-primary')}
             placeholder={globalOnly ? t('Search conversations') + '...' : t('Type a command or search') + '...'}
           />
           {mode === 'command' && !globalOnly && (
@@ -94,9 +93,7 @@ export default function SearchDialog(props: Props) {
               <CommandGroup heading={t('Search')}>
                 <CommandItem
                   value="search-current-session"
-                  className={cn(
-                    theme.palette.mode === 'dark' ? 'aria-selected:bg-slate-500' : 'aria-selected:bg-slate-100'
-                  )}
+                  className="aria-selected:bg-chatbox-background-secondary"
                   onSelect={() => onSearchClick('current-session')}
                 >
                   <ScanSearch className="mr-2 h-4 w-4" />
@@ -107,9 +104,7 @@ export default function SearchDialog(props: Props) {
                 </CommandItem>
                 <CommandItem
                   value="search-global"
-                  className={cn(
-                    theme.palette.mode === 'dark' ? 'aria-selected:bg-slate-500' : 'aria-selected:bg-slate-100'
-                  )}
+                  className="aria-selected:bg-chatbox-background-secondary"
                   onSelect={() => onSearchClick('global')}
                 >
                   <ScanSearch className="mr-2 h-4 w-4" />
@@ -170,11 +165,10 @@ export default function SearchDialog(props: Props) {
                           key={`${i}-${j}`}
                           value={`result-${i}-${j}`}
                           className={cn(
-                            theme.palette.mode === 'dark' ? 'bg-slate-600' : 'bg-slate-50',
-                            theme.palette.mode === 'dark' ? 'aria-selected:bg-slate-500' : 'aria-selected:bg-slate-200',
+                            'bg-chatbox-background-secondary/50',
+                            'aria-selected:bg-chatbox-background-tertiary',
                             'my-1',
-                            'cursor-pointer',
-                            'bg-opacity-50'
+                            'cursor-pointer'
                           )}
                           onSelect={() => {
                             const targetSessionId = result.id

@@ -15,6 +15,9 @@ const isSmallScreenViewport = () => {
   )
 }
 
+const storedInitialTheme = localStorage.getItem('initial-theme')
+const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+
 // UI store for managing UI-related state
 // 不能使用immer middleware，会导致RefObject出问题
 export const uiStore = createStore(
@@ -23,7 +26,9 @@ export const uiStore = createStore(
       {
         toasts: [] as Toast[],
         quote: '',
-        realTheme: localStorage.getItem('initial-theme') === 'dark' ? 'dark' : ('light' as 'light' | 'dark'),
+        realTheme: (storedInitialTheme === 'dark' || storedInitialTheme === 'light'
+          ? storedInitialTheme
+          : systemTheme) as 'light' | 'dark',
         messageListElement: null as RefObject<HTMLDivElement> | null,
         messageScrolling: null as RefObject<VirtuosoHandle> | null,
         messageScrollingAtTop: false,

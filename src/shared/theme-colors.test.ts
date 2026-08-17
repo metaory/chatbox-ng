@@ -6,15 +6,23 @@ import {
   renameInterfaceColorPreset,
   resolveInterfaceBrandColor,
   resolveInterfaceBrandColors,
+  splashPaletteFromCache,
+  toSplashColorCache,
   withColorOpacity,
 } from './theme-colors'
 
 describe('INTERFACE_COLOR_PRESETS', () => {
-  it('provides the default, Claude, and Mist Blue presets', () => {
+  it('provides the default and saturated hue presets', () => {
     expect(INTERFACE_COLOR_PRESETS.map((preset) => ({ id: preset.id, label: preset.label }))).toEqual([
       { id: 'default', label: 'Default' },
-      { id: 'claude-classic', label: 'Claude Classic' },
-      { id: 'mist-blue', label: 'Mist Blue' },
+      { id: 'violet', label: 'Violet' },
+      { id: 'magenta', label: 'Magenta' },
+      { id: 'ember', label: 'Ember' },
+      { id: 'sand', label: 'Sand' },
+      { id: 'lime', label: 'Lime' },
+      { id: 'forest', label: 'Forest' },
+      { id: 'azure', label: 'Azure' },
+      { id: 'ink', label: 'Ink' },
     ])
   })
 
@@ -51,8 +59,8 @@ describe('interface brand color', () => {
   })
 
   it('replaces white with the default brand color for the active theme', () => {
-    expect(resolveInterfaceBrandColor('#ffffff', 'light')).toBe('#228be6')
-    expect(resolveInterfaceBrandColor('#FFFFFF', 'dark')).toBe('#228be6')
+    expect(resolveInterfaceBrandColor('#ffffff', 'light')).toBe('#c026d3')
+    expect(resolveInterfaceBrandColor('#FFFFFF', 'dark')).toBe('#f472d0')
     expect(resolveInterfaceBrandColor('#123456', 'light')).toBe('#123456')
   })
 
@@ -63,8 +71,8 @@ describe('interface brand color', () => {
         dark: { ...INTERFACE_COLOR_PRESETS[0].colors.dark, brand: '#FFFFFF' },
       })
     ).toEqual({
-      light: { ...INTERFACE_COLOR_PRESETS[0].colors.light, brand: '#228be6' },
-      dark: { ...INTERFACE_COLOR_PRESETS[0].colors.dark, brand: '#228be6' },
+      light: { ...INTERFACE_COLOR_PRESETS[0].colors.light, brand: '#c026d3' },
+      dark: { ...INTERFACE_COLOR_PRESETS[0].colors.dark, brand: '#f472d0' },
     })
   })
 })
@@ -84,5 +92,32 @@ describe('renameInterfaceColorPreset', () => {
 
   it('does not accept a blank label', () => {
     expect(renameInterfaceColorPreset(presets, 'custom-1', '   ')).toBe(presets)
+  })
+})
+
+describe('splash color cache', () => {
+  it('stores primary and tertiary surfaces for both themes', () => {
+    expect(toSplashColorCache(INTERFACE_COLOR_PRESETS[2].colors)).toEqual({
+      light: {
+        backgroundPrimary: INTERFACE_COLOR_PRESETS[2].colors.light.backgroundPrimary,
+        backgroundTertiary: INTERFACE_COLOR_PRESETS[2].colors.light.backgroundTertiary,
+      },
+      dark: {
+        backgroundPrimary: INTERFACE_COLOR_PRESETS[2].colors.dark.backgroundPrimary,
+        backgroundTertiary: INTERFACE_COLOR_PRESETS[2].colors.dark.backgroundTertiary,
+      },
+    })
+  })
+
+  it('reads a valid palette for the active theme', () => {
+    expect(splashPaletteFromCache(toSplashColorCache(DEFAULT_INTERFACE_COLORS), 'dark')).toEqual({
+      backgroundPrimary: DEFAULT_INTERFACE_COLORS.dark.backgroundPrimary,
+      backgroundTertiary: DEFAULT_INTERFACE_COLORS.dark.backgroundTertiary,
+    })
+  })
+
+  it('rejects invalid cache values', () => {
+    expect(splashPaletteFromCache(null, 'light')).toBeNull()
+    expect(splashPaletteFromCache({ light: { backgroundPrimary: 'red', backgroundTertiary: '#ddd0ee' } }, 'light')).toBeNull()
   })
 })

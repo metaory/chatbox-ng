@@ -74,7 +74,7 @@ export function ImageMiniCard(props: { storageKey: string; onDelete: () => void 
     <div
       key={storageKey}
       className="w-[100px] h-[100px] p-1 m-1 inline-flex items-center justify-center
-                                bg-white shadow-sm rounded-lg border-solid border-gray-400/20
+                                bg-chatbox-background-primary shadow-sm rounded-lg border-solid border-chatbox-border-primary
                                 hover:shadow-lg hover:cursor-pointer hover:scale-105 transition-all duration-200
                                 group/image-mini-card"
     >
@@ -82,7 +82,7 @@ export function ImageMiniCard(props: { storageKey: string; onDelete: () => void 
       {onDelete && (
         <MiniButton
           className="hidden group-hover/image-mini-card:inline-block
-                    absolute top-0 right-0 m-1 p-1 rounded-full shadow-lg bg-white/90 dark:bg-gray-800/90 text-red-500 hover:bg-white dark:hover:bg-gray-800"
+                    absolute top-0 right-0 m-1 p-1 rounded-full shadow-lg bg-chatbox-background-primary/90 text-chatbox-tint-error hover:bg-chatbox-background-primary"
           onClick={(e) => {
             e.stopPropagation()
             onDelete()
@@ -149,7 +149,7 @@ export function FileMiniCard(props: {
   return (
     <div
       className="w-[132px] h-[108px] px-2.5 pt-2 pb-3 m-1 inline-flex items-center justify-center
-                                bg-white shadow-sm rounded-lg border-solid border-gray-400/20
+                                bg-chatbox-background-primary shadow-sm rounded-lg border-solid border-chatbox-border-primary
                                 hover:shadow-lg hover:cursor-pointer hover:scale-105 transition-all duration-200
                                 group/file-mini-card relative"
       onClick={handleClick}
@@ -164,20 +164,20 @@ export function FileMiniCard(props: {
         }
       >
         <div className="flex flex-col justify-center items-center min-w-0 w-full">
-          <FileIcon filename={name} className="w-8 h-8 text-black mb-1" />
-          <Typography className="w-full px-1 text-black text-center" noWrap sx={{ fontSize: '12px', lineHeight: 1.25 }}>
+          <FileIcon filename={name} className="w-8 h-8 text-chatbox-tint-primary mb-1" />
+          <Typography className="w-full px-1 text-chatbox-tint-primary text-center" noWrap sx={{ fontSize: '12px', lineHeight: 1.25 }}>
             {name}
           </Typography>
           {displayedStatusText && (
             <div className="mt-1 flex items-center justify-center gap-1 w-full min-w-0">
-              {status === 'processing' && <Loader2 size="12" className="animate-spin text-blue-500 shrink-0" />}
+              {status === 'processing' && <Loader2 size="12" className="animate-spin text-chatbox-tint-brand shrink-0" />}
               <Typography
                 className={
                   status === 'error'
                     ? 'min-w-0 text-red-500 text-center'
                     : isTakingLong
                       ? 'min-w-0 text-amber-600 text-center'
-                      : 'min-w-0 text-gray-500 text-center'
+                      : 'min-w-0 text-chatbox-tint-tertiary text-center'
                 }
                 sx={{
                   fontSize: '11px',
@@ -199,14 +199,14 @@ export function FileMiniCard(props: {
       {/* Status indicator */}
       {status && (
         <div className="absolute top-1.5 left-1.5">
-          {status === 'processing' && !statusText && <Loader2 size="16" className="animate-spin text-blue-500" />}
+          {status === 'processing' && !statusText && <Loader2 size="16" className="animate-spin text-chatbox-tint-brand" />}
           {status === 'completed' && <CheckCircle size="16" className="text-green-500" />}
           {status === 'error' && <AlertCircle size="16" className="text-red-500" />}
         </div>
       )}
       {status === 'processing' && clampedProgressValue !== undefined && (
-        <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-blue-100 rounded-b-md overflow-hidden">
-          <div className="h-full bg-blue-500 transition-all" style={{ width: `${clampedProgressValue}%` }} />
+        <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-chatbox-background-brand-secondary rounded-b-md overflow-hidden">
+          <div className="h-full bg-chatbox-background-brand-primary transition-all" style={{ width: `${clampedProgressValue}%` }} />
         </div>
       )}
 
@@ -455,10 +455,10 @@ export function MessageAttachment(props: {
           <AlertCircle className="flex-none w-3.5 h-3.5 text-amber-500" strokeWidth={1.5} />
         )}
         {showStatus && effectiveAvailability !== 'blocked' && effectiveIndexStatus === 'indexing' && (
-          <Loader2 className="flex-none w-3.5 h-3.5 text-blue-500 animate-spin" strokeWidth={1.5} />
+          <Loader2 className="flex-none w-3.5 h-3.5 text-chatbox-tint-brand animate-spin" strokeWidth={1.5} />
         )}
         {showStatus && effectiveAvailability !== 'blocked' && effectiveIndexStatus === 'pending' && (
-          <Loader2 className="flex-none w-3.5 h-3.5 text-blue-500 animate-spin" strokeWidth={1.5} />
+          <Loader2 className="flex-none w-3.5 h-3.5 text-chatbox-tint-brand animate-spin" strokeWidth={1.5} />
         )}
         {showStatus && effectiveAvailability !== 'blocked' && effectiveIndexStatus === 'ready' && (
           <CheckCircle className="flex-none w-3.5 h-3.5 text-green-500" strokeWidth={1.5} />

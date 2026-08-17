@@ -6,6 +6,7 @@ import {
   Combobox,
   colorsTuple,
   createTheme,
+  type CSSVariablesResolver,
   type DefaultMantineColor,
   Drawer,
   Flex,
@@ -328,6 +329,30 @@ const creteMantineTheme = (scale = 1) =>
     defaultRadius: 'lg',
     primaryColor: 'chatbox-brand',
     colors: {
+      dark: colorsTuple([
+        'var(--chatbox-tint-primary)',
+        'var(--chatbox-tint-secondary)',
+        'var(--chatbox-tint-tertiary)',
+        'var(--chatbox-tint-disabled)',
+        'var(--chatbox-border-primary)',
+        'var(--chatbox-background-tertiary)',
+        'var(--chatbox-background-secondary)',
+        'var(--chatbox-background-primary)',
+        'color-mix(in srgb, var(--chatbox-background-primary), black 8%)',
+        'color-mix(in srgb, var(--chatbox-background-primary), black 16%)',
+      ]),
+      gray: colorsTuple([
+        'var(--chatbox-background-primary)',
+        'var(--chatbox-background-secondary)',
+        'var(--chatbox-background-secondary-hover)',
+        'var(--chatbox-background-tertiary)',
+        'var(--chatbox-border-primary)',
+        'var(--chatbox-tint-disabled)',
+        'var(--chatbox-tint-gray)',
+        'var(--chatbox-tint-secondary)',
+        'var(--chatbox-tint-primary)',
+        'var(--chatbox-tint-black)',
+      ]),
       'chatbox-brand': colorsTuple(Array.from({ length: 10 }, () => 'var(--chatbox-tint-brand)')),
       'chatbox-gray': colorsTuple(Array.from({ length: 10 }, () => 'var(--chatbox-tint-gray)')),
       'chatbox-success': colorsTuple(Array.from({ length: 10 }, () => 'var(--chatbox-tint-success)')),
@@ -429,12 +454,9 @@ const creteMantineTheme = (scale = 1) =>
         styles: (_theme, props) => ({
           wrapper: {
             '--input-height-sm': rem('32px'),
-            ...(props.error
-              ? {
-                  '--input-color': 'var(--chatbox-tint-error)',
-                  '--input-bd': 'var(--chatbox-tint-error)',
-                }
-              : {}),
+            '--input-bg': 'var(--chatbox-input-bg)',
+            '--input-bd': props.error ? 'var(--chatbox-tint-error)' : 'var(--chatbox-border-primary)',
+            ...(props.error ? { '--input-color': 'var(--chatbox-tint-error)' } : {}),
           },
         }),
       }),
@@ -583,6 +605,31 @@ const creteMantineTheme = (scale = 1) =>
     },
   })
 
+const mantineCssVariablesResolver: CSSVariablesResolver = () => {
+  const text = {
+    '--mantine-color-text': 'var(--chatbox-tint-primary)',
+    '--mantine-color-dimmed': 'var(--chatbox-tint-tertiary)',
+    '--mantine-color-placeholder': 'var(--chatbox-tint-placeholder)',
+    '--mantine-color-anchor': 'var(--chatbox-tint-brand)',
+    '--mantine-color-default-color': 'var(--chatbox-tint-primary)',
+    '--mantine-color-default-border': 'var(--chatbox-border-primary)',
+    '--mantine-color-body': 'var(--chatbox-background-primary)',
+  }
+  return {
+    variables: {},
+    light: {
+      ...text,
+      '--mantine-color-default': 'var(--chatbox-background-primary)',
+      '--mantine-color-default-hover': 'var(--chatbox-background-primary-hover)',
+    },
+    dark: {
+      ...text,
+      '--mantine-color-default': 'var(--chatbox-background-secondary)',
+      '--mantine-color-default-hover': 'var(--chatbox-background-secondary-hover)',
+    },
+  }
+}
+
 export const Route = createRootRoute({
   component: () => {
     useShortcut()
@@ -597,6 +644,7 @@ export const Route = createRootRoute({
     return (
       <MantineProvider
         theme={mantineTheme}
+        cssVariablesResolver={mantineCssVariablesResolver}
         defaultColorScheme={_theme === Theme.Dark ? 'dark' : _theme === Theme.Light ? 'light' : 'auto'}
       >
         <AppProviders>

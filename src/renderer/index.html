@@ -8,24 +8,51 @@
     />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="chatbox" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content="#f8f4fc" />
     <meta name="description" content="chatbox" />
     <link rel="apple-touch-icon" href="/logo192.png" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <title>Chatbox</title>
     <script>
       var initialTheme = localStorage.getItem("initial-theme");
-      if (initialTheme === "light" || initialTheme === "dark") {
-        document.documentElement.setAttribute("data-theme", initialTheme);
-        document.documentElement.setAttribute(
-          "data-mantine-color-scheme",
-          initialTheme
-        );
+      if (initialTheme !== "light" && initialTheme !== "dark") {
+        initialTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+        localStorage.setItem("initial-theme", initialTheme);
       }
+      document.documentElement.setAttribute("data-theme", initialTheme);
+      document.documentElement.setAttribute(
+        "data-mantine-color-scheme",
+        initialTheme
+      );
+      var splashPrimary = initialTheme === "dark" ? "#1a1226" : "#f8f4fc";
+      var splashRing = initialTheme === "dark" ? "#3d2854" : "#ddd0ee";
+      var hex = /^#[0-9a-f]{6}$/i;
+      var raw = localStorage.getItem("initial-interface-colors");
+      if (raw) {
+        try {
+          var stored = JSON.parse(raw);
+          var pal = stored && stored[initialTheme];
+          if (pal && hex.test(pal.backgroundPrimary) && hex.test(pal.backgroundTertiary)) {
+            splashPrimary = pal.backgroundPrimary;
+            splashRing = pal.backgroundTertiary;
+          }
+        } catch (e) {}
+      }
+      document.documentElement.style.setProperty("--splash-bg", splashPrimary);
+      document.documentElement.style.setProperty("--splash-ring", splashRing);
+      var themeColor = document.querySelector('meta[name="theme-color"]');
+      if (themeColor) themeColor.setAttribute("content", splashPrimary);
     </script>
     <style>
-      html[data-theme="dark"] {
-        background-color: #242424;
+      html,
+      .splash-screen {
+        background-color: var(--splash-bg, #f8f4fc);
+      }
+      html[data-theme="dark"],
+      html[data-theme="dark"] .splash-screen {
+        background-color: var(--splash-bg, #1a1226);
       }
 
       .splash-screen {
@@ -40,11 +67,7 @@
         justify-content: center;
         align-items: center;
         opacity: 1;
-        background-color: #fff;
         overflow: hidden;
-      }
-      html[data-theme="dark"] .splash-screen {
-        background-color: #242424;
       }
 
       .splash-screen-top {
@@ -72,10 +95,10 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        color: #dee2e6;
+        color: var(--splash-ring, #ddd0ee);
       }
       html[data-theme="dark"] .splash-screen-logo-bg {
-        color: #495057;
+        color: var(--splash-ring, #3d2854);
       }
 
       .splash-screen-fade-out {

@@ -107,12 +107,12 @@ export function ArtifactWithButtons(props: {
   if (!preview) {
     return (
       <div
-        className="w-full my-1 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-300 cursor-pointer overflow-hidden group"
+        className="w-full my-1 bg-chatbox-background-secondary rounded-lg hover:bg-chatbox-background-secondary-hover transition-all duration-300 cursor-pointer overflow-hidden group"
         onClick={onPreview}
       >
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center space-x-3">
-            <div className="w-7 h-7 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
+            <div className="w-7 h-7 bg-chatbox-background-brand-primary rounded-full flex items-center justify-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5 text-white"
@@ -126,14 +126,14 @@ export function ArtifactWithButtons(props: {
                 />
               </svg>
             </div>
-            <span className="text-lg font-semibold text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
+            <span className="text-lg font-semibold text-chatbox-tint-primary group-hover:text-chatbox-tint-brand transition-colors duration-300">
               {t('Preview')}
             </span>
           </div>
           <div className="flex items-center justify-center">
             <FullscreenIcon
-              className="mr-1 hover:bg-white hover:rounded  hover:text-gray-500
-                            p-1 w-8 h-8 text-gray-400 dark:text-gray-500 group-hover:text-blue-500 dark:group-hover:text-blue-400"
+              className="mr-1 hover:bg-chatbox-background-primary hover:rounded hover:text-chatbox-tint-secondary
+                            p-1 w-8 h-8 text-chatbox-tint-tertiary group-hover:text-chatbox-tint-brand"
               onClick={(e) => {
                 e.preventDefault()
                 e.stopPropagation()
@@ -141,8 +141,8 @@ export function ArtifactWithButtons(props: {
               }}
             />
             <ArrowRightIcon
-              className="hover:bg-white hover:rounded  hover:text-gray-500
-                            p-1 w-8 h-8 text-gray-400 dark:text-gray-500 group-hover:text-blue-500 dark:group-hover:text-blue-400"
+              className="hover:bg-chatbox-background-primary hover:rounded hover:text-chatbox-tint-secondary
+                            p-1 w-8 h-8 text-chatbox-tint-tertiary group-hover:text-chatbox-tint-brand"
               onClick={() => setPreview(true)}
             />
           </div>
@@ -154,7 +154,7 @@ export function ArtifactWithButtons(props: {
     <div
       className={cn(
         'w-full',
-        'border border-solid rounded border-gray-500/40',
+        'border border-solid rounded border-chatbox-border-primary',
         'flex',
         isSmallScreen ? 'flex-col-reverse' : 'flex-row'
       )}
@@ -163,7 +163,7 @@ export function ArtifactWithButtons(props: {
       <ButtonGroup
         orientation={isSmallScreen ? 'horizontal' : 'vertical'}
         className={cn(
-          'border-solid border-gray-500/20',
+          'border-solid border-chatbox-border-primary',
           isSmallScreen ? 'border-r-0 border-b-1 border-l-0 border-t-0' : 'border-r-0 border-b-0 border-l-1 border-t-0'
         )}
       >

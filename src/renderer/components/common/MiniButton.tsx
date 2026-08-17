@@ -33,7 +33,7 @@ const MiniButton = forwardRef<HTMLButtonElement, MiniButtonProps>((props, ref) =
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        'bg-transparent hover:bg-slate-400/25',
+        'bg-transparent hover:bg-chatbox-background-secondary',
         'border-none rounded',
         'h-8 w-8 p-1',
         disabled ? '' : 'cursor-pointer',

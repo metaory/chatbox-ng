@@ -52,16 +52,16 @@ function DefaultErrorFallback({ error, retry }: DefaultErrorFallbackProps) {
   const [showDetails, setShowDetails] = React.useState(false)
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 text-center">
-        <div className="text-red-500 text-6xl mb-4">⚠️</div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Something went wrong!</h1>
-        <p className="text-gray-600 dark:text-gray-400 mb-6">The application encountered an unexpected error.</p>
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-chatbox-background-secondary">
+      <div className="max-w-md w-full bg-chatbox-background-primary rounded-lg shadow-lg p-6 text-center">
+        <div className="text-chatbox-tint-error text-6xl mb-4">⚠️</div>
+        <h1 className="text-2xl font-bold text-chatbox-tint-primary mb-2">Something went wrong!</h1>
+        <p className="text-chatbox-tint-secondary mb-6">The application encountered an unexpected error.</p>
 
         <div className="space-y-3">
           <button
             onClick={retry}
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors"
+            className="w-full bg-chatbox-background-brand-primary hover:bg-chatbox-background-brand-primary-hover text-chatbox-tint-white px-4 py-2 rounded-lg transition-colors"
           >
             Try Again
           </button>
@@ -71,22 +71,22 @@ function DefaultErrorFallback({ error, retry }: DefaultErrorFallbackProps) {
               retry()
               router.navigate({ to: '/', replace: true })
             }}
-            className="w-full bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors"
+            className="w-full bg-chatbox-background-gray-primary hover:bg-chatbox-background-gray-primary-hover text-chatbox-tint-white px-4 py-2 rounded-lg transition-colors"
           >
             Reload App
           </button>
 
           <button
             onClick={() => setShowDetails(!showDetails)}
-            className="w-full text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 px-4 py-2 rounded-lg transition-colors text-sm"
+            className="w-full text-chatbox-tint-tertiary hover:text-chatbox-tint-primary px-4 py-2 rounded-lg transition-colors text-sm"
           >
             {showDetails ? 'Hide Error' : 'Show Error'}
           </button>
         </div>
 
         {showDetails && (
-          <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-700 rounded-lg text-left">
-            <div className="text-sm text-gray-700 dark:text-gray-300 space-y-2">
+          <div className="mt-4 p-3 bg-chatbox-background-secondary rounded-lg text-left">
+            <div className="text-sm text-chatbox-tint-secondary space-y-2">
               {error && (
                 <div>
                   <strong>Error:</strong>

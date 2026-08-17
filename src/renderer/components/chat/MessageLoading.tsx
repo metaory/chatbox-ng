@@ -117,12 +117,12 @@ export function LoadingBubble(props: { children: React.ReactNode }) {
     <div className="flex flex-row items-start justify-start overflow-x-auto overflow-y-hidden">
       <div
         className="flex justify-start items-center mb-1 px-1 py-2
-                                                    border-solid border-blue-400/20 shadow-md rounded-lg
-                                                    bg-blue-100
+                                                    border-solid border-chatbox-border-brand shadow-md rounded-lg
+                                                    bg-chatbox-background-brand-secondary
                                                     "
       >
-        <Loader className="w-6 h-6 ml-1 mr-2 text-black animate-spin" />
-        <span className="mr-4 animate-pulse font-bold text-gray-800/70">{children}</span>
+        <Loader className="w-6 h-6 ml-1 mr-2 text-chatbox-tint-brand animate-spin" />
+        <span className="mr-4 animate-pulse font-bold text-chatbox-tint-primary/70">{children}</span>
       </div>
     </div>
   )

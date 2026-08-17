@@ -17,7 +17,7 @@ export function ChatboxWelcomeCard(props: { mode: HomeWelcomeCardMode; className
       withBorder
       py="md"
       px="sm"
-      className={`bg-white/40 dark:bg-zinc-900/40 backdrop-blur-md ${className || ''}`}
+      className={`bg-chatbox-background-primary/40 backdrop-blur-md ${className || ''}`}
     >
       <Stack gap="sm" align="center">
         <Text fw={600} ta="center">

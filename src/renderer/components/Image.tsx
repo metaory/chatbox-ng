@@ -27,7 +27,7 @@ export const ImageInStorage = memo(
 
     if (!base64) {
       return (
-        <div className={`bg-slate-300/50 w-full h-full ${props.className || ''}`}>
+        <div className={`bg-chatbox-background-tertiary/50 w-full h-full ${props.className || ''}`}>
           <div className="w-full h-full flex items-center justify-center">
             {base64 === false ? (
               <BrokenImageOutlinedIcon className="block max-w-full max-h-full opacity-50" />
