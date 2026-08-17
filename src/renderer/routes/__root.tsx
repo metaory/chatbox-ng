@@ -32,8 +32,6 @@ import { useQuery } from '@tanstack/react-query'
 import { createRootRoute, Outlet, useLocation } from '@tanstack/react-router'
 import { useSetAtom } from 'jotai'
 import { useEffect, useMemo, useRef } from 'react'
-import { trackJkViewEvent } from '@/analytics/jk'
-import { JK_EVENTS, JK_PAGE_NAMES } from '@/analytics/jk-events'
 import { AppProviders } from '@/components/AppProviders'
 import { ErrorBoundary } from '@/components/common/ErrorBoundary'
 import Toasts from '@/components/common/Toasts'
@@ -59,7 +57,7 @@ import { router } from '@/router'
 import Sidebar from '@/Sidebar'
 import storage from '@/storage'
 import * as atoms from '@/stores/atoms'
-import { getSession, useSession } from '@/stores/chatStore'
+import { useSession } from '@/stores/chatStore'
 import { initOnboardingStore, onboardingStore } from '@/stores/onboardingStore'
 import * as premiumActions from '@/stores/premiumActions'
 import * as settingActions from '@/stores/settingActions'
@@ -270,50 +268,6 @@ function Root() {
       })
     }
   }, [])
-
-  // Page view tracking
-  const settingsSearch = (location.search as Record<string, unknown>)?.settings as string | undefined
-  useEffect(() => {
-    const pathname = location.pathname
-    let pageName: string | undefined
-
-    // 桌面端 settings 以 modal 方式打开，pathname 不变，通过 search.settings 控制
-    if (settingsSearch) {
-      pageName = JK_PAGE_NAMES.SETTING_PAGE
-    } else if (pathname === '/' || pathname.startsWith('/session/')) {
-      pageName = JK_PAGE_NAMES.CHAT_PAGE
-    } else if (pathname.startsWith('/image-creator')) {
-      pageName = JK_PAGE_NAMES.IMAGE_PAGE
-    } else if (pathname.startsWith('/copilots')) {
-      pageName = JK_PAGE_NAMES.COPILOTS_PAGE
-    } else if (pathname.startsWith('/settings')) {
-      pageName = JK_PAGE_NAMES.SETTING_PAGE
-    } else if (pathname.startsWith('/guide')) {
-      pageName = JK_PAGE_NAMES.HELP_PAGE
-    } else if (pathname === '/about') {
-      pageName = JK_PAGE_NAMES.ABOUT_PAGE
-    }
-
-    if (!pageName) return
-
-    const trackPageView = async () => {
-      let content: string | undefined
-
-      if (pathname.startsWith('/session/')) {
-        const sessionId = pathname.slice('/session/'.length)
-        const session = await getSession(sessionId).catch(() => null)
-        content = session?.name
-      }
-
-      trackJkViewEvent(JK_EVENTS.PAGE_VIEW, {
-        pageName,
-        content,
-      })
-    }
-
-    // biome-ignore lint/nursery/noFloatingPromises: analytics tracking
-    trackPageView()
-  }, [location.pathname, settingsSearch])
 
   const { needRoomForMacWindowControls } = useNeedRoomForWinControls()
   useEffect(() => {

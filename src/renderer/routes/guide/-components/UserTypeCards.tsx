@@ -5,7 +5,7 @@
 import { Box, Flex, Stack, Text, UnstyledButton } from '@mantine/core'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import iconChatbox from '@/static/icons/icon-chatbox.svg'
+import iconChatbox from '@/static/icon.png'
 import iconSkip from '@/static/icons/icon-skip.svg'
 import type { UserType } from '../-hooks/useGuideSession'
 

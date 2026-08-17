@@ -1,7 +1,7 @@
 import type { Session } from '@shared/types'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-const { wakeBackgroundTaskFollowUpsMock, withSessionGenerationLockMock, updateSessionMock, trackPauseActionMock } =
+const { wakeBackgroundTaskFollowUpsMock, withSessionGenerationLockMock, updateSessionMock } =
   vi.hoisted(() => {
     const storage = {
       getItem: () => null,
@@ -15,7 +15,6 @@ const { wakeBackgroundTaskFollowUpsMock, withSessionGenerationLockMock, updateSe
       wakeBackgroundTaskFollowUpsMock: vi.fn(),
       withSessionGenerationLockMock: vi.fn(() => Promise.resolve()),
       updateSessionMock: vi.fn(),
-      trackPauseActionMock: vi.fn(),
     }
   })
 
@@ -28,10 +27,6 @@ vi.mock('./generation-lock', () => ({
 vi.mock('../chatStore', () => ({
   updateSession: updateSessionMock,
 }))
-vi.mock('@/analytics/agent-mode', async (importOriginal) => {
-  const original = await importOriginal<typeof import('@/analytics/agent-mode')>()
-  return { ...original, trackAgentModePauseAction: trackPauseActionMock }
-})
 
 import { settingsStore } from '../settingsStore'
 import { disableToolCallLimitPauseAndContinue } from './orchestration'
@@ -51,7 +46,6 @@ describe('disableToolCallLimitPauseAndContinue', () => {
     wakeBackgroundTaskFollowUpsMock.mockClear()
     withSessionGenerationLockMock.mockClear()
     updateSessionMock.mockReset()
-    trackPauseActionMock.mockClear()
     settingsStore.setState({ pauseOnToolCallLimit: true })
   })
 
@@ -84,13 +78,11 @@ describe('disableToolCallLimitPauseAndContinue', () => {
     expect(updated.settings).toEqual({ provider: 'p', temperature: 0.3 })
   })
 
-  it('tracks a single pause action and resumes the paused batch under the generation lock', async () => {
+  it('resumes the paused batch under the generation lock', async () => {
     mockPersistedSession({ id: 'session-1', name: 'demo', settings: {} })
 
     await disableToolCallLimitPauseAndContinue('session-1', 'message-1', 'tool-1', 'session')
 
-    expect(trackPauseActionMock).toHaveBeenCalledOnce()
-    expect(trackPauseActionMock).toHaveBeenCalledWith({ type: 'tool_limit', action: 'disable_session' })
     expect(withSessionGenerationLockMock).toHaveBeenCalledOnce()
     expect(withSessionGenerationLockMock).toHaveBeenCalledWith('session-1', expect.any(Function))
     await vi.waitFor(() => expect(wakeBackgroundTaskFollowUpsMock).toHaveBeenCalledWith('session-1'))

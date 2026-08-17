@@ -4,7 +4,6 @@ import { BUILTIN_MCP_SERVERS, getBuiltinServerConfig } from '@/packages/mcp/buil
 import { mcpController } from '@/packages/mcp/controller'
 import type { MCPServerConfig, MCPServerStatus } from '@/packages/mcp/types'
 import { useSettingsStore } from '@/stores/settingsStore'
-import { trackEvent } from '@/utils/track'
 
 export function useMCPServerStatus(id: string) {
   const [status, setStatus] = useState<MCPServerStatus | null>(null)
@@ -58,7 +57,6 @@ export function useToggleMCPServer() {
       } else if (effect?.action === 'stop') {
         mcpController.stopServer(effect.id)
       }
-      trackEvent('toggle_mcp_server', { id, enabled })
     },
     [setSettings]
   )

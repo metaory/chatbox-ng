@@ -8,7 +8,6 @@ import {
 import { ChatboxAIAPIError } from '../../shared/models/errors'
 import { rerank } from '../../shared/models/rerank'
 import type { DocumentParserConfig } from '../../shared/types/settings'
-import { sentry } from '../adapters/sentry'
 import { getLogger } from '../util'
 import { checkProcessingTimeouts, getDatabase, getVectorStore } from './db'
 import { isExpectedKnowledgeBaseRerankError } from './error-reporting'
@@ -243,45 +242,8 @@ export async function processFileWithMastra(
       args: ['done', fileMeta.fileId],
     })
   } catch (error: unknown) {
-    const errMsg =
-      error instanceof Error
-        ? error.message
-        : typeof error === 'object' &&
-            error !== null &&
-            'message' in error &&
-            typeof (error as Record<string, unknown>).message === 'string'
-          ? ((error as Record<string, unknown>).message as string)
-          : String(error)
     const duration = Date.now() - startTime
     log.error(`[FILE] File processing failed after ${duration}ms: ${fileMeta.filename} (id=${fileMeta.fileId})`, error)
-
-    // Determine the operation type based on error message for better debugging
-    let operation = 'file_processing'
-    if (errMsg.includes('parse')) {
-      operation = 'file_parsing'
-    } else if (errMsg.includes('chunk')) {
-      operation = 'document_chunking'
-    } else if (errMsg.includes('embedding')) {
-      operation = 'generate_embeddings'
-    } else if (errMsg.includes('store') || errMsg.includes('vector')) {
-      operation = 'vector_storage'
-    } else if (errMsg.includes('vision') || errMsg.includes('OCR') || errMsg.includes('image')) {
-      operation = 'image_ocr_processing'
-    }
-
-    // Report processing failures to Sentry with unified context
-    sentry.withScope((scope) => {
-      scope.setTag('component', 'knowledge-base-file')
-      scope.setTag('operation', operation)
-      scope.setExtra('fileId', fileMeta.fileId)
-      scope.setExtra('filename', fileMeta.filename)
-      scope.setExtra('mimeType', fileMeta.mimeType)
-      scope.setExtra('kbId', kbId)
-      scope.setExtra('duration', duration)
-      scope.setExtra('filePath', filePath)
-      sentry.captureException(error)
-    })
-
     throw error
   }
 }
@@ -357,26 +319,10 @@ async function processPendingFiles() {
           sql: 'UPDATE kb_file SET status = ?, error = ?, processing_started_at = NULL WHERE id = ?',
           args: ['failed', errorMessage, file.id],
         })
-
-        // Report individual file processing failures
-        sentry.withScope((scope) => {
-          scope.setTag('component', 'knowledge-base-file')
-          scope.setTag('operation', 'individual_file_processing')
-          scope.setExtra('fileId', file.id)
-          scope.setExtra('filename', file.filename)
-          scope.setExtra('kbId', file.kb_id)
-          scope.setExtra('parserType', effectiveParserConfig.type)
-          sentry.captureException(err)
-        })
       }
     }
   } catch (error: unknown) {
     log.error('[FILE] Failed to process pending files:', error)
-    sentry.withScope((scope) => {
-      scope.setTag('component', 'knowledge-base-file')
-      scope.setTag('operation', 'process_pending_files')
-      sentry.captureException(error)
-    })
   }
 }
 
@@ -389,11 +335,6 @@ export async function startWorkerLoop() {
       await processPendingFiles()
     } catch (e: unknown) {
       log.error('[FILE] Worker loop error:', e)
-      sentry.withScope((scope) => {
-        scope.setTag('component', 'knowledge-base-file')
-        scope.setTag('operation', 'worker_loop')
-        sentry.captureException(e)
-      })
 
       // Wait before retrying to prevent rapid error loops
       await setTimeout(10000) // 10 seconds
@@ -445,13 +386,6 @@ export async function searchKnowledgeBase(kbId: number, query: string) {
         log.warn(logMessage, e)
       } else {
         log.error(logMessage, e)
-        sentry.withScope((scope) => {
-          scope.setTag('component', 'knowledge-base-file')
-          scope.setTag('operation', 'rerank')
-          scope.setExtra('kbId', kbId)
-          scope.setExtra('queryLength', query.length)
-          sentry.captureException(e)
-        })
       }
       return results.map((r) => ({
         id: r.id,
@@ -462,13 +396,6 @@ export async function searchKnowledgeBase(kbId: number, query: string) {
   } catch (e) {
     log.error(`[FILE] Failed to search: kbId=${kbId}, queryLength=${query.length}`, e)
 
-    sentry.withScope((scope) => {
-      scope.setTag('component', 'knowledge-base-file')
-      scope.setTag('operation', 'search_knowledge_base')
-      scope.setExtra('kbId', kbId)
-      scope.setExtra('queryLength', query.length)
-      sentry.captureException(e)
-    })
 
     throw new Error(`Failed to search knowledge base (id: ${kbId}). Please try again later.`)
   }
@@ -532,13 +459,6 @@ export async function readChunks(kbId: number, chunks: { fileId: number; chunkIn
     return results
   } catch (sqlErr: any) {
     log.error(`[FILE] Single SQL query failed:`, sqlErr)
-    sentry.withScope((scope) => {
-      scope.setTag('component', 'knowledge-base-file')
-      scope.setTag('operation', 'read_chunks')
-      scope.setExtra('kbId', kbId)
-      scope.setExtra('chunkCount', chunks.length)
-      sentry.captureException(sqlErr)
-    })
     throw sqlErr
   }
 }

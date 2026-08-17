@@ -17,8 +17,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { v4 as uuidv4 } from 'uuid'
 import { z } from 'zod'
-import { trackJkClickEvent } from '@/analytics/jk'
-import { JK_EVENTS, JK_PAGE_NAMES } from '@/analytics/jk-events'
 import { ChatboxWelcomeCard } from '@/components/common/ChatboxWelcomeCard'
 import { ScalableIcon } from '@/components/common/ScalableIcon'
 import { ImageInStorage } from '@/components/Image'
@@ -368,11 +366,6 @@ function Index() {
   const handleScenarioSelect = useCallback(
     async (scenario: NewUserScenario) => {
       const scenarioContent = resolveNewUserScenarioContent(scenario, i18n.language)
-      trackJkClickEvent(JK_EVENTS.LEAD_CHAT_CARD_CLICK, {
-        pageName: JK_PAGE_NAMES.CHAT_PAGE,
-        content: t(scenario.titleKey),
-        contentType: session.settings?.modelId ?? firstChatScenarioDefaultModel.modelId,
-      })
       const assistantMessage = createMessage('assistant', '')
       assistantMessage.generating = true
       const newSession = await createPersistedChatSession({
@@ -432,7 +425,7 @@ function Index() {
             </Stack>
           ) : (
             <Stack align="center" justify="center" gap="sm" className="min-h-full">
-              <HomepageIcon className="h-8" />
+              <HomepageIcon className="h-8 w-8" />
               <Text fw="600" size={isSmallScreen ? 'sm' : 'md'}>
                 {t('What can I help you with today?')}
               </Text>
@@ -490,7 +483,6 @@ function Index() {
                 <Box className={widthFull ? 'w-full' : 'w-full max-w-4xl mx-auto'}>
                   <ChatboxWelcomeCard
                     mode={welcomeCardMode}
-                    pageName={JK_PAGE_NAMES.CHAT_PAGE}
                     className="pointer-events-auto w-full"
                   />
                 </Box>

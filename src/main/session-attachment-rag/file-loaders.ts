@@ -2,7 +2,6 @@ import { setTimeout } from 'node:timers/promises'
 import { APICallError, type EmbeddingModel, embedMany } from 'ai'
 import { ApiError, NetworkError } from '../../shared/models/errors'
 import { SESSION_ATTACHMENT_RAG_LOG_PREFIX } from '../../shared/session-attachment-rag/logging'
-import { sentry } from '../adapters/sentry'
 import { getStoreBlob } from '../store-node'
 import { getLogger } from '../util'
 import { buildAttachmentChunks, buildEmbeddedText, selectAttachmentChunkingPipeline } from './chunking'
@@ -278,13 +277,6 @@ async function processPendingAttachments() {
         `${SESSION_ATTACHMENT_RAG_LOG_PREFIX} [FILE] Transition indexing -> failed: attachmentId=${attachment.id}, error=${message}`
       )
       await markSessionAttachmentFailed(attachment.id, message)
-      sentry.withScope((scope) => {
-        scope.setTag('component', 'session-attachment-rag-file')
-        scope.setTag('operation', 'process_attachment')
-        scope.setExtra('attachmentId', attachment.id)
-        scope.setExtra('filename', attachment.filename)
-        sentry.captureException(error)
-      })
     }
   }
 }
@@ -296,11 +288,6 @@ export async function startWorkerLoop() {
       await processPendingAttachments()
     } catch (error) {
       log.error(`${SESSION_ATTACHMENT_RAG_LOG_PREFIX} [FILE] Session attachment rag worker loop error:`, error)
-      sentry.withScope((scope) => {
-        scope.setTag('component', 'session-attachment-rag-file')
-        scope.setTag('operation', 'worker_loop')
-        sentry.captureException(error)
-      })
       await setTimeout(10000)
     }
     await setTimeout(3000)

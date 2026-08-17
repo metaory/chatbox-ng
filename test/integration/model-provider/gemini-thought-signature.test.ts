@@ -30,7 +30,6 @@ import {
   type Settings,
 } from '../../../src/shared/types'
 import { createMockModelDependencies } from '../mocks/model-dependencies'
-import { MockSentryAdapter } from '../mocks/sentry'
 
 const CHATBOX_LICENSE_KEY = process.env.CHATBOX_LICENSE_KEY || ''
 const TEST_MODEL = 'gemini-3.1-pro'
@@ -62,7 +61,7 @@ function buildTools(executed: string[]): ToolSet {
 
 async function createGeminiModel() {
   const platform = new TestPlatform()
-  const dependencies = await createMockModelDependencies(platform, new MockSentryAdapter())
+  const dependencies = await createMockModelDependencies(platform)
   const systemProvider = SystemProviders().find((provider) => provider.id === ModelProviderEnum.ChatboxAI)
   if (!systemProvider) throw new Error('ChatboxAI provider not found')
   const globalSettings: Settings = {

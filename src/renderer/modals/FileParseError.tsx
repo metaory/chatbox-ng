@@ -12,7 +12,6 @@ import { AdaptiveModal } from '@/components/common/AdaptiveModal'
 import LinkTargetBlank from '@/components/common/Link'
 import { ScalableIcon } from '@/components/common/ScalableIcon'
 import { navigateToSettings } from '@/modals/Settings'
-import { trackingEvent } from '@/packages/event'
 import { buildChatboxUrl } from '@/packages/remote'
 import platform from '@/platform'
 import {
@@ -126,9 +125,6 @@ const FileParseError = NiceModal.create(({ errorCode, fileName }: FileParseError
                     `/redirect_app/view_more_plans/${settingActions.getLanguage()}?utm_source=app&utm_content=file_parse_error`
                   )
                 )
-                trackingEvent('click_view_more_plans_button_from_file_parse_error', {
-                  event_category: 'user',
-                })
               }}
             />
           ),

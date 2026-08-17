@@ -2,7 +2,6 @@ import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText } 
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import Markdown from '@/components/Markdown'
-import { trackingEvent } from '@/packages/event'
 import platform from '@/platform'
 import { settingsStore } from '@/stores/settingsStore'
 import * as remote from '../packages/remote'
@@ -42,7 +41,6 @@ export default function RemoteDialogWindow() {
   // 打点上报
   useEffect(() => {
     if (open) {
-      trackingEvent('remote_dialog_window', { event_category: 'screen_view' })
     }
   }, [open])
 

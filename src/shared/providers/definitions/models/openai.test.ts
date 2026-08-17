@@ -2,7 +2,6 @@
 // The createTestServer utility was removed in AI SDK v6
 import type { ModelDependencies } from 'src/shared/types/adapters'
 import type { ProviderModelInfo } from 'src/shared/types/settings'
-import type { SentryScope } from 'src/shared/utils/sentry_adapter'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import OpenAI from './openai'
 
@@ -30,10 +29,6 @@ describe.skip('OpenAI Adapter', () => {
       storage: {
         saveImage: vi.fn().mockResolvedValue('mock-storage-key'),
         getImage: vi.fn().mockResolvedValue('https://example.com/image.png'),
-      },
-      sentry: {
-        withScope: vi.fn((callback: (scope: SentryScope) => void) => callback({ setTag: vi.fn(), setExtra: vi.fn() })),
-        captureException: vi.fn(),
       },
       getRemoteConfig: vi.fn().mockReturnValue({ setting_chatboxai_first: false }),
     }
@@ -210,7 +205,6 @@ describe.skip('OpenAI Adapter', () => {
 
       openai = createOpenAI({ apiKey: 'invalid-key' })
       await expect(openai.chat([{ role: 'user', content: 'Hello' }], {})).rejects.toThrow()
-      expect(dependencies.sentry.captureException).toHaveBeenCalled()
     })
 
     it('should handle 429 rate limit error', { timeout: 10000 }, async () => {

@@ -5,7 +5,6 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useStore } from 'zustand'
-import { JK_PAGE_NAMES } from '@/analytics/jk-events'
 import MessageList, { type MessageListRef } from '@/components/chat/MessageList'
 import PendingApprovalPill from '@/components/chat/PendingApprovalPill'
 import { ChatboxWelcomeCard } from '@/components/common/ChatboxWelcomeCard'
@@ -266,7 +265,6 @@ function RouteComponent() {
             <Box className={widthFull ? 'w-full' : 'max-w-4xl mx-auto'}>
               <ChatboxWelcomeCard
                 mode={welcomeCardMode}
-                pageName={JK_PAGE_NAMES.CHAT_PAGE}
                 className="pointer-events-auto w-full"
               />
             </Box>

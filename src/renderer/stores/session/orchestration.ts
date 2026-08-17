@@ -16,13 +16,6 @@ import { resolveReasoningProviderOptions } from '@shared/utils/reasoning-control
 import { MAX_TOOL_CALLS_BEFORE_CONFIRMATION, shouldPauseOnToolCallLimit } from '@shared/utils/tool-call-limit-pause'
 import type { ModelMessage, ToolSet } from 'ai'
 import { createModel, createModelDependencies } from '@/adapters'
-import {
-  type AgentModeEntrySource,
-  captureAgentModeException,
-  trackAgentModePauseAction,
-  trackAgentModeSuggested,
-  trackWorkModeSuggestionDecision,
-} from '@/analytics/agent-mode'
 import { AppActionApprovalPausedError } from '@/packages/app-action-approval'
 import * as appleAppStore from '@/packages/apple_app_store'
 import { wakeBackgroundTaskFollowUps } from '@/packages/chatbox-cli/background-follow-up'
@@ -39,7 +32,7 @@ import * as settingActions from '../settingActions'
 import { settingsStore } from '../settingsStore'
 import { uiStore } from '../uiStore'
 import { prepareAgentGenerationHarness, refreshSessionAttachmentStatuses } from './agent-harness'
-import { getSessionAgentModeEntry, lockSessionAgentMode, setSessionAgentMode } from './agent-mode'
+import { type AgentModeEntrySource, getSessionAgentModeEntry, lockSessionAgentMode, setSessionAgentMode } from './agent-mode'
 import {
   AGENT_MODE_SUGGESTION_PROMPT,
   type AgentModeSuggestionDecision,
@@ -63,7 +56,6 @@ import {
   getSessionWebBrowsing,
   handleGenerationError,
   initializeTargetMessage,
-  trackGenerateEvent,
 } from './utils'
 
 type ExecutableTool = {
@@ -262,10 +254,6 @@ async function shouldSuggestAgentMode(options: {
       return { suggest: false }
     }
     console.warn('Agent mode suggestion decision failed:', error)
-    captureAgentModeException(error, {
-      operation: 'suggestion',
-      model: model.modelId,
-    })
     return { suggest: false }
   }
 }
@@ -290,11 +278,6 @@ async function createAgentModeSuggestionModel(
     )
   } catch (error) {
     console.warn('Failed to create fast model for agent mode suggestion, falling back to current model:', error)
-    captureAgentModeException(error, {
-      operation: 'suggestion_model',
-      provider: namingModel.provider,
-      model: namingModel.model,
-    })
     return fallbackModel
   }
 }
@@ -559,8 +542,6 @@ async function runGeneration(
     return targetMsg
   }
 
-  trackGenerateEvent(sessionId, settings, globalSettings, session.type, options)
-
   const startTime = Date.now()
   let firstTokenLatency: number | undefined
   const persistInterval = 2000
@@ -674,22 +655,8 @@ async function runGeneration(
         return targetMsg
       }
 
-      trackWorkModeSuggestionDecision(
-        {
-          sessionId,
-          mode: 'chat_mode',
-          provider: settings.provider,
-          model: settings.modelId,
-        },
-        decision.suggest,
-        lastUserMessage.files?.length ?? 0
-      )
 
       if (decision.suggest) {
-        trackAgentModeSuggested({
-          hasFiles: Boolean(lastUserMessage.files?.length),
-          fileCount: lastUserMessage.files?.length ?? 0,
-        })
         targetMsg = {
           ...targetMsg,
           generating: false,
@@ -966,10 +933,7 @@ async function runGeneration(
 
     if (await persistAbortedGenerationIfNeeded()) return targetMsg
 
-    targetMsg = handleGenerationError(err, targetMsg, settings, {
-      agentMode: getSessionAgentModeEntry(sessionId, session).value,
-      operationType: options?.operationType,
-    })
+    targetMsg = handleGenerationError(err, targetMsg, settings)
     await persistStreamingMessage(sessionId, targetMsg, { refreshCounting: true })
     return targetMsg
   }
@@ -1070,20 +1034,6 @@ async function stopPausedToolCallWithoutSessionLock(sessionId: string, messageId
 
   const isApproval = isApprovalPauseReason(part.pauseReason)
   const approvalTarget = getApprovalTrackingTarget(part)
-  trackAgentModePauseAction({
-    type: isApproval ? 'approval' : 'tool_limit',
-    action: isApproval ? 'deny' : 'stop',
-    context:
-      isApproval && approvalTarget
-        ? {
-            sessionId,
-            mode: 'work_mode',
-            provider: settings?.provider,
-            model: settings?.modelId,
-          }
-        : undefined,
-    approvalTarget,
-  })
 
   const pauseReason = part.pauseReason
   if (
@@ -1175,10 +1125,6 @@ export async function disableToolCallLimitPauseAndContinue(
 ) {
   // This click is a "continue" variant, so track it as one action instead of
   // an extra pause-action event on top of the continuation below.
-  trackAgentModePauseAction({
-    type: 'tool_limit',
-    action: scope === 'global' ? 'disable_global' : 'disable_session',
-  })
   try {
     if (scope === 'global') {
       settingsStore.getState().setSettings({ pauseOnToolCallLimit: false })
@@ -1228,20 +1174,6 @@ async function continuePausedToolCallWithoutSessionLock(
   const isApproval = isApprovalPauseReason(part.pauseReason)
   const approvalTarget = getApprovalTrackingTarget(part)
   if (!options?.skipPauseActionTracking) {
-    trackAgentModePauseAction({
-      type: isApproval ? 'approval' : 'tool_limit',
-      action: isApproval ? 'approve' : 'continue',
-      context:
-        isApproval && approvalTarget
-          ? {
-              sessionId,
-              mode: 'work_mode',
-              provider: settings.provider,
-              model: settings.modelId,
-            }
-          : undefined,
-      approvalTarget,
-    })
   }
 
   // A tool_call_limit continue resumes the whole paused batch; an approval continue targets
@@ -1361,15 +1293,6 @@ async function continuePausedToolCallWithoutSessionLock(
       { operationType: 'regenerate', appendToMessage: true, externalAbortSignal: controller.signal }
     )
   } catch (error) {
-    captureAgentModeException(error, {
-      operation: 'tool_pause_continue',
-      provider: settings.provider,
-      model: settings.modelId,
-      agentMode: getSessionAgentModeEntry(sessionId, session).value,
-      fullAccess: settings.agentFullAccess === true,
-      toolName: part.toolName,
-      pauseType: part.pauseReason?.type,
-    })
     const errorMessage = error instanceof Error ? error.message : String(error)
     const failedMessage = controller.signal.aborted
       ? cancelRunningToolCallBatch(message, batchIds, getAbortStoppedAt(controller.signal))
@@ -1471,14 +1394,6 @@ async function retryFromLastToolCallAfterApiErrorWithoutSessionLock(
         { operationType: 'regenerate', appendToMessage: true }
       )
     } catch (error) {
-      captureAgentModeException(error, {
-        operation: 'tool_retry',
-        provider: settings.provider,
-        model: settings.modelId,
-        agentMode: getSessionAgentModeEntry(sessionId, session).value,
-        fullAccess: settings.agentFullAccess === true,
-        toolName: part.toolName,
-      })
       const errorMessage = error instanceof Error ? error.message : String(error)
       await modifyMessage(
         sessionId,

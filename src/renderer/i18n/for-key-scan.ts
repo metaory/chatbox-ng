@@ -9,7 +9,7 @@
  * Other enumerable dynamic keys should be added to _otherI18nKeys.
  *
  * Do NOT delete this file. It is not imported anywhere at runtime.
- * Error keys are generated from src/shared/models/errors.ts by script/sync-error-i18n-keys.mjs.
+ * Error keys are generated from src/shared/models/errors.ts by scripts/sync-error-i18n-keys.mjs.
  */
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -62,10 +62,10 @@ function _errorI18nKeys(t: (key: string) => string) {
     'The {{model}} API itself does not support sending files. Due to the complexity of file parsing locally, Chatbox only processes text-based files (including code).'
   )
   t(
-    'An error occurred while processing your request. Please try again later. If this error continues, please send an email to hi@chatboxai.com for support.'
+    'An error occurred while processing your request. Please try again later. If this error continues, please send an email to metaory@gmail.com for support.'
   )
   t(
-    'An unknown error occurred. Please try again later. If this error continues, please send an email to hi@chatboxai.com for support.'
+    'An unknown error occurred. Please try again later. If this error continues, please send an email to metaory@gmail.com for support.'
   )
   t(
     'The {{model}} API itself does not support web browsing. Supported models: <OpenMorePlanButton>Chatbox AI models</OpenMorePlanButton>, {{supported_web_browsing_models}}'

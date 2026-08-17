@@ -16,9 +16,8 @@ export type TokenizerType = 'default' | 'deepseek'
 
 /**
  * `estimateTokens` swallows errors and returns 0. Each shell injects its own
- * reporter so the failure still gets surfaced: the renderer wires this to
- * `Sentry.captureException` (matching the pre-extraction behavior), native can
- * wire its own logger. Defaults to a no-op so shared stays platform-agnostic.
+ * reporter so the failure still gets surfaced locally. Defaults to a no-op so
+ * shared stays platform-agnostic.
  */
 let reportTokenizerError: (error: unknown) => void = () => {}
 

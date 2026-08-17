@@ -26,7 +26,6 @@ import {
 import { createFileRoute } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { JK_PAGE_NAMES } from '@/analytics/jk-events'
 import { ChatboxWelcomeCard } from '@/components/common/ChatboxWelcomeCard'
 import { ImageModelSelect } from '@/components/ImageModelSelect'
 import Page from '@/components/layout/Page'
@@ -610,7 +609,7 @@ function ImageCreatorPage() {
           <Box py="md" px="sm">
             <Stack gap="sm" maw={800} mx="auto">
               {!currentRecord && welcomeCardMode !== 'none' && (
-                <ChatboxWelcomeCard mode={welcomeCardMode} pageName={JK_PAGE_NAMES.IMAGE_PAGE} />
+                <ChatboxWelcomeCard mode={welcomeCardMode} />
               )}
 
               <ReferenceImagesPreview

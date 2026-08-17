@@ -5,13 +5,7 @@ import OpenAIResponses from 'src/shared/providers/definitions/models/openai-resp
 import Qwen from 'src/shared/providers/definitions/models/qwen'
 import { ModelProviderEnum, type SessionSettings, type Settings } from 'src/shared/types'
 import type { ModelDependencies } from 'src/shared/types/adapters'
-import type { SentryScope } from 'src/shared/utils/sentry_adapter'
 import { describe, expect, it, vi } from 'vitest'
-
-const mockScope: SentryScope = {
-  setTag: vi.fn(),
-  setExtra: vi.fn(),
-}
 
 const mockDependencies: ModelDependencies = {
   request: {
@@ -21,10 +15,6 @@ const mockDependencies: ModelDependencies = {
   storage: {
     saveImage: vi.fn(),
     getImage: vi.fn(),
-  },
-  sentry: {
-    captureException: vi.fn(),
-    withScope: vi.fn((callback: (scope: SentryScope) => void) => callback(mockScope)),
   },
   getRemoteConfig: vi.fn(),
   platformType: 'desktop',

@@ -19,8 +19,6 @@ vi.mock('@/platform', () => ({
   },
 }))
 
-vi.mock('@/utils/track', () => ({ trackEvent: vi.fn() }))
-
 vi.mock('./Artifact', () => ({
   isRenderableCodeLanguage: () => false,
 }))

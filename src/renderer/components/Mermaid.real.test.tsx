@@ -5,10 +5,6 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { render, waitFor } from '@/test-utils'
 
-vi.mock('@/analytics/jk', () => ({
-  trackJkAutoEvent: vi.fn(),
-}))
-
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: string) => key }),
 }))

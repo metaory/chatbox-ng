@@ -132,10 +132,6 @@ function createModelDependencies(): ModelDependencies {
       saveImage: vi.fn(),
       getImage: vi.fn(),
     },
-    sentry: {
-      captureException: vi.fn(),
-      withScope: vi.fn(),
-    },
     getRemoteConfig: vi.fn(),
   }
 }

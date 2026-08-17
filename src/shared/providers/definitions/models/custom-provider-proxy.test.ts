@@ -1,5 +1,4 @@
 import type { ApiRequestOptions, ModelDependencies } from '@shared/types/adapters'
-import type { SentryScope } from '@shared/utils/sentry_adapter'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ModelProviderType } from '../../../types'
 import type { CreateModelConfig } from '../../types'
@@ -7,10 +6,6 @@ import { createCustomProviderModel } from '../../utils'
 import CustomClaude from './custom-claude'
 import CustomGemini from './custom-gemini'
 
-const mockScope: SentryScope = {
-  setTag: vi.fn(),
-  setExtra: vi.fn(),
-}
 
 function createDependencies(apiRequest: ModelDependencies['request']['apiRequest']): ModelDependencies {
   return {
@@ -21,10 +16,6 @@ function createDependencies(apiRequest: ModelDependencies['request']['apiRequest
     storage: {
       saveImage: vi.fn(),
       getImage: vi.fn(),
-    },
-    sentry: {
-      captureException: vi.fn(),
-      withScope: vi.fn((callback: (scope: SentryScope) => void) => callback(mockScope)),
     },
     getRemoteConfig: vi.fn(),
     platformType: 'mobile',

@@ -24,7 +24,6 @@ const meta: Meta = {
     (Story) => (
       <QueryClientProvider client={queryClient}>
         <NiceModal.Provider>
-          <StorybookAnalyticsStub />
           <Box p="lg" bg="var(--chatbox-background-primary)" style={{ minHeight: 560 }}>
             <Story />
           </Box>
@@ -35,14 +34,6 @@ const meta: Meta = {
 }
 
 export default meta
-
-function StorybookAnalyticsStub() {
-  useEffect(() => {
-    window.gtag = window.gtag ?? (() => undefined)
-  }, [])
-
-  return null
-}
 
 export const ModalRegistryStates: StoryObj = {
   name: 'Modal registry real NiceModal registration preview',

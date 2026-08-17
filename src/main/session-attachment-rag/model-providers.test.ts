@@ -15,13 +15,6 @@ vi.mock('../store-node', () => ({
   },
 }))
 
-vi.mock('../adapters/sentry', () => ({
-  sentry: {
-    withScope: vi.fn(),
-    captureException: vi.fn(),
-  },
-}))
-
 describe('session attachment RAG model providers', () => {
   beforeEach(() => {
     vi.clearAllMocks()

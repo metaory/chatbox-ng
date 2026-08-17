@@ -13,9 +13,9 @@ files:
   - "!node_modules/undici-types"
   - "package.json"
 
-beforePack: .erb/scripts/ensure-app-deps.cjs
-afterPack: .erb/scripts/after-pack.cjs
-afterSign: .erb/scripts/notarize.js
+beforePack: scripts/ensure-app-deps.cjs
+afterPack: scripts/after-pack.cjs
+afterSign: scripts/notarize.js
 
 # releaseInfo:
 #   releaseNotes: See the changelog for details

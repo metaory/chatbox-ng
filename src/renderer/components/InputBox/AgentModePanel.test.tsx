@@ -51,14 +51,12 @@ const mocks = vi.hoisted(() => {
   }
   const knowledgeBases: Array<{ id: number; name: string }> = []
   const openDirectoryDialogMock = vi.fn()
-  const trackWebSearchClickMock = vi.fn()
 
   return {
     agentModeEntry,
     knowledgeBases,
     openDirectoryDialogMock,
     settingsState,
-    trackWebSearchClickMock,
     uiState,
   }
 })
@@ -66,13 +64,6 @@ const mocks = vi.hoisted(() => {
 vi.mock('react-i18next', () => ({
   initReactI18next: { type: '3rdParty', init: vi.fn() },
   useTranslation: () => ({ t: (key: string) => key }),
-}))
-
-vi.mock('@/analytics/agent-mode', () => ({
-  trackAgentModeSelect: vi.fn(),
-  trackCodeExecutionClick: vi.fn(),
-  trackSmartSwitchingClick: vi.fn(),
-  trackWebSearchClick: mocks.trackWebSearchClickMock,
 }))
 
 vi.mock('@/hooks/knowledge-base', () => ({
@@ -257,7 +248,7 @@ describe('AgentModePanel capability availability', () => {
     expect(screen.getByRole('button', { name: 'Working Directory' }).getAttribute('aria-disabled')).toBe('true')
   })
 
-  test('tracks and updates Web Search from Chat Mode', () => {
+  test('updates Web Search from Chat Mode', () => {
     mocks.agentModeEntry.value = 'off'
     const onWebBrowsingChange = vi.fn()
     renderPanel({ onWebBrowsingChange })
@@ -268,11 +259,6 @@ describe('AgentModePanel capability availability', () => {
     fireEvent.click(webSearchSwitch as HTMLInputElement)
 
     expect(onWebBrowsingChange).toHaveBeenCalledWith(true)
-    expect(mocks.trackWebSearchClickMock).toHaveBeenCalledWith(
-      expect.objectContaining({ mode: 'chat_mode', sessionId: 'new' }),
-      true,
-      'build-in'
-    )
   })
 
   test('allows selecting a Knowledge Base from Chat Mode', () => {

@@ -19,13 +19,11 @@ import { reportNativeContent } from '../../shared/services/native-report'
 import {
   type ChatboxAILicenseDetail,
   type ChatboxAIPlanType,
-  type Config,
   type CopilotDetail,
   type ModelProvider,
   ProviderModelInfoSchema,
   type RemoteConfig,
   type SessionRagConfig,
-  type Settings,
 } from '../../shared/types'
 import { getOS } from './navigator'
 
@@ -132,22 +130,6 @@ const getChatboxHeaders = async () => {
 
 // ========== 各个接口方法 ==========
 
-export async function checkNeedUpdate(version: string, os: string, config: Config, settings: Settings) {
-  type Response = {
-    need_update?: boolean
-  }
-  // const res = await ofetch<Response>(`${RELEASE_ORIGIN}/chatbox_need_update/${version}`, {
-  const res = await ofetch<Response>(`${getAPIOrigin()}/chatbox_need_update/${version}`, {
-    method: 'POST',
-    retry: 3,
-    body: {
-      uuid: config.uuid,
-      os: os,
-      allowReportingAndTracking: settings.allowReportingAndTracking ? 1 : 0,
-    },
-  })
-  return !!res.need_update
-}
 
 // export async function getSponsorAd(): Promise<null | SponsorAd> {
 //     type Response = {

@@ -78,11 +78,6 @@ export interface Platform extends Storage {
   delStoreBlob(key: string): Promise<void>
   listStoreBlobKeys(): Promise<string[]>
 
-  // 追踪
-
-  initTracking(): void
-  trackingEvent(name: string, params: { [key: string]: string }): void
-
   // 通知
   shouldShowAboutDialogWhenStartUp(): Promise<boolean>
 

@@ -5,8 +5,6 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { trackJkClickEvent } from '@/analytics/jk'
-import { JK_EVENTS, JK_PAGE_NAMES } from '@/analytics/jk-events'
 import { cancelConfetti, confetti } from '@/components/Confetti'
 import { buildChatboxUrl } from '@/packages/remote'
 import platform from '@/platform'
@@ -215,7 +213,7 @@ Chatbox is an **all-in-one AI chat client** that supports 30+ mainstream models 
 - 🆘 [Help Center](`),
             helpCenterUrl,
             t(`) — FAQs
-- 📮 Contact us: hi@chatboxai.com
+- 📮 Contact us: metaory@gmail.com
 
 💡 Follow Chatbox on [Xiaohongshu](https://www.xiaohongshu.com/user/profile/67b581b6000000000e01d11f) for the latest updates and tips
 
@@ -240,7 +238,7 @@ Chatbox is an **all-in-one AI chat client** that supports 30+ mainstream models 
 - 🆘 [Help Center](`),
             helpCenterUrl,
             t(`) — FAQs
-- 📮 Contact us: hi@chatboxai.com
+- 📮 Contact us: metaory@gmail.com
 
 ---
 
@@ -418,10 +416,6 @@ Chatbox is an **all-in-one AI chat client** that supports 30+ mainstream models 
     async (type: UserType) => {
       setUserTypeSelected(type)
 
-      trackJkClickEvent(JK_EVENTS.ONBOARDING_CHOICE_CLICK, {
-        pageName: JK_PAGE_NAMES.HELP_PAGE,
-        content: type === 'novice' ? 'new_user' : 'skip_guide',
-      })
 
       // Add user selection as a message (instant)
       const userContent = type === 'novice' ? t("I'm new to this") : t('Skip guide')

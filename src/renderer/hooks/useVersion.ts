@@ -1,10 +1,9 @@
 import { compareVersions } from 'compare-versions'
 import dayjs from 'dayjs'
 import { useAtomValue } from 'jotai'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { remoteConfigAtom } from '@/stores/atoms'
 import { CHATBOX_BUILD_CHANNEL, CHATBOX_BUILD_PLATFORM } from '@/variables'
-import * as remote from '../packages/remote'
 import platform from '../platform'
 
 function getInitialTime() {
@@ -31,7 +30,6 @@ export function isFirstDay(): boolean {
 export default function useVersion() {
   const remoteConfig = useAtomValue(remoteConfigAtom)
   const [version, _setVersion] = useState('')
-  const [needCheckUpdate, setNeedCheckUpdate] = useState(false)
   const isStoreReviewPlatform =
     CHATBOX_BUILD_PLATFORM === 'ios' ||
     (CHATBOX_BUILD_PLATFORM === 'android' && CHATBOX_BUILD_CHANNEL === 'google_play')
@@ -44,29 +42,8 @@ export default function useVersion() {
       compareVersions(version, remoteConfig.current_version) === 1,
     [version, remoteConfig]
   )
-  const updateCheckTimer = useRef<NodeJS.Timeout>()
   useEffect(() => {
-    const handler = async () => {
-      const config = await platform.getConfig()
-      const settings = await platform.getSettings()
-      const version = await platform.getVersion()
-      _setVersion(version)
-      try {
-        const os = await platform.getPlatform()
-        const needUpdate = await remote.checkNeedUpdate(version, os, config, settings)
-        setNeedCheckUpdate(needUpdate)
-      } catch (e) {
-        console.error('Failed to check for updates:', e)
-      }
-    }
-    handler()
-    updateCheckTimer.current = setInterval(handler, 2 * 60 * 60 * 1000)
-    return () => {
-      if (updateCheckTimer.current) {
-        clearInterval(updateCheckTimer.current)
-        updateCheckTimer.current = undefined
-      }
-    }
+    void platform.getVersion().then(_setVersion)
   }, [])
 
   // True when all async data needed to evaluate isExceeded has loaded.
@@ -80,6 +57,6 @@ export default function useVersion() {
     versionLoaded: !!version,
     isExceeded,
     isExceededResolved,
-    needCheckUpdate,
+    needCheckUpdate: false,
   }
 }

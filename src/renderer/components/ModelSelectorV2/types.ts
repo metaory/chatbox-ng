@@ -26,7 +26,6 @@ export type ModelSelectorV2Props = PropsWithChildren<
     selectedProviderId?: string
     selectedModelId?: string
     searchPosition?: 'top' | 'bottom'
-    pageName?: string
   } & ComboboxProps
 >
 

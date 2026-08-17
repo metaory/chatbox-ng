@@ -46,8 +46,6 @@ import { uniq } from 'lodash'
 import { type ChangeEvent, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { createModelDependencies } from '@/adapters'
-import { trackJkClickEvent } from '@/analytics/jk'
-import { JK_EVENTS, JK_PAGE_NAMES } from '@/analytics/jk-events'
 import { AdaptiveSelect } from '@/components/AdaptiveSelect'
 import { AdaptiveModal } from '@/components/common/AdaptiveModal'
 import PopoverConfirm from '@/components/common/PopoverConfirm'
@@ -439,19 +437,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
     const modelName = model.nickname || model.modelId
     const providerName = baseInfo?.name ? t(baseInfo.name) : providerId
     if (finalState.basicTest?.status === 'success') {
-      trackJkClickEvent(JK_EVENTS.KEY_VERIFY_SUCCESS, {
-        pageName: JK_PAGE_NAMES.SETTING_PAGE,
-        content: null,
-        contentType: modelName,
-        props: { content_add_info: { content: providerName } },
-      })
     } else if (finalState.basicTest?.status === 'error') {
-      trackJkClickEvent(JK_EVENTS.KEY_VERIFY_FAILED, {
-        pageName: JK_PAGE_NAMES.SETTING_PAGE,
-        content: finalState.basicTest.error || 'unknown_error',
-        contentType: modelName,
-        props: { content_add_info: { content: providerName } },
-      })
     }
     const visionSupported = finalState.visionTest?.status === 'success'
     const toolUseSupported = finalState.toolTest?.status === 'success'

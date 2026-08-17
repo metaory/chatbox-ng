@@ -18,7 +18,6 @@ import { toastError } from '@/packages/toast'
 import platform from '@/platform'
 import { useAuthInfoStore } from '@/stores/authInfoStore'
 import { useSettingsStore } from '@/stores/settingsStore'
-import { trackEvent } from '@/utils/track'
 import { ScalableIcon } from '../common/ScalableIcon'
 import KnowledgeBaseDocuments from './KnowledgeBaseDocuments'
 import {
@@ -351,14 +350,6 @@ const KnowledgeBasePage: React.FC = () => {
         providerMode: newProviderMode,
       })
 
-      trackEvent('knowledge_base_created', {
-        provider_mode: newProviderMode,
-        embedding_model: embeddingModel,
-        rerank_model: rerankModel || null,
-        vision_model: visionModel || null,
-        document_parser: documentParser?.type || 'global',
-        knowledge_base_name: newKbName,
-      })
 
       // Reset form
       setNewKbName('')

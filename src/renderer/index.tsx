@@ -25,9 +25,6 @@ const log = getLogger('index')
 // 按需加载 polyfill
 import './setup/load_polyfill'
 
-// GA4 初始化
-import './setup/ga_init'
-
 // Show native scrollbars only while scrolling
 import './setup/scrollbar_visibility'
 
@@ -36,9 +33,6 @@ import './setup/automation_contract'
 // 引入保护代码
 import './setup/protect'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { initJkTracking } from './setup/jk_analytics_init'
-import { initPlausibleTracking } from './setup/plausible_init'
-import { initSentry } from './setup/sentry_init'
 import { initSessionAttachmentRagMaintenance } from './setup/session_attachment_rag_maintenance'
 import { initLastUsedModelStore } from './stores/lastUsedModelStore'
 import { initOnboardingStore } from './stores/onboardingStore'
@@ -46,7 +40,6 @@ import { initLoginLicenseStateReconciliation } from './stores/premiumActions'
 import { initRecentDirectoriesStore } from './stores/recentDirectoriesStore'
 import { initSettingsStore } from './stores/settingsStore'
 import { initUpdateListeners } from './stores/updateStore'
-import { reportError } from './utils/sentry'
 
 // 开发环境下引入错误测试工具
 // if (process.env.NODE_ENV === 'development') {
@@ -75,22 +68,8 @@ async function initializeApp() {
     migrationError = e
   }
 
-  // Migrate persisted consent before any settings-backed telemetry initializes.
-  await initSentry()
-  void initPlausibleTracking((onResolved) => {
-    router.subscribe('onResolved', ({ hrefChanged }) => onResolved(hrefChanged))
-  })
-  void initJkTracking()
-
   if (migrationError !== undefined) {
-    const migrationErrorContext = getMigrationErrorContext(migrationError)
-    reportError(migrationError, {
-      domain: 'storage',
-      extras: migrationErrorContext ? { ...migrationErrorContext } : undefined,
-      operation: 'migration',
-      priority: 'high',
-      tags: migrationErrorContext ? { configVersion: migrationErrorContext.configVersion } : undefined,
-    })
+    log.error('migrate error context', getMigrationErrorContext(migrationError))
   }
 
   // 最后执行 storage 清理，清理不 block 进入UI
@@ -154,12 +133,6 @@ const tid = setTimeout(() => {
 initializeApp()
   .catch((e) => {
     // 初始化中的各个步骤已经捕获了错误，这里防止未来添加未捕获的逻辑
-    reportError(e, {
-      domain: 'application',
-      handled: false,
-      operation: 'app_initialization',
-      priority: 'critical',
-    })
     log.error('initializeApp error', e)
   })
   .finally(async () => {

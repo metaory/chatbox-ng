@@ -26,7 +26,6 @@ import storage from '@/storage'
 import { StorageKey, StorageKeyGenerator } from '@/storage/StoreStorage'
 import { authInfoStore } from '@/stores/authInfoStore'
 import { getMetaStorage } from '@/stores/chatStore'
-import { reportError } from '@/utils/sentry'
 import { migrateSession, sortSessions } from '@/utils/session-utils'
 import * as defaults from '../../shared/defaults'
 import { SESSION_ATTACHMENT_RAG_LOG_PREFIX } from '../../shared/session-attachment-rag/logging'
@@ -115,51 +114,6 @@ function isStorageQuotaError(error: unknown): boolean {
       message
     )
   )
-}
-
-function getSafeFileExtension(fileName: string): string {
-  const match = fileName.match(/\.([a-z0-9]{1,12})$/i)
-  return match?.[1].toLowerCase() ?? 'none'
-}
-
-function getFileSizeBucket(size: number): string {
-  if (size < 100 * 1024) return 'under_100_kb'
-  if (size < 1024 * 1024) return '100_kb_to_1_mb'
-  if (size < 10 * 1024 * 1024) return '1_mb_to_10_mb'
-  if (size < 50 * 1024 * 1024) return '10_mb_to_50_mb'
-  return 'over_50_mb'
-}
-
-function getSafeErrorType(error: unknown): string {
-  const name = error instanceof Error ? error.name : typeof error
-  return /^[a-z][a-z0-9]{0,39}$/i.test(name) ? name : 'unknown'
-}
-
-function createSafeReportedError(error: unknown, errorCode: string): Error {
-  const reportedError = new Error(errorCode)
-  if (error instanceof Error && error.stack) {
-    const stackFrames = error.stack.split('\n').filter((line) => /^\s+at\s/.test(line))
-    if (stackFrames.length > 0) {
-      reportedError.stack = [`Error: ${errorCode}`, ...stackFrames].join('\n')
-    }
-  }
-  return reportedError
-}
-
-function reportFilePreprocessFailure(file: File, failure: FilePreprocessFailure): void {
-  reportError(createSafeReportedError(failure.originalError, failure.code), {
-    domain: 'file-attachment',
-    operation: 'preprocess-file',
-    priority: 'high',
-    tags: {
-      error_type: getSafeErrorType(failure.originalError),
-      file_extension: getSafeFileExtension(file.name),
-      file_size_bucket: getFileSizeBucket(file.size),
-      platform_type: platform.type,
-      preprocess_stage: failure.stage,
-      user_error_code: failure.code,
-    },
-  })
 }
 
 function normalizeFilePreprocessFailure(error: unknown, stage: FilePreprocessStage): FilePreprocessFailure | undefined {
@@ -384,8 +338,7 @@ async function fallbackToChatboxAIParser(
   } catch (error) {
     log.error(`Chatbox AI fallback parsing failed for "${file.name}":`, error)
     // A full client-side storage database is not a cloud-parser problem — persisting the
-    // parsed content fails the same way. Preserve it for the quota-specific user message
-    // and sanitized Sentry report at the outer boundary.
+    // parsed content fails the same way. Preserve it for the quota-specific user message.
     if (isStorageQuotaError(error)) {
       throw new FilePreprocessFailure(FILE_STORAGE_QUOTA_EXCEEDED_ERROR, 'cloud_parse', error)
     }
@@ -442,7 +395,6 @@ async function parseFileWithLocalFallback(
     }
 
     // Cloud parsing cannot recover from a full client-side storage database.
-    // Preserve the original exception for a sanitized Sentry report at the outer boundary.
     if (isStorageQuotaError(error)) {
       throw new FilePreprocessFailure(FILE_STORAGE_QUOTA_EXCEEDED_ERROR, 'local_parse', error)
     }
@@ -727,9 +679,6 @@ export async function prepareFileAttachment(
   } catch (error) {
     log.error(`${SESSION_ATTACHMENT_RAG_LOG_PREFIX} Failed to preprocess file "${file.name}":`, error)
     const failure = normalizeFilePreprocessFailure(error, stage)
-    if (failure) {
-      reportFilePreprocessFailure(file, failure)
-    }
     return {
       file,
       content: '',

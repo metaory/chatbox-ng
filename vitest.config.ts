@@ -29,7 +29,6 @@ export default defineConfig(({ mode }) => {
         'node_modules',
         'dist',
         'release',
-        '.erb',
         ...(isModelProviderRun ? [] : ['test/integration/model-provider']),
       ],
       setupFiles: [],

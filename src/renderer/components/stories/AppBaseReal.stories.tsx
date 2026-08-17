@@ -77,13 +77,13 @@ import { settingsStore } from '@/stores/settingsStore'
 const storyImage =
   'data:image/svg+xml;utf8,' +
   encodeURIComponent(
-    '<svg xmlns="http://www.w3.org/2000/svg" width="180" height="120" viewBox="0 0 180 120"><rect width="180" height="120" rx="12" fill="#1c7ed6"/><circle cx="48" cy="42" r="18" fill="#ffd43b"/><path d="M22 98 72 62l30 20 22-16 34 32Z" fill="#d0ebff"/></svg>'
+    '<svg xmlns="http://www.w3.org/2000/svg" width="180" height="120" viewBox="0 0 180 120"><rect width="180" height="120" rx="12" fill="#1c7ed6"/><circle cx="48" cy="42" r="18" fill="#ffd43b"/><path d="M22 98 72 62l30 20 22-16 34 32Z" fill="#d0ebff"/></svg>',
   )
 
 const htmlPreview =
   'data:text/html;charset=utf-8,' +
   encodeURIComponent(
-    '<!doctype html><html><body style="font-family:system-ui;margin:0;padding:24px;background:#f8fafc"><h2>Artifact Preview</h2><button>Actual HTML surface</button></body></html>'
+    '<!doctype html><html><body style="font-family:system-ui;margin:0;padding:24px;background:#f8fafc"><h2>Artifact Preview</h2><button>Actual HTML surface</button></body></html>',
   )
 
 const models: ProviderModelInfo[] = [
@@ -345,8 +345,6 @@ function VisualIdentityFixture() {
         <Group gap="md">
           <ArrowRightIcon className={iconClass} />
           <BrandGithub className={iconClass} />
-          <BrandRedNote className={iconClass} />
-          <BrandWechat className={iconClass} />
           <BrandX className={iconClass} />
           <Broom size={28} />
           <Dart size={28} />

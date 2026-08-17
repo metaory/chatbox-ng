@@ -2,10 +2,7 @@ import { Anchor, Button, Flex, Image, Paper, Stack, Text, Title, UnstyledButton 
 import { IconArrowRight, IconCircleCheckFilled } from '@tabler/icons-react'
 import { forwardRef, useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { trackJkClickEvent } from '@/analytics/jk'
-import { JK_EVENTS, JK_PAGE_NAMES } from '@/analytics/jk-events'
 import { ScalableIcon } from '@/components/common/ScalableIcon'
-import { trackingEvent } from '@/packages/event'
 import { buildChatboxUrl } from '@/packages/remote'
 import platform from '@/platform'
 import icon from '@/static/icon.png'
@@ -71,9 +68,6 @@ export const LoginView = forwardRef<HTMLDivElement, LoginViewProps>(
               <Button
                 fullWidth
                 onClick={() => {
-                  trackJkClickEvent(JK_EVENTS.LOGIN_BUTTON_CLICK, {
-                    pageName: JK_PAGE_NAMES.SETTING_PAGE,
-                  })
                   setLoginModalOpened(true)
                 }}
               >
@@ -140,7 +134,6 @@ export const LoginView = forwardRef<HTMLDivElement, LoginViewProps>(
                   `/redirect_app/get_license/${language}?utm_source=app&utm_content=provider_cb_login_get_license`
                 )
               )
-              trackingEvent('click_get_license_button', { event_category: 'user' })
             }}
           >
             {t('Get License')}
@@ -150,7 +143,6 @@ export const LoginView = forwardRef<HTMLDivElement, LoginViewProps>(
             flex={1}
             onClick={() => {
               platform.openLink(buildChatboxUrl(`/redirect_app/manage_license/${language}`))
-              trackingEvent('click_retrieve_license_button', { event_category: 'user' })
             }}
           >
             {t('Retrieve License')}

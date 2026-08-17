@@ -44,7 +44,6 @@ function settingsWithFallbacks(overrides: Partial<Settings> = {}): Settings {
     showModelName: true,
     showAvatar: true,
     defaultPrompt: 'You are a helpful assistant.',
-    allowReportingAndTracking: true,
     chatboxAIDesktopPromptDismissed: false,
     enableMarkdownRendering: true,
     enableLaTeXRendering: true,

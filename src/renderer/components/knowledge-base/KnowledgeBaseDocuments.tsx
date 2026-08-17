@@ -42,15 +42,12 @@ import type React from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
-import { trackJkClickEvent } from '@/analytics/jk'
-import { JK_EVENTS, JK_PAGE_NAMES } from '@/analytics/jk-events'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
 import { useKnowledgeBaseFiles, useKnowledgeBaseFilesActions, useKnowledgeBaseFilesCount } from '@/hooks/knowledge-base'
 import { useChunksPreview } from '@/hooks/useChunksPreview'
 import { toastError } from '@/packages/toast'
 import platform from '@/platform'
 import { useSettingsStore } from '@/stores/settingsStore'
-import { trackEvent } from '@/utils/track'
 import ChunksPreviewModal from './ChunksPreviewModal'
 import { RemoteRetryModal } from './RemoteRetryModal'
 
@@ -325,14 +322,6 @@ const KnowledgeBaseDocuments: React.FC<KnowledgeBaseDocumentsProps> = ({ knowled
 
         // Track successful uploads only
         if (successfulUploads.length > 0) {
-          trackEvent('knowledge_base_document_added', {
-            knowledge_base_id: knowledgeBase.id,
-            knowledge_base_name: knowledgeBase.name,
-            file_count: successfulUploads.length,
-            total_attempted: files.length,
-            failed_count: blockedUploadCount,
-            file_types: Array.from(new Set(correctedFiles.map((f) => f.type || 'unknown'))),
-          })
 
           // Immediately refresh the data to show the new files
           await Promise.all([refetch(), refetchCount()])
@@ -870,10 +859,6 @@ const KnowledgeBaseDocuments: React.FC<KnowledgeBaseDocumentsProps> = ({ knowled
                         c="dimmed"
                         className="cursor-pointer hover:text-blue-500 transition-colors"
                         onClick={() => {
-                          trackJkClickEvent(JK_EVENTS.FREE_LICENSE_CLAIM_CLICK, {
-                            pageName: JK_PAGE_NAMES.SETTING_PAGE,
-                            content: 'kb_error',
-                          })
                           platform.openLink('https://chatboxai.app/login')
                         }}
                       >

@@ -159,7 +159,6 @@ node_modules
 
 release/app/dist
 release/build
-.erb/dll
 
 .idea
 npm-debug.log.*
@@ -176,8 +175,6 @@ electron-builder.env
 
 
 **/routeTree.gen.ts
-
-.env.sentry-build-plugin
 
 temp.md
 /output/playwright/

@@ -30,11 +30,6 @@ export interface NetworkPort {
   fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response>
 }
 
-export interface AnalyticsPort {
-  init(): Promise<void> | void
-  event(name: string, params: Record<string, string>): Promise<void> | void
-}
-
 export interface LoggerPort {
   log(level: 'debug' | 'info' | 'warn' | 'error', message: string): Promise<void> | void
 }
@@ -52,7 +47,6 @@ export interface CoreRuntimePorts {
   device: DevicePort
   link: LinkPort
   network: NetworkPort
-  analytics?: AnalyticsPort
   logger?: LoggerPort
   fileExport?: FileExportPort
 }

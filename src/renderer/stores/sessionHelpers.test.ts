@@ -16,7 +16,6 @@ const {
   mockGetBlob,
   mockSetItem,
   mockGetItem,
-  mockReportError,
 } = vi.hoisted(() => {
   const blobs = new Map<string, string>()
   const license = { key: 'licensed-key' as string | undefined }
@@ -52,7 +51,6 @@ const {
     mockGetBlob: vi.fn(async (key: string) => blobs.get(key) ?? null),
     mockSetItem: vi.fn(async () => undefined),
     mockGetItem: vi.fn(async <T>(_key: string, initialValue: T) => initialValue),
-    mockReportError: vi.fn(),
   }
 })
 
@@ -128,10 +126,6 @@ vi.mock('@/lib/utils', () => ({
   }),
 }))
 
-vi.mock('@/utils/sentry', () => ({
-  reportError: mockReportError,
-}))
-
 vi.mock('@/lib/format-chat', () => ({
   formatChatAsHtml: vi.fn(),
   formatChatAsMarkdown: vi.fn(),
@@ -181,7 +175,6 @@ describe('preprocessFile local parser fallback', () => {
     mockGetBlob.mockClear()
     mockSetItem.mockClear()
     mockGetItem.mockClear()
-    mockReportError.mockClear()
   })
 
   it('falls back to Chatbox AI when local parsing throws and a license is active', async () => {
@@ -277,19 +270,6 @@ describe('preprocessFile local parser fallback', () => {
     expect(result.content).toBe('')
     expect(result.storageKey).toBe('')
     expect(result.error).toBe('local_parser_failed')
-    expect(mockReportError).toHaveBeenCalledWith(
-      expect.objectContaining({ message: 'local_parser_failed' }),
-      expect.objectContaining({
-        domain: 'file-attachment',
-        operation: 'preprocess-file',
-        priority: 'high',
-        tags: expect.objectContaining({
-          file_extension: 'pdf',
-          preprocess_stage: 'local_parse',
-          user_error_code: 'local_parser_failed',
-        }),
-      })
-    )
   })
 
   it('rejects empty local content without a license for ordinary attachments', async () => {
@@ -329,24 +309,6 @@ describe('preprocessFile local parser fallback', () => {
 
     expect(mockUploadAndCreateUserFile).not.toHaveBeenCalled()
     expect(result.error).toBe('file_storage_quota_exceeded')
-    expect(mockReportError).toHaveBeenCalledWith(
-      expect.objectContaining({ message: 'file_storage_quota_exceeded' }),
-      expect.objectContaining({
-        domain: 'file-attachment',
-        operation: 'preprocess-file',
-        priority: 'high',
-        tags: expect.objectContaining({
-          error_type: 'QuotaExceededError',
-          file_extension: 'txt',
-          file_size_bucket: 'under_100_kb',
-          preprocess_stage: 'local_parse',
-          user_error_code: 'file_storage_quota_exceeded',
-        }),
-      })
-    )
-    const [reportedError, context] = mockReportError.mock.calls[0]
-    expect(reportedError.stack).not.toContain(quotaError.message)
-    expect(JSON.stringify(context)).not.toContain(file.name)
   })
 
   it('rejects whitespace-only content returned by MinerU', async () => {
@@ -372,16 +334,6 @@ describe('preprocessFile local parser fallback', () => {
 
     expect(mockUploadAndCreateUserFile).toHaveBeenCalledTimes(1)
     expect(result.error).toBe('file_storage_quota_exceeded')
-    expect(mockReportError).toHaveBeenCalledWith(
-      expect.objectContaining({ message: 'file_storage_quota_exceeded' }),
-      expect.objectContaining({
-        tags: expect.objectContaining({
-          error_type: 'QuotaExceededError',
-          preprocess_stage: 'cloud_parse',
-          user_error_code: 'file_storage_quota_exceeded',
-        }),
-      })
-    )
   })
 
   it('classifies desktop ENOSPC failures as storage quota errors', async () => {
@@ -393,18 +345,9 @@ describe('preprocessFile local parser fallback', () => {
 
     expect(mockUploadAndCreateUserFile).not.toHaveBeenCalled()
     expect(result.error).toBe('file_storage_quota_exceeded')
-    expect(mockReportError).toHaveBeenCalledWith(
-      expect.objectContaining({ message: 'file_storage_quota_exceeded' }),
-      expect.objectContaining({
-        tags: expect.objectContaining({
-          preprocess_stage: 'local_parse',
-          user_error_code: 'file_storage_quota_exceeded',
-        }),
-      })
-    )
   })
 
-  it('reports unexpected metadata storage failures with a stable user error', async () => {
+  it('surfaces unexpected metadata storage failures with a stable user error', async () => {
     const file = createFile('report.pdf')
     blobStore.set('local-key', 'parsed content')
     mockParseFileLocally.mockResolvedValueOnce({ isSupported: true, key: 'local-key' })
@@ -413,16 +356,6 @@ describe('preprocessFile local parser fallback', () => {
     const result = await prepareFileAttachment(file, { provider: '', modelId: '' })
 
     expect(result.error).toBe('file_preprocess_failed')
-    expect(mockReportError).toHaveBeenCalledWith(
-      expect.objectContaining({ message: 'file_preprocess_failed' }),
-      expect.objectContaining({
-        tags: expect.objectContaining({
-          file_extension: 'pdf',
-          preprocess_stage: 'metadata_storage',
-          user_error_code: 'file_preprocess_failed',
-        }),
-      })
-    )
   })
 
   it('uses local parsing first when Chatbox AI parser is selected', async () => {

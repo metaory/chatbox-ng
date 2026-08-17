@@ -9,7 +9,6 @@ import { AdaptiveModal } from '@/components/common/AdaptiveModal'
 import { ScalableIcon } from '@/components/common/ScalableIcon'
 import { handleImageInputAndSave, ImageInStorage } from '@/components/Image'
 import { useIsSmallScreen } from '@/hooks/useScreenChange'
-import { trackingEvent } from '@/packages/event'
 import storage from '@/storage'
 import { StorageKeyGenerator } from '@/storage/StoreStorage'
 
@@ -123,7 +122,6 @@ const CopilotSettingsModal = NiceModal.create(
       }
 
       onSave(trimmedData)
-      trackingEvent(mode === 'edit' ? 'edit_copilot' : 'create_copilot', { event_category: 'user' })
       modal.resolve(trimmedData)
       modal.hide()
     }

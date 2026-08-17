@@ -3,7 +3,6 @@ import path from 'node:path'
 import type { Client } from '@libsql/client'
 import { LibSQLVector } from '@mastra/libsql'
 import { app } from 'electron'
-import { sentry } from '../adapters/sentry'
 import { getLogger } from '../util'
 
 const log = getLogger('knowledge-base:db')
@@ -104,12 +103,6 @@ async function initDB(db: Client) {
   } catch (error) {
     log.error('[DB] Failed to initialize database:', error)
 
-    sentry.withScope((scope) => {
-      scope.setTag('component', 'knowledge-base-db')
-      scope.setTag('operation', 'database_initialization')
-      scope.setExtra('dbPath', dbPath)
-      sentry.captureException(error)
-    })
     throw error
   }
 }
@@ -128,12 +121,6 @@ export async function initializeDatabase() {
     await cleanupProcessingFiles()
   } catch (error) {
     log.error('[DB] Failed to initialize database system:', error)
-    sentry.withScope((scope) => {
-      scope.setTag('component', 'knowledge-base-db')
-      scope.setTag('operation', 'vector_store_initialization')
-      scope.setExtra('dbPath', dbPath)
-      sentry.captureException(error)
-    })
     throw error
   }
 }
@@ -142,11 +129,6 @@ export function getDatabase(): Client {
   if (!db) {
     const error = new Error('Database not initialized')
     log.error('[DB] Database not initialized')
-    sentry.withScope((scope) => {
-      scope.setTag('component', 'knowledge-base-db')
-      scope.setTag('operation', 'database_access')
-      sentry.captureException(error)
-    })
     throw error
   }
   return db
@@ -156,11 +138,6 @@ export function getVectorStore(): LibSQLVector {
   if (!vectorStore) {
     const error = new Error('Vector store not initialized')
     log.error('[DB] Vector store not initialized')
-    sentry.withScope((scope) => {
-      scope.setTag('component', 'knowledge-base-db')
-      scope.setTag('operation', 'vector_store_access')
-      sentry.captureException(error)
-    })
     throw error
   }
   return vectorStore
@@ -181,22 +158,13 @@ export function parseSQLiteTimestamp(sqliteTimestamp: string): number {
     return timestamp
   } catch (error) {
     log.error(`[DB] Failed to parse SQLite timestamp: ${sqliteTimestamp}`, error)
-    sentry.withScope((scope) => {
-      scope.setTag('component', 'knowledge-base-db')
-      scope.setTag('operation', 'timestamp_parsing')
-      scope.setExtra('sqliteTimestamp', sqliteTimestamp)
-      sentry.captureException(error)
-    })
     // Return current timestamp as fallback
     return Date.now()
   }
 }
 
 // Transaction wrapper - ensures atomicity of database operations
-export async function withTransaction<T>(
-  operation: () => Promise<T>,
-  options?: { shouldReportError?: (error: unknown) => boolean }
-): Promise<T> {
+export async function withTransaction<T>(operation: () => Promise<T>): Promise<T> {
   const db = getDatabase()
   const transactionId = Math.random().toString(36).slice(2, 10)
 
@@ -215,22 +183,6 @@ export async function withTransaction<T>(
       log.debug(`[DB] Transaction ${transactionId} rolled back`)
     } catch (rollbackError) {
       log.error(`[DB] Failed to rollback transaction ${transactionId}:`, rollbackError)
-      sentry.withScope((scope) => {
-        scope.setTag('component', 'knowledge-base-db')
-        scope.setTag('operation', 'transaction_rollback')
-        scope.setExtra('transactionId', transactionId)
-        sentry.captureException(rollbackError)
-      })
-    }
-
-    // Report transaction failures to Sentry for critical operations
-    if (options?.shouldReportError?.(error) ?? true) {
-      sentry.withScope((scope) => {
-        scope.setTag('component', 'knowledge-base-db')
-        scope.setTag('operation', 'transaction_failure')
-        scope.setExtra('transactionId', transactionId)
-        sentry.captureException(error)
-      })
     }
 
     throw error
@@ -251,11 +203,6 @@ async function cleanupProcessingFiles() {
     }
   } catch (err) {
     log.error('[DB] Failed to cleanup processing files:', err)
-    sentry.withScope((scope) => {
-      scope.setTag('component', 'knowledge-base-db')
-      scope.setTag('operation', 'cleanup_processing_files')
-      sentry.captureException(err)
-    })
   }
 }
 

@@ -17,7 +17,7 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "allowJs": true,
-    "outDir": ".erb/dll",
+    "noEmit": true,
     "skipLibCheck": true
   },
   "exclude": [
@@ -27,7 +27,6 @@
     "test",
     "release",
     "out",
-    ".erb/dll",
     "ios",
     "android",
     "**/*.stories.tsx",

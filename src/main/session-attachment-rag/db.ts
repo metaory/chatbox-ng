@@ -4,7 +4,6 @@ import { type Client, createClient } from '@libsql/client'
 import { LibSQLVector } from '@mastra/libsql'
 import { app } from 'electron'
 import { SESSION_ATTACHMENT_RAG_LOG_PREFIX } from '../../shared/session-attachment-rag/logging'
-import { sentry } from '../adapters/sentry'
 import { getLogger } from '../util'
 
 const log = getLogger('session-attachment-rag:db')
@@ -220,12 +219,6 @@ async function initDB(client: Client) {
     log.info(`${SESSION_ATTACHMENT_RAG_LOG_PREFIX} [DB] Session attachment rag database initialized`)
   } catch (error) {
     log.error(`${SESSION_ATTACHMENT_RAG_LOG_PREFIX} [DB] Failed to initialize session attachment rag database:`, error)
-    sentry.withScope((scope) => {
-      scope.setTag('component', 'session-attachment-rag-db')
-      scope.setTag('operation', 'database_initialization')
-      scope.setExtra('dbPath', dbPath)
-      sentry.captureException(error)
-    })
     throw error
   }
 }
@@ -269,13 +262,6 @@ export async function initializeDatabase() {
       `${SESSION_ATTACHMENT_RAG_LOG_PREFIX} [DB] Failed to initialize session attachment rag database system:`,
       error
     )
-    sentry.withScope((scope) => {
-      scope.setTag('component', 'session-attachment-rag-db')
-      scope.setTag('operation', 'vector_store_initialization')
-      scope.setExtra('dbPath', dbPath)
-      scope.setExtra('vectorDbPath', vectorDbPath)
-      sentry.captureException(error)
-    })
     throw error
   }
 }
@@ -283,11 +269,6 @@ export async function initializeDatabase() {
 export function getDatabase(): Client {
   if (!db) {
     const error = new Error('Session attachment rag database not initialized')
-    sentry.withScope((scope) => {
-      scope.setTag('component', 'session-attachment-rag-db')
-      scope.setTag('operation', 'database_access')
-      sentry.captureException(error)
-    })
     throw error
   }
   return db
@@ -296,11 +277,6 @@ export function getDatabase(): Client {
 export function getVectorStore(): LibSQLVector {
   if (!vectorStore) {
     const error = new Error('Session attachment rag vector store not initialized')
-    sentry.withScope((scope) => {
-      scope.setTag('component', 'session-attachment-rag-db')
-      scope.setTag('operation', 'vector_store_access')
-      sentry.captureException(error)
-    })
     throw error
   }
   return vectorStore
@@ -333,12 +309,6 @@ export function parseSQLiteTimestamp(sqliteTimestamp: string): number {
     return timestamp
   } catch (error) {
     log.error(`${SESSION_ATTACHMENT_RAG_LOG_PREFIX} [DB] Failed to parse SQLite timestamp: ${sqliteTimestamp}`, error)
-    sentry.withScope((scope) => {
-      scope.setTag('component', 'session-attachment-rag-db')
-      scope.setTag('operation', 'timestamp_parsing')
-      scope.setExtra('sqliteTimestamp', sqliteTimestamp)
-      sentry.captureException(error)
-    })
     return Date.now()
   }
 }
@@ -362,19 +332,7 @@ export async function withTransaction<T>(operation: () => Promise<T>): Promise<T
         `${SESSION_ATTACHMENT_RAG_LOG_PREFIX} [DB] Failed to rollback transaction ${transactionId}:`,
         rollbackError
       )
-      sentry.withScope((scope) => {
-        scope.setTag('component', 'session-attachment-rag-db')
-        scope.setTag('operation', 'transaction_rollback')
-        scope.setExtra('transactionId', transactionId)
-        sentry.captureException(rollbackError)
-      })
     }
-    sentry.withScope((scope) => {
-      scope.setTag('component', 'session-attachment-rag-db')
-      scope.setTag('operation', 'transaction_failure')
-      scope.setExtra('transactionId', transactionId)
-      sentry.captureException(error)
-    })
     throw error
   }
 }
@@ -394,11 +352,6 @@ export async function cleanupInterruptedIndexingAttachments() {
     return Number(affectedRows)
   } catch (error) {
     log.error(`${SESSION_ATTACHMENT_RAG_LOG_PREFIX} [DB] Failed to cleanup interrupted indexing attachments:`, error)
-    sentry.withScope((scope) => {
-      scope.setTag('component', 'session-attachment-rag-db')
-      scope.setTag('operation', 'cleanup_indexing_attachments')
-      sentry.captureException(error)
-    })
     return 0
   }
 }
@@ -437,11 +390,6 @@ export async function cleanupReadyAttachmentsMissingVectorIndexes() {
       `${SESSION_ATTACHMENT_RAG_LOG_PREFIX} [DB] Failed to cleanup ready attachments with missing vector indexes:`,
       error
     )
-    sentry.withScope((scope) => {
-      scope.setTag('component', 'session-attachment-rag-db')
-      scope.setTag('operation', 'cleanup_missing_vector_indexes')
-      sentry.captureException(error)
-    })
     return 0
   }
 }

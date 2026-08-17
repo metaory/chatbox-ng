@@ -56,10 +56,6 @@ vi.mock('@/router', () => ({
   },
 }))
 
-vi.mock('@/utils/track', () => ({
-  trackEvent: vi.fn(),
-}))
-
 vi.mock('@/stores/chatStore', () => ({
   getSession: vi.fn(),
   updateSessionWithMessages: vi.fn(),

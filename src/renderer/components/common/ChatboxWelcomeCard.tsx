@@ -1,16 +1,14 @@
 import { Button, Flex, Paper, Stack, Text } from '@mantine/core'
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { trackJkClickEvent } from '@/analytics/jk'
-import { JK_EVENTS } from '@/analytics/jk-events'
 import { navigateToSettings } from '@/modals/Settings'
 import { openLinkWithAuth } from '@/packages/openLinkWithAuth'
 import * as remote from '@/packages/remote'
 import { useLanguage } from '@/stores/settingsStore'
 import type { HomeWelcomeCardMode } from '@/utils/homeWelcomeCard'
 
-export function ChatboxWelcomeCard(props: { mode: HomeWelcomeCardMode; pageName: string; className?: string }) {
-  const { mode, pageName, className } = props
+export function ChatboxWelcomeCard(props: { mode: HomeWelcomeCardMode; className?: string }) {
+  const { mode, className } = props
   const { t } = useTranslation()
   const language = useLanguage()
   const [pendingAction, setPendingAction] = useState<'claim-free-plan' | 'purchase-plan' | 'view-more-plans' | null>(
@@ -55,10 +53,6 @@ export function ChatboxWelcomeCard(props: { mode: HomeWelcomeCardMode; pageName:
                   if (pendingActionRef.current) return
 
                   pendingActionRef.current = true
-                  trackJkClickEvent(JK_EVENTS.FREE_LICENSE_CLAIM_CLICK, {
-                    pageName,
-                    content: 'welcome_card_expired',
-                  })
                   setPendingAction('purchase-plan')
                   openLinkWithAuth(
                     remote.buildChatboxUrl(
@@ -103,10 +97,6 @@ export function ChatboxWelcomeCard(props: { mode: HomeWelcomeCardMode; pageName:
                   if (pendingActionRef.current) return
 
                   pendingActionRef.current = true
-                  trackJkClickEvent(JK_EVENTS.FREE_LICENSE_CLAIM_CLICK, {
-                    pageName,
-                    content: 'welcome_card',
-                  })
                   setPendingAction('claim-free-plan')
                   openLinkWithAuth(
                     remote.buildChatboxUrl(
@@ -167,9 +157,6 @@ export function ChatboxWelcomeCard(props: { mode: HomeWelcomeCardMode; pageName:
                 fw={600}
                 flex="0 1 auto"
                 onClick={() => {
-                  trackJkClickEvent(JK_EVENTS.LOGIN_BUTTON_CLICK, {
-                    pageName,
-                  })
                   navigateToSettings('chatbox-ai')
                 }}
               >

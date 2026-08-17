@@ -30,7 +30,6 @@ import useNeedRoomForMacWinControls from './hooks/useNeedRoomForWinControls'
 import { useIsSmallScreen, useSidebarWidth } from './hooks/useScreenChange'
 import useVersion from './hooks/useVersion'
 import { navigateToSettings } from './modals/Settings'
-import { trackingEvent } from './packages/event'
 import { getSidebarModalSx } from './sidebar-drawer'
 import icon from './static/icon.png'
 import { useLanguage } from './stores/settingsStore'
@@ -82,7 +81,6 @@ export default function Sidebar() {
     if (isSmallScreen) {
       setShowSidebar(false)
     }
-    trackingEvent('create_new_conversation', { event_category: 'user' })
   }, [navigate, setShowSidebar, isSmallScreen])
 
   const handleCreateNewPictureSession = useCallback(() => {
@@ -90,7 +88,6 @@ export default function Sidebar() {
     if (isSmallScreen) {
       setShowSidebar(false)
     }
-    trackingEvent('open_image_creator', { event_category: 'user' })
   }, [isSmallScreen, setShowSidebar, navigate])
 
   const handleResizeStart = useCallback(

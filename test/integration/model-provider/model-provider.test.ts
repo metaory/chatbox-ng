@@ -22,7 +22,6 @@ import {
   type Settings,
 } from '../../../src/shared/types'
 import { createMockModelDependencies } from '../mocks/model-dependencies'
-import { MockSentryAdapter } from '../mocks/sentry'
 
 function keyEnv(providerName: string): string {
   return `TEST_${providerName.toUpperCase().replace(/-/g, '_')}_API_KEY`
@@ -77,10 +76,9 @@ function runProviderTest(providerName: ModelProviderEnum) {
   const apiKey = process.env[keyEnv(providerName)] || ''
   const models = PROVIDER_TEST_MODELS[providerName] || []
   const platform = new TestPlatform()
-  const sentry = new MockSentryAdapter()
 
   describe.runIf(apiKey && models.length)(`Provider ${providerName} `, async () => {
-    const mockDependencies = await createMockModelDependencies(platform, sentry)
+    const mockDependencies = await createMockModelDependencies(platform)
     const systemProvider = SystemProviders().find((p) => p.id === providerName)
     if (!systemProvider) throw new Error(`Provider ${providerName} not found in SystemProviders`)
     const globalSettings: Settings = {

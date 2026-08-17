@@ -10,7 +10,6 @@ import {
 import { forwardRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ScalableIcon } from '@/components/common/ScalableIcon'
-import { trackingEvent } from '@/packages/event'
 import { buildChatboxUrl } from '@/packages/remote'
 import platform from '@/platform'
 import { isChatboxAIPlanFree } from '@/stores/licensePlan'
@@ -53,7 +52,6 @@ export const LicenseKeyView = forwardRef<HTMLDivElement, LicenseKeyViewProps>(({
   const handleDeactivate = async () => {
     setIsDeactivating(true)
     await deactivate()
-    trackingEvent('click_deactivate_license_button', { event_category: 'user' })
     setIsDeactivating(false)
   }
 
@@ -268,7 +266,6 @@ export const LicenseKeyView = forwardRef<HTMLDivElement, LicenseKeyViewProps>(({
                       `/redirect_app/manage_license/${language}?utm_source=app&utm_content=provider_cb_key_manage_license`
                     )
                   )
-                  trackingEvent('click_manage_license_button', { event_category: 'user' })
                 }}
               >
                 {t('Manage License')}
@@ -282,7 +279,6 @@ export const LicenseKeyView = forwardRef<HTMLDivElement, LicenseKeyViewProps>(({
                       `/redirect_app/view_more_plans/${language}?utm_source=app&utm_content=provider_cb_key_more_plans`
                     )
                   )
-                  trackingEvent('click_view_more_plans_button', { event_category: 'user' })
                 }}
               >
                 {t('View More Plans')}
@@ -326,7 +322,6 @@ export const LicenseKeyView = forwardRef<HTMLDivElement, LicenseKeyViewProps>(({
                       `/redirect_app/get_license/${language}?utm_source=app&utm_content=provider_cb_key_get_license`
                     )
                   )
-                  trackingEvent('click_get_license_button', { event_category: 'user' })
                 }}
               >
                 {t('Get License')}
@@ -340,7 +335,6 @@ export const LicenseKeyView = forwardRef<HTMLDivElement, LicenseKeyViewProps>(({
                       `/redirect_app/manage_license/${language}?utm_source=app&utm_content=provider_cb_key_retrieve`
                     )
                   )
-                  trackingEvent('click_retrieve_license_button', { event_category: 'user' })
                 }}
               >
                 {t('Retrieve License')}

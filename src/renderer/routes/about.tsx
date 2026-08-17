@@ -23,7 +23,7 @@ import {
   IconRefresh,
 } from '@tabler/icons-react'
 import { createFileRoute } from '@tanstack/react-router'
-import { Fragment, type ReactElement } from 'react'
+import { Children, Fragment, type ReactElement, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ScalableIcon } from '@/components/common/ScalableIcon'
 import BrandGithub from '@/components/icons/BrandGithub'
@@ -93,34 +93,21 @@ function RouteComponent() {
             <ListItem
               icon={<BrandGithub className="w-full h-full" />}
               title={t('Github')}
-              link="https://github.com/chatboxai/chatbox"
-              value="chatbox"
+              link="https://github.com/metaory/chatbox-ng"
+              value="chatbox-ng"
             />
-            {/* <ListItem
-              icon={<BrandX className="w-full h-full" />}
-              title={t('X(Twitter)')}
-              link="https://x.com/ChatboxAI_HQ"
-              value="@ChatboxAI_HQ"
-            /> */}
-            <ListItem
-              icon={<BrandRedNote className="w-full h-full" />}
-              title={t('RedNote')}
-              link="https://www.xiaohongshu.com/user/profile/67b581b6000000000e01d11f"
-              value="@63844903136"
-            />
-            <ListItem icon={<BrandWechat className="w-full h-full" />} title={t('WeChat')} right={<WechatQRCode />} />
           </List>
 
           <List>
             <ListItem
               icon={<IconHome className="w-full h-full" />}
               title={t('Official Site')}
-              link={buildChatboxUrl(`/redirect_app/homepage/${language}`)}
+              link="https://github.com/metaory/chatbox-ng"
             />
             <ListItem
               icon={<IconPencil className="w-full h-full" />}
               title={t('Feedback')}
-              link={buildChatboxUrl(`/redirect_app/feedback/${language}`)}
+              link="https://github.com/metaory/chatbox-ng/issues/new/choose"
             />
             <ListItem
               icon={<IconFileText className="w-full h-full" />}
@@ -130,8 +117,8 @@ function RouteComponent() {
             <ListItem
               icon={<IconMail className="w-full h-full" />}
               title={t('E-mail')}
-              link={`mailto:hi@chatboxai.com`}
-              value="hi@chatboxai.com"
+              link={`mailto:metaory@gmail.com`}
+              value="metaory@gmail.com"
             />
             <ListItem
               icon={<IconMessage2 className="w-full h-full" />}
@@ -313,13 +300,14 @@ function WechatQRCode() {
   )
 }
 
-function List(props: { children: ReactElement[] }) {
+function List({ children }: { children: ReactNode }) {
+  const items = Children.toArray(children)
   return (
     <Stack gap={0} className="rounded-lg bg-chatbox-background-secondary">
-      {props.children.map((child, index) => (
+      {items.map((child, index) => (
         <Fragment key={`child-${index}`}>
           {child}
-          {index !== props.children.length - 1 && <Divider />}
+          {index !== items.length - 1 && <Divider />}
         </Fragment>
       ))}
     </Stack>

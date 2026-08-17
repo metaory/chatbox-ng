@@ -18,7 +18,7 @@ interface CopyRipgrepModule {
 }
 
 const require = createRequire(import.meta.url)
-const copyRipgrep = require('../../.erb/scripts/copy-ripgrep.cjs') as CopyRipgrepModule
+const copyRipgrep = require('../../scripts/copy-ripgrep.cjs') as CopyRipgrepModule
 const temporaryDirectories: string[] = []
 
 function createContext(platform: string, arch: number, root: string): PackContext {

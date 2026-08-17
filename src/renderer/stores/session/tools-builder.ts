@@ -4,7 +4,6 @@ import type { KnowledgeBase, Message, SessionSettings } from '@shared/types'
 import type { UserExecApprovalSource } from '@shared/types/user-exec'
 import { getMessageText } from '@shared/utils/message'
 import { jsonSchema, type ToolSet } from 'ai'
-import { trackAgentModeFullAccessBypass } from '@/analytics/agent-mode'
 import { mcpController } from '@/packages/mcp/controller'
 import { generateCommandExplanation } from '@/packages/model-calls/command-explanation'
 import { buildChatboxCliToolSet } from '@/packages/model-calls/toolsets/chatbox-cli'
@@ -559,7 +558,6 @@ function buildUserExecTool(options: BuildToolsOptions): ToolSet[string] {
         // Track when Full Access skipped an approval, regardless of whether the
         // command later succeeds — failed bypassed attempts are the audit signal.
         if (!alreadyApproved && agentFullAccess) {
-          trackAgentModeFullAccessBypass({ tool: 'user_exec' })
         }
         throwIfAborted(toolOptions.abortSignal)
         hostExecutionStarted = true

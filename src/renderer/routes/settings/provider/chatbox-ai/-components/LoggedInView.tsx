@@ -3,10 +3,7 @@ import { IconArrowRight, IconExclamationCircle, IconExternalLink, IconLogout } f
 import { useQuery } from '@tanstack/react-query'
 import { forwardRef, useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { trackJkClickEvent } from '@/analytics/jk'
-import { JK_EVENTS, JK_PAGE_NAMES } from '@/analytics/jk-events'
 import { ScalableIcon } from '@/components/common/ScalableIcon'
-import { trackingEvent } from '@/packages/event'
 import { openLinkWithAuth } from '@/packages/openLinkWithAuth'
 import {
   buildChatboxUrl,
@@ -585,17 +582,12 @@ export const LoggedInView = forwardRef<HTMLDivElement, LoggedInViewProps>(
                 variant="filled"
                 flex={1}
                 onClick={() => {
-                  trackJkClickEvent(JK_EVENTS.FREE_LICENSE_CLAIM_CLICK, {
-                    pageName: JK_PAGE_NAMES.SETTING_PAGE,
-                    content: 'settings_chatboxai',
-                  })
                   void handleOpenAuthLink(
                     'claim-free-plan',
                     buildChatboxUrl(
                       `/redirect_app/claim_free_plan/${language}/?utm_source=app&utm_content=provider_cb_login_claim_free`
                     )
                   )
-                  trackingEvent('click_claim_free_plan_button', { event_category: 'user' })
                 }}
                 loading={pendingExternalAction === 'claim-free-plan'}
                 disabled={pendingExternalAction !== null}
@@ -613,7 +605,6 @@ export const LoggedInView = forwardRef<HTMLDivElement, LoggedInViewProps>(
                     `/redirect_app/view_more_plans/${language}/?utm_source=app&utm_content=provider_cb_login_more_plans`
                   )
                 )
-                trackingEvent('click_view_more_plans_button', { event_category: 'user' })
               }}
               loading={pendingExternalAction === 'view-more-plans'}
               disabled={pendingExternalAction !== null}

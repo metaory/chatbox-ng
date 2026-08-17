@@ -19,7 +19,6 @@ import {
 } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Drawer } from 'vaul'
-import { trackListModelClick, trackSelectModelClick, trackUpgradeModelClick } from '@/analytics/model-selection'
 import useChatboxAIModels from '@/hooks/useChatboxAIModels'
 import { useProviders } from '@/hooks/useProviders'
 import { useIsSmallScreen } from '@/hooks/useScreenChange'
@@ -59,7 +58,6 @@ export const ModelSelectorV2 = forwardRef<HTMLDivElement, ModelSelectorV2Props>(
       selectedProviderId,
       selectedModelId,
       searchPosition = 'bottom',
-      pageName,
       ...comboboxProps
     },
     ref
@@ -86,10 +84,7 @@ export const ModelSelectorV2 = forwardRef<HTMLDivElement, ModelSelectorV2Props>(
 
     const handleDropdownOpen = useCallback(() => {
       onDropdownOpen?.()
-      if (pageName) {
-        trackListModelClick(pageName, selectedModelId)
-      }
-    }, [onDropdownOpen, pageName, selectedModelId])
+    }, [onDropdownOpen])
 
     const combobox = useCombobox({
       onDropdownOpen: handleDropdownOpen,
@@ -238,17 +233,10 @@ export const ModelSelectorV2 = forwardRef<HTMLDivElement, ModelSelectorV2Props>(
       combobox.closeDropdown()
       setMobileOpen(false)
       setMobileDetail(null)
-      if (pageName && providerId && modelId) {
-        trackSelectModelClick(pageName, modelId, 'success')
-      }
       onSelect?.(providerId, modelId)
     }
 
-    const handleDisabledSelect = (modelId: string) => {
-      if (pageName) {
-        trackSelectModelClick(pageName, modelId, 'failed')
-      }
-    }
+    const handleDisabledSelect = (_modelId: string) => {}
 
     const blurActiveElement = () => {
       if (typeof document === 'undefined') return
@@ -260,9 +248,6 @@ export const ModelSelectorV2 = forwardRef<HTMLDivElement, ModelSelectorV2Props>(
 
     const handleMobileOpenChange = (open: boolean) => {
       setMobileOpen(open)
-      if (open && pageName) {
-        trackListModelClick(pageName, selectedModelId)
-      }
       blurActiveElement()
     }
 
@@ -486,7 +471,6 @@ export const ModelSelectorV2 = forwardRef<HTMLDivElement, ModelSelectorV2Props>(
                   onDesktopDetailOpen={openDesktopDetail}
                   onDesktopDetailClose={scheduleDesktopDetailClose}
                   onDisabledSelect={handleDisabledSelect}
-                  pageName={pageName}
                 />
               )}
               <GenericProviderRows
@@ -538,7 +522,6 @@ export const ModelSelectorV2 = forwardRef<HTMLDivElement, ModelSelectorV2Props>(
                   onDesktopDetailOpen={openDesktopDetail}
                   onDesktopDetailClose={scheduleDesktopDetailClose}
                   onDisabledSelect={handleDisabledSelect}
-                  pageName={pageName}
                 />
               )}
               <GenericProviderRows
@@ -616,9 +599,6 @@ export const ModelSelectorV2 = forwardRef<HTMLDivElement, ModelSelectorV2Props>(
                       pricingLink={chatboxAIModelList?.links?.modelPricing}
                       upgradeLink={chatboxAIModelList?.links?.upgrade}
                       onClose={() => setMobileDetail(null)}
-                      onUpgradeClick={() =>
-                        pageName && trackUpgradeModelClick(pageName, 'upgrade_modal', mobileDetail.modelId)
-                      }
                       mobile
                     />
                   )}
@@ -677,9 +657,6 @@ export const ModelSelectorV2 = forwardRef<HTMLDivElement, ModelSelectorV2Props>(
                 model={desktopDetail.model}
                 pricingLink={desktopDetail.pricingLink}
                 upgradeLink={desktopDetail.upgradeLink}
-                onUpgradeClick={() =>
-                  pageName && trackUpgradeModelClick(pageName, 'upgrade_modal', desktopDetail.model.modelId)
-                }
               />
             </div>
           )}

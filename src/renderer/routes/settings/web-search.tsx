@@ -4,8 +4,6 @@ import { createFileRoute } from '@tanstack/react-router'
 import { ofetch } from 'ofetch'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { trackJkClickEvent } from '@/analytics/jk'
-import { JK_EVENTS, JK_PAGE_NAMES } from '@/analytics/jk-events'
 import { AdaptiveSelect } from '@/components/AdaptiveSelect'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
 import { PROVIDERS_WITH_PARSE_LINK } from '@/packages/web-search'
@@ -426,10 +424,6 @@ export function RouteComponent() {
             size="xs"
             className="cursor-pointer"
             onClick={() => {
-              trackJkClickEvent(JK_EVENTS.FREE_LICENSE_CLAIM_CLICK, {
-                pageName: JK_PAGE_NAMES.SETTING_PAGE,
-                content: 'settings_websearch',
-              })
               platform.openLink('https://chatboxai.app/login')
             }}
           >

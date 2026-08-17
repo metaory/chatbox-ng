@@ -66,16 +66,6 @@ vi.mock('@/utils/request', () => ({
   },
 }))
 
-vi.mock('./sentry', () => {
-  class MockRendererSentryAdapter {
-    captureException = vi.fn()
-    withScope = vi.fn()
-  }
-  return {
-    RendererSentryAdapter: MockRendererSentryAdapter,
-  }
-})
-
 import { getModel } from '@shared/models'
 import type { SessionSettings } from '@shared/types'
 import { createModel } from '@/adapters'
@@ -163,7 +153,6 @@ describe('createModel', () => {
     expect(typeof dependencies).toBe('object')
     expect(dependencies).toHaveProperty('storage')
     expect(dependencies).toHaveProperty('request')
-    expect(dependencies).toHaveProperty('sentry')
     expect(dependencies).toHaveProperty('getRemoteConfig')
   })
 
@@ -228,18 +217,6 @@ describe('createModel', () => {
     expect(dependencies.request).toHaveProperty('apiRequest')
     expect(typeof dependencies.request.fetchWithOptions).toBe('function')
     expect(typeof dependencies.request.apiRequest).toBe('function')
-  })
-
-  it('dependencies sentry adapter is instantiated', async () => {
-    const settings = createTestSettings()
-
-    await createModel(settings)
-
-    const callArgs = getFirstGetModelCall()
-    const dependencies = callArgs[3]
-    expect(dependencies.sentry).toBeDefined()
-    expect(dependencies.sentry).toHaveProperty('captureException')
-    expect(dependencies.sentry).toHaveProperty('withScope')
   })
 
   it('dependencies getRemoteConfig is a function', async () => {

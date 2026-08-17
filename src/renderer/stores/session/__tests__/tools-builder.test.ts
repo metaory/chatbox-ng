@@ -58,11 +58,6 @@ vi.mock('@/platform', () => ({
   default: { type: 'web' },
 }))
 
-const trackAgentModeFullAccessBypassMock = vi.fn()
-vi.mock('@/analytics/agent-mode', () => ({
-  trackAgentModeFullAccessBypass: (...args: unknown[]) => trackAgentModeFullAccessBypassMock(...args),
-}))
-
 vi.mock('@/packages/mcp/controller', () => ({
   mcpController: {
     getAvailableTools: () => ({
@@ -496,7 +491,6 @@ describe('buildToolsForSession', () => {
       approvalSource: 'full_access',
     })
     expect(executeResult).toMatchObject({ success: true, exitCode: 0, stdout: 'ok', stderr: '' })
-    expect(trackAgentModeFullAccessBypassMock).toHaveBeenCalledWith({ tool: 'user_exec' })
   })
 
   test('agentFullAccess=false requests user_exec approval', async () => {
@@ -525,7 +519,6 @@ describe('buildToolsForSession', () => {
       toolCallId: 'tool-call-2',
       approvalSource: 'ai',
     })
-    expect(trackAgentModeFullAccessBypassMock).not.toHaveBeenCalled()
   })
 
   test('records whitelist auto-approval as the execution source', async () => {

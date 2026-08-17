@@ -96,9 +96,6 @@ const { remoteMocks, mcpMocks, stateControls, authControls, authSubscribers } = 
   }
 })
 
-vi.mock('@sentry/react', () => ({ captureException: vi.fn() }))
-vi.mock('@/analytics/jk', () => ({ trackJkClickEvent: vi.fn() }))
-vi.mock('@/analytics/jk-events', () => ({ JK_EVENTS: {}, JK_PAGE_NAMES: { SETTING_PAGE: 'settings' } }))
 vi.mock('@/packages/mcp/controller', () => ({
   mcpController: {
     stopServer: mcpMocks.stopServer,

@@ -39,7 +39,6 @@ import {
   type ReasoningControlLevel,
 } from '../../../src/shared/utils/reasoning-control'
 import { createMockModelDependencies } from '../mocks/model-dependencies'
-import { MockSentryAdapter } from '../mocks/sentry'
 
 function loadEnvFiles() {
   let originalEnvPath: string | undefined
@@ -571,7 +570,7 @@ describe.runIf(activeCases.length > 0)('Thinking control provider integration te
       }
 
       const platform = new TestPlatform()
-      const dependencies = await createMockModelDependencies(platform, new MockSentryAdapter())
+      const dependencies = await createMockModelDependencies(platform)
       const globalSettings = createGlobalSettings(testCase.provider, testCase.apiKey, modelInfo, testCase.apiHost)
       if (testCase.apiHost) {
         expect(globalSettings.providers[testCase.provider]?.apiHost).toBe(testCase.apiHost)

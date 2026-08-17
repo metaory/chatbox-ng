@@ -111,13 +111,13 @@ export const ChatboxWelcomeCardStates: StoryObj = {
       />
       <Group align="stretch">
         <Box w={260}>
-          <ChatboxWelcomeCard mode="login" pageName="storybook" />
+          <ChatboxWelcomeCard mode="login" />
         </Box>
         <Box w={260}>
-          <ChatboxWelcomeCard mode="no-license" pageName="storybook" />
+          <ChatboxWelcomeCard mode="no-license" />
         </Box>
         <Box w={260}>
-          <ChatboxWelcomeCard mode="expired-license" pageName="storybook" />
+          <ChatboxWelcomeCard mode="expired-license" />
         </Box>
       </Group>
     </Stack>
@@ -153,7 +153,7 @@ export const ErrorBoundaryStates: StoryObj = {
     <Stack gap="lg">
       <SurfaceLabel
         title="ErrorBoundary"
-        description="Actual Sentry-backed error boundary with the default app fallback, retry, reload, and details states."
+        description="Actual error boundary with the default app fallback, retry, reload, and details states."
       />
       <Paper withBorder radius="md" h={420} style={{ overflow: 'hidden' }}>
         <ErrorBoundary name="StorybookErrorBoundary">

@@ -2,6 +2,15 @@ packages:
   - .
   - release/app
 
+# v11 default is `install`, which can mutate node_modules around script runs.
+verifyDepsBeforeRun: false
+
+nodeLinker: hoisted
+autoInstallPeers: true
+engineStrict: true
+updateNotifier: false
+nodeOptions: --max-old-space-size=4096
+
 # Supply chain security: only install packages published at least 7 days ago
 minimumReleaseAge: 10080
 minimumReleaseAgeExclude:
@@ -11,6 +20,28 @@ minimumReleaseAgeExclude:
 # deprecated native optional dependency is unavailable.
 ignoredOptionalDependencies:
   - zipfile
+
+allowBuilds:
+  "@parcel/watcher": true
+  core-js: true
+  core-js-pure: true
+  electron: true
+  electron-winstaller: false
+  esbuild: true
+  msw: true
+  protobufjs: true
+  sharp: true
+
+overrides:
+  "@tanstack/router-generator": 1.120.15
+  "@tanstack/router-plugin": 1.120.15
+  "@mastra/libsql": 0.13.2
+  "@mastra/rag": 1.0.8
+  handlebars: ">=4.7.9"
+  convict: ">=6.2.5"
+  fast-xml-parser: ">=5.5.7"
+  shell-quote: 1.10.0
+  libsql: 0.5.22
 
 patchedDependencies:
   fflate@0.8.3: patches/fflate@0.8.3.patch

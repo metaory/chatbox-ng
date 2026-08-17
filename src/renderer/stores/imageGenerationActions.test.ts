@@ -11,7 +11,6 @@ const invalidateQueriesMock = vi.fn()
 const getImageMock = vi.fn()
 const setCurrentGeneratingIdMock = vi.fn()
 const setCurrentRecordIdMock = vi.fn()
-const trackEventMock = vi.fn()
 
 vi.mock('@/adapters', () => ({
   createModelDependencies: vi.fn(async () => ({
@@ -57,10 +56,6 @@ vi.mock('./settingsStore', () => ({
       licenseKey: 'license-key',
     }),
   },
-}))
-
-vi.mock('@/utils/track', () => ({
-  trackEvent: trackEventMock,
 }))
 
 vi.mock('@/lib/utils', () => ({
@@ -149,7 +144,6 @@ describe('imageGenerationActions reference image payload', () => {
       }),
       'license-key'
     )
-    expect(trackEventMock).toHaveBeenCalledWith('generate_image', expect.objectContaining({ has_reference: true }))
   })
 
   it('exposes a completion promise for background task consumers', async () => {

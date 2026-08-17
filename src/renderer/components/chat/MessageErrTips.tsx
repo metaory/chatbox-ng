@@ -7,15 +7,8 @@ import type { Message } from '@shared/types'
 import { ModelProviderEnum } from '@shared/types/provider'
 import { IconCheck, IconChevronDown, IconChevronUp, IconCopy, IconLanguage, IconReload } from '@tabler/icons-react'
 import type React from 'react'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
-import {
-  trackAgentModeFreePointsCard,
-  trackAgentModeFreePointsCardClick,
-  trackAgentModeFreePointsClaimSuccess,
-} from '@/analytics/agent-mode'
-import { trackJkClickEvent } from '@/analytics/jk'
-import { JK_EVENTS, JK_PAGE_NAMES } from '@/analytics/jk-events'
 import { ChatboxAIErrorMessage } from '@/components/common/ChatboxAIErrorMessage'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
 import { useCopied } from '@/hooks/useCopied'
@@ -198,24 +191,6 @@ export default function MessageErrTips(props: {
   const isTruncated = shouldTruncate(errorMessage)
   const showTranslateButton = language !== 'en' && errorMessage.length > 0
   const errorPresentation = resolveMessageErrorPresentation(msg)
-  const agentModeTrackingContext = useMemo(
-    () =>
-      sessionId
-        ? {
-            sessionId,
-            mode: 'work_mode' as const,
-            provider: msg.aiProvider,
-            model: msg.model,
-          }
-        : null,
-    [msg.aiProvider, msg.model, sessionId]
-  )
-
-  useEffect(() => {
-    if (errorPresentation === 'agent-mode-reward' && agentModeTrackingContext) {
-      trackAgentModeFreePointsCard(agentModeTrackingContext)
-    }
-  }, [agentModeTrackingContext, errorPresentation])
 
   const handleTranslate = useCallback(async () => {
     if (translatedText) {
@@ -236,9 +211,6 @@ export default function MessageErrTips(props: {
   const handleAgentModeRewardAction = useCallback(async () => {
     if (isHandlingAgentModeReward || !onRetry || !licenseKey) {
       return
-    }
-    if (!agentModeRewardClaimed && agentModeTrackingContext) {
-      trackAgentModeFreePointsCardClick(agentModeTrackingContext)
     }
     setIsHandlingAgentModeReward(true)
     setAgentModeRewardClaimFailed(false)
@@ -262,9 +234,6 @@ export default function MessageErrTips(props: {
         claim: () => claimFreeAgentModeReward(licenseKey),
         showSuccess: (reward) => {
           setAgentModeRewardClaimed(true)
-          if (agentModeTrackingContext) {
-            trackAgentModeFreePointsClaimSuccess(agentModeTrackingContext)
-          }
           void NiceModal.show('agent-mode-reward-claim-success', reward).catch(() => undefined)
         },
         resume: async () => {
@@ -284,7 +253,7 @@ export default function MessageErrTips(props: {
     } finally {
       setIsHandlingAgentModeReward(false)
     }
-  }, [agentModeRewardClaimed, agentModeTrackingContext, isHandlingAgentModeReward, licenseKey, onRetry, t])
+  }, [agentModeRewardClaimed, isHandlingAgentModeReward, licenseKey, onRetry, t])
 
   const handleUpgradePlan = useCallback(() => {
     platform.openLink(
@@ -567,10 +536,6 @@ export default function MessageErrTips(props: {
             <span
               className="text-sm font-medium text-blue-600 cursor-pointer hover:text-blue-700 hover:underline transition-colors"
               onClick={() => {
-                trackJkClickEvent(JK_EVENTS.FREE_LICENSE_CLAIM_CLICK, {
-                  pageName: JK_PAGE_NAMES.CHAT_PAGE,
-                  content: 'chat_error',
-                })
                 platform.openLink('https://chatboxai.app/login')
               }}
             >

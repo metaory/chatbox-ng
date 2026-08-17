@@ -16,7 +16,6 @@ import TestPlatform from '../../../src/renderer/platform/test_platform'
 import type { Message, SessionSettings, Settings, StreamTextResult } from '../../../src/shared/types'
 import type { ModelDependencies } from '../../../src/shared/types/adapters'
 import { createMockModelDependencies } from '../mocks/model-dependencies'
-import { MockSentryAdapter } from '../mocks/sentry'
 
 // ============ 类型定义 ============
 
@@ -107,19 +106,17 @@ export function createUserMessageWithFiles(content: string, files: TestFile[]): 
 
 export class FileConversationTestContext {
   public platform: TestPlatform
-  public sentry: MockSentryAdapter
 
   constructor() {
     this.platform = new TestPlatform()
-    this.sentry = new MockSentryAdapter()
   }
 
   /**
    * 创建模型依赖
-   * 使用真实的请求适配器，mock sentry，使用 TestPlatform 的存储
+   * 使用真实的请求适配器，使用 TestPlatform 的存储
    */
   async createModelDependencies(): Promise<ModelDependencies> {
-    return createMockModelDependencies(this.platform, this.sentry)
+    return createMockModelDependencies(this.platform)
   }
 
   /**
@@ -159,7 +156,6 @@ export class FileConversationTestContext {
    */
   clear(): void {
     this.platform.clear()
-    this.sentry.clear()
   }
 }
 

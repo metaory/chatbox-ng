@@ -295,10 +295,13 @@ vi.mock('../platform/storages', () => ({
   },
 }))
 
-vi.mock('../../shared/defaults', () => ({
-  settings: vi.fn(() => ({})),
-  SystemProviders: vi.fn(() => []),
-}))
+vi.mock('../../shared/defaults', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../../shared/defaults')>()
+  return {
+    ...actual,
+    SystemProviders: vi.fn(() => []),
+  }
+})
 
 vi.mock('../lib/utils', () => ({
   getLogger: () => ({
@@ -320,12 +323,6 @@ vi.mock('./sessionHelpers', () => ({
 
 vi.mock('@/platform/web_platform', () => ({
   default: vi.fn(),
-}))
-
-vi.mock('@sentry/react', () => ({
-  getCurrentScope: () => ({
-    setTag: vi.fn(),
-  }),
 }))
 
 vi.mock('jotai', () => ({

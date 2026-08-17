@@ -1,6 +1,5 @@
 import { ModelProviderEnum, ModelProviderType, type ProviderSettings } from '@shared/types'
 import type { ApiRequestOptions, ModelDependencies } from '@shared/types/adapters'
-import type { SentryScope } from '@shared/utils/sentry_adapter'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createModelDependencies } from '@/adapters'
 import CustomProviderSettingUtil from './custom-provider-setting-util'
@@ -9,10 +8,6 @@ vi.mock('@/adapters', () => ({
   createModelDependencies: vi.fn(),
 }))
 
-const mockScope: SentryScope = {
-  setTag: vi.fn(),
-  setExtra: vi.fn(),
-}
 
 class TestCustomProviderSettingUtil extends CustomProviderSettingUtil {
   public listModels(settings: ProviderSettings) {
@@ -29,10 +24,6 @@ function createDependencies(apiRequest: ModelDependencies['request']['apiRequest
     storage: {
       saveImage: vi.fn(),
       getImage: vi.fn(),
-    },
-    sentry: {
-      captureException: vi.fn(),
-      withScope: vi.fn((callback: (scope: SentryScope) => void) => callback(mockScope)),
     },
     getRemoteConfig: vi.fn(),
     platformType: 'mobile',

@@ -3,6 +3,8 @@ import { useMemo } from 'react'
 import * as chatStore from '../chatStore'
 import { uiStore, useUIStore } from '../uiStore'
 
+export type AgentModeEntrySource = 'suggestion_accept' | 'locked_session' | 'manual' | 'none'
+
 export function createDefaultAgentModeEntry(smartSwitchingDefault = uiStore.getState().agentModeSmartSwitchingDefault) {
   return {
     value: smartSwitchingDefault ? 'auto' : 'off',

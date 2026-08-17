@@ -25,7 +25,6 @@ import { handleImageInputAndSave, ImageInStorage } from '@/components/Image'
 import ImageStyleSelect from '@/components/ImageStyleSelect'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
 import { useIsSmallScreen } from '@/hooks/useScreenChange'
-import { trackingEvent } from '@/packages/event'
 import storage from '@/storage'
 import { StorageKeyGenerator } from '@/storage/StoreStorage'
 import { updateSessionWithMessages } from '@/stores/chatStore'
@@ -77,7 +76,6 @@ const SessionSettingsModal = NiceModal.create(
 
     useEffect(() => {
       if (session) {
-        trackingEvent('chat_config_window', { event_category: 'screen_view' })
       }
     }, [session])
 

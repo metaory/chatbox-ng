@@ -2,7 +2,6 @@ import NiceModal from '@ebay/nice-modal-react'
 import { ActionIcon, type ActionIconProps, Button, Flex, Loader, Modal, Stack, Text } from '@mantine/core'
 import { Box, Grid, useTheme } from '@mui/material'
 import { TestId } from '@shared/automation/testids'
-import { findMessageLocation } from '@shared/session/message-forks'
 import type {
   Message,
   MessageBackgroundTask,
@@ -45,9 +44,6 @@ import {
   useState,
 } from 'react'
 import { useTranslation } from 'react-i18next'
-import { trackAgentModeSuggestionAction } from '@/analytics/agent-mode'
-import { trackJkClickEvent } from '@/analytics/jk'
-import { JK_EVENTS, JK_PAGE_NAMES } from '@/analytics/jk-events'
 import Markdown from '@/components/Markdown'
 import StreamingTextFade from '@/components/StreamingTextFade'
 import { AppTooltip as Tooltip1 } from '@/components/ui/tooltip'
@@ -245,46 +241,11 @@ const _Message: FC<Props> = (props) => {
     await regenerateInNewFork(sessionId, msg)
   }, [generationLocked, handleStop, msg, notifyGenerationLocked, sessionId])
 
-  // Tracking is best-effort and must never block or break the accept/decline
-  // action, so this fetches the session on its own and swallows failures.
-  const trackAgentModeSuggestionActionAsync = useCallback(
-    (action: 'accept' | 'decline') => {
-      void getSession(sessionId)
-        .then((session) => {
-          let fileCount = 0
-          const location = session ? findMessageLocation(session, msg.id) : null
-          if (location) {
-            for (let index = location.index - 1; index >= 0; index -= 1) {
-              const message = location.list[index]
-              if (message.role === 'user') {
-                fileCount = message.files?.length ?? 0
-                break
-              }
-            }
-          }
-          trackAgentModeSuggestionAction({
-            action,
-            hasFiles: fileCount > 0,
-            fileCount,
-            context: {
-              sessionId,
-              mode: action === 'accept' ? 'work_mode' : 'chat_mode',
-              provider: session?.settings?.provider,
-              model: session?.settings?.modelId,
-            },
-          })
-        })
-        .catch(() => {})
-    },
-    [msg.id, sessionId]
-  )
-
   const agentModeSuggestionHandledRef = useRef(false)
 
   const handleStartAgentModeResponse = useCallback(async () => {
     if (agentModeSuggestionHandledRef.current) return
     agentModeSuggestionHandledRef.current = true
-    trackAgentModeSuggestionActionAsync('accept')
     try {
       await lockSessionAgentMode(sessionId, 'message_sent')
       const nextMsg = resetMessageForAgentModeResponse(msg)
@@ -294,12 +255,11 @@ const _Message: FC<Props> = (props) => {
       agentModeSuggestionHandledRef.current = false
       throw error
     }
-  }, [trackAgentModeSuggestionActionAsync, msg, sessionId])
+  }, [msg, sessionId])
 
   const handleContinueNormalResponse = useCallback(async () => {
     if (agentModeSuggestionHandledRef.current) return
     agentModeSuggestionHandledRef.current = true
-    trackAgentModeSuggestionActionAsync('decline')
     try {
       await setSessionAgentMode(sessionId, 'off')
       const nextMsg = resetMessageForAgentModeResponse(msg)
@@ -309,7 +269,7 @@ const _Message: FC<Props> = (props) => {
       agentModeSuggestionHandledRef.current = false
       throw error
     }
-  }, [trackAgentModeSuggestionActionAsync, msg, sessionId])
+  }, [msg, sessionId])
 
   const lastStepForRetry = useMemo(() => {
     for (let index = msg.contentParts.length - 1; index >= 0; index -= 1) {
@@ -460,23 +420,6 @@ const _Message: FC<Props> = (props) => {
     tips.push({ label: messageTimestamp })
   }
 
-  const trackWithSessionName = useCallback(
-    async (event: string) => {
-      const session = await getSession(sessionId).catch(() => null)
-      trackJkClickEvent(event, {
-        pageName: JK_PAGE_NAMES.CHAT_PAGE,
-        content: session?.name,
-      })
-    },
-    [sessionId]
-  )
-  const onCodeCopy = useCallback(() => {
-    trackWithSessionName(JK_EVENTS.COPY_CODE_CLICK)
-  }, [trackWithSessionName])
-  const onPreviewWebpage = useCallback(() => {
-    trackWithSessionName(JK_EVENTS.PREVIEW_WEBPAGE_CLICK)
-  }, [trackWithSessionName])
-
   const contentParts = msg.contentParts || []
   const leadingStatuses = useMemo(
     () => msg.status?.filter((status) => status.type !== 'preparing_tool_call'),
@@ -565,8 +508,6 @@ const _Message: FC<Props> = (props) => {
           enableLaTeXRendering={enableLaTeXRendering}
           enableMermaidRendering={enableMermaidRendering}
           generating={msg.generating}
-          onCodeCopy={onCodeCopy}
-          onPreviewWebpage={onPreviewWebpage}
         >
           {part.text || ''}
         </Markdown>
@@ -579,8 +520,6 @@ const _Message: FC<Props> = (props) => {
       enableMermaidRendering,
       msg.generating,
       msg.id,
-      onCodeCopy,
-      onPreviewWebpage,
       sessionId,
     ]
   )
@@ -787,8 +726,6 @@ const _Message: FC<Props> = (props) => {
                         enableLaTeXRendering={enableLaTeXRendering}
                         enableMermaidRendering={enableMermaidRendering}
                         generating={msg.generating}
-                        onCodeCopy={onCodeCopy}
-                        onPreviewWebpage={onPreviewWebpage}
                       >
                         {item.text || ''}
                       </Markdown>

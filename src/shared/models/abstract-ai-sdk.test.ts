@@ -2,7 +2,6 @@ import type { LanguageModelV3 } from '@ai-sdk/provider'
 import type { Provider } from 'ai'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { ModelDependencies } from '../types/adapters'
-import type { SentryScope } from '../utils/sentry_adapter'
 import AbstractAISDKModel, { isRetryableStatusError } from './abstract-ai-sdk'
 import { ApiError, MidStreamApiError } from './errors'
 import type { CallChatCompletionOptions } from './types'
@@ -51,15 +50,6 @@ function createDependencies(): ModelDependencies {
     storage: {
       saveImage: vi.fn(),
       getImage: vi.fn(),
-    },
-    sentry: {
-      captureException: vi.fn(),
-      withScope: vi.fn((callback: (scope: SentryScope) => void) =>
-        callback({
-          setTag: vi.fn(),
-          setExtra: vi.fn(),
-        })
-      ),
     },
     getRemoteConfig: vi.fn(() => ({})),
   }

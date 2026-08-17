@@ -52,7 +52,6 @@ import { useDropzone } from 'react-dropzone'
 import { useTranslation } from 'react-i18next'
 import { v4 as uuidv4 } from 'uuid'
 import { createModelDependencies } from '@/adapters'
-import { JK_PAGE_NAMES } from '@/analytics/jk-events'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
 import useInputBoxHistory from '@/hooks/useInputBoxHistory'
 import { useKnowledgeBase } from '@/hooks/useKnowledgeBase'
@@ -66,7 +65,6 @@ import {
   isCompactionInProgress,
   useContextTokens,
 } from '@/packages/context-management'
-import { trackingEvent } from '@/packages/event'
 import {
   getModelContextWindowSync,
   getProviderModelContextWindowSync,
@@ -84,7 +82,6 @@ import { useSession, useSessionSettings } from '@/stores/chatStore'
 import { useSessionAgentMode } from '@/stores/session/agent-mode'
 import { settingsStore, useSettingsStore } from '@/stores/settingsStore'
 import { useUIStore } from '@/stores/uiStore'
-import { trackEvent } from '@/utils/track'
 import {
   type KnowledgeBase,
   type Message,
@@ -936,7 +933,6 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
 
         await onSubmit?.(params)
 
-        trackingEvent('send_message', { event_category: 'user' })
       } catch (e) {
         console.error('Error submitting message:', e)
         toastActions.add((e as Error)?.message || t('An error occurred while sending the message.'))
@@ -1356,10 +1352,8 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
       (kb: KnowledgeBase | null) => {
         if (!kb || kb.id === knowledgeBase?.id) {
           setKnowledgeBase(undefined)
-          trackEvent('knowledge_base_disabled', { knowledge_base_name: knowledgeBase?.name })
         } else {
           setKnowledgeBase(pick(kb, 'id', 'name'))
-          trackEvent('knowledge_base_enabled', { knowledge_base_name: kb.name })
         }
       },
       [knowledgeBase, setKnowledgeBase]
@@ -1889,7 +1883,6 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
                     selectedProviderId={model?.provider}
                     selectedModelId={model?.modelId}
                     modelDisabledCheck={modelDisabledCheck}
-                    pageName={JK_PAGE_NAMES.CHAT_PAGE}
                     position="top-end"
                     transitionProps={{
                       transition: 'fade-up',

@@ -7,7 +7,6 @@ import LinkTargetBlank from '@/components/common/Link'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
 import { useCopied } from '@/hooks/useCopied'
 import { navigateToSettings } from '@/modals/Settings'
-import { trackingEvent } from '@/packages/event'
 import { buildChatboxUrl } from '@/packages/remote'
 import platform from '@/platform'
 import * as settingActions from '@/stores/settingActions'
@@ -99,9 +98,6 @@ export function ImageGenerationErrorTips({ record, onRetry, isRetrying }: ImageG
                           `/redirect_app/view_more_plans/${settingActions.getLanguage()}?utm_source=app&utm_content=image_creator_upgrade_required`
                         )
                       )
-                      trackingEvent('click_view_more_plans_button_from_image_creator', {
-                        event_category: 'user',
-                      })
                     }}
                   />
                 ),

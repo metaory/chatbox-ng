@@ -34,11 +34,11 @@ electron-builder 假定 `node_modules` 为扁平结构（flat `node_modules`）�
 - `asarUnpack` 的 glob 匹配可能失效
 - postinstall 脚本中的路径假设会被打破
 
-`.npmrc` 中的关键配置：
+`pnpm-workspace.yaml` 中的关键配置：
 
-```ini
-node-linker=hoisted
-auto-install-peers=true
+```yaml
+nodeLinker: hoisted
+autoInstallPeers: true
 ```
 
 此外需要 `pnpm-workspace.yaml` 声明 workspace，以支撑根目录与 `release/app` 的两包架构。
@@ -128,7 +128,7 @@ electron-builder 的 hook 执行顺序为：
 beforePack → installAppDependencies → copyAppFiles/asar → afterPack → signApp → afterSign
 ```
 
-`afterPack` 是唯一安全的 patch 时机——文件已在 bundle 中（不会被覆盖），签名尚未开始（不会破坏 seal）。配置在 `electron-builder.yml` 的 `afterPack: .erb/scripts/patch-libsql.cjs`。
+`afterPack` 是唯一安全的 patch 时机——文件已在 bundle 中（不会被覆盖），签名尚未开始（不会破坏 seal）。配置在 `electron-builder.yml` 的 `afterPack: scripts/after-pack.cjs`。
 
 最终方案还包含 CI 签名校验关卡：macOS job 在发布前执行 `codesign --verify --deep --strict --verbose=4`，防止类似问题再次逃逸。
 

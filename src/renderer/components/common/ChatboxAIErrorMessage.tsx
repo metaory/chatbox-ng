@@ -4,7 +4,6 @@ import type { FC } from 'react'
 import { Trans } from 'react-i18next'
 import LinkTargetBlank from '@/components/common/Link'
 import { navigateToSettings } from '@/modals/Settings'
-import { trackingEvent } from '@/packages/event'
 import { buildChatboxUrl } from '@/packages/remote'
 import platform from '@/platform'
 import * as settingActions from '@/stores/settingActions'
@@ -71,9 +70,6 @@ export const ChatboxAIErrorMessage: FC<ChatboxAIErrorMessageProps> = ({
                   `/redirect_app/view_more_plans/${settingActions.getLanguage()}?utm_source=app&utm_content=${trackingSource}`
                 )
               )
-              trackingEvent('click_view_more_plans_button_from_upgrade_error_tips', {
-                event_category: 'user',
-              })
             }}
           />
         ),

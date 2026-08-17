@@ -7,7 +7,6 @@ import {
   normalizeWindowsAbsolutePath,
 } from '@shared/utils/windows-path'
 import { jsonSchema, type ToolSet } from 'ai'
-import { trackAgentModeFullAccessBypass } from '@/analytics/agent-mode'
 import { requestFileMutationApproval } from '@/packages/user-exec-approval'
 import platform from '@/platform'
 import { asRecord, contentOrErrorText, numberField, stringField, toTextModelOutput } from './model-output'
@@ -166,7 +165,7 @@ function normalizeAbsolutePosixPath(filePath: string): string {
   return `/${out.join('/')}`
 }
 
-// Mirrors getOS() === 'Windows' without pulling navigator.ts (and its Sentry dep) into
+// Mirrors getOS() === 'Windows' without pulling navigator.ts into
 // this hot path. Read at call time so tests can stub navigator.
 function isWindowsRenderer(): boolean {
   return typeof navigator !== 'undefined' && (navigator.userAgent ?? '').includes('Windows')
@@ -466,7 +465,6 @@ export function buildFilesystemTools(context: FilesystemContext): { tools: ToolS
       // Track when Full Access skipped an approval, regardless of whether the
       // write later succeeds — failed bypassed attempts are the audit signal.
       if (fullAccessBypassedApproval) {
-        trackAgentModeFullAccessBypass({ tool: 'write_file' })
       }
       const result = await platform.fsWrite({ filePath: writeInput.file_path, content: writeInput.content })
       return result.success ? { success: true, file_path: writeInput.file_path } : { error: result.error }
@@ -526,7 +524,6 @@ export function buildFilesystemTools(context: FilesystemContext): { tools: ToolS
         ))
       if (!approved) return { success: false, error: 'File edit denied by user.' }
       if (fullAccessBypassedApproval) {
-        trackAgentModeFullAccessBypass({ tool: 'edit_file' })
       }
       const result = await platform.fsEdit({
         filePath: editInput.file_path,

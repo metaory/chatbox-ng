@@ -3,7 +3,6 @@ import { embedMany } from 'ai'
 import { ipcMain } from 'electron'
 import { rerank } from '../../shared/models/rerank'
 import { SESSION_ATTACHMENT_RAG_LOG_PREFIX } from '../../shared/session-attachment-rag/logging'
-import { sentry } from '../adapters/sentry'
 import { getLogger } from '../util'
 import {
   cleanupOrphanAttachments,
@@ -249,13 +248,6 @@ export function registerSessionAttachmentRagHandlers() {
           }
         } catch (error) {
           log.error(`${SESSION_ATTACHMENT_RAG_LOG_PREFIX} [IPC] Failed to rerank session attachment query`, error)
-          sentry.withScope((scope) => {
-            scope.setTag('component', 'session-attachment-rag')
-            scope.setTag('operation', 'rerank_query')
-            scope.setExtra('querySummary', summarizeQuery(params.query))
-            scope.setExtra('rerankModel', plan.rerank.model)
-            sentry.captureException(error)
-          })
         }
       }
 

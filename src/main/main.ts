@@ -28,8 +28,6 @@ import path from 'path'
 import * as sourceMapSupport from 'source-map-support'
 import type { ShortcutSetting } from 'src/shared/types'
 import { KNOWN_LOCAL_PARSER_ERROR_CODES } from '../shared/file-parse-errors'
-import { flushSentry, sentry } from './adapters/sentry'
-import * as analystic from './analystic-node'
 import { AppUpdater } from './app-updater'
 import * as autoLauncher from './autoLauncher'
 import { handleDeepLink } from './deeplinks'
@@ -54,30 +52,6 @@ import {
 } from './store-node'
 import * as windowState from './window_state'
 
-function reportMainProcessError(
-  error: unknown,
-  context: {
-    domain: string
-    extras?: Record<string, unknown>
-    handled: boolean
-    operation: string
-    priority: 'critical' | 'high' | 'normal'
-  }
-) {
-  sentry.withScope((scope) => {
-    scope.setTag('component', context.domain)
-    scope.setTag('operation', context.operation)
-    scope.setTag('error_domain', context.domain)
-    scope.setTag('error_operation', context.operation)
-    scope.setTag('error_handled', String(context.handled))
-    scope.setTag('error_priority', context.priority)
-    for (const [key, value] of Object.entries(context.extras ?? {})) {
-      scope.setExtra(key, value)
-    }
-    sentry.captureException(error instanceof Error ? error : new Error(String(error)))
-  })
-}
-
 let handlingFatalMainProcessError = false
 
 process.on('uncaughtException', (error) => {
@@ -85,13 +59,8 @@ process.on('uncaughtException', (error) => {
     process.exit(1)
   }
   handlingFatalMainProcessError = true
-  reportMainProcessError(error, {
-    domain: 'application',
-    handled: false,
-    operation: 'uncaught_exception',
-    priority: 'critical',
-  })
-  void flushSentry(2000).finally(() => process.exit(1))
+  log.error('[application/uncaught_exception]', error)
+  process.exit(1)
 })
 
 const knowledgeBaseInitPromise = import('./knowledge-base/index.js')
@@ -283,10 +252,6 @@ function createTray() {
   const locale = new Locale()
   let iconPath = getAssetPath('icon.png')
   if (process.platform === 'darwin') {
-    // 生成 iconTemplate.png 的命令
-    // gm convert -background none ./iconTemplateRawPreview.png -resize 130% -gravity center -extent 512x512 iconTemplateRaw.png
-    // gm convert ./iconTemplateRaw.png -colorspace gray -negate -threshold 50% -resize 16x16 -units PixelsPerInch -density 72 iconTemplate.png
-    // gm convert ./iconTemplateRaw.png -colorspace gray -negate -threshold 50% -resize 64x64 -units PixelsPerInch -density 144 iconTemplate@2x.png
     iconPath = getAssetPath('iconTemplate.png')
   } else if (process.platform === 'win32') {
     iconPath = getAssetPath('icon.ico')
@@ -397,16 +362,7 @@ async function createWindow() {
   })
 
   mainWindow.webContents.on('render-process-gone', (_event, details) => {
-    reportMainProcessError(new Error(`Renderer process exited unexpectedly: ${details.reason}`), {
-      domain: 'renderer-process',
-      extras: {
-        exitCode: details.exitCode,
-        reason: details.reason,
-      },
-      handled: false,
-      operation: 'render_process_gone',
-      priority: 'critical',
-    })
+    log.error('[renderer-process/render_process_gone]', details)
   })
 
   // Load the local URL for development or the local
@@ -641,12 +597,6 @@ if (quitForInstallRequested) {
     })
     .catch((err: unknown) => {
       log.error('App initialization failed:', err)
-      reportMainProcessError(err, {
-        domain: 'application',
-        handled: false,
-        operation: 'app_initialization',
-        priority: 'critical',
-      })
     })
 }
 
@@ -770,13 +720,6 @@ ipcMain.handle('ensureProxy', (event, json) => {
 ipcMain.handle('relaunch', () => {
   app.relaunch()
   app.quit()
-})
-
-ipcMain.handle('analysticTrackingEvent', (event, dataJson) => {
-  const data = JSON.parse(dataJson)
-  analystic.event(data.name, data.params).catch((e) => {
-    log.error('analystic_tracking_event', e)
-  })
 })
 
 ipcMain.handle('getConfig', (event) => {
@@ -908,7 +851,7 @@ ipcMain.handle('fs:list', async (_event, params: { dirPath: string }) => {
         const type = entry.isDirectory() ? 'dir' : entry.isFile() ? 'file' : 'other'
         const size = stat?.size ?? 0
         return `${type}\t${size}\t${entry.name}`
-      })
+      }),
     )
     const suffix =
       entries.length > FS_LIST_MAX_ENTRIES ? `\n... ${entries.length - FS_LIST_MAX_ENTRIES} more entries` : ''
@@ -927,7 +870,7 @@ ipcMain.handle(
       regex: params.regex,
       include: params.include,
     })
-  }
+  },
 )
 
 ipcMain.handle('fs:write', async (_event, params: { filePath: string; content: string }) => {
@@ -950,7 +893,7 @@ ipcMain.handle(
       search?: string
       replace?: string
       edits?: Array<{ search: string; replace: string }>
-    }
+    },
   ) => {
     try {
       const edits = params.edits?.length
@@ -979,7 +922,7 @@ ipcMain.handle(
     } catch (error) {
       return { success: false, error: error instanceof Error ? error.message : String(error) }
     }
-  }
+  },
 )
 
 ipcMain.handle('parseUrl', async (event, url: string) => {

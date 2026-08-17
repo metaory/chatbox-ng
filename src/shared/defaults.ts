@@ -90,8 +90,6 @@ export function settings(): Settings {
 
     defaultPrompt: getDefaultPrompt(),
 
-    allowReportingAndTracking: true,
-
     hasExpiredLicense: false,
     chatboxAIDesktopPromptDismissed: false,
 

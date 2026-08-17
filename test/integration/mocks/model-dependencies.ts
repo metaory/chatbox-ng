@@ -2,12 +2,8 @@ import { v4 as uuidv4 } from 'uuid'
 import type { Platform } from '../../../src/renderer/platform/interfaces'
 import { createAfetch } from '../../../src/shared/request/request'
 import type { ModelDependencies } from '../../../src/shared/types/adapters'
-import type { SentryAdapter } from '../../../src/shared/utils/sentry_adapter'
 
-export async function createMockModelDependencies(
-  platform: Platform,
-  sentry: SentryAdapter
-): Promise<ModelDependencies> {
+export async function createMockModelDependencies(platform: Platform): Promise<ModelDependencies> {
   const platformInfo = {
     type: platform.type,
     platform: await platform.getPlatform(),
@@ -17,7 +13,6 @@ export async function createMockModelDependencies(
 
   const afetch = createAfetch(platformInfo)
   const testPlatform = platform
-  const testSentry = sentry
 
   return {
     storage: {
@@ -49,7 +44,6 @@ export async function createMockModelDependencies(
         return afetch(options.url, init, { retry: options.retry })
       },
     },
-    sentry: testSentry,
     getRemoteConfig: () => ({}),
   }
 }

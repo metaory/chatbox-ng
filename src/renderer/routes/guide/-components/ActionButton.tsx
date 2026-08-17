@@ -7,8 +7,6 @@ import { IconCirclePlus, IconExternalLink, IconId, IconInfoCircle, IconSettings 
 import { useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { trackJkClickEvent } from '@/analytics/jk'
-import { JK_EVENTS, JK_PAGE_NAMES } from '@/analytics/jk-events'
 import { ScalableIcon } from '@/components/common/ScalableIcon'
 import { navigateToSettings } from '@/modals/Settings'
 import { openLinkWithAuth } from '@/packages/openLinkWithAuth'
@@ -46,7 +44,7 @@ export function LoginButton({ onLoginSuccess }: LoginButtonProps) {
     async (licenseKey: string) => {
       setActivatingLicense(true)
       try {
-        const result = await premiumActions.activate(licenseKey, 'login', { pageName: JK_PAGE_NAMES.HELP_PAGE })
+        const result = await premiumActions.activate(licenseKey, 'login')
         if (result.valid) {
           setHasSucceeded(true)
           onLoginSuccess()
@@ -115,9 +113,6 @@ export function LoginButton({ onLoginSuccess }: LoginButtonProps) {
   }, [selectedLicenseKey, activateLicense])
 
   const trackLoginButtonClick = useCallback(() => {
-    trackJkClickEvent(JK_EVENTS.LOGIN_BUTTON_CLICK, {
-      pageName: JK_PAGE_NAMES.HELP_PAGE,
-    })
   }, [])
 
   return (
@@ -418,10 +413,6 @@ export function FreeTrialLink({ onAfterClick }: FreeTrialLinkProps = {}) {
 
     pendingExternalActionRef.current = true
     setPendingExternalAction(true)
-    trackJkClickEvent(JK_EVENTS.FREE_LICENSE_CLAIM_CLICK, {
-      pageName: JK_PAGE_NAMES.HELP_PAGE,
-      content: 'onboarding_guide',
-    })
     try {
       await openLinkWithAuth(
         buildChatboxUrl(

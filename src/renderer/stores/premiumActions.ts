@@ -1,11 +1,8 @@
 import omit from 'lodash/omit'
 import { FetchError } from 'ofetch'
 import { useEffect } from 'react'
-import { trackJkClickEvent } from '@/analytics/jk'
-import { JK_EVENTS, JK_PAGE_NAMES } from '@/analytics/jk-events'
 import { getLogger } from '@/lib/utils'
 import { mcpController } from '@/packages/mcp/controller'
-import { reportError } from '@/utils/sentry'
 import * as remote from '../packages/remote'
 import platform from '../platform'
 import { authInfoStore } from './authInfoStore'
@@ -96,11 +93,7 @@ export function useAutoValidate(): boolean {
           clearValidatedData()
           log.info(`clear license validated data due to respones status: ${err.status}`)
         } else if (!(err instanceof FetchError)) {
-          // Expected API/network failures keep the current validation state and stay out of Sentry.
-          reportError(err, {
-            domain: 'subscription',
-            operation: 'validate_license',
-          })
+          // Expected API/network failures keep the current validation state.
         }
       }
     })()
@@ -158,14 +151,8 @@ export async function deactivate(clearLoginState = true) {
  * @param method 激活方式：'login' 表示通过登录激活，'manual' 表示手动输入license key激活
  * @returns
  */
-export async function activate(
-  licenseKey: string,
-  method: 'login' | 'manual' = 'manual',
-  options?: { pageName?: string }
-) {
+export async function activate(licenseKey: string, method: 'login' | 'manual' = 'manual') {
   console.log('Enter acticate')
-  const pageName = options?.pageName ?? JK_PAGE_NAMES.SETTING_PAGE
-  const shouldTrackKeyVerifyEvent = method !== 'login'
   const settings = settingsStore.getState()
 
   // 互斥逻辑：manual方式激活时，清除login状态
@@ -187,14 +174,6 @@ export async function activate(
     instanceName: await platform.getInstanceName(),
   })
   if (!result.valid) {
-    if (shouldTrackKeyVerifyEvent) {
-      trackJkClickEvent(JK_EVENTS.KEY_VERIFY_FAILED, {
-        pageName,
-        content: result.error || 'activation_failed',
-        contentType: 'Chatbox AI',
-        props: { content_add_info: { content: 'Chatbox AI' } },
-      })
-    }
     return result
   }
   // 获取 license 详情
@@ -210,14 +189,6 @@ export async function activate(
       settingsStore.setState({
         licenseDetail: licenseDetailResponse.data,
         licensePlanName: licenseDetailResponse.data.name,
-      })
-    }
-    if (shouldTrackKeyVerifyEvent) {
-      trackJkClickEvent(JK_EVENTS.KEY_VERIFY_FAILED, {
-        pageName,
-        content: error,
-        contentType: 'Chatbox AI',
-        props: { content_add_info: { content: 'Chatbox AI' } },
       })
     }
     return {
@@ -241,14 +212,6 @@ export async function activate(
     ...(method === 'manual' ? { memorizedManualLicenseKey: licenseKey } : {}),
   }))
   remote.invalidateSessionRagConfigCache()
-  if (shouldTrackKeyVerifyEvent) {
-    trackJkClickEvent(JK_EVENTS.KEY_VERIFY_SUCCESS, {
-      pageName,
-      content: licenseKey,
-      contentType: 'Chatbox AI',
-      props: { content_add_info: { content: 'Chatbox AI' } },
-    })
-  }
   log.info(`✅ Activated license key: ${licenseKey.slice(0, 8)}**** and cleared default RAG fallback models`)
   return result
 }

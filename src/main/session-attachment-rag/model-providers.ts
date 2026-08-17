@@ -3,7 +3,6 @@ import { CohereClient } from 'cohere-ai'
 import { getProviderSettings } from '../../shared/models'
 import { getChatboxAPIOrigin } from '../../shared/request/chatboxai_pool'
 import { parseKnowledgeBaseModelString } from '../../shared/utils/knowledge-base-model-parser'
-import { sentry } from '../adapters/sentry'
 import { cache } from '../cache'
 import { createEmbeddingProviderFromModelString } from '../knowledge-base/model-providers'
 import { getDefaultEmbeddingModelString, getDefaultRerankModelString } from '../rag-default-models'
@@ -42,12 +41,6 @@ export async function getSessionAttachmentEmbeddingProviderWithResolution(): Pro
     }
   } catch (error) {
     log.error(`[MODEL] Failed to resolve session attachment embedding provider: ${embeddingModel}`, error)
-    sentry.withScope((scope) => {
-      scope.setTag('component', 'session-attachment-rag-model')
-      scope.setTag('operation', 'get_embedding_provider')
-      scope.setExtra('embeddingModel', embeddingModel)
-      sentry.captureException(error)
-    })
     throw error
   }
 }
@@ -105,12 +98,6 @@ export async function getSessionAttachmentRerankProvider(modelString?: string | 
         return { client, modelId }
       } catch (error) {
         log.error(`[MODEL] Failed to resolve session attachment rerank provider: ${modelString}`, error)
-        sentry.withScope((scope) => {
-          scope.setTag('component', 'session-attachment-rag-model')
-          scope.setTag('operation', 'get_rerank_provider')
-          scope.setExtra('rerankModel', modelString)
-          sentry.captureException(error)
-        })
         throw error
       }
     },

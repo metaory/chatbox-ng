@@ -35,7 +35,6 @@ import type {
 import type { ModelDependencies } from '../types/adapters'
 import { getReasoningControlCapabilities, stripReasoningProviderOptions } from '../utils/reasoning-control'
 import { normalizeCompletedResponse } from './completed-response-normalizer'
-import { isExpectedGenerationError } from './error-classification'
 import { ApiError, ChatboxAIAPIError, MidStreamApiError } from './errors'
 import { wrapOpenAICompatibleNonStreamingModel } from './openai-compatible-non-streaming'
 import { stopWhenPersistentToolCallPause } from './persistent-tool-call-pause'
@@ -265,23 +264,6 @@ export default abstract class AbstractAISDKModel implements ModelInterface {
         }
       }
 
-      // Provider/API/network failures are expected user-facing outcomes. Report only
-      // unexpected client/runtime failures, and never attach prompts or request options.
-      if (!isExpectedGenerationError(e)) {
-        const providerId = this.options.model.providerId
-        const providerTag = providerId?.startsWith('custom-provider-') ? 'custom' : providerId || 'unknown'
-        this.dependencies.sentry.withScope((scope) => {
-          scope.setTag('component', 'ai-provider')
-          scope.setTag('operation', 'chat_completion')
-          scope.setTag('error_domain', 'ai-provider')
-          scope.setTag('error_operation', 'chat_completion')
-          scope.setTag('error_priority', 'high')
-          scope.setTag('error_handled', 'true')
-          scope.setTag('provider_name', providerTag)
-          scope.setExtra('messageCount', messages.length)
-          this.dependencies.sentry.captureException(e)
-        })
-      }
       throw e
     }
   }

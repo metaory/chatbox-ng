@@ -10,16 +10,6 @@ type RescueState = 'idle' | 'saving' | 'unavailable'
 // save dialog without picking a destination (see ToolCallPartUI for the same contract).
 const SAVE_DIALOG_CANCELLED = 'Save dialog cancelled'
 
-// Chips re-mount constantly (streaming re-renders, list virtualization), so dedupe the
-// "shown" telemetry per session+path for the lifetime of the app run.
-const shownTracked = new Set<string>()
-
-function trackDeadLink(action: 'shown' | 'rescue_success' | 'rescue_failed') {
-  // Dynamic import keeps this presentation component (and the Markdown SSR path) free of
-  // the analytics/settings module graph.
-  void import('@/utils/track').then(({ trackEvent }) => trackEvent('sandbox_dead_link', { action })).catch(() => {})
-}
-
 /**
  * Inline replacement for hallucinated sandbox "download links" (sandbox:/mnt/data/...).
  * The href is not a real URL, so instead of a dead anchor this chip tries to rescue the
@@ -50,13 +40,6 @@ export const SandboxFileLink: FC<{
     }
   }, [])
 
-  useEffect(() => {
-    const key = `${sessionId ?? ''}:${target.rawPath}`
-    if (shownTracked.has(key)) return
-    shownTracked.add(key)
-    trackDeadLink('shown')
-  }, [sessionId, target.rawPath])
-
   const handleClick = useCallback(async () => {
     if (rescueInFlightRef.current) return
     rescueInFlightRef.current = true
@@ -82,20 +65,17 @@ export const SandboxFileLink: FC<{
           // export failure (e.g. unwritable destination) must not report success: keep
           // the chip clickable and surface the error.
           if (exported.success || exported.error === SAVE_DIALOG_CANCELLED) {
-            trackDeadLink('rescue_success')
-          } else {
-            trackDeadLink('rescue_failed')
-            if (mountedRef.current) setExportError(exported.error || t('Export failed'))
+            safeSetState('idle')
+            return
           }
+          if (mountedRef.current) setExportError(exported.error || t('Export failed'))
           safeSetState('idle')
           return
         }
       }
-      trackDeadLink('rescue_failed')
       safeSetState('unavailable')
     } catch (err) {
       console.error('Failed to rescue sandbox file link:', err)
-      trackDeadLink('rescue_failed')
       safeSetState('unavailable')
     } finally {
       rescueInFlightRef.current = false

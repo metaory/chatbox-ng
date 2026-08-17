@@ -144,10 +144,6 @@ vi.mock('@/utils/session-utils', () => ({
   sortSessions: (sessions: unknown) => sessions,
 }))
 
-vi.mock('@/utils/track', () => ({
-  trackEvent: vi.fn(),
-}))
-
 vi.mock('@/hooks/dom', () => ({
   focusMessageInput: vi.fn(),
 }))

@@ -1,7 +1,6 @@
 import { ipcMain } from 'electron'
 import type { FileMeta } from 'src/shared/types'
 import { KNOWLEDGE_BASE_MAX_FILE_SIZE } from '../../shared/knowledge-base'
-import { sentry } from '../adapters/sentry'
 import { getLogger } from '../util'
 import { getDatabase, getVectorStore, parseSQLiteTimestamp, withTransaction } from './db'
 import { isExpectedKnowledgeBaseFileStateError } from './error-reporting'
@@ -29,15 +28,6 @@ function reportKnowledgeBaseFileActionError(
   }
 
   log.error(context.logMessage, error)
-  sentry.withScope((scope) => {
-    scope.setTag('component', 'knowledge-base-ipc')
-    scope.setTag('operation', context.operation)
-    scope.setExtra('fileId', context.fileId)
-    for (const [key, value] of Object.entries(context.extras ?? {})) {
-      scope.setExtra(key, value)
-    }
-    sentry.captureException(error)
-  })
 }
 
 // Store active MinerU parsing tasks for cancellation support
@@ -64,11 +54,6 @@ export function registerKnowledgeBaseHandlers() {
       }))
     } catch (error: unknown) {
       log.error('ipcMain: kb:list failed', error)
-      sentry.withScope((scope) => {
-        scope.setTag('component', 'knowledge-base-ipc')
-        scope.setTag('operation', 'kb_list')
-        sentry.captureException(error)
-      })
       throw error
     }
   })
@@ -129,16 +114,6 @@ export function registerKnowledgeBaseHandlers() {
         return { id, name: name.trim() }
       } catch (error: unknown) {
         log.error(`ipcMain: kb:create failed for name=${name}`, error)
-        sentry.withScope((scope) => {
-          scope.setTag('component', 'knowledge-base-ipc')
-          scope.setTag('operation', 'kb_create')
-          scope.setExtra('name', name)
-          scope.setExtra('embeddingModel', embeddingModel)
-          scope.setExtra('rerankModel', rerankModel)
-          scope.setExtra('visionModel', visionModel)
-          scope.setExtra('documentParser', documentParser?.type)
-          sentry.captureException(error)
-        })
         throw error
       }
     }
@@ -190,15 +165,6 @@ export function registerKnowledgeBaseHandlers() {
         return rs.rowsAffected
       } catch (error: unknown) {
         log.error(`ipcMain: kb:update failed for id=${id}`, error)
-        sentry.withScope((scope) => {
-          scope.setTag('component', 'knowledge-base-ipc')
-          scope.setTag('operation', 'kb_update')
-          scope.setExtra('kbId', id)
-          scope.setExtra('name', name)
-          scope.setExtra('rerankModel', rerankModel)
-          scope.setExtra('visionModel', visionModel)
-          sentry.captureException(error)
-        })
         throw error
       }
     }
@@ -244,12 +210,6 @@ export function registerKnowledgeBaseHandlers() {
       return { success: true }
     } catch (error: unknown) {
       log.error(`ipcMain: kb:delete failed for kbId=${kbId}`, error)
-      sentry.withScope((scope) => {
-        scope.setTag('component', 'knowledge-base-ipc')
-        scope.setTag('operation', 'kb_delete')
-        scope.setExtra('kbId', kbId)
-        sentry.captureException(error)
-      })
       return { success: false, error: error instanceof Error ? error.message : String(error) }
     }
   })
@@ -285,12 +245,6 @@ export function registerKnowledgeBaseHandlers() {
       }))
     } catch (error: unknown) {
       log.error(`ipcMain: kb:file:list failed for kbId=${kbId}`, error)
-      sentry.withScope((scope) => {
-        scope.setTag('component', 'knowledge-base-ipc')
-        scope.setTag('operation', 'file_list')
-        scope.setExtra('kbId', kbId)
-        sentry.captureException(error)
-      })
       throw error
     }
   })
@@ -311,12 +265,6 @@ export function registerKnowledgeBaseHandlers() {
       return rs.rows[0].count as number
     } catch (error: unknown) {
       log.error(`ipcMain: kb:file:count failed for kbId=${kbId}`, error)
-      sentry.withScope((scope) => {
-        scope.setTag('component', 'knowledge-base-ipc')
-        scope.setTag('operation', 'file_count')
-        scope.setExtra('kbId', kbId)
-        sentry.captureException(error)
-      })
       throw error
     }
   })
@@ -354,14 +302,6 @@ export function registerKnowledgeBaseHandlers() {
       }))
     } catch (error: unknown) {
       log.error(`ipcMain: kb:file:list-paginated failed for kbId=${kbId}`, error)
-      sentry.withScope((scope) => {
-        scope.setTag('component', 'knowledge-base-ipc')
-        scope.setTag('operation', 'file_list_paginated')
-        scope.setExtra('kbId', kbId)
-        scope.setExtra('offset', offset)
-        scope.setExtra('limit', limit)
-        sentry.captureException(error)
-      })
       throw error
     }
   })
@@ -400,13 +340,6 @@ export function registerKnowledgeBaseHandlers() {
       }))
     } catch (error: unknown) {
       log.error(`ipcMain: kb:file:get-metas failed for kbId=${kbId}`, error)
-      sentry.withScope((scope) => {
-        scope.setTag('component', 'knowledge-base-ipc')
-        scope.setTag('operation', 'file_get_metas')
-        scope.setExtra('kbId', kbId)
-        scope.setExtra('fileIdsCount', fileIds?.length || 0)
-        sentry.captureException(error)
-      })
       throw error
     }
   })
@@ -430,13 +363,6 @@ export function registerKnowledgeBaseHandlers() {
         return await readChunks(kbId, chunks)
       } catch (error: unknown) {
         log.error(`ipcMain: kb:file:read-chunks failed for kbId=${kbId}`, error)
-        sentry.withScope((scope) => {
-          scope.setTag('component', 'knowledge-base-ipc')
-          scope.setTag('operation', 'file_read_chunks')
-          scope.setExtra('kbId', kbId)
-          scope.setExtra('chunksCount', chunks?.length || 0)
-          sentry.captureException(error)
-        })
         throw error
       }
     }
@@ -484,15 +410,6 @@ export function registerKnowledgeBaseHandlers() {
       }
     } catch (error: unknown) {
       log.error(`ipcMain: kb:file:upload failed for kbId=${kbId}, filename=${file?.name}`, error)
-      sentry.withScope((scope) => {
-        scope.setTag('component', 'knowledge-base-ipc')
-        scope.setTag('operation', 'file_upload')
-        scope.setExtra('kbId', kbId)
-        scope.setExtra('filename', file?.name)
-        scope.setExtra('fileSize', file?.size)
-        scope.setExtra('mimeType', file?.type)
-        sentry.captureException(error)
-      })
       throw error
     }
   })
@@ -515,13 +432,6 @@ export function registerKnowledgeBaseHandlers() {
       return await searchKnowledgeBase(kbId, query.trim())
     } catch (error: unknown) {
       log.error(`ipcMain: kb:search failed for kbId=${kbId}, query=${query}`, error)
-      sentry.withScope((scope) => {
-        scope.setTag('component', 'knowledge-base-ipc')
-        scope.setTag('operation', 'search')
-        scope.setExtra('kbId', kbId)
-        scope.setExtra('queryLength', query?.length || 0)
-        sentry.captureException(error)
-      })
       throw error
     }
   })
@@ -705,13 +615,6 @@ export function registerKnowledgeBaseHandlers() {
           } catch (vectorDeleteErr: unknown) {
             log.error(`[IPC] Failed to delete vectors: fileId=${fileId}`, vectorDeleteErr)
             // Continue with file record deletion even if vector deletion fails
-            sentry.withScope((scope) => {
-              scope.setTag('component', 'knowledge-base-ipc')
-              scope.setTag('operation', 'file_delete_vectors')
-              scope.setExtra('fileId', fileId)
-              scope.setExtra('indexName', indexName)
-              sentry.captureException(vectorDeleteErr)
-            })
           }
 
           // Delete file record
@@ -722,9 +625,6 @@ export function registerKnowledgeBaseHandlers() {
           log.info(`[IPC] Deleted file record: fileId=${fileId}, affected rows=${res.rowsAffected ?? 'unknown'}`)
 
           return { success: true }
-        },
-        {
-          shouldReportError: (error) => !isExpectedKnowledgeBaseFileStateError(error),
         }
       )
     } catch (error: unknown) {
@@ -813,13 +713,6 @@ export function registerKnowledgeBaseHandlers() {
         }
 
         log.error('ipcMain: parser:parse-file-with-mineru failed', error)
-        sentry.withScope((scope) => {
-          scope.setTag('component', 'knowledge-base-ipc')
-          scope.setTag('operation', 'parse_file_with_mineru')
-          scope.setExtra('filename', params?.filename)
-          scope.setExtra('mimeType', params?.mimeType)
-          sentry.captureException(error)
-        })
         return { success: false, error: error instanceof Error ? error.message : String(error) }
       }
     }

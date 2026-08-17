@@ -65,7 +65,6 @@ vi.mock('./utils', () => ({
   getSessionWebBrowsing: vi.fn(),
   handleGenerationError: vi.fn(),
   initializeTargetMessage: initializeTargetMessageMock,
-  trackGenerateEvent: vi.fn(),
 }))
 vi.mock('uuid', () => ({ v4: () => 'new-thread-id' }))
 

@@ -5,7 +5,6 @@ import { IconChevronDown } from '@tabler/icons-react'
 import clsx from 'clsx'
 import type { Dispatch, SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
-import { trackUpgradeModelClick } from '@/analytics/model-selection'
 import type { ChatboxAIModelList } from '@/packages/remote'
 import platform from '@/platform'
 import { ScalableIcon } from '../common/ScalableIcon'
@@ -52,7 +51,6 @@ export function ChatboxProviderRows({
   onDesktopDetailOpen,
   onDesktopDetailClose,
   onDisabledSelect,
-  pageName,
 }: {
   catalog: ChatboxAIModelList
   provider: { id: string; name: string }
@@ -84,7 +82,6 @@ export function ChatboxProviderRows({
   ) => void
   onDesktopDetailClose: () => void
   onDisabledSelect: (modelId: string) => void
-  pageName?: string
 }) {
   const { t } = useTranslation()
   const selectedProviderMatches =
@@ -191,9 +188,6 @@ export function ChatboxProviderRows({
                 c="chatbox-brand"
                 onClick={(event) => {
                   event.stopPropagation()
-                  if (pageName) {
-                    trackUpgradeModelClick(pageName, 'list_model', null)
-                  }
                   platform.openLink(catalog.links?.upgrade || FALLBACK_UPGRADE_URL)
                 }}
               >

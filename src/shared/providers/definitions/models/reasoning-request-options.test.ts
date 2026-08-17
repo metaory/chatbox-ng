@@ -2,7 +2,6 @@ import type { LanguageModelV3CallOptions } from '@ai-sdk/provider'
 import type { CallChatCompletionOptions } from '@shared/models/types'
 import type { ProviderModelInfo } from '@shared/types'
 import type { ModelDependencies } from '@shared/types/adapters'
-import type { SentryScope } from '@shared/utils/sentry_adapter'
 import { describe, expect, it, vi } from 'vitest'
 import Claude from './claude'
 import CustomOpenAI from './custom-openai'
@@ -56,15 +55,6 @@ function createDependencies(): ModelDependencies {
     storage: {
       saveImage: vi.fn(),
       getImage: vi.fn(),
-    },
-    sentry: {
-      captureException: vi.fn(),
-      withScope: vi.fn((callback: (scope: SentryScope) => void) =>
-        callback({
-          setTag: vi.fn(),
-          setExtra: vi.fn(),
-        })
-      ),
     },
     getRemoteConfig: vi.fn(),
     platformType: 'desktop',

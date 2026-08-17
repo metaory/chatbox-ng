@@ -70,11 +70,6 @@ vi.mock('@/router', () => ({
   },
 }))
 
-// Mock tracking
-vi.mock('@/utils/track', () => ({
-  trackEvent: vi.fn(),
-}))
-
 // 导出 TestPlatform 实例（由 platform/index.ts 自动创建）
 export function getTestPlatform(): TestPlatform {
   return platform as TestPlatform

@@ -3,7 +3,6 @@ import type { CallSettings } from '@shared/models/abstract-ai-sdk'
 import type { CallChatCompletionOptions } from '@shared/models/types'
 import { type ChatboxAILicenseDetail, type ProviderModelInfo, ProviderModelInfoSchema } from '@shared/types'
 import type { ModelDependencies } from '@shared/types/adapters'
-import type { SentryScope } from '@shared/utils/sentry_adapter'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import ChatboxAI from './chatboxai'
 
@@ -56,15 +55,6 @@ function createDependencies(): ModelDependencies {
     storage: {
       saveImage: vi.fn(),
       getImage: vi.fn(),
-    },
-    sentry: {
-      captureException: vi.fn(),
-      withScope: vi.fn((callback: (scope: SentryScope) => void) =>
-        callback({
-          setTag: vi.fn(),
-          setExtra: vi.fn(),
-        })
-      ),
     },
     getRemoteConfig: vi.fn(),
     platformType: 'desktop',

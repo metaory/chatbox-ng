@@ -31,12 +31,6 @@ import { Link } from '@tanstack/react-router'
 import { PlusIcon } from 'lucide-react'
 import { type FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  trackAgentModeSelect,
-  trackCodeExecutionClick,
-  trackSmartSwitchingClick,
-  trackWebSearchClick,
-} from '@/analytics/agent-mode'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
 import { useKnowledgeBases } from '@/hooks/knowledge-base'
 import { useMCPServerStatus, useToggleMCPServer } from '@/hooks/mcp'
@@ -216,27 +210,12 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
   const handleModeChange = useCallback(
     (value: AgentModeValue) => {
       if (entry.value === value) return
-      trackAgentModeSelect({
-        sessionId,
-        mode: value === 'on' ? 'work_mode' : 'chat_mode',
-        provider: providerId,
-        model: modelId,
-      })
       void setSessionAgentMode(sessionId, value)
     },
     [entry.value, modelId, providerId, sessionId]
   )
   const handleSmartSwitchingChange = useCallback(
     (enabled: boolean) => {
-      trackSmartSwitchingClick(
-        {
-          sessionId,
-          mode: 'chat_mode',
-          provider: providerId,
-          model: modelId,
-        },
-        enabled
-      )
       setAgentModeSmartSwitchingDefault(enabled)
       void setSessionAgentMode(sessionId, enabled ? 'auto' : 'off')
     },
@@ -312,15 +291,6 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
   const updateAgentFullAccess = useCallback(
     async (enabled: boolean) => {
       if (enabled === agentFullAccess) return
-      trackCodeExecutionClick(
-        {
-          sessionId,
-          mode: 'work_mode',
-          provider: providerId,
-          model: modelId,
-        },
-        enabled ? 'full_access' : 'approval'
-      )
       const value = enabled || undefined
       if (isNewSession) {
         setNewSessionState((prev) => ({ ...prev, agentFullAccess: value }))
@@ -1011,16 +981,6 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
                   onChange={(e) => {
                     e.stopPropagation()
                     const enabled = e.currentTarget.checked
-                    trackWebSearchClick(
-                      {
-                        sessionId,
-                        mode: agentModeUIState.isActive ? 'work_mode' : 'chat_mode',
-                        provider: providerId,
-                        model: modelId,
-                      },
-                      enabled,
-                      webSearchProvider
-                    )
                     onWebBrowsingChange(enabled)
                   }}
                 />

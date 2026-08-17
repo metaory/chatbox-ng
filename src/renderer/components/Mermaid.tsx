@@ -4,8 +4,6 @@ import { ChartBarStacked } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Gallery, Item } from 'react-photoswipe-gallery'
-import { trackJkAutoEvent } from '@/analytics/jk'
-import { JK_EVENTS, JK_PAGE_NAMES } from '@/analytics/jk-events'
 import { cn } from '@/lib/utils'
 import { copyToClipboard } from '@/packages/navigator'
 import * as picUtils from '@/packages/pic_utils'
@@ -42,16 +40,6 @@ export function MessageMermaid(props: { source: string; theme: 'light' | 'dark';
         }
         const reason = getErrorReason(error)
         console.error('Failed to render Mermaid diagram:', error)
-        trackJkAutoEvent(JK_EVENTS.MERMAID_RENDER_FAILED, {
-          pageName: JK_PAGE_NAMES.CHAT_PAGE,
-          content: source,
-          contentType: 'mermaid',
-          props: {
-            content_add_info: {
-              content: reason,
-            },
-          },
-        })
         setRenderError(reason)
       }
     })()

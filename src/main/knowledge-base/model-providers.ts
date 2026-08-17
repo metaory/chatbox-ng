@@ -6,7 +6,6 @@ import { getChatboxAPIOrigin } from '../../shared/request/chatboxai_pool'
 import { SessionSettingsSchema } from '../../shared/types'
 import { parseKnowledgeBaseModelString } from '../../shared/utils/knowledge-base-model-parser'
 import { createModel } from '../adapters'
-import { sentry } from '../adapters/sentry'
 import { cache } from '../cache'
 import { getDefaultEmbeddingModelString, getDefaultRerankModelString } from '../rag-default-models'
 import { getSettings, store } from '../store-node'
@@ -47,13 +46,6 @@ function getMergedSettings(providerId: string, modelId: string) {
     if (!providerEntry) {
       const error = new Error(`provider ${providerId} not set`)
       log.error(`[MODEL] Provider not configured: ${providerId}`)
-      sentry.withScope((scope) => {
-        scope.setTag('component', 'knowledge-base-model')
-        scope.setTag('operation', 'provider_configuration')
-        scope.setExtra('providerId', providerId)
-        scope.setExtra('modelId', modelId)
-        sentry.captureException(error)
-      })
       throw error
     }
 
@@ -64,25 +56,7 @@ function getMergedSettings(providerId: string, modelId: string) {
       modelId,
     })
   } catch (error: unknown) {
-    const errMsg =
-      error instanceof Error
-        ? error.message
-        : typeof error === 'object' &&
-            error !== null &&
-            'message' in error &&
-            typeof (error as Record<string, unknown>).message === 'string'
-          ? ((error as Record<string, unknown>).message as string)
-          : String(error)
     log.error(`[MODEL] Failed to get merged settings for ${providerId}:${modelId}`, error)
-    if (!errMsg.includes('not set')) {
-      sentry.withScope((scope) => {
-        scope.setTag('component', 'knowledge-base-model')
-        scope.setTag('operation', 'get_merged_settings')
-        scope.setExtra('providerId', providerId)
-        scope.setExtra('modelId', modelId)
-        sentry.captureException(error)
-      })
-    }
     throw error
   }
 }
@@ -98,12 +72,6 @@ export async function getEmbeddingProvider(kbId: number) {
         if (!rs.rows[0]) {
           const error = new Error(`Knowledge base ${kbId} not found`)
           log.error(`[MODEL] Knowledge base not found: ${kbId}`)
-          sentry.withScope((scope) => {
-            scope.setTag('component', 'knowledge-base-model')
-            scope.setTag('operation', 'get_embedding_provider')
-            scope.setExtra('kbId', kbId)
-            sentry.captureException(error)
-          })
           throw error
         }
 
@@ -112,13 +80,6 @@ export async function getEmbeddingProvider(kbId: number) {
         if (!embeddingModel) {
           log.error(`kb:embedding:${kbId} embeddingModel not set`)
           const error = new Error('embeddingModel not set')
-          sentry.withScope((scope) => {
-            scope.setTag('component', 'knowledge-base-model')
-            scope.setTag('operation', 'get_embedding_provider')
-            scope.setExtra('kbId', kbId)
-            scope.setExtra('error_type', 'missing_embedding_model')
-            sentry.captureException(error)
-          })
           throw error
         }
 
@@ -126,37 +87,11 @@ export async function getEmbeddingProvider(kbId: number) {
         if (!parsed) {
           const error = new Error(`Invalid embedding model format: ${embeddingModel}`)
           log.error(`[MODEL] Invalid embedding model format: ${embeddingModel}`)
-          sentry.withScope((scope) => {
-            scope.setTag('component', 'knowledge-base-model')
-            scope.setTag('operation', 'get_embedding_provider')
-            scope.setExtra('kbId', kbId)
-            scope.setExtra('embeddingModel', embeddingModel)
-            sentry.captureException(error)
-          })
           throw error
         }
         return createEmbeddingProviderFromModelString(embeddingModel)
       } catch (error: unknown) {
-        const errMsg =
-          error instanceof Error
-            ? error.message
-            : typeof error === 'object' &&
-                error !== null &&
-                'message' in error &&
-                typeof (error as Record<string, unknown>).message === 'string'
-              ? ((error as Record<string, unknown>).message as string)
-              : String(error)
         log.error(`[MODEL] Failed to get embedding provider for kb ${kbId}:`, error)
-
-        // Only report unexpected errors to Sentry (not configuration errors)
-        if (!errMsg.includes('not set') && !errMsg.includes('not found')) {
-          sentry.withScope((scope) => {
-            scope.setTag('component', 'knowledge-base-model')
-            scope.setTag('operation', 'get_embedding_provider')
-            scope.setExtra('kbId', kbId)
-            sentry.captureException(error)
-          })
-        }
         throw error
       }
     },
@@ -190,13 +125,6 @@ export async function getVisionProvider(kbId: number) {
         if (!parsed) {
           const error = new Error(`Invalid vision model format: ${visionModel}`)
           log.error(`[MODEL] Invalid vision model format: ${visionModel}`)
-          sentry.withScope((scope) => {
-            scope.setTag('component', 'knowledge-base-model')
-            scope.setTag('operation', 'get_vision_provider')
-            scope.setExtra('kbId', kbId)
-            scope.setExtra('visionModel', visionModel)
-            sentry.captureException(error)
-          })
           throw error
         }
 
@@ -206,25 +134,7 @@ export async function getVisionProvider(kbId: number) {
 
         return { model }
       } catch (error: unknown) {
-        const errMsg =
-          error instanceof Error
-            ? error.message
-            : typeof error === 'object' &&
-                error !== null &&
-                'message' in error &&
-                typeof (error as Record<string, unknown>).message === 'string'
-              ? ((error as Record<string, unknown>).message as string)
-              : String(error)
         log.error(`[MODEL] Failed to get vision provider for kb ${kbId}:`, error)
-
-        if (!errMsg.includes('not set') && !errMsg.includes('not found')) {
-          sentry.withScope((scope) => {
-            scope.setTag('component', 'knowledge-base-model')
-            scope.setTag('operation', 'get_vision_provider')
-            scope.setExtra('kbId', kbId)
-            sentry.captureException(error)
-          })
-        }
         throw error
       }
     },
@@ -256,13 +166,6 @@ export async function getRerankProvider(kbId: number) {
         if (!parsed) {
           const error = new Error(`Invalid rerank model format: ${rerankModel}`)
           log.error(`[MODEL] Invalid rerank model format: ${rerankModel}`)
-          sentry.withScope((scope) => {
-            scope.setTag('component', 'knowledge-base-model')
-            scope.setTag('operation', 'get_rerank_provider')
-            scope.setExtra('kbId', kbId)
-            scope.setExtra('rerankModel', rerankModel)
-            sentry.captureException(error)
-          })
           throw error
         }
 
@@ -283,25 +186,7 @@ export async function getRerankProvider(kbId: number) {
         })
         return { client, modelId }
       } catch (error: unknown) {
-        const errMsg =
-          error instanceof Error
-            ? error.message
-            : typeof error === 'object' &&
-                error !== null &&
-                'message' in error &&
-                typeof (error as Record<string, unknown>).message === 'string'
-              ? ((error as Record<string, unknown>).message as string)
-              : String(error)
         log.error(`[MODEL] Failed to get rerank provider for kb ${kbId}:`, error)
-
-        if (!errMsg.includes('not set') && !errMsg.includes('not found')) {
-          sentry.withScope((scope) => {
-            scope.setTag('component', 'knowledge-base-model')
-            scope.setTag('operation', 'get_rerank_provider')
-            scope.setExtra('kbId', kbId)
-            sentry.captureException(error)
-          })
-        }
         throw error
       }
     },

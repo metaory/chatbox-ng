@@ -21,10 +21,6 @@ describe('defaults', () => {
     expect(result.messageLayout).toBe('bubble')
   })
 
-  it('settings() returns allowReportingAndTracking as true', () => {
-    expect(settings().allowReportingAndTracking).toBe(true)
-  })
-
   it('uses default interface colors for legacy settings', () => {
     const legacySettings = { ...settings(), interfaceColors: undefined }
 

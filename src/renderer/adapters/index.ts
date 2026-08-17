@@ -10,7 +10,6 @@ import type {
   RequestAdapter,
   StorageAdapter,
 } from '@shared/types/adapters'
-import type { SentryAdapter } from '@shared/utils/sentry_adapter'
 import { getOS } from '@/packages/navigator'
 import platform from '@/platform'
 import type { PlatformType } from '@/platform/interfaces'
@@ -19,7 +18,6 @@ import { StorageKeyGenerator } from '@/storage/StoreStorage'
 import * as settingActions from '@/stores/settingActions'
 import { settingsStore } from '@/stores/settingsStore'
 import { apiRequest } from '@/utils/request'
-import { RendererSentryAdapter } from './sentry'
 
 interface ModelDependencyPlatformInfo {
   type: PlatformType
@@ -59,7 +57,6 @@ export interface CreateModelDependenciesOptions {
   createPictureStorageKey?: (folder: string) => string
   request?: RequestAdapter
   apiRequestClient?: ApiRequestClient
-  sentry?: SentryAdapter
   getRemoteConfig?: ModelDependencies['getRemoteConfig']
   oauth?: OAuthAdapter
   oauthIpc?: OAuthIpcInvoker
@@ -189,7 +186,6 @@ export async function createModelDependencies(
   return {
     storage: createStorageAdapter(options),
     request: options.request ?? createRequestAdapter(platformInfo, options.apiRequestClient),
-    sentry: options.sentry ?? new RendererSentryAdapter(),
     getRemoteConfig: options.getRemoteConfig ?? settingActions.getRemoteConfig,
     oauth: options.oauth ?? (platformType === 'desktop' ? createDesktopOAuthAdapter(options.oauthIpc) : undefined),
     platformType,

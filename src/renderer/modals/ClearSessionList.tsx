@@ -3,7 +3,6 @@ import { Button, Input } from '@mantine/core'
 import { type ChangeEvent, useEffect, useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { AdaptiveModal } from '@/components/common/AdaptiveModal'
-import { trackingEvent } from '@/packages/event'
 import { clearConversationList } from '@/stores/sessionActions'
 
 const ClearSessionList = NiceModal.create(() => {
@@ -19,7 +18,6 @@ const ClearSessionList = NiceModal.create(() => {
   }
 
   useEffect(() => {
-    trackingEvent('clear_conversation_list_window', { event_category: 'screen_view' })
   }, [])
 
   const clean = async () => {
@@ -27,7 +25,6 @@ const ClearSessionList = NiceModal.create(() => {
     setCleaning(true)
     try {
       await clearConversationList(value)
-      trackingEvent('clear_conversation_list', { event_category: 'user' })
       handleClose()
     } finally {
       setCleaning(false)

@@ -1,5 +1,4 @@
 import path, { resolve } from 'node:path'
-import { sentryVitePlugin } from '@sentry/vite-plugin'
 import { TanStackRouterVite } from '@tanstack/router-plugin/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
@@ -45,18 +44,6 @@ export function injectReleaseDate(): Plugin {
 }
 
 /**
- * Vite plugin to replace Plausible data-domain for web builds
- */
-export function replacePlausibleDomain(): Plugin {
-  return {
-    name: 'replace-plausible-domain',
-    transformIndexHtml(html) {
-      return html.replace('data-domain="app.chatboxai.app"', 'data-domain="web.chatboxai.app"')
-    },
-  }
-}
-
-/**
  * Vite plugin to inject platform-appropriate viewport meta content.
  * Desktop builds omit `height=device-height` and `viewport-fit=cover` which trigger
  * Chromium's Virtual Keyboard API on macOS, causing an empty bottom margin on input focus.
@@ -93,14 +80,6 @@ export function dvhToVh(): Plugin {
   }
 }
 
-const inferredRelease = process.env.SENTRY_RELEASE || packageJson.version
-const inferredDist = process.env.SENTRY_DIST || undefined
-
-process.env.SENTRY_RELEASE = inferredRelease
-if (inferredDist) {
-  process.env.SENTRY_DIST = inferredDist
-}
-
 export default defineConfig(({ mode }) => {
   const isProduction = mode === 'production'
   const isWeb = process.env.CHATBOX_BUILD_PLATFORM === 'web'
@@ -119,22 +98,6 @@ export default defineConfig(({ mode }) => {
               }),
             ]
           : [externalizeDepsPlugin()]),
-        process.env.SENTRY_AUTH_TOKEN
-          ? sentryVitePlugin({
-              authToken: process.env.SENTRY_AUTH_TOKEN,
-              org: 'sentry',
-              project: 'chatbox',
-              url: 'https://sentry.midway.run/',
-              release: {
-                name: inferredRelease,
-                ...(inferredDist ? { dist: inferredDist } : {}),
-              },
-              sourcemaps: {
-                assets: isProduction ? 'release/app/dist/main/**' : 'output/main/**',
-              },
-              telemetry: false,
-            })
-          : undefined,
       ].filter(Boolean),
       build: {
         outDir: isProduction ? 'release/app/dist/main' : undefined,
@@ -214,28 +177,11 @@ export default defineConfig(({ mode }) => {
         injectViewportContent(isDesktop),
         isWeb ? injectBaseTag() : undefined,
         injectReleaseDate(),
-        isWeb ? replacePlausibleDomain() : undefined,
         visualizer({
           filename: 'release/app/dist/renderer/stats.html',
           open: false,
           title: 'Renderer Process Dependency Analysis',
         }),
-        process.env.SENTRY_AUTH_TOKEN
-          ? sentryVitePlugin({
-              authToken: process.env.SENTRY_AUTH_TOKEN,
-              org: 'sentry',
-              project: 'chatbox',
-              url: 'https://sentry.midway.run/',
-              release: {
-                name: inferredRelease,
-                ...(inferredDist ? { dist: inferredDist } : {}),
-              },
-              sourcemaps: {
-                assets: isProduction ? 'release/app/dist/renderer/**' : 'output/renderer/**',
-              },
-              telemetry: false,
-            })
-          : undefined,
       ].filter(Boolean),
       build: {
         outDir: isProduction ? 'release/app/dist/renderer' : undefined,
