@@ -30,6 +30,7 @@ import { RouteComponent as SettingsMcpRouteComponent } from '@/routes/settings/m
 import { RouteComponent as SettingsProviderProviderIdRouteComponent } from '@/routes/settings/provider/$providerId'
 import { RouteComponent as SettingsProviderIndexRouteComponent } from '@/routes/settings/provider/index'
 import { RouteComponent as SettingsProviderRouteRouteComponent } from '@/routes/settings/provider/route'
+import { RouteComponent as SettingsPublishRouteComponent } from '@/routes/settings/publish'
 import { SettingsRoot } from '@/routes/settings/route'
 import { RouteComponent as SettingsSkillsRouteComponent } from '@/routes/settings/skills'
 import { RouteComponent as SettingsWebSearchRouteComponent } from '@/routes/settings/web-search'
@@ -163,6 +164,12 @@ const SettingsWebSearchRoute = createRoute({
   getParentRoute: () => RootRoute,
 })
 
+const SettingsPublishRoute = createRoute({
+  component: SettingsPublishRouteComponent,
+  path: '/settings/publish',
+  getParentRoute: () => RootRoute,
+})
+
 const SettingsMcpRoute = createRoute({
   component: SettingsMcpRouteComponent,
   path: '/settings/mcp',
@@ -225,6 +232,7 @@ const routeTree = RootRoute.addChildren([
   SettingsChatRoute,
   SettingsArchiveRoute,
   SettingsWebSearchRoute,
+  SettingsPublishRoute,
   SettingsMcpRoute,
   SettingsSkillsRoute,
   SettingsKnowledgeBaseRoute,

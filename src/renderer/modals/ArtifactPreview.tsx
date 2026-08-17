@@ -1,6 +1,6 @@
 import NiceModal, { useModal } from '@ebay/nice-modal-react'
 import { ActionIcon, Button, Flex, Stack, Text } from '@mantine/core'
-import { IconArrowsMaximize, IconArrowsMinimize, IconExternalLink, IconReload, IconX } from '@tabler/icons-react'
+import { IconArrowsMaximize, IconArrowsMinimize, IconExternalLink, IconReload, IconWorldUpload, IconX } from '@tabler/icons-react'
 import clsx from 'clsx'
 import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -14,15 +14,17 @@ import platform from '@/platform'
 export interface ArtifactPreviewProps {
   htmlCode: string
   previewUrl?: string
+  uniqueId?: string
 }
 
 const ArtifactPreview = NiceModal.create((props: ArtifactPreviewProps) => {
-  const { htmlCode, previewUrl } = props
+  const { htmlCode, previewUrl, uniqueId } = props
   const modal = useModal()
   const { t } = useTranslation()
   const [reloadSign, setReloadSign] = useState(0)
   const [isFullscreen, setIsFullscreen] = useState(false)
-  const canOpenInBrowser = useMemo(() => !!previewUrl, [previewUrl])
+  const canOpenInBrowser = useMemo(() => !!previewUrl || !!htmlCode.trim(), [htmlCode, previewUrl])
+  const canPublish = useMemo(() => htmlCode.trim().length > 0, [htmlCode])
   const onReload = () => {
     setReloadSign(Math.random())
   }
@@ -31,11 +33,20 @@ const ArtifactPreview = NiceModal.create((props: ArtifactPreviewProps) => {
     modal.hide()
   }
   const onOpenInBrowser = useCallback(async () => {
-    if (!previewUrl) {
+    if (previewUrl) {
+      await platform.openLink(previewUrl)
       return
     }
-    await platform.openLink(previewUrl)
-  }, [previewUrl])
+    const html = htmlCode.trim()
+    if (!html) return
+    const url = URL.createObjectURL(new Blob([html], { type: 'text/html' }))
+    window.open(url, '_blank', 'noopener')
+    window.setTimeout(() => URL.revokeObjectURL(url), 60_000)
+  }, [htmlCode, previewUrl])
+  const onPublish = useCallback(() => {
+    if (!canPublish) return
+    NiceModal.show('vibedrop-publish', { html: htmlCode, uniqueId }).catch(() => null)
+  }, [canPublish, htmlCode, uniqueId])
   const isSmallScreen = useIsSmallScreen()
   const showFullscreen = isSmallScreen || isFullscreen
   const showLabeledActions = !isSmallScreen
@@ -104,7 +115,7 @@ const ArtifactPreview = NiceModal.create((props: ArtifactPreviewProps) => {
                   </ActionIcon>
                 </Tooltip>
                 <Tooltip
-                  label={canOpenInBrowser ? t('Open in Browser') : t('Open in Browser requires a preview URL')}
+                  label={canOpenInBrowser ? t('Open in Browser') : t('HTML content is empty, nothing to publish.')}
                   withArrow
                   openDelay={500}
                 >
@@ -117,6 +128,22 @@ const ArtifactPreview = NiceModal.create((props: ArtifactPreviewProps) => {
                     disabled={!canOpenInBrowser}
                   >
                     <ScalableIcon icon={IconExternalLink} size={18} />
+                  </ActionIcon>
+                </Tooltip>
+                <Tooltip
+                  label={canPublish ? t('Publish Webpage') : t('HTML content is empty, nothing to publish.')}
+                  withArrow
+                  openDelay={500}
+                >
+                  <ActionIcon
+                    variant="transparent"
+                    color="chatbox-brand"
+                    size={mobileActionSize}
+                    onClick={onPublish}
+                    aria-label={t('Publish Webpage')}
+                    disabled={!canPublish}
+                  >
+                    <ScalableIcon icon={IconWorldUpload} size={18} />
                   </ActionIcon>
                 </Tooltip>
               </Flex>
@@ -167,6 +194,15 @@ const ArtifactPreview = NiceModal.create((props: ArtifactPreviewProps) => {
               disabled={!canOpenInBrowser}
             >
               {t('Open in Browser')}
+            </Button>
+            <Button
+              variant="subtle"
+              size="xs"
+              leftSection={<ScalableIcon icon={IconWorldUpload} size={16} />}
+              onClick={onPublish}
+              disabled={!canPublish}
+            >
+              {t('Publish Webpage')}
             </Button>
             <Button variant="subtle" size="xs" leftSection={<ScalableIcon icon={IconX} size={16} />} onClick={onClose}>
               {t('Close')}

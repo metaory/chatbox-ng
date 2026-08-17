@@ -18,6 +18,7 @@ function withoutProviderCredentials(provider: object): Record<string, unknown> {
 export function cleanSettingsForBackup(settings: Settings, includeKeys: boolean): Record<string, unknown> {
   const cleaned: Record<string, unknown> = { ...settings }
   if (!includeKeys) {
+    delete cleaned.vibedropApiKey
     if (settings.providers) {
       cleaned.providers = Object.fromEntries(
         Object.entries(settings.providers).map(([id, provider]) => [id, withoutProviderCredentials(provider)])

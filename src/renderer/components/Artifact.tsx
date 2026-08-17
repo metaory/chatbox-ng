@@ -3,8 +3,7 @@ import ReplayOutlinedIcon from '@mui/icons-material/ReplayOutlined'
 import StopCircleOutlinedIcon from '@mui/icons-material/StopCircleOutlined'
 import { ButtonGroup, IconButton } from '@mui/material'
 import type { Message } from '@shared/types/session'
-import { debounce } from 'lodash'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useIsSmallScreen } from '@/hooks/useScreenChange'
 import { cn } from '@/lib/utils'
@@ -184,47 +183,14 @@ export function ArtifactWithButtons(props: {
 
 export function Artifact(props: { htmlCode: string; previewUrl?: string; reloadSign?: number; className?: string }) {
   const { htmlCode, previewUrl, reloadSign, className } = props
-  const ref = useRef<HTMLIFrameElement>(null)
-  const iframeOrigin = 'https://artifact-preview.chatboxai.app/preview'
-
-  const sendIframeMsg = useCallback((type: 'html', code: string) => {
-    if (!ref.current) {
-      return
-    }
-    ref.current.contentWindow?.postMessage({ type, code }, '*')
-  }, [])
-  // 当 reloadSign 改变时，重新加载 iframe 内容
-  useEffect(() => {
-    if (previewUrl) return
-    void (async () => {
-      void reloadSign
-      sendIframeMsg('html', '')
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-      sendIframeMsg('html', htmlCode)
-    })()
-  }, [htmlCode, previewUrl, reloadSign, sendIframeMsg])
-
-  // 当 htmlCode 改变时，防抖地刷新 iframe 内容
-  const updateIframe = useMemo(
-    () =>
-      debounce(() => {
-        sendIframeMsg('html', htmlCode)
-      }, 300),
-    [htmlCode, sendIframeMsg]
-  )
-  useEffect(() => {
-    if (previewUrl) return
-    updateIframe()
-    return () => updateIframe.cancel()
-  }, [previewUrl, updateIframe])
-
   return (
     <iframe
-      key={`${previewUrl || iframeOrigin}:${reloadSign ?? 0}`}
+      key={`${previewUrl || 'srcdoc'}:${reloadSign ?? 0}`}
       className={cn('w-full', 'border-none', 'h-[400px]', className)}
       sandbox={previewUrl ? 'allow-scripts allow-forms allow-same-origin' : 'allow-scripts allow-forms'}
-      src={previewUrl || iframeOrigin}
-      ref={ref}
+      src={previewUrl}
+      srcDoc={previewUrl ? undefined : htmlCode}
+      title="artifact-preview"
     />
   )
 }

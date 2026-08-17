@@ -459,6 +459,9 @@ export const SettingsSchema = GlobalSessionSettingsSchema.extend({
   defaultEmbeddingModel: DefaultModelSelectionSchema,
   defaultRerankModel: DefaultModelSelectionSchema,
 
+  vibedropApiKey: z.string().optional().catch(undefined),
+  vibedropSlugs: z.record(z.string(), z.string()).optional().catch(undefined),
+
   // chat settings
   showWordCount: z.boolean().optional().catch(undefined),
   showTokenCount: z.boolean().optional().catch(undefined),

@@ -54,6 +54,7 @@ import {
   IconJson,
   IconPlayerPlayFilled,
   type IconProps,
+  IconWorldUpload,
 } from '@tabler/icons-react'
 import clsx from 'clsx'
 import { visit } from 'unist-util-visit'
@@ -554,9 +555,18 @@ const BlockCode = memo(
         event.preventDefault()
         NiceModal.show('artifact-preview', {
           htmlCode: String(children),
+          uniqueId,
         }).catch(() => null)
       },
-      [children]
+      [children, uniqueId]
+    )
+    const onClickPublish = useCallback(
+      (event: React.MouseEvent) => {
+        event.stopPropagation()
+        event.preventDefault()
+        NiceModal.show('vibedrop-publish', { html: String(children), uniqueId }).catch(() => null)
+      },
+      [children, uniqueId]
     )
 
     const needCollapse = useMemo(
@@ -612,6 +622,14 @@ const BlockCode = memo(
                 <Tooltip label={t('Preview')} withArrow openDelay={1000}>
                   <ActionIcon variant="transparent" color="chatbox-tertiary" size={18} onClick={onClickArtifact}>
                     <IconPlayerPlayFilled size={14} />
+                  </ActionIcon>
+                </Tooltip>
+              )}
+
+              {isRenderableCode && String(children).trim() && (
+                <Tooltip label={t('Publish Webpage')} withArrow openDelay={1000}>
+                  <ActionIcon variant="transparent" color="chatbox-tertiary" size={18} onClick={onClickPublish}>
+                    <IconWorldUpload size={14} />
                   </ActionIcon>
                 </Tooltip>
               )}

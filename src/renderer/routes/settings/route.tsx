@@ -13,6 +13,7 @@ import {
   IconKeyboard,
   IconMessages,
   IconWand,
+  IconWorldUpload,
   IconWorldWww,
 } from '@tabler/icons-react'
 import { createFileRoute, Link, Outlet, useCanGoBack, useRouter, useRouterState } from '@tanstack/react-router'
@@ -46,6 +47,11 @@ const ITEMS = [
     key: 'web-search',
     label: 'Web Search',
     icon: <IconWorldWww className="w-full h-full" />,
+  },
+  {
+    key: 'publish',
+    label: 'Publish',
+    icon: <IconWorldUpload className="w-full h-full" />,
   },
   ...(featureFlags.mcp
     ? [
