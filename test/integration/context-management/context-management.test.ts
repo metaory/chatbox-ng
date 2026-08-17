@@ -194,9 +194,9 @@ describe('Context Management Integration Tests', () => {
 
       const result = buildContextForAI({ messages, compactionPoints })
 
-      // Should still slice correctly, just without summary
-      expect(result).toHaveLength(2)
-      expect(result[0].contentParts[0]).toEqual({ type: 'text', text: 'New message' })
+      // Point is not applicable without its summary: keep full history
+      expect(result).toHaveLength(4)
+      expect(result[0].contentParts[0]).toEqual({ type: 'text', text: 'Old message' })
     })
 
     it('should handle missing boundary message by falling back to all messages', () => {
@@ -209,8 +209,9 @@ describe('Context Management Integration Tests', () => {
 
       const result = buildContextForAI({ messages, compactionPoints })
 
-      // Should fall back to all messages with tool cleanup
-      expect(result).toHaveLength(3)
+      // Point is not applicable without its boundary: drop the orphaned summary
+      expect(result).toHaveLength(2)
+      expect(result.every((m) => !m.isSummary)).toBe(true)
     })
 
     it('should filter out summary messages from messagesAfterBoundary', () => {
