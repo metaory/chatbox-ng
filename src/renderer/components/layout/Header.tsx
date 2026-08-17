@@ -52,7 +52,11 @@ export default function Header(props: { session: Session }) {
         h={48}
         align="center"
         px="md"
-        className={clsx('flex-none title-bar border-0', isSmallScreen ? 'bg-chatbox-background-primary' : '')}
+        bg={isSmallScreen ? undefined : 'color-mix(in srgb, var(--chatbox-background-primary) 50%, transparent)'}
+        className={clsx(
+          'flex-none title-bar border-0',
+          isSmallScreen ? 'bg-chatbox-background-primary' : 'absolute inset-x-0 top-0 z-10 backdrop-blur-md'
+        )}
       >
         {(!showSidebar || isSmallScreen) && (
           <Flex align="center" className={needRoomForMacWindowControls ? 'pl-20' : ''}>

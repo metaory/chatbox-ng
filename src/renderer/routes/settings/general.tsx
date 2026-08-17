@@ -1,8 +1,6 @@
 import {
-  ActionIcon,
   Alert,
   Badge,
-  Box,
   Button,
   Checkbox,
   Divider,
@@ -17,20 +15,21 @@ import {
   Title,
 } from '@mantine/core'
 import {
+  colorPresetLabel,
   getDefaultInterfaceColors,
   INTERFACE_COLOR_PRESETS,
   type InterfaceColorPreset,
   type InterfaceColors,
   type InterfaceThemeColors,
   isInterfaceBrandColorAllowed,
-  resolveInterfaceBrandColor,
+  paletteKey,
   resolveInterfaceBrandColors,
   withColorOpacity,
 } from '@shared/theme-colors'
 import { Theme } from '@shared/types'
 import { formatFileSize } from '@shared/utils'
 import { getBackupFilename } from '@shared/utils/backup'
-import { IconCheck, IconDeviceFloppy, IconInfoCircle, IconPencil, IconPlus, IconTrash } from '@tabler/icons-react'
+import { IconDeviceFloppy, IconInfoCircle, IconPlus } from '@tabler/icons-react'
 import { createFileRoute } from '@tanstack/react-router'
 import dayjs from 'dayjs'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -67,13 +66,9 @@ export function RouteComponent() {
   const { t } = useTranslation()
   const { setSettings, ...settings } = useSettingsStore((state) => state)
   const realTheme = useUIStore((state) => state.realTheme)
-  const storedInterfaceColors = (settings.interfaceColors ?? getDefaultInterfaceColors())[realTheme]
-  const currentInterfaceColors = {
-    ...storedInterfaceColors,
-    brand: resolveInterfaceBrandColor(storedInterfaceColors.brand, realTheme),
-  }
+  const liveInterfaceColors = resolveInterfaceBrandColors(settings.interfaceColors ?? getDefaultInterfaceColors())
+  const currentInterfaceColors = liveInterfaceColors[realTheme]
   const [isCreatingInterfaceColorPreset, setIsCreatingInterfaceColorPreset] = useState(false)
-  const [isEditingInterfaceColorPresets, setIsEditingInterfaceColorPresets] = useState(false)
   const [editingPresetId, setEditingPresetId] = useState<string | null>(null)
   const [presetLabel, setPresetLabel] = useState('')
 
@@ -121,6 +116,7 @@ export function RouteComponent() {
   const deleteInterfaceColorPreset = (presetId: string) => {
     setSettings((draft) => {
       draft.interfaceColorPresets = (draft.interfaceColorPresets ?? []).filter((preset) => preset.id !== presetId)
+      draft.interfaceColors = resolveInterfaceBrandColors(getDefaultInterfaceColors())
     })
     if (editingPresetId === presetId) cancelEditingInterfaceColorPreset()
   }
@@ -129,7 +125,7 @@ export function RouteComponent() {
     applyInterfaceColorPreset(preset.colors)
     setIsCreatingInterfaceColorPreset(false)
     setEditingPresetId(preset.id)
-    setPresetLabel(preset.label)
+    setPresetLabel(colorPresetLabel(preset))
   }
 
   const cancelEditingInterfaceColorPreset = () => {
@@ -171,6 +167,8 @@ export function RouteComponent() {
       isCustom: true,
     })),
   ] satisfies Array<InterfaceColorPreset & { isCustom: boolean }>
+  const livePaletteKey = paletteKey(liveInterfaceColors)
+  const activePresetId = colorPresets.find((preset) => paletteKey(preset.colors) === livePaletteKey)?.id
 
   return (
     <Stack p="md" gap="xl">
@@ -207,81 +205,41 @@ export function RouteComponent() {
 
         <Stack gap="md">
           <Stack gap="xxs">
-            <Flex align="center" gap={2}>
-              <Text size="sm">Color Presets</Text>
-              <ActionIcon
-                variant={isEditingInterfaceColorPresets ? 'light' : 'subtle'}
-                size="sm"
-                aria-label={isEditingInterfaceColorPresets ? 'Save' : 'Edit'}
-                disabled={
-                  isEditingInterfaceColorPresets &&
-                  Boolean(editingPresetId || isCreatingInterfaceColorPreset) &&
-                  !presetLabel.trim()
-                }
-                onClick={() => {
-                  if (isEditingInterfaceColorPresets) {
-                    if (editingPresetId) {
-                      saveEditedInterfaceColorPreset()
-                    } else if (isCreatingInterfaceColorPreset) {
-                      saveInterfaceColorPreset()
-                    } else {
-                      cancelEditingInterfaceColorPreset()
-                    }
-                  } else {
-                    setIsCreatingInterfaceColorPreset(false)
-                  }
-                  setIsEditingInterfaceColorPresets((value) => !value)
-                }}
-              >
-                {isEditingInterfaceColorPresets ? <IconCheck size={14} /> : <IconPencil size={14} />}
-              </ActionIcon>
-            </Flex>
-            <Flex
-              columnGap="xs"
-              rowGap={isEditingInterfaceColorPresets ? 12 : 'xs'}
-              py={isEditingInterfaceColorPresets ? 5 : 0}
-              wrap="wrap"
-            >
-              {colorPresets.map((preset) => (
-                <Box key={preset.id} pos="relative">
+            <Text size="sm">Color Presets</Text>
+            <Flex gap="sm" wrap="wrap">
+              {colorPresets.map((preset) => {
+                const brand = preset.colors[realTheme].brand
+                const selected = preset.id === activePresetId
+                return (
                   <Badge
+                    key={preset.id}
                     component="button"
                     type="button"
                     className={presetBadgeButtonClassName}
                     variant="filled"
                     style={{
-                      backgroundColor: withColorOpacity(preset.colors[realTheme].brand, 0.6),
+                      backgroundColor: withColorOpacity(brand, 0.6),
                       cursor: 'pointer',
                       height: 30,
                       maxWidth: 160,
+                      ...(selected && {
+                        outline: `4px solid ${withColorOpacity(brand, 0.4)}`,
+                      }),
                     }}
                     onClick={() => {
-                      if (isEditingInterfaceColorPresets && preset.isCustom) {
+                      if (preset.isCustom) {
                         startEditingInterfaceColorPreset(preset)
-                      } else {
-                        applyInterfaceColorPreset(preset.colors)
+                        return
                       }
+                      applyInterfaceColorPreset(preset.colors)
+                      cancelEditingInterfaceColorPreset()
+                      setIsCreatingInterfaceColorPreset(false)
                     }}
                   >
-                    {preset.isCustom ? preset.label : t(preset.label)}
+                    {preset.isCustom ? colorPresetLabel(preset) : t(colorPresetLabel(preset))}
                   </Badge>
-                  {isEditingInterfaceColorPresets && preset.isCustom && (
-                    <ActionIcon
-                      pos="absolute"
-                      top={-5}
-                      right={-5}
-                      variant="filled"
-                      color="red"
-                      size={16}
-                      radius="xl"
-                      aria-label="Delete"
-                      onClick={() => deleteInterfaceColorPreset(preset.id)}
-                    >
-                      <IconTrash size={10} />
-                    </ActionIcon>
-                  )}
-                </Box>
-              ))}
+                )
+              })}
               {!isCreatingInterfaceColorPreset && (
                 <Badge
                   component="button"
@@ -339,9 +297,15 @@ export function RouteComponent() {
                 </Stack>
               </SimpleGrid>
               <SimpleGrid cols={2} spacing="md">
-                <Button variant="outline" onClick={resetInterfaceColors}>
-                  Reset Colors
-                </Button>
+                {editingPresetId ? (
+                  <Button variant="outline" color="red" onClick={() => deleteInterfaceColorPreset(editingPresetId)}>
+                    Remove
+                  </Button>
+                ) : (
+                  <Button variant="outline" onClick={resetInterfaceColors}>
+                    Reset Colors
+                  </Button>
+                )}
                 <Button
                   leftSection={<IconDeviceFloppy size={14} />}
                   disabled={!presetLabel.trim()}
@@ -804,9 +768,7 @@ const ImportExportDataSection = () => {
             {storageInfo}
           </Text>
         )}
-        <Text c="chatbox-tertiary">
-          ZIP backups include each conversation and its managed images and attachments.
-        </Text>
+        <Text c="chatbox-tertiary">ZIP backups include each conversation and its managed images and attachments.</Text>
         <Text size="sm" c="chatbox-tertiary">
           Backup files exported here can only be imported in Chatbox 1.22 or later.
         </Text>

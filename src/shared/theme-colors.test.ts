@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import {
+  colorPresetLabel,
   DEFAULT_INTERFACE_COLORS,
   INTERFACE_COLOR_PRESETS,
   isInterfaceBrandColorAllowed,
+  paletteKey,
   renameInterfaceColorPreset,
   resolveInterfaceBrandColor,
   resolveInterfaceBrandColors,
@@ -13,16 +15,25 @@ import {
 
 describe('INTERFACE_COLOR_PRESETS', () => {
   it('provides the default and saturated hue presets', () => {
-    expect(INTERFACE_COLOR_PRESETS.map((preset) => ({ id: preset.id, label: preset.label }))).toEqual([
-      { id: 'default', label: 'Default' },
-      { id: 'violet', label: 'Violet' },
-      { id: 'magenta', label: 'Magenta' },
-      { id: 'ember', label: 'Ember' },
-      { id: 'sand', label: 'Sand' },
-      { id: 'lime', label: 'Lime' },
-      { id: 'forest', label: 'Forest' },
-      { id: 'azure', label: 'Azure' },
-      { id: 'ink', label: 'Ink' },
+    expect(INTERFACE_COLOR_PRESETS.map((preset) => preset.id)).toEqual([
+      'default',
+      'ember',
+      'sand',
+      'lime',
+      'forest',
+      'violet',
+      'azure',
+      'ink',
+    ])
+    expect(INTERFACE_COLOR_PRESETS.map(colorPresetLabel)).toEqual([
+      'Default',
+      'Ember',
+      'Sand',
+      'Lime',
+      'Forest',
+      'Violet',
+      'Azure',
+      'Ink',
     ])
   })
 
@@ -50,6 +61,11 @@ describe('INTERFACE_COLOR_PRESETS', () => {
   it('uses a 60% alpha channel for preset badge backgrounds', () => {
     expect(withColorOpacity('#d97757', 0.6)).toBe('#d9775799')
   })
+
+  it('fingerprints palettes so the active preset is a key lookup', () => {
+    expect(paletteKey(INTERFACE_COLOR_PRESETS[0].colors)).toBe(paletteKey(DEFAULT_INTERFACE_COLORS))
+    expect(paletteKey(INTERFACE_COLOR_PRESETS[1].colors)).not.toBe(paletteKey(DEFAULT_INTERFACE_COLORS))
+  })
 })
 
 describe('interface brand color', () => {
@@ -59,8 +75,8 @@ describe('interface brand color', () => {
   })
 
   it('replaces white with the default brand color for the active theme', () => {
-    expect(resolveInterfaceBrandColor('#ffffff', 'light')).toBe('#c026d3')
-    expect(resolveInterfaceBrandColor('#FFFFFF', 'dark')).toBe('#f472d0')
+    expect(resolveInterfaceBrandColor('#ffffff', 'light')).toBe(DEFAULT_INTERFACE_COLORS.light.brand)
+    expect(resolveInterfaceBrandColor('#FFFFFF', 'dark')).toBe(DEFAULT_INTERFACE_COLORS.dark.brand)
     expect(resolveInterfaceBrandColor('#123456', 'light')).toBe('#123456')
   })
 
@@ -71,8 +87,8 @@ describe('interface brand color', () => {
         dark: { ...INTERFACE_COLOR_PRESETS[0].colors.dark, brand: '#FFFFFF' },
       })
     ).toEqual({
-      light: { ...INTERFACE_COLOR_PRESETS[0].colors.light, brand: '#c026d3' },
-      dark: { ...INTERFACE_COLOR_PRESETS[0].colors.dark, brand: '#f472d0' },
+      light: { ...INTERFACE_COLOR_PRESETS[0].colors.light },
+      dark: { ...INTERFACE_COLOR_PRESETS[0].colors.dark },
     })
   })
 })
@@ -121,6 +137,8 @@ describe('splash color cache', () => {
 
   it('rejects invalid cache values', () => {
     expect(splashPaletteFromCache(null, 'light')).toBeNull()
-    expect(splashPaletteFromCache({ light: { backgroundPrimary: 'red', backgroundTertiary: '#ddd0ee' } }, 'light')).toBeNull()
+    expect(
+      splashPaletteFromCache({ light: { backgroundPrimary: 'red', backgroundTertiary: '#ddd0ee' } }, 'light')
+    ).toBeNull()
   })
 })

@@ -34,7 +34,7 @@
   --chatbox-tint-tertiary: color-mix(in srgb, var(--chatbox-brand) 16%, #6a6a6a);
   --chatbox-tint-gray: var(--chatbox-tint-tertiary);
   --chatbox-tint-disabled: color-mix(in srgb, var(--chatbox-brand) 6%, #8a8a8a);
-  --chatbox-brand: #c026d3;
+  --chatbox-brand: #e11d74;
   --chatbox-tint-brand: var(--chatbox-brand);
   --chatbox-tint-placeholder: var(--chatbox-tint-disabled);
   --chatbox-tint-error: #fa5252;
@@ -193,98 +193,6 @@ body {
   --chatbox-background-mask-lighten: rgb(173, 181, 189, 0.48);
 }
 
-:root[data-mantine-color-scheme='light'][data-mantine-color-scheme],
-:root[data-mantine-color-scheme='dark'][data-mantine-color-scheme] {
-  /* brand */
-  --mantine-color-chatbox-brand-text: var(--chatbox-tint-brand);
-  --mantine-color-chatbox-brand-filled: var(--chatbox-background-brand-primary);
-  --mantine-color-chatbox-brand-filled-hover: var(--chatbox-background-brand-primary-hover);
-  --mantine-color-chatbox-brand-light: var(--chatbox-background-brand-secondary);
-  --mantine-color-chatbox-brand-light-hover: var(--chatbox-background-brand-secondary-hover);
-  --mantine-color-chatbox-brand-light-color: var(--chatbox-tint-brand);
-  --mantine-color-chatbox-brand-outline: var(--chatbox-border-brand);
-  --mantine-color-chatbox-brand-outline-hover: color-mix(in srgb, var(--chatbox-border-brand), transparent 95%);
-
-  /* success */
-  --mantine-color-chatbox-success-text: var(--chatbox-tint-success);
-  --mantine-color-chatbox-success-filled: var(--chatbox-background-success-primary);
-  --mantine-color-chatbox-success-filled-hover: var(--chatbox-background-success-primary-hover);
-  --mantine-color-chatbox-success-light: var(--chatbox-background-success-secondary);
-  --mantine-color-chatbox-success-light-hover: var(--chatbox-background-success-secondary-hover);
-  --mantine-color-chatbox-success-light-color: var(--chatbox-tint-success);
-  --mantine-color-chatbox-success-outline: var(--chatbox-border-success);
-  --mantine-color-chatbox-success-outline-hover: color-mix(in srgb, var(--chatbox-border-success), transparent 95%);
-
-  /* error */
-  --mantine-color-chatbox-error-text: var(--chatbox-tint-error);
-  --mantine-color-chatbox-error-filled: var(--chatbox-background-error-primary);
-  --mantine-color-chatbox-error-filled-hover: var(--chatbox-background-error-primary-hover);
-  --mantine-color-chatbox-error-light: var(--chatbox-background-error-secondary);
-  --mantine-color-chatbox-error-light-hover: var(--chatbox-background-error-secondary-hover);
-  --mantine-color-chatbox-error-light-color: var(--chatbox-tint-error);
-  --mantine-color-chatbox-error-outline: var(--chatbox-border-error);
-  --mantine-color-chatbox-error-outline-hover: color-mix(in srgb, var(--chatbox-border-error), transparent 95%);
-
-  /* warning */
-  --mantine-color-chatbox-warning-text: var(--chatbox-tint-warning);
-  --mantine-color-chatbox-warning-filled: var(--chatbox-background-warning-primary);
-  --mantine-color-chatbox-warning-filled-hover: var(--chatbox-background-warning-primary-hover);
-  --mantine-color-chatbox-warning-light: var(--chatbox-background-warning-secondary);
-  --mantine-color-chatbox-warning-light-hover: var(--chatbox-background-warning-secondary-hover);
-  --mantine-color-chatbox-warning-light-color: var(--chatbox-tint-warning);
-  --mantine-color-chatbox-warning-outline: var(--chatbox-border-warning);
-  --mantine-color-chatbox-warning-outline-hover: color-mix(in srgb, var(--chatbox-border-warning), transparent 95%);
-
-  /* warning */
-  --mantine-color-chatbox-gray-text: var(--chatbox-tint-gray);
-  --mantine-color-chatbox-gray-filled: var(--chatbox-background-gray-primary);
-  --mantine-color-chatbox-gray-filled-hover: var(--chatbox-background-gray-primary-hover);
-  --mantine-color-chatbox-gray-light: var(--chatbox-background-gray-secondary);
-  --mantine-color-chatbox-gray-light-hover: var(--chatbox-background-gray-secondary-hover);
-  --mantine-color-chatbox-gray-light-color: var(--chatbox-tint-gray);
-  --mantine-color-chatbox-gray-outline: var(--chatbox-tint-gray);
-  --mantine-color-chatbox-gray-outline-hover: color-mix(in srgb, var(--chatbox-tint-gray), transparent 95%);
-
-  --mantine-color-chatbox-primary-text: var(--chatbox-tint-primary);
-  --mantine-color-chatbox-primary-filled: var(--chatbox-background-primary);
-  --mantine-color-chatbox-primary-filled-hover: var(--chatbox-background-primary-hover);
-  --mantine-color-chatbox-primary-light: var(--chatbox-background-secondary);
-  --mantine-color-chatbox-primary-light-hover: var(--chatbox-background-secondary-hover);
-  --mantine-color-chatbox-primary-light-color: var(--chatbox-tint-primary);
-  --mantine-color-chatbox-primary-outline: var(--chatbox-border-primary);
-  --mantine-color-chatbox-primary-outline-hover: color-mix(in srgb, var(--chatbox-border-primary), transparent 95%);
-
-  --mantine-color-chatbox-secondary-text: var(--chatbox-tint-secondary);
-  --mantine-color-chatbox-secondary-filled: var(--chatbox-tint-secondary);
-  --mantine-color-chatbox-secondary-filled-hover: color-mix(in srgb, var(--chatbox-tint-secondary), black 12%);
-  --mantine-color-chatbox-secondary-light: color-mix(in srgb, var(--chatbox-tint-secondary), transparent 88%);
-  --mantine-color-chatbox-secondary-light-hover: color-mix(in srgb, var(--chatbox-tint-secondary), transparent 80%);
-  --mantine-color-chatbox-secondary-light-color: var(--chatbox-tint-secondary);
-  --mantine-color-chatbox-secondary-outline: var(--chatbox-tint-secondary);
-  --mantine-color-chatbox-secondary-outline-hover: color-mix(in srgb, var(--chatbox-tint-secondary), transparent 95%);
-
-  --mantine-color-chatbox-tertiary-text: var(--chatbox-tint-tertiary);
-  --mantine-color-chatbox-tertiary-filled: var(--chatbox-tint-tertiary);
-  --mantine-color-chatbox-tertiary-filled-hover: color-mix(in srgb, var(--chatbox-tint-tertiary), black 12%);
-  --mantine-color-chatbox-tertiary-light: color-mix(in srgb, var(--chatbox-tint-tertiary), transparent 88%);
-  --mantine-color-chatbox-tertiary-light-hover: color-mix(in srgb, var(--chatbox-tint-tertiary), transparent 80%);
-  --mantine-color-chatbox-tertiary-light-color: var(--chatbox-tint-tertiary);
-  --mantine-color-chatbox-tertiary-outline: var(--chatbox-tint-tertiary);
-  --mantine-color-chatbox-tertiary-outline-hover: color-mix(in srgb, var(--chatbox-tint-tertiary), transparent 95%);
-}
-
-.mantine-Button-root:where([data-variant='filled'], [data-variant='gradient']),
-.mantine-ActionIcon-root:where([data-variant='filled'], [data-variant='gradient']) {
-  --button-color: #000;
-  --ai-color: #000;
-  color: #000;
-}
-
-[data-mantine-color-scheme] .mantine-Paper-root,
-[data-mantine-color-scheme] .mantine-Card-root {
-  --paper-border-color: var(--chatbox-border-primary);
-}
-
 .mantine-Paper-root[data-with-border],
 .mantine-Card-root[data-with-border],
 .mantine-Input-input,
@@ -410,9 +318,16 @@ div[data-vaul-handle] {
   background-color: var(--chatbox-drawer-bg);
 }
 
-.MuiDrawer-paperAnchorLeft .mantine-NavLink-label,
-.MuiDrawer-paperAnchorLeft .mantine-NavLink-section {
-  color: var(--chatbox-nav-link);
+.MuiDrawer-paperAnchorLeft {
+  .mantine-NavLink-label,
+  .mantine-NavLink-section {
+    color: var(--chatbox-nav-link);
+  }
+
+  .mantine-NavLink-root:hover,
+  .mantine-Button-root[data-variant='light']:hover {
+    background-color: var(--chatbox-background-gray-secondary);
+  }
 }
 
 /* Rotating border beam on the pending-approval card (ToolCallPartUI): a bright amber

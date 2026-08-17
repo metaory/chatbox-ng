@@ -34,6 +34,7 @@ export default function DesktopDownloadReminder() {
   }
 
   const mobileDescription = `Your chat history on web version can only be stored in the browser cache (unreliable - it may be cleaned by browser).\nRecommended to use Chatbox App`
+  const desktopDescription = `1. Your chat history on web version can only be stored in the browser cache (unreliable - it may be cleaned by browser).\n2. MCP and Knowledge Base are currently supported on the desktop app only.`
 
   return (
     <div
@@ -43,7 +44,14 @@ export default function DesktopDownloadReminder() {
           : 'fixed right-4 bottom-4 z-[120] w-[min(360px,calc(100vw-2rem))]'
       }
     >
-      <Paper withBorder radius="lg" p="md" shadow="lg" className="backdrop-blur-sm bg-chatbox-background-primary/95">
+      <Paper
+        withBorder
+        radius="lg"
+        p="md"
+        shadow="lg"
+        className="backdrop-blur-sm"
+        bg="color-mix(in srgb, var(--chatbox-background-primary) 50%, transparent)"
+      >
         <Stack gap="sm">
           <Flex justify="space-between" gap="sm" align="flex-start">
             <Flex gap="sm" align="flex-start" flex={1}>
@@ -74,16 +82,9 @@ export default function DesktopDownloadReminder() {
             </ActionIcon>
           </Flex>
 
-          {isSmallScreen ? (
-            <Text size="xs" c="chatbox-secondary" style={{ whiteSpace: 'pre-line' }}>
-              {mobileDescription}
-            </Text>
-          ) : (
-            <Text size="xs" c="chatbox-secondary" style={{ whiteSpace: 'pre-line' }}>
-              1. Your chat history on web version can only be stored in the browser cache (unreliable - it may be cleaned by browser). 
-2. MCP and Knowledge Base are currently supported on the desktop app only. 
-            </Text>
-          )}
+          <Text size="xs" c="chatbox-secondary" style={{ whiteSpace: 'pre-line' }}>
+            {isSmallScreen ? mobileDescription : desktopDescription}
+          </Text>
 
           {isSmallScreen ? (
             <Flex gap="xs">

@@ -3,6 +3,7 @@ import {
   ActionIcon,
   Avatar,
   Button,
+  Card,
   Checkbox,
   Combobox,
   colorsTuple,
@@ -17,6 +18,7 @@ import {
   MantineProvider,
   Modal,
   NativeSelect,
+  Paper,
   Popover,
   rem,
   Select,
@@ -324,10 +326,15 @@ function Root() {
   )
 }
 
+const paperBorder = {
+  root: { '--paper-border-color': 'var(--chatbox-border-primary)' },
+}
+
 const creteMantineTheme = (scale = 1) =>
   createTheme({
     /** Put your mantine theme override here */
     scale,
+    black: '#000',
     defaultRadius: 'lg',
     primaryColor: 'chatbox-brand',
     variantColorResolver: (input) => {
@@ -336,8 +343,8 @@ const creteMantineTheme = (scale = 1) =>
       if (variant !== 'filled' && variant !== 'gradient') return resolved
       return {
         ...resolved,
-        color: '#000',
-        hoverColor: '#000',
+        color: 'var(--mantine-color-black)',
+        hoverColor: 'var(--mantine-color-black)',
       }
     },
     colors: {
@@ -456,14 +463,11 @@ const creteMantineTheme = (scale = 1) =>
           variant: 'filled',
           radius: 'md',
         },
-        styles: (_theme, props) => ({
+        styles: () => ({
           root: {
             '--button-height-sm': rem('32px'),
             '--button-height-compact-xs': rem('24px'),
             fontWeight: '400',
-            ...(!props.variant || props.variant === 'filled' || props.variant === 'gradient'
-              ? { '--button-color': '#000' }
-              : {}),
           },
         }),
       }),
@@ -471,6 +475,12 @@ const creteMantineTheme = (scale = 1) =>
         defaultProps: {
           radius: 'md',
         },
+      }),
+      Paper: Paper.extend({
+        styles: () => paperBorder,
+      }),
+      Card: Card.extend({
+        styles: () => paperBorder,
       }),
       Input: Input.extend({
         styles: (_theme, props) => ({
@@ -627,6 +637,58 @@ const creteMantineTheme = (scale = 1) =>
     },
   })
 
+const surface = (name: string, outline?: string) => ({
+  text: `var(--chatbox-tint-${name})`,
+  filled: `var(--chatbox-background-${name}-primary)`,
+  filledHover: `var(--chatbox-background-${name}-primary-hover)`,
+  light: `var(--chatbox-background-${name}-secondary)`,
+  lightHover: `var(--chatbox-background-${name}-secondary-hover)`,
+  outline: outline ?? `var(--chatbox-border-${name})`,
+})
+
+const tint = (name: string) => ({
+  text: `var(--chatbox-tint-${name})`,
+  filled: `var(--chatbox-tint-${name})`,
+  filledHover: `color-mix(in srgb, var(--chatbox-tint-${name}), black 12%)`,
+  light: `color-mix(in srgb, var(--chatbox-tint-${name}), transparent 88%)`,
+  lightHover: `color-mix(in srgb, var(--chatbox-tint-${name}), transparent 80%)`,
+  outline: `var(--chatbox-tint-${name})`,
+})
+
+const CHATBOX_VARIANT_COLORS = {
+  brand: surface('brand'),
+  success: surface('success'),
+  error: surface('error'),
+  warning: surface('warning'),
+  gray: surface('gray', 'var(--chatbox-tint-gray)'),
+  primary: {
+    text: 'var(--chatbox-tint-primary)',
+    filled: 'var(--chatbox-background-primary)',
+    filledHover: 'var(--chatbox-background-primary-hover)',
+    light: 'var(--chatbox-background-secondary)',
+    lightHover: 'var(--chatbox-background-secondary-hover)',
+    outline: 'var(--chatbox-border-primary)',
+  },
+  secondary: tint('secondary'),
+  tertiary: tint('tertiary'),
+}
+
+const chatboxVariantVars = Object.fromEntries(
+  Object.entries(CHATBOX_VARIANT_COLORS).flatMap(([name, pal]) => {
+    const key = `--mantine-color-chatbox-${name}`
+    return [
+      [`${key}-text`, pal.text],
+      [`${key}-filled`, pal.filled],
+      [`${key}-filled-hover`, pal.filledHover],
+      [`${key}-light`, pal.light],
+      [`${key}-light-hover`, pal.lightHover],
+      [`${key}-light-color`, pal.text],
+      [`${key}-outline`, pal.outline],
+      [`${key}-outline-hover`, `color-mix(in srgb, ${pal.outline}, transparent 95%)`],
+    ]
+  })
+)
+
 const mantineCssVariablesResolver: CSSVariablesResolver = () => {
   const text = {
     '--mantine-color-text': 'var(--chatbox-tint-primary)',
@@ -639,7 +701,7 @@ const mantineCssVariablesResolver: CSSVariablesResolver = () => {
     '--mantine-primary-color-contrast': '#000',
   }
   return {
-    variables: {},
+    variables: chatboxVariantVars,
     light: {
       ...text,
       '--mantine-color-default': 'var(--chatbox-background-primary)',

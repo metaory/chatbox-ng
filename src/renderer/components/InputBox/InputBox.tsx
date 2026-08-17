@@ -1485,17 +1485,10 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
                   disabled={submitBlocked && !generating}
                   size={32}
                   variant="filled"
-                  color={generating ? 'dark' : 'chatbox-brand'}
+                  color={generating ? 'chatbox-error' : submitBlocked ? 'chatbox-warning' : 'chatbox-brand'}
                   radius="md"
                   onClick={generating ? onStopGenerating : () => handleSubmit()}
-                  className={cn('shrink-0 mb-1', !generating && submitBlocked && 'disabled:!opacity-100 !text-black')}
-                  style={
-                    generating
-                      ? { backgroundColor: 'var(--chatbox-tint-error)' }
-                      : submitBlocked
-                      ? { backgroundColor: 'var(--chatbox-tint-warning)' }
-                      : { backgroundColor: 'var(--chatbox-brand)' }
-                  }
+                  className={cn('shrink-0 mb-1', !generating && submitBlocked && 'disabled:!opacity-100')}
                 >
                   {generating ? (
                     <ScalableIcon icon={IconPlayerStopFilled} size={16} />

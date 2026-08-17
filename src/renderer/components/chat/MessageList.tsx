@@ -90,6 +90,10 @@ export interface MessageListProps {
   currentSession: Session
 }
 
+function SessionListTopGutter() {
+  return <div className="h-12" />
+}
+
 const MessageList = forwardRef<MessageListRef, MessageListProps>((props, ref) => {
   const isSmallScreen = useIsSmallScreen()
   const widthFull = useUIStore((s) => s.widthFull)
@@ -489,6 +493,7 @@ const MessageList = forwardRef<MessageListRef, MessageListProps>((props, ref) =>
                   initialTopMostItemIndex: renderItems.length - 1,
                 })}
             increaseViewportBy={{ top: 2000, bottom: 2000 }}
+            components={!isSmallScreen ? { Header: SessionListTopGutter } : undefined}
             itemContent={(index, item) => {
               const itemClassName = widthFull ? 'w-full' : 'max-w-4xl mx-auto'
               const isFirstItem = index === 0

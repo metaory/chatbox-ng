@@ -238,7 +238,6 @@ function RouteComponent() {
         ref={messageListRef}
         key={`message-list${currentSessionId}`}
         currentSession={currentSession}
-        className={!isSmallScreen ? 'pt-[2px]' : undefined}
       />
 
       <Box className="relative">
