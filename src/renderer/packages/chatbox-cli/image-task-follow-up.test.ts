@@ -23,7 +23,7 @@ function imageRecord(overrides: Partial<ImageGeneration> = {}): ImageGeneration 
     referenceImages: [],
     generatedImages: ['https://example.com/red-fox.png'],
     createdAt: 1_000,
-    model: { provider: 'chatbox-ai', modelId: 'manifest-image' },
+    model: { provider: 'openai', modelId: 'manifest-image' },
     status: 'done',
     ...overrides,
   }

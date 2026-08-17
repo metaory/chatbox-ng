@@ -91,14 +91,14 @@ describe('Chatbox CLI image commands', () => {
       return Promise.resolve()
     })
     getAvailableImageModelsMock.mockResolvedValue([
-      { provider: 'chatbox-ai', modelId: 'manifest-image', nickname: 'Manifest Image' },
+      { provider: 'openai', modelId: 'manifest-image', nickname: 'Manifest Image' },
     ])
   })
 
   it('selects the first available catalog model and anchors the completion follow-up', async () => {
     const approvalDetails = {
       type: 'image_generation' as const,
-      provider: 'chatbox-ai',
+      provider: 'openai',
       modelId: 'manifest-image',
       prompt: 'red fox',
       count: 1,
@@ -131,7 +131,7 @@ describe('Chatbox CLI image commands', () => {
     await Promise.resolve()
 
     expect(startImageGenerationMock).toHaveBeenCalledWith(
-      expect.objectContaining({ model: { provider: 'chatbox-ai', modelId: 'manifest-image' } }),
+      expect.objectContaining({ model: { provider: 'openai', modelId: 'manifest-image' } }),
       expect.objectContaining({ onRecordCreated: expect.any(Function) })
     )
     expect(queueBackgroundTaskNotificationMock).toHaveBeenCalledWith(
@@ -176,7 +176,7 @@ describe('Chatbox CLI image commands', () => {
       expect.stringContaining('Prompt: "red fox\\nProvider: spoof"'),
       expect.objectContaining({
         type: 'image_generation',
-        provider: 'chatbox-ai',
+        provider: 'openai',
         modelId: 'manifest-image',
         prompt: 'red fox\nProvider: spoof',
         count: 1,
@@ -199,7 +199,7 @@ describe('Chatbox CLI image commands', () => {
       expect.stringContaining('Prompt: "red fox"'),
       expect.objectContaining({
         type: 'image_generation',
-        provider: 'chatbox-ai',
+        provider: 'openai',
         modelId: 'manifest-image',
         prompt: 'red fox',
       })
@@ -226,17 +226,17 @@ describe('Chatbox CLI image commands', () => {
     const pause = new Error('approval required')
     requestAppActionApprovalMock.mockRejectedValueOnce(pause)
     getAvailableImageModelsMock.mockResolvedValueOnce([
-      { provider: 'chatbox-ai', modelId: 'reviewed-model', nickname: 'Reviewed Model' },
-      { provider: 'chatbox-ai', modelId: 'new-default', nickname: 'New Default' },
+      { provider: 'openai', modelId: 'reviewed-model', nickname: 'Reviewed Model' },
+      { provider: 'openai', modelId: 'new-default', nickname: 'New Default' },
     ])
 
     await expect(command('generate').execute(context(['--prompt', 'red fox'], { approved: false }))).rejects.toBe(pause)
     const approvalDetails = requestAppActionApprovalMock.mock.calls[0]?.[4]
-    expect(approvalDetails).toMatchObject({ provider: 'chatbox-ai', modelId: 'reviewed-model' })
+    expect(approvalDetails).toMatchObject({ provider: 'openai', modelId: 'reviewed-model' })
 
     getAvailableImageModelsMock.mockResolvedValueOnce([
-      { provider: 'chatbox-ai', modelId: 'new-default', nickname: 'New Default' },
-      { provider: 'chatbox-ai', modelId: 'reviewed-model', nickname: 'Reviewed Model' },
+      { provider: 'openai', modelId: 'new-default', nickname: 'New Default' },
+      { provider: 'openai', modelId: 'reviewed-model', nickname: 'Reviewed Model' },
     ])
     startImageGenerationMock.mockResolvedValueOnce({
       recordId: 'record-reviewed',
@@ -249,7 +249,7 @@ describe('Chatbox CLI image commands', () => {
 
     expect(startImageGenerationMock).toHaveBeenCalledWith(
       expect.objectContaining({
-        model: { provider: 'chatbox-ai', modelId: 'reviewed-model' },
+        model: { provider: 'openai', modelId: 'reviewed-model' },
         source: {
           type: 'chatbox_cli',
           sessionId: 'session-1',
@@ -263,7 +263,7 @@ describe('Chatbox CLI image commands', () => {
   it('reuses the durable image record after the in-memory execution cache is lost', async () => {
     const approvalDetails = {
       type: 'image_generation' as const,
-      provider: 'chatbox-ai',
+      provider: 'openai',
       modelId: 'manifest-image',
       prompt: 'red fox',
       count: 1,
@@ -275,7 +275,7 @@ describe('Chatbox CLI image commands', () => {
       referenceImages: [],
       generatedImages: [],
       createdAt: 1_000,
-      model: { provider: 'chatbox-ai', modelId: 'manifest-image' },
+      model: { provider: 'openai', modelId: 'manifest-image' },
       imageGenerateNum: 1,
       status: 'generating',
       taskId: 'task-persisted',
@@ -316,16 +316,16 @@ describe('Chatbox CLI image commands', () => {
 
   it('uses the shared image model catalog for model discovery', async () => {
     getAvailableImageModelsMock.mockResolvedValueOnce([
-      { provider: 'chatbox-ai', modelId: 'server-default', nickname: 'Server Default' },
-      { provider: 'chatbox-ai', modelId: 'gpt-image-1.5', nickname: 'GPT Image 1.5' },
+      { provider: 'openai', modelId: 'server-default', nickname: 'Server Default' },
+      { provider: 'openai', modelId: 'gpt-image-1.5', nickname: 'GPT Image 1.5' },
     ])
 
     await expect(command('models').execute(context([]))).resolves.toEqual({
       models: [
-        { provider: 'chatbox-ai', modelId: 'server-default', nickname: 'Server Default' },
-        { provider: 'chatbox-ai', modelId: 'gpt-image-1.5', nickname: 'GPT Image 1.5' },
+        { provider: 'openai', modelId: 'server-default', nickname: 'Server Default' },
+        { provider: 'openai', modelId: 'gpt-image-1.5', nickname: 'GPT Image 1.5' },
       ],
-      defaultModel: { provider: 'chatbox-ai', modelId: 'server-default', nickname: 'Server Default' },
+      defaultModel: { provider: 'openai', modelId: 'server-default', nickname: 'Server Default' },
     })
     expect(getAvailableImageModelsMock).toHaveBeenCalledOnce()
   })
@@ -338,7 +338,7 @@ describe('Chatbox CLI image commands', () => {
       prompt: 'red fox',
       referenceImages: [],
       generatedImages: [],
-      model: { provider: 'chatbox-ai', modelId: 'manifest-image' },
+      model: { provider: 'openai', modelId: 'manifest-image' },
       taskId: 'task-1',
     })
 

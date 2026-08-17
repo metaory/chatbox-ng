@@ -554,7 +554,7 @@ export async function runConversationTest(options: RunConversationTestOptions): 
     } as Settings
 
     const sessionSettings: SessionSettings = {
-      provider: 'chatbox-ai',
+      provider: 'openai',
       modelId: 'gpt-5-mini',
       temperature: 0.3,
       topP: 1,

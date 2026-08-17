@@ -358,7 +358,7 @@ async function switchThread(sessionId: string, threadId: string) {
 interface RemoteConfigResponse {
   // ... existing fields
   fast_model?: {
-    provider: string    // e.g., "chatbox-ai"
+    provider: string    // e.g., "openai"
     model: string       // e.g., "chatboxai-3.5" 或快速模型
   }
 }

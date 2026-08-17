@@ -95,7 +95,7 @@ function record(overrides: Partial<ImageGeneration> = {}): ImageGeneration {
     referenceImages: [],
     generatedImages: [],
     createdAt: 1_000,
-    model: { provider: 'chatbox-ai', modelId: 'manifest-image' },
+    model: { provider: 'openai', modelId: 'manifest-image' },
     status: 'generating',
     taskId: 'task-1',
     ...overrides,

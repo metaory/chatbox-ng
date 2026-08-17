@@ -39,7 +39,7 @@ export const AgentModeEntrySchema = z.object({
 
 export const ProviderModelInfoSchema = z.object({
   modelId: z.string(),
-  // The provider id this model was resolved under (e.g. 'chatbox-ai', 'qwen').
+  // The provider id this model was resolved under (e.g. 'openai', 'qwen').
   // Stamped at model-resolution time (getModel); not part of persisted model lists.
   // Used to evaluate reasoning-control support with the same provider+model-id logic as the UI.
   providerId: z.string().optional().catch(undefined),

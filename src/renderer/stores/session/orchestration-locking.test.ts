@@ -36,7 +36,7 @@ import { createInitialState } from './stream-chunk-processor'
 
 const approvalDetails = {
   type: 'image_generation' as const,
-  provider: 'chatbox-ai',
+  provider: 'openai',
   modelId: 'image-model',
   prompt: 'first image',
   count: 1,

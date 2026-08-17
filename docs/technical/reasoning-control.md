@@ -30,7 +30,7 @@ getReasoningControlCapabilities(provider, model): {
 }
 ```
 
-`provider` 是 provider id 字符串（与 `ModelProviderEnum` 值比较，如 `'chatbox-ai'`、`'qwen'`），`model` 是 `ProviderModelInfo`（含 `modelId`、`apiStyle`）。
+`provider` 是 provider id 字符串（与 `ModelProviderEnum` 值比较，如 `'openai'`、`'qwen'`），`model` 是 `ProviderModelInfo`（含 `modelId`、`apiStyle`）。
 
 ---
 

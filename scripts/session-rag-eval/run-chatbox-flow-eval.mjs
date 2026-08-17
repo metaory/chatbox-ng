@@ -69,8 +69,8 @@ async function seedUserData(configPath) {
   const config = await readJson(configPath)
   config.settings = config.settings || {}
   config.settings.defaultChatModel = config.settings.defaultChatModel || {
-    provider: 'chatbox-ai',
-    model: config.settings.licenseDetail?.defaultModel || 'chatboxai-4',
+    provider: 'openai',
+    model: 'gpt-4.1',
   }
   await fs.writeFile(path.join(userDataDir, 'config.json'), JSON.stringify(config, null, 2))
   return {

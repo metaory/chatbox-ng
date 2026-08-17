@@ -84,7 +84,7 @@ const historyRecords: ImageGeneration[] = [
     referenceImages: [],
     generatedImages: [sampleImages[1]],
     createdAt: Date.now() - 1000 * 60 * 60 * 4,
-    model: { provider: 'chatbox-ai', modelId: 'chatboxai-paint' },
+    model: { provider: 'openai', modelId: 'gpt-image-1' },
     dalleStyle: 'natural',
     imageGenerateNum: 1,
     status: 'done',
@@ -96,7 +96,7 @@ const historyRecords: ImageGeneration[] = [
     referenceImages: [],
     generatedImages: [],
     createdAt: Date.now() - 1000 * 60 * 60 * 24,
-    model: { provider: 'chatbox-ai', modelId: 'chatboxai-paint' },
+    model: { provider: 'openai', modelId: 'gpt-image-1' },
     status: 'error',
     error: 'The image request could not be completed.',
     errorCode: 'image_content_moderation_blocked',
@@ -426,7 +426,6 @@ function MobileDrawersFixture() {
 
 function getModelDisplayName(record: ImageGeneration) {
   if (record.model.modelId === 'gpt-image-1') return 'GPT Image 1'
-  if (record.model.modelId === 'chatboxai-paint') return 'Chatbox AI Paint'
   return record.model.modelId
 }
 

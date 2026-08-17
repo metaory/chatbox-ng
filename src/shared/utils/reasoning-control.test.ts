@@ -798,52 +798,52 @@ describe('reasoning-control', () => {
     it('scopes options to the provider+model they were written for', () => {
       const written = setReasoningProviderOptionsForModel(
         undefined,
-        ModelProviderEnum.ChatboxAI,
+        ModelProviderEnum.OpenAI,
         'deepseek-v4-pro',
         deepseekOptions
       )
 
       // The legacy shared field is cleared; the map is the single source of truth.
       expect(written.providerOptions).toBeUndefined()
-      expect(written.providerOptionsByModel).toEqual({ 'chatbox-ai:deepseek-v4-pro': deepseekOptions })
-      expect(resolveReasoningProviderOptions(written, ModelProviderEnum.ChatboxAI, 'deepseek-v4-pro')).toEqual(
+      expect(written.providerOptionsByModel).toEqual({ 'openai:deepseek-v4-pro': deepseekOptions })
+      expect(resolveReasoningProviderOptions(written, ModelProviderEnum.OpenAI, 'deepseek-v4-pro')).toEqual(
         deepseekOptions
       )
       // A switched model must not inherit another model's parameters.
       expect(
-        resolveReasoningProviderOptions(written, ModelProviderEnum.ChatboxAI, 'claude-sonnet-4-20250514')
+        resolveReasoningProviderOptions(written, ModelProviderEnum.OpenAI, 'claude-sonnet-4-20250514')
       ).toBeUndefined()
-      expect(resolveReasoningProviderOptions(written, ModelProviderEnum.OpenAI, 'gpt-5.5')).toBeUndefined()
+      expect(resolveReasoningProviderOptions(written, ModelProviderEnum.Claude, 'gpt-5.5')).toBeUndefined()
     })
 
     it('keeps entries of other models and removes an entry on the default level', () => {
       const first = setReasoningProviderOptionsForModel(
         undefined,
-        ModelProviderEnum.ChatboxAI,
+        ModelProviderEnum.OpenAI,
         'deepseek-v4-pro',
         deepseekOptions
       )
       const second = setReasoningProviderOptionsForModel(
         first,
-        ModelProviderEnum.ChatboxAI,
+        ModelProviderEnum.OpenAI,
         'claude-sonnet-4-20250514',
         claudeOptions
       )
 
       expect(second.providerOptionsByModel).toEqual({
-        'chatbox-ai:deepseek-v4-pro': deepseekOptions,
-        'chatbox-ai:claude-sonnet-4-20250514': claudeOptions,
+        'openai:deepseek-v4-pro': deepseekOptions,
+        'openai:claude-sonnet-4-20250514': claudeOptions,
       })
 
       const cleared = setReasoningProviderOptionsForModel(
         second,
-        ModelProviderEnum.ChatboxAI,
+        ModelProviderEnum.OpenAI,
         'deepseek-v4-pro',
         undefined
       )
       expect(cleared.providerOptions).toBeUndefined()
-      expect(cleared.providerOptionsByModel).toEqual({ 'chatbox-ai:claude-sonnet-4-20250514': claudeOptions })
-      expect(resolveReasoningProviderOptions(cleared, ModelProviderEnum.ChatboxAI, 'deepseek-v4-pro')).toBeUndefined()
+      expect(cleared.providerOptionsByModel).toEqual({ 'openai:claude-sonnet-4-20250514': claudeOptions })
+      expect(resolveReasoningProviderOptions(cleared, ModelProviderEnum.OpenAI, 'deepseek-v4-pro')).toBeUndefined()
     })
 
     it('never reads the legacy shared field', () => {

@@ -26,14 +26,12 @@ const TEST_TIMEOUT = Number(process.env.CHATBOX_TEST_TIMEOUT) || 120000
 const shouldSkip = !LICENSE_KEY
 
 const DEFAULT_TEST_MODELS = [
-  { provider: 'chatbox-ai', modelId: 'chatboxai-3.5', name: 'ChatboxAI 3.5' },
-  { provider: 'chatbox-ai', modelId: 'chatboxai-4', name: 'ChatboxAI 4' },
-  { provider: 'chatbox-ai', modelId: 'gpt-4o-mini', name: 'GPT-4o Mini (ChatboxAI)' },
-  { provider: 'chatbox-ai', modelId: 'gpt-4o', name: 'GPT-4o (ChatboxAI)' },
-  { provider: 'chatbox-ai', modelId: 'gpt-5-mini', name: 'GPT-5 Mini (ChatboxAI)' },
-  { provider: 'chatbox-ai', modelId: 'claude-3-5-sonnet', name: 'Claude 3.5 Sonnet (ChatboxAI)' },
-  { provider: 'chatbox-ai', modelId: 'claude-3-5-haiku', name: 'Claude 3.5 Haiku (ChatboxAI)' },
-  { provider: 'chatbox-ai', modelId: 'gemini-2.0-flash', name: 'Gemini 2.0 Flash (ChatboxAI)' },
+  { provider: 'openai', modelId: 'gpt-4o-mini', name: 'GPT-4o Mini' },
+  { provider: 'openai', modelId: 'gpt-4o', name: 'GPT-4o' },
+  { provider: 'openai', modelId: 'gpt-5-mini', name: 'GPT-5 Mini' },
+  { provider: 'claude', modelId: 'claude-3-5-sonnet', name: 'Claude 3.5 Sonnet' },
+  { provider: 'claude', modelId: 'claude-3-5-haiku', name: 'Claude 3.5 Haiku' },
+  { provider: 'gemini', modelId: 'gemini-2.0-flash', name: 'Gemini 2.0 Flash' },
 ]
 
 function getTestModels() {

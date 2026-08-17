@@ -16,8 +16,8 @@ import { buildChatboxUrl } from '@/packages/remote'
 import platform from '@/platform'
 import { useLanguage } from '@/stores/settingsStore'
 
-const IOS_APP_STORE_URL = 'https://apps.apple.com/app/chatbox-ai/id6471368056'
-const ANDROID_APK_URL = 'https://chatboxai.app/zh/install?download=android_apk'
+const IOS_APP_STORE_URL = 'https://apps.apple.com/app/metaory/id6471368056'
+const ANDROID_APK_URL = 'https://metaory.app/install?download=android_apk'
 const DISMISS_KEY = 'desktop-download-reminder-dismissed'
 
 export default function DesktopDownloadReminder() {

@@ -559,8 +559,7 @@ const _Message: FC<Props> = (props) => {
               testId: TestId.message.actionMenuRetryBelow,
               onClick: onGenerateMore,
             },
-            !msg.model?.startsWith('Chatbox-AI') &&
-              !(msg.role === 'assistant' && props.sessionType === 'picture') && {
+            !(msg.role === 'assistant' && props.sessionType === 'picture') && {
                 text: t('Edit'),
                 icon: IconPencil,
                 testId: TestId.message.actionMenuEdit,
@@ -1008,7 +1007,7 @@ const _Message: FC<Props> = (props) => {
             onClick={onGenerateMore}
           />
         )}
-        {!msg.model?.startsWith('Chatbox-AI') && !(msg.role === 'assistant' && props.sessionType === 'picture') && (
+        {!(msg.role === 'assistant' && props.sessionType === 'picture') && (
           <MessageActionIcon
             testId={TestId.message.actionBarEdit}
             icon={IconPencil}

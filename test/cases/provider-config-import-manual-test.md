@@ -342,6 +342,6 @@ console.log(decoded);
 
 - The `isCustom` field is automatically added to custom providers during import
 - Provider IDs must be unique
-- Built-in provider IDs: chatbox-ai, openai, azure, chatglm-6b, claude, gemini, ollama, groq, deepseek, siliconflow, volcengine, mistral-ai, lm-studio, perplexity, xAI
+- Built-in provider IDs: openai, azure, chatglm-6b, claude, gemini, ollama, groq, deepseek, siliconflow, volcengine, mistral-ai, lm-studio, perplexity, xAI
 - Model capabilities: vision, reasoning, tool_use
 - Model types: chat, embedding, rerank
