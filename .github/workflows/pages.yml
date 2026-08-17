@@ -53,7 +53,8 @@ jobs:
           cp src/renderer/static/_headers "$dist/_headers"
 
       - name: Install wrangler
-        run: pnpm add -w wrangler@4
+        working-directory: ${{ runner.temp }}
+        run: npm install wrangler@4
 
       - id: deploy
         uses: cloudflare/wrangler-action@v4
@@ -61,4 +62,10 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          command: pages deploy release/app/dist/renderer --project-name=${{ vars.CLOUDFLARE_PAGES_PROJECT || 'chatbox-ng' }}
+          workingDirectory: ${{ runner.temp }}
+          packageManager: npm
+          command: >-
+            pages deploy ${{ github.workspace }}/release/app/dist/renderer
+            --project-name=${{ vars.CLOUDFLARE_PAGES_PROJECT || 'chatbox-ng' }}
+            --branch=${{ github.head_ref || github.ref_name }}
+            --commit-hash=${{ github.sha }}
