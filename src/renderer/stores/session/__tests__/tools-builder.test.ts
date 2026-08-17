@@ -19,7 +19,7 @@ const {
   installFromSandboxMock: vi.fn(),
   loadSkillMock: vi.fn(),
   getSettingsMock: vi.fn(),
-  webSearchProvider: { current: 'build-in' },
+  webSearchProvider: { current: 'bing' },
   buildCodeExecutionToolsMock: vi.fn(),
   getSessionAttachmentRagToolSetMock: vi.fn(),
   skillsChangedListeners: new Set<() => void>(),
@@ -194,7 +194,7 @@ beforeEach(() => {
   getSettingsMock.mockReturnValue({
     skills: { enabledSkillNames: ['test-skill'] },
   })
-  webSearchProvider.current = 'build-in'
+  webSearchProvider.current = 'bing'
   buildCodeExecutionToolsMock.mockReturnValue({
     description: 'code execution toolset',
     tools: {
@@ -362,6 +362,7 @@ describe('buildToolsForSession', () => {
   })
 
   test('webBrowsing=true exposes parse_link when configured search provider supports it', async () => {
+    webSearchProvider.current = 'tavily'
     const model = createMockModel()
     const result = await buildToolsForSession(model, {
       webBrowsing: true,

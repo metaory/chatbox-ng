@@ -10,15 +10,14 @@ export { ModelProviderType } from './provider'
 
 /**
  * Document parser service type
- * - none: No parsing service, only supports basic text files (legacy mobile/web setting)
+ * - none: No parsing service, only supports basic text files (web/mobile default)
  * - local: Local parsing using built-in libraries (desktop default)
- * - chatbox-ai: Local-first parsing with Chatbox cloud fallback (mobile/web default)
  * - mineru: Third-party MinerU parsing service (desktop only)
  */
-export type DocumentParserType = 'none' | 'local' | 'chatbox-ai' | 'mineru'
+export type DocumentParserType = 'none' | 'local' | 'mineru'
 
 export const DocumentParserConfigSchema = z.object({
-  type: z.enum(['none', 'local', 'chatbox-ai', 'mineru']),
+  type: z.enum(['none', 'local', 'mineru']),
   mineru: z
     .object({
       apiToken: z.string(),
@@ -321,7 +320,7 @@ const ShortcutSettingSchema = z.preprocess(
 
 const ExtensionSettingsSchema = z.object({
   webSearch: z.object({
-    provider: z.enum(['build-in', 'bing', 'tavily', 'bocha', 'querit']).catch('build-in'),
+    provider: z.enum(['bing', 'tavily', 'bocha', 'querit']).catch('bing'),
     tavilyApiKey: z.string().optional(),
     bochaApiKey: z.string().optional(),
     queritApiKey: z.string().optional(),
@@ -467,18 +466,6 @@ export const SettingsSchema = GlobalSessionSettingsSchema.extend({
     .catch(undefined),
   defaultEmbeddingModel: DefaultModelSelectionSchema,
   defaultRerankModel: DefaultModelSelectionSchema,
-
-  // chatboxai
-  licenseKey: z.string().optional(),
-  licenseInstances: z.record(z.string(), z.string()).optional().catch(undefined),
-  licenseDetail: ChatboxAILicenseDetailSchema.optional().catch(undefined),
-  licensePlanName: z.string().optional(),
-  licenseActivationMethod: z.enum(['login', 'manual']).optional(),
-  hasExpiredLicense: z.boolean().default(false),
-  lastSelectedLicenseByUser: z.record(z.string(), z.string()).optional().catch(undefined),
-  // 在 licensekeyview UI中显示/记忆的key，以免用户使用 login 方式后老 key 被清除，他也不记得
-  memorizedManualLicenseKey: z.string().optional(),
-  chatboxAIDesktopPromptDismissed: z.boolean().default(false),
 
   // VibeDrop HTML artifact publishing
   // Cached publish key issued by chatbox-backend, bound to the account email it

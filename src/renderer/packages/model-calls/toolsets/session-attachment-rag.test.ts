@@ -3,8 +3,6 @@ import { beforeEach, describe, expect, test, vi } from 'vitest'
 const queryMock = vi.fn()
 const getAttachmentsMock = vi.fn()
 const readParentsMock = vi.fn()
-const getSessionRagConfigMock = vi.fn()
-const getLicenseKeyMock = vi.fn()
 const getSettingsMock = vi.fn()
 
 vi.mock('@/platform', () => ({
@@ -15,14 +13,6 @@ vi.mock('@/platform', () => ({
       readParents: readParentsMock,
     }),
   },
-}))
-
-vi.mock('@/packages/remote', () => ({
-  getSessionRagConfig: getSessionRagConfigMock,
-}))
-
-vi.mock('@/stores/settingActions', () => ({
-  getLicenseKey: getLicenseKeyMock,
 }))
 
 vi.mock('@/stores/settingsStore', () => ({
@@ -48,8 +38,6 @@ describe('session attachment RAG toolset', () => {
         status: 'ready',
       },
     ])
-    getLicenseKeyMock.mockReturnValue(undefined)
-    getSessionRagConfigMock.mockResolvedValue(undefined)
     getSettingsMock.mockReturnValue({
       defaultRerankModel: {
         provider: 'cohere',
@@ -60,7 +48,7 @@ describe('session attachment RAG toolset', () => {
     readParentsMock.mockResolvedValue([])
   })
 
-  test('uses local default rerank model when remote session RAG rerank model is unavailable', async () => {
+  test('uses default rerank model when configured', async () => {
     const { getToolSet } = await import('./session-attachment-rag')
     const toolset = await getToolSet([1])
     const executeQuery = toolset.tools.query_session_attachment.execute
@@ -88,15 +76,8 @@ describe('session attachment RAG toolset', () => {
     })
   })
 
-  test('local default rerank model wins over remote session RAG rerank model', async () => {
-    getSessionRagConfigMock.mockResolvedValue({
-      capabilities: {
-        session_attachment_rerank: true,
-      },
-      models: {
-        rerank: 'chatbox-ai:rerank',
-      },
-    })
+  test('disables rerank when no default rerank model is set', async () => {
+    getSettingsMock.mockReturnValue({ defaultRerankModel: undefined })
 
     const { getToolSet } = await import('./session-attachment-rag')
     const toolset = await getToolSet([1])
@@ -115,8 +96,8 @@ describe('session attachment RAG toolset', () => {
       expect.objectContaining({
         plan: expect.objectContaining({
           rerank: {
-            enabled: true,
-            model: 'cohere:rerank-v3.5',
+            enabled: false,
+            model: undefined,
           },
         }),
       })

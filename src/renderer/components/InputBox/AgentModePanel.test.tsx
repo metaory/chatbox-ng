@@ -29,11 +29,10 @@ const mocks = vi.hoisted(() => {
   const settingsState = {
     extension: {
       webSearch: {
-        provider: 'build-in',
+        provider: 'bing',
         tavilyApiKey: '',
       },
     },
-    licenseKey: '',
     skills: {
       enabledSkillNames: [],
     },

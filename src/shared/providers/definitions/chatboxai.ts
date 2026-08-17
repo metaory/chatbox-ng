@@ -13,10 +13,7 @@ export const chatboxAIProvider = defineProvider({
   createModel: (config) => {
     return new ChatboxAI(
       {
-        licenseKey: config.globalSettings.licenseKey,
         model: config.model,
-        licenseInstances: config.globalSettings.licenseInstances,
-        licenseDetail: config.globalSettings.licenseDetail,
         language: config.globalSettings.language,
         dalleStyle: config.settings.dalleStyle || 'vivid',
         temperature: config.settings.temperature,

@@ -1,16 +1,8 @@
 import { BaseError } from '@shared/models/errors'
 import { getModel } from '@shared/providers'
 import type { ImageGeneration, ImageGenerationModel, ImageGenerationSource } from '@shared/types'
-import { ModelProviderEnum } from '@shared/types'
 import { createModelDependencies } from '@/adapters'
 import { getLogger } from '@/lib/utils'
-import {
-  IMAGE_GENERATION_POLL_INTERVAL_MS,
-  type ImageGenerationTaskResponse,
-  pollImageTask,
-  pollTaskUntilComplete,
-  submitImageGeneration,
-} from '@/packages/remote'
 import platform from '@/platform'
 import storage from '@/storage'
 import { StorageKeyGenerator } from '@/storage/StoreStorage'
@@ -27,20 +19,7 @@ import { settingsStore } from './settingsStore'
 
 const log = getLogger('image-generation-actions')
 
-// AbortController for cancelling in-flight polling
 let currentAbortController: AbortController | null = null
-
-function getLicenseKey(): string {
-  const licenseKey = settingsStore.getState().licenseKey
-  if (!licenseKey) {
-    throw new Error('License key is required for image generation')
-  }
-  return licenseKey
-}
-
-function shouldUseAsyncPath(provider: string): boolean {
-  return provider === ModelProviderEnum.ChatboxAI
-}
 
 function getErrorRecordUpdate(
   error: unknown
@@ -51,32 +30,6 @@ function getErrorRecordUpdate(
     error: normalizedError.message,
     errorCode: error instanceof BaseError ? error.code : undefined,
     errorItemUuid: undefined,
-  }
-}
-
-function getFailedImageGenerationError(
-  result: ImageGenerationTaskResponse,
-  fallback: string
-): Pick<ImageGeneration, 'error' | 'errorCode' | 'errorItemUuid'> {
-  const failedItem = result.items.find((item) => item.status === 'failed')
-  return {
-    error: failedItem?.error_message || fallback,
-    errorCode: failedItem?.error_code,
-    errorItemUuid: failedItem?.uuid,
-  }
-}
-
-function getCompletedImages(result: ImageGenerationTaskResponse): {
-  imageUrls: string[]
-  thumbnailUrls: string[]
-} {
-  const completedItems = result.items.filter(
-    (item): item is typeof item & { image_url: string } => item.status === 'completed' && !!item.image_url
-  )
-
-  return {
-    imageUrls: completedItems.map((item) => item.image_url),
-    thumbnailUrls: completedItems.map((item) => item.thumbnail_url || item.image_url),
   }
 }
 
@@ -98,7 +51,7 @@ export function isGenerating(): boolean {
 export interface ImageGenerationHandle {
   recordId: string
   startedAt: number
-  monitoring: { mode: 'polling'; intervalMs: number } | { mode: 'direct' }
+  monitoring: { mode: 'direct' }
   completion: Promise<ImageGeneration | null>
 }
 
@@ -152,8 +105,7 @@ export async function startImageGeneration(
   store.setCurrentRecordId(record.id)
   queryClient.setQueryData([IMAGE_GEN_QUERY_KEY, record.id], record)
 
-  const generateFn = shouldUseAsyncPath(params.model.provider) ? generateImages : generateImagesDirect
-  const generation = generateFn(record.id, params).finally(() => {
+  const generation = generateImagesDirect(record.id, params).finally(() => {
     imageGenerationStore.getState().setCurrentGeneratingId(null)
     queryClient.invalidateQueries({ queryKey: [IMAGE_GEN_LIST_QUERY_KEY] })
   })
@@ -161,9 +113,7 @@ export async function startImageGeneration(
   return {
     recordId: record.id,
     startedAt: record.createdAt,
-    monitoring: shouldUseAsyncPath(params.model.provider)
-      ? { mode: 'polling', intervalMs: IMAGE_GENERATION_POLL_INTERVAL_MS }
-      : { mode: 'direct' },
+    monitoring: { mode: 'direct' },
     completion: generation,
   }
 }
@@ -171,126 +121,6 @@ export async function startImageGeneration(
 export async function createAndGenerate(params: GenerateImageParams): Promise<string> {
   const handle = await startImageGeneration(params)
   return handle.recordId
-}
-
-async function generateImages(recordId: string, params: GenerateImageParams): Promise<ImageGeneration | null> {
-  const licenseKey = getLicenseKey()
-  const num = params.imageGenerateNum || 1
-
-  // Create AbortController for this generation
-  currentAbortController = new AbortController()
-  const signal = currentAbortController.signal
-
-  try {
-    // Update status to generating
-    let currentRecord = await updateRecord(recordId, { status: 'generating' })
-    if (currentRecord) {
-      queryClient.setQueryData([IMAGE_GEN_QUERY_KEY, recordId], currentRecord)
-    }
-
-    // Prepare reference images - convert storage keys to base64 data URLs if needed
-    const dependencies = await createModelDependencies()
-    const referenceImageData: Array<{ image_url: string }> = []
-
-    for (const keyOrUrl of params.referenceImages) {
-      if (keyOrUrl.startsWith('http://') || keyOrUrl.startsWith('https://')) {
-        referenceImageData.push({ image_url: keyOrUrl })
-      } else {
-        const imageData = await dependencies.storage.getImage(keyOrUrl)
-        if (imageData) {
-          log.debug('Reference image from storage key:', keyOrUrl, 'data length:', imageData.length)
-          referenceImageData.push({ image_url: imageData })
-        }
-      }
-    }
-
-
-    // Single submit with quantity
-    const submission = await submitImageGeneration(
-      {
-        model: params.model.modelId,
-        prompt: params.prompt,
-        response_format: 'b64_json',
-        style: params.dalleStyle || 'vivid',
-        aspect_ratio: params.aspectRatio,
-        quantity: num,
-        images: referenceImageData.length > 0 ? referenceImageData : undefined,
-      },
-      licenseKey
-    )
-
-    log.debug('Submitted image generation task:', submission.task_id, 'items:', submission.items.length)
-
-    // Store task ID for resume capability
-    currentRecord = await updateRecord(recordId, { taskId: submission.task_id })
-    if (currentRecord) {
-      queryClient.setQueryData([IMAGE_GEN_QUERY_KEY, recordId], currentRecord)
-    }
-
-    // Poll until all items are finished, progressively updating as images complete
-    let lastCompletedCount = 0
-    const finalResult = await pollTaskUntilComplete(submission.task_id, licenseKey, {
-      signal,
-      onPoll: async (response) => {
-        const completedImages = getCompletedImages(response)
-        if (completedImages.imageUrls.length > lastCompletedCount) {
-          lastCompletedCount = completedImages.imageUrls.length
-          currentRecord = await updateRecord(recordId, {
-            generatedImages: completedImages.imageUrls,
-            generatedImageThumbnails: completedImages.thumbnailUrls,
-          })
-          if (currentRecord) {
-            queryClient.setQueryData([IMAGE_GEN_QUERY_KEY, recordId], currentRecord)
-          }
-        }
-      },
-    })
-
-    // Final update: set status based on results
-    const completedImages = getCompletedImages(finalResult)
-    const completedUrls = completedImages.imageUrls
-    const hasError = finalResult.items.some((item) => item.status === 'failed')
-
-    if (completedUrls.length > 0) {
-      const failedError = getFailedImageGenerationError(finalResult, 'Some images failed to generate')
-      currentRecord = await updateRecord(recordId, {
-        generatedImages: completedUrls,
-        generatedImageThumbnails: completedImages.thumbnailUrls,
-        status: hasError && completedUrls.length < num ? 'error' : 'done',
-        error: hasError && completedUrls.length < num ? failedError.error : undefined,
-        errorCode: hasError && completedUrls.length < num ? failedError.errorCode : undefined,
-        errorItemUuid: hasError && completedUrls.length < num ? failedError.errorItemUuid : undefined,
-      })
-    } else {
-      currentRecord = await updateRecord(recordId, {
-        status: 'error',
-        ...getFailedImageGenerationError(finalResult, 'All images failed to generate'),
-      })
-    }
-
-    if (currentRecord) {
-      queryClient.setQueryData([IMAGE_GEN_QUERY_KEY, recordId], currentRecord)
-    }
-
-    log.debug('Image generation completed:', recordId, 'urls:', completedUrls.length)
-    return currentRecord
-  } catch (err: unknown) {
-    // Don't report abort errors as failures
-    if (err instanceof Error && err.name === 'AbortError') {
-      log.debug('Image generation aborted:', recordId)
-      return null
-    }
-
-    log.error('Image generation failed:', err)
-
-    const updatedRecord = await updateRecord(recordId, getErrorRecordUpdate(err))
-    if (updatedRecord) {
-      queryClient.setQueryData([IMAGE_GEN_QUERY_KEY, updatedRecord.id], updatedRecord)
-    }
-    return updatedRecord
-  } finally {
-    currentAbortController = null
-  }
 }
 
 async function generateImagesDirect(recordId: string, params: GenerateImageParams): Promise<ImageGeneration | null> {
@@ -435,67 +265,21 @@ export async function resumeGeneration(recordId: string): Promise<ImageGeneratio
     throw new Error('Record not found')
   }
 
-  if (!record.taskId) {
-    throw new Error('No task ID found for this record')
+  store.setCurrentGeneratingId(recordId)
+  store.setCurrentRecordId(recordId)
+
+  const params: GenerateImageParams = {
+    prompt: record.prompt,
+    referenceImages: record.referenceImages,
+    model: record.model,
+    dalleStyle: record.dalleStyle,
+    imageGenerateNum: record.imageGenerateNum,
+    aspectRatio: record.aspectRatio,
   }
 
-  const licenseKey = getLicenseKey()
-  store.setCurrentGeneratingId(recordId)
-
-  // Create AbortController for resume operation
-  currentAbortController = new AbortController()
-  const signal = currentAbortController.signal
-
   try {
-    // Check current status, then poll if not finished
-    const currentStatus = await pollImageTask(record.taskId, licenseKey, signal)
-
-    let finalResult = currentStatus
-    if (!currentStatus.is_finished) {
-      finalResult = await pollTaskUntilComplete(record.taskId, licenseKey, { signal })
-    }
-
-    // Collect successful original and thumbnail URLs into the local record.
-    const completedImages = getCompletedImages(finalResult)
-    const completedUrls = completedImages.imageUrls
-    const hasError = finalResult.items.some((item) => item.status === 'failed')
-
-    for (const item of finalResult.items) {
-      if (item.status === 'failed') {
-        log.error('Image generation item failed on resume:', item.uuid, item.error_message)
-      }
-    }
-
-    const expectedNum = record.imageGenerateNum || 1
-
-    const updatedRecord = await updateRecord(recordId, {
-      generatedImages: completedUrls,
-      generatedImageThumbnails: completedImages.thumbnailUrls,
-      status: completedUrls.length >= expectedNum ? 'done' : hasError ? 'error' : 'done',
-      ...(hasError && completedUrls.length < expectedNum
-        ? getFailedImageGenerationError(finalResult, 'Some images failed to generate')
-        : { error: undefined, errorCode: undefined, errorItemUuid: undefined }),
-    })
-
-    if (updatedRecord) {
-      queryClient.setQueryData([IMAGE_GEN_QUERY_KEY, updatedRecord.id], updatedRecord)
-    }
-    return updatedRecord
-  } catch (err: unknown) {
-    if (err instanceof Error && err.name === 'AbortError') {
-      log.debug('Resume generation aborted:', recordId)
-      return null
-    }
-
-    log.error('Resume generation failed:', err)
-
-    const failedRecord = await updateRecord(recordId, getErrorRecordUpdate(err))
-    if (failedRecord) {
-      queryClient.setQueryData([IMAGE_GEN_QUERY_KEY, failedRecord.id], failedRecord)
-    }
-    return failedRecord
+    return await generateImagesDirect(recordId, params)
   } finally {
-    currentAbortController = null
     imageGenerationStore.getState().setCurrentGeneratingId(null)
     queryClient.invalidateQueries({ queryKey: [IMAGE_GEN_LIST_QUERY_KEY] })
   }
@@ -541,8 +325,7 @@ export async function retryGeneration(recordId: string): Promise<void> {
     aspectRatio: record.aspectRatio,
   }
 
-  const generateFn = shouldUseAsyncPath(params.model.provider) ? generateImages : generateImagesDirect
-  void generateFn(recordId, params).finally(() => {
+  void generateImagesDirect(recordId, params).finally(() => {
     imageGenerationStore.getState().setCurrentGeneratingId(null)
     queryClient.invalidateQueries({ queryKey: [IMAGE_GEN_LIST_QUERY_KEY] })
   })

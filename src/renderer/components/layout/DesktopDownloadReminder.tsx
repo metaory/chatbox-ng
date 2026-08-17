@@ -8,23 +8,24 @@ import {
   IconX,
 } from '@tabler/icons-react'
 import { useLocation } from '@tanstack/react-router'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ScalableIcon } from '@/components/common/ScalableIcon'
 import { useIsSmallScreen } from '@/hooks/useScreenChange'
 import { buildChatboxUrl } from '@/packages/remote'
 import platform from '@/platform'
-import { useLanguage, useSettingsStore } from '@/stores/settingsStore'
+import { useLanguage } from '@/stores/settingsStore'
 
 const IOS_APP_STORE_URL = 'https://apps.apple.com/app/chatbox-ai/id6471368056'
 const ANDROID_APK_URL = 'https://chatboxai.app/zh/install?download=android_apk'
+const DISMISS_KEY = 'desktop-download-reminder-dismissed'
 
 export default function DesktopDownloadReminder() {
   const { t } = useTranslation()
   const location = useLocation()
   const language = useLanguage()
   const isSmallScreen = useIsSmallScreen()
-  const setSettings = useSettingsStore((state) => state.setSettings)
-  const dismissed = useSettingsStore((state) => state.chatboxAIDesktopPromptDismissed)
+  const [dismissed, setDismissed] = useState(() => localStorage.getItem(DISMISS_KEY) === '1')
 
   if (platform.type !== 'web' || dismissed) {
     return null
@@ -67,7 +68,10 @@ export default function DesktopDownloadReminder() {
             <ActionIcon
               variant="subtle"
               color="chatbox-secondary"
-              onClick={() => setSettings({ chatboxAIDesktopPromptDismissed: true })}
+              onClick={() => {
+                localStorage.setItem(DISMISS_KEY, '1')
+                setDismissed(true)
+              }}
               aria-label={t('Close') || 'Close'}
             >
               <ScalableIcon icon={IconX} size={16} />

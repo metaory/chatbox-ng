@@ -323,7 +323,6 @@ async function generateImage(context: ChatboxCliCommandContext): Promise<Record<
         mode: 'callback',
         managedBy: 'chatbox',
         modelShouldPoll: false,
-        ...(handle.monitoring.mode === 'polling' ? { pollIntervalMs: handle.monitoring.intervalMs } : {}),
       },
       message: 'Image generation is running in the background. End this turn and wait for Chatbox to call you back.',
     }

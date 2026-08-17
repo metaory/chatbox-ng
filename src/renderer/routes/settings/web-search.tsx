@@ -107,7 +107,7 @@ export function RouteComponent() {
               ...extension,
               webSearch: {
                 ...extension.webSearch,
-                provider: e as 'build-in' | 'bing' | 'tavily' | 'bocha' | 'querit',
+                provider: e as 'bing' | 'tavily' | 'bocha' | 'querit',
               },
             },
           })
@@ -139,11 +139,6 @@ export function RouteComponent() {
           ))
         })()}
       </Stack>
-      {extension.webSearch.provider === 'build-in' && (
-        <Text size="xs" c="chatbox-gray">
-          {t('Chatbox Search is a paid feature with advanced capabilities and better performance.')}
-        </Text>
-      )}
       {extension.webSearch.provider === 'bing' && (
         <Text size="xs" c="chatbox-gray">
           {t(

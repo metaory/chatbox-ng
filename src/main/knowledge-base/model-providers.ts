@@ -2,13 +2,12 @@ import type { EmbeddingModel } from 'ai'
 import { CohereClient } from 'cohere-ai'
 import { getProviderSettings } from '../../shared/models'
 import type { CallChatCompletionOptions, ModelInterface } from '../../shared/models/types'
-import { getChatboxAPIOrigin } from '../../shared/request/chatboxai_pool'
 import { SessionSettingsSchema } from '../../shared/types'
 import { parseKnowledgeBaseModelString } from '../../shared/utils/knowledge-base-model-parser'
 import { createModel } from '../adapters'
 import { cache } from '../cache'
 import { getDefaultEmbeddingModelString, getDefaultRerankModelString } from '../rag-default-models'
-import { getSettings, store } from '../store-node'
+import { getSettings } from '../store-node'
 import { getLogger } from '../util'
 import { getDatabase } from './db'
 
@@ -173,16 +172,9 @@ export async function getRerankProvider(kbId: number) {
         const sessionSettings = getMergedSettings(providerId, modelId)
         const { providerSetting, formattedApiHost } = getProviderSettings(sessionSettings, getSettings())
 
-        let apiHost = formattedApiHost
-        let token = providerSetting.apiKey
-        if (providerId === 'chatbox-ai') {
-          apiHost = getChatboxAPIOrigin()
-          token = store.get('settings.licenseKey')
-        }
-
         const client = new CohereClient({
-          environment: apiHost,
-          token,
+          environment: formattedApiHost,
+          token: providerSetting.apiKey,
         })
         return { client, modelId }
       } catch (error: unknown) {

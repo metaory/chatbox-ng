@@ -90,9 +90,6 @@ export function settings(): Settings {
 
     defaultPrompt: getDefaultPrompt(),
 
-    hasExpiredLicense: false,
-    chatboxAIDesktopPromptDismissed: false,
-
     enableMarkdownRendering: true,
     enableLaTeXRendering: true,
     enableMermaidRendering: true,
@@ -134,7 +131,7 @@ export function settings(): Settings {
     },
     extension: {
       webSearch: {
-        provider: 'build-in',
+        provider: 'bing',
         tavilyApiKey: '',
         bochaApiKey: '',
         queritApiKey: '',

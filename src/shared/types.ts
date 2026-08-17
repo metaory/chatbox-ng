@@ -348,7 +348,7 @@ export function copyThreads(source?: SessionThread[], idMapping?: Map<string, st
 }
 
 // RAG related types
-export type KnowledgeBaseProviderMode = 'chatbox-ai' | 'custom'
+export type KnowledgeBaseProviderMode = 'custom'
 
 export interface KnowledgeBase {
   id: number

@@ -107,7 +107,7 @@ describe('Chatbox CLI image commands', () => {
     startImageGenerationMock.mockResolvedValue({
       recordId: 'record-1',
       startedAt: 1_000,
-      monitoring: { mode: 'polling', intervalMs: 2_000 },
+      monitoring: { mode: 'direct' },
       completion: Promise.resolve({
         id: 'record-1',
         status: 'done',
@@ -126,7 +126,6 @@ describe('Chatbox CLI image commands', () => {
         mode: 'callback',
         managedBy: 'chatbox',
         modelShouldPoll: false,
-        pollIntervalMs: 2_000,
       },
     })
     await Promise.resolve()
@@ -287,7 +286,7 @@ describe('Chatbox CLI image commands', () => {
         return {
           recordId: createdRecord.id,
           startedAt: createdRecord.createdAt,
-          monitoring: { mode: 'polling', intervalMs: 2_000 },
+          monitoring: { mode: 'direct' },
           completion: Promise.resolve(null),
         }
       }

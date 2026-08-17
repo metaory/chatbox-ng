@@ -75,7 +75,7 @@ export function registerKnowledgeBaseHandlers() {
         rerankModel: string
         visionModel?: string
         documentParser?: { type: string; mineru?: { apiToken: string } }
-        providerMode?: 'chatbox-ai' | 'custom'
+        providerMode?: 'custom'
       }
     ) => {
       try {

@@ -19,10 +19,10 @@ const log = getLogger('settings-store')
 /**
  * Returns platform-specific default document parser configuration.
  * - Desktop: 'local' (has full Node.js environment for local parsing)
- * - Mobile/Web: 'chatbox-ai' (local-first parsing with Chatbox AI cloud fallback)
+ * - Mobile/Web: 'none' (local and MinerU parsers are desktop-only)
  */
 export function getPlatformDefaultDocumentParser(): DocumentParserConfig {
-  return platform.type === 'desktop' ? { type: 'local' } : { type: 'chatbox-ai' }
+  return platform.type === 'desktop' ? { type: 'local' } : { type: 'none' }
 }
 
 type Action = {
@@ -30,14 +30,33 @@ type Action = {
   getSettings: () => Settings
 }
 
+function coerceRemovedPaidSettings(settings: Record<string, unknown>) {
+  const extension = settings.extension
+  if (!extension || typeof extension !== 'object' || Array.isArray(extension)) return settings
+  const next = extension as Record<string, unknown>
+  const webSearch = next.webSearch
+  if (webSearch && typeof webSearch === 'object' && !Array.isArray(webSearch)) {
+    const search = webSearch as Record<string, unknown>
+    if (search.provider === 'build-in') search.provider = 'bing'
+  }
+  const documentParser = next.documentParser
+  if (documentParser && typeof documentParser === 'object' && !Array.isArray(documentParser)) {
+    const parser = documentParser as Record<string, unknown>
+    if (parser.type === 'chatbox-ai') parser.type = getPlatformDefaultDocumentParser().type
+  }
+  return settings
+}
+
 function mergeWithDefaultSettings(persisted: unknown): Settings {
   const persistedSettings =
     persisted && typeof persisted === 'object' && !Array.isArray(persisted) ? (persisted as Partial<Settings>) : {}
-  const mergedSettings = deepmerge<Settings, Partial<Settings>>(defaults.settings(), persistedSettings, {
-    arrayMerge: (_target, source) => source,
-  })
+  const mergedSettings = coerceRemovedPaidSettings(
+    deepmerge<Settings, Partial<Settings>>(defaults.settings(), persistedSettings, {
+      arrayMerge: (_target, source) => source,
+    }) as unknown as Record<string, unknown>
+  )
   const parsedSettings = SettingsSchema.safeParse(mergedSettings)
-  return parsedSettings.success ? parsedSettings.data : mergedSettings
+  return parsedSettings.success ? parsedSettings.data : (mergedSettings as Settings)
 }
 
 export const settingsStore = createStore<Settings & Action>()(
@@ -99,10 +118,6 @@ export const settingsStore = createStore<Settings & Action>()(
                 settings.shortcuts.inpubBoxSendMessageWithoutResponse ||
                 settings.shortcuts.inputBoxSendMessageWithoutResponse
             case 1:
-              if (settings.licenseKey && !settings.licenseActivationMethod) {
-                settings.licenseActivationMethod = 'manual'
-                settings.memorizedManualLicenseKey = settings.licenseKey
-              }
             case 2:
               // Add skills defaults for existing users upgrading from before skills feature
               if (!settings.skills) {
@@ -112,12 +127,10 @@ export const settingsStore = createStore<Settings & Action>()(
               }
             case 3:
             case 4:
-              if (platform.type !== 'desktop' && settings.extension?.documentParser?.type === 'none') {
-                settings.extension.documentParser.type = 'chatbox-ai'
-              }
             default:
               break
           }
+          coerceRemovedPaidSettings(settings)
 
           // Apply platform-specific default for documentParser if not set
           if (!settings.extension?.documentParser) {

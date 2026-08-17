@@ -28,7 +28,7 @@ function settingsWithFallbacks(overrides: Partial<Settings> = {}): Settings {
     },
     extension: {
       webSearch: {
-        provider: 'build-in',
+        provider: 'bing',
       },
     },
     mcp: {
@@ -44,7 +44,6 @@ function settingsWithFallbacks(overrides: Partial<Settings> = {}): Settings {
     showModelName: true,
     showAvatar: true,
     defaultPrompt: 'You are a helpful assistant.',
-    chatboxAIDesktopPromptDismissed: false,
     enableMarkdownRendering: true,
     enableLaTeXRendering: true,
     enableMermaidRendering: true,

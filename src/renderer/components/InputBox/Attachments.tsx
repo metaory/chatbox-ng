@@ -249,8 +249,6 @@ export function getParserDisplayName(
   switch (parserType) {
     case 'local':
       return t('Parser: Local')
-    case 'chatbox-ai':
-      return t('Parser: {{parser}}', { parser: 'Chatbox AI' })
     case 'mineru':
       return t('Parser: {{parser}}', { parser: 'MinerU' })
     default:

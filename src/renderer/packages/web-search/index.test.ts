@@ -4,7 +4,6 @@ import { describe, expect, it, vi, beforeEach } from 'vitest'
 vi.mock('@/stores/settingActions', () => ({
   getExtensionSettings: vi.fn(),
   getLanguage: vi.fn(() => 'en'),
-  getLicenseKey: vi.fn(() => 'test-license-key'),
 }))
 
 // Mock the search providers to avoid actual network calls
@@ -31,16 +30,6 @@ vi.mock('./tavily', () => {
     TavilySearch: class {
       search = vi.fn().mockResolvedValue({
         items: [{ title: 'Tavily Result', snippet: 'test', link: 'https://example.com' }],
-      })
-    },
-  }
-})
-
-vi.mock('./chatbox-search', () => {
-  return {
-    ChatboxSearch: class {
-      search = vi.fn().mockResolvedValue({
-        items: [{ title: 'Chatbox Result', snippet: 'test', link: 'https://example.com' }],
       })
     },
   }

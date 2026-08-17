@@ -129,7 +129,7 @@ export const AttachmentMiniCardStates: StoryObj = {
           name="annual-report.pdf"
           fileType="application/pdf"
           status="completed"
-          parserType="chatbox-ai"
+          parserType="local"
           onDelete={() => undefined}
           onPreviewClick={() => undefined}
         />
@@ -180,7 +180,7 @@ export const MessageAttachmentStates: StoryObj = {
             filename="q3-deck.pptx"
             fileType="application/vnd.openxmlformats-officedocument.presentationml.presentation"
             byteLength={5_600_000}
-            parserType="chatbox-ai"
+            parserType="local"
             storageKey="storybook-deck"
           />
           <MessageAttachment
@@ -236,7 +236,7 @@ export const MessageAttachmentStates: StoryObj = {
 }
 
 export const AttachmentParserTypeStates: StoryObj = {
-  name: 'Attachment parser type label local chatbox-ai mineru inline and indexed',
+  name: 'Attachment parser type label local mineru inline and indexed',
   parameters: {
     uiInventoryTargets: ['src/renderer/components/InputBox/Attachments'],
   },
@@ -271,7 +271,7 @@ export const AttachmentParserTypeStates: StoryObj = {
             name="report.pdf"
             fileType="application/pdf"
             status="completed"
-            parserType="chatbox-ai"
+            parserType="local"
             onDelete={() => undefined}
             onPreviewClick={() => undefined}
           />
@@ -304,7 +304,7 @@ export const AttachmentParserTypeStates: StoryObj = {
               filename="deck.pptx"
               fileType="application/vnd.openxmlformats-officedocument.presentationml.presentation"
               byteLength={5_600_000}
-              parserType="chatbox-ai"
+              parserType="local"
               storageKey="storybook-parser-chatboxai"
             />
           </Stack>
@@ -463,7 +463,6 @@ function SeedInputSettings() {
     window.localStorage.removeItem('new-chat')
     settingsStore.setState((state) => ({
       ...state,
-      licenseKey: 'storybook-license',
       providers: {
         ...state.providers,
         [ModelProviderEnum.OpenAI]: {
@@ -475,7 +474,7 @@ function SeedInputSettings() {
         ...state.extension,
         webSearch: {
           ...state.extension.webSearch,
-          provider: 'build-in',
+          provider: 'bing',
           tavilyApiKey: 'storybook-tavily',
         },
       },

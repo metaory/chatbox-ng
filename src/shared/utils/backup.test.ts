@@ -4,11 +4,6 @@ import { cleanSettingsForBackup } from './backup'
 
 function credentialSettings(): Settings {
   return {
-    licenseKey: 'license-key',
-    licenseDetail: { token_usage: 0 } as unknown as Settings['licenseDetail'],
-    licenseInstances: { device: 'instance' },
-    lastSelectedLicenseByUser: { user: 'selected-license' },
-    memorizedManualLicenseKey: 'memorized-license',
     vibedropPublishKey: { email: 'user@example.com', key: 'publish-key' },
     providers: {
       provider: {
@@ -63,11 +58,6 @@ describe('cleanSettingsForBackup', () => {
   it('removes every managed credential class when keys are excluded', () => {
     const cleaned = cleanSettingsForBackup(credentialSettings(), false)
 
-    expect(cleaned).not.toHaveProperty('licenseKey')
-    expect(cleaned).not.toHaveProperty('licenseDetail')
-    expect(cleaned).not.toHaveProperty('licenseInstances')
-    expect(cleaned).not.toHaveProperty('lastSelectedLicenseByUser')
-    expect(cleaned).not.toHaveProperty('memorizedManualLicenseKey')
     expect(cleaned).not.toHaveProperty('vibedropPublishKey')
     expect(cleaned.providers).toEqual({ provider: { apiHost: 'https://example.com' } })
     expect(cleaned.customProviders).toEqual([
@@ -102,12 +92,10 @@ describe('cleanSettingsForBackup', () => {
     })
   })
 
-  it('keeps user-selected credentials while always dropping license runtime state', () => {
+  it('keeps user-selected credentials when keys are included', () => {
     const cleaned = cleanSettingsForBackup(credentialSettings(), true)
 
     expect(cleaned).toMatchObject({
-      licenseKey: 'license-key',
-      memorizedManualLicenseKey: 'memorized-license',
       vibedropPublishKey: { key: 'publish-key' },
       providers: { provider: { apiKey: 'api-key', oauth: { accessToken: 'access-token' } } },
       customProviders: [{ defaultSettings: { apiKey: 'default-api-key' } }],
@@ -122,7 +110,5 @@ describe('cleanSettingsForBackup', () => {
         ],
       },
     })
-    expect(cleaned).not.toHaveProperty('licenseDetail')
-    expect(cleaned).not.toHaveProperty('licenseInstances')
   })
 })

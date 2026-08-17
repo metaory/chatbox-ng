@@ -118,9 +118,9 @@ export async function processFileWithMastra(
     })
 
     if (!allChunks || allChunks.length === 0) {
-      // Cloud parsing (chatbox-ai, mineru) resulted in 0 chunks - mark as done (truly empty file)
-      // Local parsing resulted in 0 chunks - mark as failed so user can retry with server parsing
-      if (parserConfig.type === 'chatbox-ai' || parserConfig.type === 'mineru') {
+      // Cloud parsing (mineru) resulted in 0 chunks - mark as done (truly empty file)
+      // Local parsing resulted in 0 chunks - mark as failed so user can retry
+      if (parserConfig.type === 'mineru') {
         await db.execute({
           sql: 'UPDATE kb_file SET chunk_count = 0, status = ? WHERE id = ?',
           args: ['done', fileMeta.fileId],
@@ -284,12 +284,7 @@ async function processPendingFiles() {
         }
       }
 
-      // Get effective parser config
-      // When useRemoteParsing is true (user clicked "Retry with server parsing"), force use Chatbox AI parser
-      // This overrides the KB's configured parser to ensure server parsing is used
-      const effectiveParserConfig: DocumentParserConfig = useRemoteParsing
-        ? { type: 'chatbox-ai' }
-        : getEffectiveParserConfig(kbParserConfig)
+      const effectiveParserConfig: DocumentParserConfig = getEffectiveParserConfig(kbParserConfig)
 
       try {
         log.debug(

@@ -211,7 +211,6 @@ describe('ZIP backup round trip', () => {
     const sourceSettings = {
       userAvatarKey: 'picture:missing',
       defaultAssistantAvatarKey: 'picture:kept',
-      licenseKey: 'secret-license',
       providers: { custom: { apiKey: 'secret-api-key', apiHost: 'https://example.com' } },
     } as unknown as Settings
     const copilots: CopilotDetail[] = [

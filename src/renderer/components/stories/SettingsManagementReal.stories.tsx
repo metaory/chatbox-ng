@@ -410,11 +410,6 @@ function SeedSettingsManagement() {
     ...state,
     language: 'en',
     languageInited: true,
-    licenseKey: 'settings-management-story-license',
-    licenseActivationMethod: 'manual',
-    licenseInstances: {
-      'settings-management-story-license': 'settings-management-story-instance',
-    },
     providers: [
       {
         id: ModelProviderEnum.OpenAI,

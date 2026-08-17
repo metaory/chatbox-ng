@@ -14,14 +14,11 @@ import KnowledgeBaseDocuments from '../knowledge-base/KnowledgeBaseDocuments'
 import {
   DocumentParserDisplay,
   DocumentParserSelector,
-  KnowledgeBaseChatboxAIInfo,
   KnowledgeBaseFormActions,
   KnowledgeBaseModelSelectors,
   KnowledgeBaseNameInput,
-  KnowledgeBaseProviderModeSelect,
 } from '../knowledge-base/KnowledgeBaseForm'
 import KnowledgeBaseMenu from '../knowledge-base/KnowledgeBaseMenu'
-import { RemoteRetryModal } from '../knowledge-base/RemoteRetryModal'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -65,12 +62,12 @@ const knowledgeBases: KnowledgeBase[] = [
   },
   {
     id: 102,
-    name: 'Chatbox AI support handbook',
-    embeddingModel: 'chatbox-ai:embedding',
-    rerankModel: 'chatbox-ai:rerank',
-    visionModel: 'chatbox-ai:vision',
-    providerMode: 'chatbox-ai',
-    documentParser: { type: 'chatbox-ai' },
+    name: 'Support handbook',
+    embeddingModel: `${ModelProviderEnum.OpenAI}:text-embedding-3-small`,
+    rerankModel: 'cohere:rerank-v3.5',
+    visionModel: `${ModelProviderEnum.OpenAI}:gpt-4.1`,
+    providerMode: 'custom',
+    documentParser: { type: 'local' },
     createdAt: Date.now() - 1000 * 60 * 60 * 48,
   },
 ]
@@ -148,8 +145,8 @@ const knowledgeBaseFiles: KnowledgeBaseFile[] = [
     status: 'failed',
     error: 'Parsed document content is too large',
     createdAt: Date.now() - 1000 * 60 * 8,
-    parsed_remotely: 1,
-    parser_type: 'chatbox-ai',
+    parsed_remotely: 0,
+    parser_type: 'local',
   },
 ]
 
@@ -255,22 +252,19 @@ export const KnowledgeBaseMenuStates: StoryObj = {
 }
 
 export const KnowledgeBaseModalStates: StoryObj = {
-  name: 'Knowledge base chunks preview and remote retry modal states',
+  name: 'Knowledge base chunks preview modal',
   parameters: {
-    uiInventoryTargets: [
-      'src/renderer/components/knowledge-base/ChunksPreviewModal',
-      'src/renderer/components/knowledge-base/RemoteRetryModal',
-    ],
+    uiInventoryTargets: ['src/renderer/components/knowledge-base/ChunksPreviewModal'],
   },
   render: () => (
     <Stack gap="lg">
       <SurfaceLabel
-        title="ChunksPreviewModal and RemoteRetryModal"
-        description="Actual knowledge base modals for inspecting parsed chunks and retrying local parser failures with server parsing."
+        title="ChunksPreviewModal"
+        description="Actual knowledge base modal for inspecting parsed chunks."
       />
       <Paper withBorder radius="md" p="md" h={320}>
         <Text size="sm" c="dimmed">
-          The production modals are mounted open in this preview.
+          The production modal is mounted open in this preview.
         </Text>
         <ChunksPreviewModal
           opened
@@ -278,19 +272,12 @@ export const KnowledgeBaseModalStates: StoryObj = {
           file={knowledgeBaseFiles[0]}
           knowledgeBaseId={knowledgeBases[0].id}
         />
-        <RemoteRetryModal
-          opened
-          onClose={() => undefined}
-          failedFiles={knowledgeBaseFiles.filter((file) => file.status === 'failed')}
-          onSuccess={() => undefined}
-        />
       </Paper>
     </Stack>
   ),
 }
 
 function KnowledgeBaseFormFixture() {
-  const [providerMode, setProviderMode] = useState<'chatbox-ai' | 'custom'>('custom')
   const [name, setName] = useState('Product launch knowledge base')
   const [parserConfig, setParserConfig] = useState({ type: 'mineru' as const, mineru: { apiToken: 'mineru-token' } })
   const [embeddingModel, setEmbeddingModel] = useState(`${ModelProviderEnum.OpenAI}:text-embedding-3-large`)
@@ -307,13 +294,11 @@ function KnowledgeBaseFormFixture() {
     <Stack gap="lg">
       <SurfaceLabel
         title="KnowledgeBaseForm"
-        description="Actual form controls used for create/edit knowledge base flows, including provider mode, parser selection, model selectors, read-only parser display, Chatbox AI info, and destructive edit actions."
+        description="Actual form controls used for create/edit knowledge base flows, including parser selection, model selectors, read-only parser display, and destructive edit actions."
       />
       <Paper withBorder radius="md" p="md" maw={640}>
         <Stack gap="md">
           <KnowledgeBaseNameInput value={name} onChange={setName} label="Name" />
-          <KnowledgeBaseProviderModeSelect value={providerMode} onChange={setProviderMode} />
-          <KnowledgeBaseChatboxAIInfo showModelsLabel />
           <DocumentParserSelector parserConfig={parserConfig} onParserConfigChange={setParserConfig} />
           <KnowledgeBaseModelSelectors
             embeddingModelList={embeddingModels}
@@ -326,7 +311,7 @@ function KnowledgeBaseFormFixture() {
             onRerankModelChange={setRerankModel}
             onVisionModelChange={setVisionModel}
           />
-          <DocumentParserDisplay parserType="chatbox-ai" />
+          <DocumentParserDisplay parserType="local" />
           <KnowledgeBaseFormActions
             onCancel={() => undefined}
             onConfirm={() => undefined}
@@ -396,7 +381,6 @@ function SeedKnowledgeBaseEnvironment() {
 
     settingsStore.setState((state) => ({
       ...state,
-      licenseKey: 'storybook-license',
       providers: {
         ...state.providers,
         [ModelProviderEnum.OpenAI]: {

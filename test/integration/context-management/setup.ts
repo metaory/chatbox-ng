@@ -17,7 +17,6 @@ if (typeof globalThis.window === 'undefined') {
 }
 
 vi.mock('@/stores/settingActions', () => ({
-  getLicenseKey: () => '',
   getRemoteConfig: () => ({}),
 }))
 
@@ -25,7 +24,6 @@ vi.mock('@/stores/settingsStore', () => ({
   settingsStore: {
     getState: () => ({
       getSettings: () => ({
-        licenseKey: '',
         language: 'en',
         autoCompaction: true,
         compactionThreshold: 0.6,

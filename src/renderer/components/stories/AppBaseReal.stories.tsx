@@ -591,8 +591,6 @@ function SeedAppBase() {
     language: 'en',
     languageInited: true,
     theme: Theme.Light,
-    licenseKey: '',
-    licenseInstances: {},
     providers: [
       {
         id: ModelProviderEnum.OpenAI,
@@ -672,7 +670,7 @@ function SeedAppBase() {
           filename: 'research.pdf',
           status: 'ready',
           chunkCount: 48,
-          parserType: 'chatbox-ai',
+          parserType: 'local',
           createdAt: Date.now() - 3600000,
           processingStartedAt: Date.now() - 3500000,
           completedAt: Date.now() - 3400000,

@@ -1,4 +1,3 @@
-import { getLicenseKey } from '@/stores/settingActions'
 import type { MCPServerConfig } from './types'
 import i18n from '@/i18n'
 
@@ -46,12 +45,11 @@ export const BUILTIN_MCP_SERVERS: BuildinMCPServerConfig[] = [
   },
 ]
 
-export function getBuiltinServerConfig(id: string, licenseKey?: string): MCPServerConfig | null {
+export function getBuiltinServerConfig(id: string): MCPServerConfig | null {
   const config = BUILTIN_MCP_SERVERS.find((s) => s.id === id)
   if (!config) {
     return null
   }
-  const license = licenseKey || getLicenseKey()
   return {
     id,
     name: config.name,
@@ -59,7 +57,6 @@ export function getBuiltinServerConfig(id: string, licenseKey?: string): MCPServ
     transport: {
       type: 'http',
       url: config.url,
-      headers: license ? { 'x-chatbox-license': license } : undefined,
     },
   }
 }

@@ -15,40 +15,6 @@ describe('native web search', () => {
     expect(hasNativeWebSearchConfiguration({ provider: 'tavily', apiKey: '  ' })).toBe(false)
     expect(hasNativeWebSearchConfiguration({ provider: 'tavily', apiKey: 'tvly-key' })).toBe(true)
     expect(hasNativeWebSearchConfiguration({ provider: 'bing', apiKey: '' })).toBe(true)
-    expect(hasNativeWebSearchConfiguration({ provider: 'build-in', apiKey: '' })).toBe(false)
-    expect(hasNativeWebSearchConfiguration({ provider: 'build-in', apiKey: '' }, 'license-1')).toBe(true)
-  })
-
-  it('searches through the chatbox build-in endpoint with the license key and injected headers', async () => {
-    const fetchFn = vi.fn(async () => ({
-      ok: true,
-      status: 200,
-      json: async () => ({ data: { links: [{ title: 'Doc', url: 'https://doc.test', content: 'snippet' }] } }),
-    })) as unknown as typeof fetch
-    const items = await searchNativeWeb('chatbox', {
-      provider: 'build-in',
-      licenseKey: 'license-1',
-      chatboxApiOrigin: 'http://10.0.2.2:8095',
-      headers: { 'CHATBOX-PLATFORM': 'web', 'CHATBOX-VERSION': '1.2.3' },
-      fetchFn,
-    })
-    expect(items).toEqual([{ title: 'Doc', link: 'https://doc.test', snippet: 'snippet' }])
-    const call = (fetchFn as unknown as ReturnType<typeof vi.fn>).mock.calls[0]
-    expect(call[0]).toBe('http://10.0.2.2:8095/api/tool/web-search')
-    expect(call[1].headers.Authorization).toBe('license-1')
-    // Injected Chatbox platform headers ride along (renderer afetch/headers parity).
-    expect(call[1].headers).toMatchObject({ 'CHATBOX-PLATFORM': 'web', 'CHATBOX-VERSION': '1.2.3' })
-  })
-
-  it('surfaces the chatbox error body when the build-in endpoint fails', async () => {
-    const fetchFn = vi.fn(async () => ({
-      ok: false,
-      status: 403,
-      json: async () => ({ error: 'License expired' }),
-    })) as unknown as typeof fetch
-    await expect(searchNativeWeb('chatbox', { provider: 'build-in', licenseKey: 'bad', fetchFn })).rejects.toThrow(
-      'License expired'
-    )
   })
 
   it('extracts bing results without DOMParser', async () => {

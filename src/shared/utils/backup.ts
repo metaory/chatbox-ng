@@ -12,18 +12,12 @@ function withoutProviderCredentials(provider: object): Record<string, unknown> {
 
 /**
  * Strip sensitive data from settings before writing a backup
- * (`chatbox-backup-*.zip`). License runtime state is always dropped;
- * license key and provider credentials are kept only when `includeKeys` is set.
+ * (`chatbox-backup-*.zip`). Provider credentials are kept only when `includeKeys` is set.
  * Shared by the desktop/Web export (settings/general.tsx) and the native backup.
  */
 export function cleanSettingsForBackup(settings: Settings, includeKeys: boolean): Record<string, unknown> {
   const cleaned: Record<string, unknown> = { ...settings }
-  delete cleaned.licenseDetail
-  delete cleaned.licenseInstances
   if (!includeKeys) {
-    delete cleaned.licenseKey
-    delete cleaned.lastSelectedLicenseByUser
-    delete cleaned.memorizedManualLicenseKey
     delete cleaned.vibedropPublishKey
     if (settings.providers) {
       cleaned.providers = Object.fromEntries(

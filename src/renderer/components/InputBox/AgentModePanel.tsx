@@ -143,7 +143,6 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
   // Web Search state
   const webSearchProvider = useSettingsStore((s) => s.extension.webSearch.provider)
   const setSettings = useSettingsStore((s) => s.setSettings)
-  const licenseKey = useSettingsStore((s) => s.licenseKey)
   const tavilyApiKey = useSettingsStore((s) => s.extension.webSearch.tavilyApiKey)
   const bochaApiKey = useSettingsStore((s) => s.extension.webSearch.bochaApiKey)
   const queritApiKey = useSettingsStore((s) => s.extension.webSearch.queritApiKey)
@@ -152,13 +151,12 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
 
   const isProviderAvailable = useCallback(
     (provider: WebSearchProviderValue) => {
-      if (provider === 'build-in') return !!licenseKey
       if (provider === 'tavily') return !!tavilyApiKey
       if (provider === 'bocha') return !!bochaApiKey
       if (provider === 'querit') return !!queritApiKey
       return true
     },
-    [bochaApiKey, licenseKey, queritApiKey, tavilyApiKey]
+    [bochaApiKey, queritApiKey, tavilyApiKey]
   )
 
   // MCP state

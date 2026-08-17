@@ -277,7 +277,6 @@ function WebPlatformFixture() {
     platform.openLink = async () => undefined
     settingsStore.setState((state) => ({
       ...state,
-      chatboxAIDesktopPromptDismissed: false,
     }))
 
     return () => {

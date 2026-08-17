@@ -154,7 +154,7 @@ describe('settingsStore persistence', () => {
     })
   })
 
-  it('migrates legacy Text Only document parser to Chatbox AI on web and mobile', async () => {
+  it('keeps a Text Only document parser on web and mobile', async () => {
     const persistedSettings = {
       extension: {
         documentParser: { type: 'none' },
@@ -164,11 +164,11 @@ describe('settingsStore persistence', () => {
 
     const webStore = await loadSettingsStoreModule(persistedSettings, 'web')
     const webSettings = await webStore.initSettingsStore()
-    expect(webSettings.extension?.documentParser?.type).toBe('chatbox-ai')
+    expect(webSettings.extension?.documentParser?.type).toBe('none')
 
     const mobileStore = await loadSettingsStoreModule(persistedSettings, 'mobile')
     const mobileSettings = await mobileStore.initSettingsStore()
-    expect(mobileSettings.extension?.documentParser?.type).toBe('chatbox-ai')
+    expect(mobileSettings.extension?.documentParser?.type).toBe('none')
   })
 
   it('keeps desktop default document parser local', async () => {
@@ -245,11 +245,11 @@ describe('settingsStore persistence', () => {
     expect(settingsStore.getState().shortcuts.newPictureChat).toBe('')
   })
 
-  it('uses Chatbox AI as the default document parser on web and mobile', async () => {
+  it('uses none as the default document parser on web and mobile', async () => {
     const webStore = await loadSettingsStoreModule(null, 'web')
-    expect(webStore.getPlatformDefaultDocumentParser()).toEqual({ type: 'chatbox-ai' })
+    expect(webStore.getPlatformDefaultDocumentParser()).toEqual({ type: 'none' })
 
     const mobileStore = await loadSettingsStoreModule(null, 'mobile')
-    expect(mobileStore.getPlatformDefaultDocumentParser()).toEqual({ type: 'chatbox-ai' })
+    expect(mobileStore.getPlatformDefaultDocumentParser()).toEqual({ type: 'none' })
   })
 })

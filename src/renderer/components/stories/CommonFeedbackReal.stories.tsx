@@ -74,7 +74,6 @@ export const ChatboxAIErrorMessageStates: StoryObj = {
         title="ChatboxAIErrorMessage"
         description="Actual localized Chatbox AI service error copy with settings, plan, homepage, and parser action links."
       />
-      <SeedLicensePlan name="Chatbox AI Free" />
       <Paper withBorder radius="md" p="md">
         <Stack gap="sm">
           <Text size="sm">
@@ -238,16 +237,6 @@ function AvatarSample({ label, children }: { label: string; children: React.Reac
       </Stack>
     </Paper>
   )
-}
-
-function SeedLicensePlan({ name }: { name: string }) {
-  useEffect(() => {
-    settingsStore.setState({
-      licensePlanName: name,
-    })
-  }, [name])
-
-  return null
 }
 
 function SeedToasts() {

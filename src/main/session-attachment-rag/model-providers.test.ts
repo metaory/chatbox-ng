@@ -2,7 +2,6 @@ import { beforeEach, describe, expect, test, vi } from 'vitest'
 
 const createEmbeddingProviderFromModelStringMock = vi.fn()
 const getSettingsMock = vi.fn()
-const storeGetMock = vi.fn()
 
 vi.mock('../knowledge-base/model-providers', () => ({
   createEmbeddingProviderFromModelString: createEmbeddingProviderFromModelStringMock,
@@ -10,9 +9,6 @@ vi.mock('../knowledge-base/model-providers', () => ({
 
 vi.mock('../store-node', () => ({
   getSettings: getSettingsMock,
-  store: {
-    get: storeGetMock,
-  },
 }))
 
 describe('session attachment RAG model providers', () => {
@@ -25,10 +21,9 @@ describe('session attachment RAG model providers', () => {
         model: 'text-embedding-3-large',
       },
     })
-    storeGetMock.mockImplementation((key: string) => (key === 'settings.licenseKey' ? 'license-key' : undefined))
   })
 
-  test('uses manual default embedding model before license default model', async () => {
+  test('uses default embedding model', async () => {
     const { getSessionAttachmentEmbeddingProviderWithResolution } = await import('./model-providers')
 
     const resolution = await getSessionAttachmentEmbeddingProviderWithResolution()
