@@ -9,7 +9,6 @@ import {
   mergeImageModels,
 } from '@/packages/image-model-catalog'
 import { useLanguage, useSettingsStore } from '@/stores/settingsStore'
-import useChatboxAIModels from './useChatboxAIModels'
 import { useProviders } from './useProviders'
 
 export interface ImageModelGroup {
@@ -21,22 +20,12 @@ export interface ImageModelGroup {
 
 export function useProviderImageModels(provider: ModelProviderEnum, enabled: boolean): ImageModelOption[] {
   const language = useLanguage()
-  const licenseKey = useSettingsStore((state) => state.licenseKey)
 
   const { data } = useQuery({
-    queryKey: [
-      'provider-image-models',
-      provider,
-      language,
-      provider === ModelProviderEnum.ChatboxAI ? licenseKey || '' : '',
-    ],
+    queryKey: ['provider-image-models', provider, language],
     enabled,
     staleTime: 3600 * 1000,
-    queryFn: () =>
-      loadProviderImageModels(provider, {
-        language,
-        licenseKey,
-      }),
+    queryFn: () => loadProviderImageModels(provider, { language }),
   })
 
   return data || []
@@ -44,10 +33,8 @@ export function useProviderImageModels(provider: ModelProviderEnum, enabled: boo
 
 export function useImageModelGroups(): ImageModelGroup[] {
   const { providers } = useProviders()
-  const { chatboxAIImageModels } = useChatboxAIModels()
   const providerSettingsMap = useSettingsStore((state) => state.providers)
 
-  const chatboxProvider = providers.find((p) => p.id === ModelProviderEnum.ChatboxAI)
   const openAIProvider = providers.find((p) => p.id === ModelProviderEnum.OpenAI)
   const geminiProvider = providers.find((p) => p.id === ModelProviderEnum.Gemini)
   const customGeminiProviders = providers.filter((p) => p.isCustom && p.type === ModelProviderType.Gemini)
@@ -60,17 +47,6 @@ export function useImageModelGroups(): ImageModelGroup[] {
 
   return useMemo(() => {
     const groups: ImageModelGroup[] = []
-    if (chatboxProvider) {
-      const excluded = new Set(providerSettingsMap?.[ModelProviderEnum.ChatboxAI]?.excludedModels || [])
-      const models = chatboxAIImageModels.map(manualImageModelToOption).filter((model) => !excluded.has(model.modelId))
-      if (models.length > 0) {
-        groups.push({
-          label: chatboxProvider.name,
-          providerId: chatboxProvider.id,
-          models,
-        })
-      }
-    }
 
     if (geminiProvider) {
       const manualModels = (providerSettingsMap?.[geminiProvider.id]?.models || [])
@@ -116,14 +92,5 @@ export function useImageModelGroups(): ImageModelGroup[] {
     }
 
     return groups
-  }, [
-    chatboxProvider,
-    openAIProvider,
-    geminiProvider,
-    customGeminiProviders,
-    providerSettingsMap,
-    chatboxAIImageModels,
-    openAIImageModels,
-    geminiImageModels,
-  ])
+  }, [openAIProvider, geminiProvider, customGeminiProviders, providerSettingsMap, openAIImageModels, geminiImageModels])
 }

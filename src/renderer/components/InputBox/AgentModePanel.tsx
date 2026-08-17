@@ -35,13 +35,11 @@ import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
 import { useKnowledgeBases } from '@/hooks/knowledge-base'
 import { useMCPServerStatus, useToggleMCPServer } from '@/hooks/mcp'
 import { navigateToSettings } from '@/modals/Settings'
-import { BUILTIN_MCP_SERVERS } from '@/packages/mcp/builtin'
 import { skillsController, subscribeSkillsChanged } from '@/packages/skills/controller'
 import { WEB_SEARCH_PROVIDERS, type WebSearchProviderValue } from '@/packages/web-search/constants'
 import platform from '@/platform'
 import * as chatStore from '@/stores/chatStore'
 import { useSession, useSessionSettings } from '@/stores/chatStore'
-import { useAutoValidate } from '@/stores/premiumActions'
 import { recentDirectoriesStore, useRecentDirectories } from '@/stores/recentDirectoriesStore'
 import { setSessionAgentMode, useSessionAgentMode } from '@/stores/session/agent-mode'
 import { useMcpSettings, useSettingsStore } from '@/stores/settingsStore'
@@ -165,9 +163,8 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
 
   // MCP state
   const mcp = useMcpSettings()
-  const isPremium = useAutoValidate()
   const onMCPEnabledChange = useToggleMCPServer()
-  const enabledMCPCount = mcp.servers.filter((s) => s.enabled).length + mcp.enabledBuiltinServers.length
+  const enabledMCPCount = mcp.servers.filter((s) => s.enabled).length
 
   // Knowledge Base state
   const { data: knowledgeBases } = useKnowledgeBases()
@@ -725,21 +722,6 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
         <>
           <SubPanelHeader title="MCP" settingsPath="/mcp" disabled={workModeCapabilitiesDisabled} />
           <Divider my={4} />
-          {isPremium && (
-            <>
-              {BUILTIN_MCP_SERVERS.map((server) => (
-                <MCPServerItem
-                  key={server.id}
-                  id={server.id}
-                  name={server.name}
-                  enabled={mcp.enabledBuiltinServers.includes(server.id)}
-                  disabled={workModeCapabilitiesDisabled}
-                  onEnabledChange={onMCPEnabledChange}
-                />
-              ))}
-              {mcp.servers.length > 0 && <Divider my={4} />}
-            </>
-          )}
           {mcp.servers.map((server) => (
             <MCPServerItem
               key={server.id}

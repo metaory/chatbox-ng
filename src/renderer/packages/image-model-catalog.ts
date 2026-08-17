@@ -50,12 +50,11 @@ export function mergeImageModels(
 
 export async function loadProviderImageModels(
   provider: ModelProviderEnum,
-  options: { licenseKey?: string; language?: string } = {}
+  options: { language?: string } = {}
 ): Promise<ImageModelOption[]> {
   const manifest = await getModelManifest({
     aiProvider: provider,
     language: options.language,
-    licenseKey: provider === ModelProviderEnum.ChatboxAI ? options.licenseKey : undefined,
   })
   return manifest.imageModels.map(remoteImageModelToOption)
 }
@@ -81,10 +80,7 @@ function manualImageModels(settings: Settings, provider: string): ImageModelOpti
 
 async function loadRemoteModels(provider: ModelProviderEnum, settings: Settings): Promise<ImageModelOption[]> {
   try {
-    return await loadProviderImageModels(provider, {
-      language: settings.language,
-      licenseKey: settings.licenseKey,
-    })
+    return await loadProviderImageModels(provider, { language: settings.language })
   } catch (error) {
     log.error(`Failed to load image model manifest for ${provider}:`, error)
     return []
@@ -108,14 +104,6 @@ export async function getAvailableImageModels(
   settings: Settings = settingsStore.getState()
 ): Promise<AvailableImageModel[]> {
   const catalog: AvailableImageModel[] = []
-
-  if (settings.licenseKey) {
-    const excluded = new Set(settings.providers?.[ModelProviderEnum.ChatboxAI]?.excludedModels ?? [])
-    const chatboxModels = (await loadRemoteModels(ModelProviderEnum.ChatboxAI, settings)).filter(
-      (model) => !excluded.has(model.modelId)
-    )
-    catalog.push(...catalogEntries(ModelProviderEnum.ChatboxAI, chatboxModels))
-  }
 
   const geminiConfigured = isBuiltinProviderConfigured(ModelProviderEnum.Gemini, settings)
   const customGeminiProviders = (settings.customProviders ?? []).filter(

@@ -19,14 +19,6 @@ function getChatboxCliToolName(input: unknown): string {
 
   const [first, second] = argv
   if (first === 'version') return t('Chatbox Version')
-  if (first === 'status' || first === 'whoami' || (first === 'account' && !second)) return t('Account Status')
-  if (first === 'quota' || first === 'usage' || (first === 'account' && second === 'quota')) return t('Quota Details')
-  if (first === 'license' && (second === 'refresh' || second === 'sync')) return t('Refresh Account Status')
-  if (first === 'refresh' || first === 'sync' || (first === 'account' && second === 'refresh')) {
-    return t('Refresh Account Status')
-  }
-  if (first === 'license' || (first === 'account' && second === 'license')) return t('License Details')
-  if (first === 'account' && second === 'status') return t('Account Status')
   if (first === 'settings' && second === 'list') return t('List Settings')
   if (first === 'settings' && second === 'get') return t('Read Setting')
   if (first === 'chats' && second === 'list') return t('Conversation List')

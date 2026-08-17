@@ -63,7 +63,6 @@ import { useBlob } from '@/hooks/useBlob'
 import { formatElapsedTime, MIN_STEP_DURATION_MS, useThinkingTimer } from '@/hooks/useThinkingTimer'
 import { getLogger } from '@/lib/utils'
 import { getAcceptedImageBackgroundTaskResult } from '@/packages/chatbox-cli/background-task-result'
-import { formatComputePointsRemainingRatio } from '@/packages/chatbox-cli/compute-points'
 import { resumeImageGenerationWithFollowUp } from '@/packages/chatbox-cli/image-task-follow-up'
 import { getToolName } from '@/packages/tools'
 import type { SearchResultItem } from '@/packages/web-search'
@@ -1180,9 +1179,7 @@ const ImageGenerationApprovalCard: FC<{
   onDeny: () => void
   actionsRef?: Ref<HTMLDivElement>
 }> = ({ toolCallId, details, disabled, onApprove, onDeny, actionsRef }) => {
-  const { t, i18n } = useTranslation()
-  const usesChatboxQuota = details.billing === 'chatbox_quota'
-  const computePointsRemainingRatio = details.computePointsRemainingRatio ?? details.computePointsRemaining
+  const { t } = useTranslation()
 
   return (
     <Stack data-testid={TestId.toolCall.approvalCard} data-tool-call-id={toolCallId} gap="sm">
@@ -1243,33 +1240,9 @@ const ImageGenerationApprovalCard: FC<{
       </Group>
 
       <Alert color="yellow" variant="light" icon={<IconInfoCircle size={16} />} p="xs">
-        <Stack gap={3}>
-          <Text size="xs" fw={500}>
-            {usesChatboxQuota
-              ? t('This request will consume {{count}} image quota and compute points.', { count: details.count })
-              : t('This request may incur charges from {{provider}}.', { provider: details.provider })}
-          </Text>
-          {usesChatboxQuota && details.imageQuota && (
-            <Text size="xs" c="chatbox-secondary">
-              {t('Image quota remaining: {{remaining}} / {{total}}', {
-                remaining: details.imageQuota.remaining.toLocaleString(),
-                total: details.imageQuota.total.toLocaleString(),
-              })}
-            </Text>
-          )}
-          {usesChatboxQuota && computePointsRemainingRatio !== undefined && (
-            <Text size="xs" c="chatbox-secondary">
-              {t('Compute points remaining: {{points}}', {
-                points: formatComputePointsRemainingRatio(computePointsRemainingRatio, i18n.language),
-              })}
-            </Text>
-          )}
-          <Text size="xs" c="chatbox-tertiary">
-            {usesChatboxQuota
-              ? t('Exact compute point usage is calculated after generation.')
-              : t('Chatbox AI image quota will not be used.')}
-          </Text>
-        </Stack>
+        <Text size="xs" fw={500}>
+          {t('This request may incur charges from {{provider}}.', { provider: details.provider })}
+        </Text>
       </Alert>
 
       <Group gap="xs" ref={actionsRef}>

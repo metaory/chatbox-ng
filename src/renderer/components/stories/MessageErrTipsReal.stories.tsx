@@ -110,17 +110,6 @@ export const FreeOcrQuotaExhaustedReminder: StoryObj<typeof MessageErrTips> = {
   },
 }
 
-export const AgentModeRewardReminder: StoryObj<typeof MessageErrTips> = {
-  name: 'Agent Mode Reward — Reminder Card',
-  args: {
-    msg: makeErrorMessage({
-      error: 'Free Agent Mode Token Quota Exhausted',
-      errorCode: 20040,
-    }),
-    onRetry: () => alert('Continue task'),
-  },
-}
-
 export const NetworkError: StoryObj<typeof MessageErrTips> = {
   name: 'Network Error (fetch failed)',
   args: {

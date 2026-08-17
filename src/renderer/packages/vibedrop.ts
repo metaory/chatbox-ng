@@ -1,7 +1,6 @@
 import { ApiError } from '@shared/models/errors'
 import { ofetch } from 'ofetch'
 import platform from '@/platform'
-import { authInfoStore } from '@/stores/authInfoStore'
 import { settingsStore } from '@/stores/settingsStore'
 import { handleMobileRequest } from '@/utils/mobile-request'
 
@@ -116,16 +115,7 @@ export async function publishToVibedrop(params: PublishToVibedropParams): Promis
 // bind the cached publish key to an account so it is never reused across
 // accounts (e.g. after switching login without an explicit logout).
 function currentAccountEmail(): string | null {
-  const token = authInfoStore.getState().accessToken
-  if (!token) return null
-  try {
-    const payload = token.split('.')[1]
-    if (!payload) return null
-    const json = JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/')))
-    return typeof json.email === 'string' && json.email ? json.email.toLowerCase() : null
-  } catch {
-    return null
-  }
+  return null
 }
 
 export function getCachedVibedropKey(): string | undefined {

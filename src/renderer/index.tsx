@@ -35,7 +35,6 @@ import './setup/protect'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { initSessionAttachmentRagMaintenance } from './setup/session_attachment_rag_maintenance'
 import { initLastUsedModelStore } from './stores/lastUsedModelStore'
-import { initLoginLicenseStateReconciliation } from './stores/premiumActions'
 import { initRecentDirectoriesStore } from './stores/recentDirectoriesStore'
 import { initSettingsStore } from './stores/settingsStore'
 import { initUpdateListeners } from './stores/updateStore'
@@ -141,7 +140,6 @@ initializeApp()
     const [settings] = await Promise.all([initSettingsStore(), initLastUsedModelStore(), initRecentDirectoriesStore()])
 
     i18n.changeLanguage(settings.language)
-    initLoginLicenseStateReconciliation()
 
     // Initialize auto-updater event listeners (desktop only, idempotent)
     if (platform.type === 'desktop') {

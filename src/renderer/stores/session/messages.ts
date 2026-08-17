@@ -216,7 +216,6 @@ async function submitNewUserMessageUnlocked(
   newUserMsg = await attachLargeFileRagMetadata(sessionId, newUserMsg)
 
   const globalSettings = settingsStore.getState().getSettings()
-  const isPro = settingActions.isPro()
   const remoteConfig = await settingActions.getRemoteConfig()
 
   // 根据需要，插入空白的回复消息
@@ -227,7 +226,7 @@ async function submitNewUserMessageUnlocked(
     }
     newAssistantMsg.status.push({
       type: 'sending_file',
-      mode: isPro ? 'advanced' : 'local',
+      mode: 'local',
     })
   }
   if (newUserMsg.links && newUserMsg.links.length > 0) {
@@ -236,7 +235,7 @@ async function submitNewUserMessageUnlocked(
     }
     newAssistantMsg.status.push({
       type: 'loading_webpage',
-      mode: isPro ? 'advanced' : 'local',
+      mode: 'local',
     })
   }
   if (needGenerating) {

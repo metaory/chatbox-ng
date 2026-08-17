@@ -30,6 +30,12 @@ const { state } = vi.hoisted(() => {
   return { state }
 })
 
+vi.mock('@/platform', () => ({
+  default: {
+    getVersion: vi.fn().mockResolvedValue('test-version'),
+    getPlatform: vi.fn().mockResolvedValue('linux'),
+  },
+}))
 vi.mock('@/stores/settingsStore', () => ({
   settingsStore: { getState: () => state },
 }))
@@ -82,12 +88,14 @@ describe('Chatbox CLI settings allowlist', () => {
 
   it('only exposes read commands and guides manual changes to the correct page', async () => {
     expect(settingsCommands.map((candidate) => candidate.path)).toEqual([
+      ['version'],
       ['settings', 'list'],
       ['settings', 'get'],
     ])
     expect(
       chatboxCliCommandCatalog.filter((candidate) => candidate.domain === 'settings').map((candidate) => candidate.path)
     ).toEqual([
+      ['version'],
       ['settings', 'list'],
       ['settings', 'get'],
     ])
@@ -123,5 +131,15 @@ describe('Chatbox CLI settings allowlist', () => {
       notes: expect.arrayContaining([expect.stringContaining('Settings access is read-only')]),
     })
     expect(state.theme).toBe(2)
+  })
+
+  it('reports installed version', async () => {
+    const result = await executeChatboxCli({ argv: ['version'] }, { toolCallId: 'tool-1' })
+    expect(result).toMatchObject({
+      ok: true,
+      command: 'version',
+      installedVersion: 'test-version',
+      platform: 'linux',
+    })
   })
 })

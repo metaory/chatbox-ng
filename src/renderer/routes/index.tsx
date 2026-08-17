@@ -30,7 +30,7 @@ import useVersion from '@/hooks/useVersion'
 import * as remote from '@/packages/remote'
 import { router } from '@/router'
 import { createSession as createSessionStore } from '@/stores/chatStore'
-import { resolveChatboxLicenseDefaultModel } from '@/stores/defaultChatModel'
+import { FALLBACK_CHAT_MODEL } from '@/stores/defaultChatModel'
 import { getHasCompletedFirstSuccessfulChat } from '@/stores/firstSuccessfulChat'
 import { generate, submitNewUserMessage, switchCurrentSession } from '@/stores/sessionActions'
 import { initEmptyChatSession } from '@/stores/sessionHelpers'
@@ -82,10 +82,6 @@ function Index() {
 
   const { providers } = useProviders()
   const defaultChatModel = useSettingsStore((s) => s.defaultChatModel)
-  const licenseKey = useSettingsStore((s) => s.licenseKey)
-  const licenseDetail = useSettingsStore((s) => s.licenseDetail)
-  const licensePlanName = useSettingsStore((s) => s.licensePlanName)
-  const hasExpiredLicense = useSettingsStore((s) => s.hasExpiredLicense)
   const { isExceeded, isExceededResolved } = useVersion()
   const welcomeCardMode = useMemo(
     () =>
@@ -138,15 +134,7 @@ function Index() {
             provider: defaultChatModel.provider,
             modelId: defaultChatModel.model,
           }
-        : resolveChatboxLicenseDefaultModel({
-            licenseKey,
-            hasExpiredLicense,
-            licenseDetail,
-            licensePlanName,
-          })
-      if (!defaultModel) {
-        return old
-      }
+        : FALLBACK_CHAT_MODEL
       return {
         ...old,
         settings: {
@@ -155,7 +143,7 @@ function Index() {
         },
       }
     })
-  }, [defaultChatModel, hasExpiredLicense, licenseDetail, licenseKey, licensePlanName])
+  }, [defaultChatModel])
 
   const { copilots: myCopilots } = useMyCopilots()
   const { copilots: remoteCopilots } = useRemoteCopilotsByCursor({ limit: 10 })

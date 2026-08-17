@@ -27,21 +27,21 @@ export type UiInventoryItem = {
   hasTranslation: boolean
 }
 
-export const uiInventoryGeneratedAt = "2026-08-17T12:55:38.163Z"
+export const uiInventoryGeneratedAt = "2026-08-17T13:43:55.952Z"
 
 export const uiInventorySummary = {
-  "total": 230,
+  "total": 225,
   "byKind": {
-    "component": 145,
-    "story": 20,
-    "modal": 19,
+    "component": 142,
+    "story": 19,
+    "modal": 18,
     "ui": 2,
     "page": 31,
     "route-component": 13
   },
   "byArea": {
-    "app": 80,
-    "chat": 16,
+    "app": 78,
+    "chat": 15,
     "common": 26,
     "input": 12,
     "knowledge-base": 6,
@@ -49,16 +49,16 @@ export const uiInventorySummary = {
     "message-parts": 2,
     "model-selector": 5,
     "session": 3,
-    "settings": 28,
-    "modal": 19,
+    "settings": 27,
+    "modal": 18,
     "copilots": 9,
     "dev": 7,
     "image-creator": 10
   },
   "byPlatform": {
-    "all": 198,
+    "all": 194,
     "desktop": 14,
-    "mobile": 19,
+    "mobile": 18,
     "web": 3
   }
 } as const
@@ -285,54 +285,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
     ],
     "hasDefaultExport": false,
     "hasNiceModal": true,
-    "hasTranslation": true
-  },
-  {
-    "path": "src/renderer/components/chat/AgentModeRewardQuotaCard.tsx",
-    "title": "components/chat/AgentModeRewardQuotaCard",
-    "kind": "component",
-    "area": "chat",
-    "components": [
-      "AgentModeRewardQuotaCard"
-    ],
-    "states": [
-      "error",
-      "loading"
-    ],
-    "variants": [
-      "light",
-      "size:13px",
-      "size:sm",
-      "size:xs"
-    ],
-    "platforms": [
-      "all"
-    ],
-    "platformNotes": [],
-    "previewModes": [],
-    "text": [
-      "Claim reward and continue",
-      "Continue",
-      "Could not claim the reward. Please try again.",
-      "Reward claimed, but the task could not resume automatically. Please retry.",
-      "Work mode uses more points. Claim a one-time free reward to continue this interrupted task.",
-      "Your points are used up. Claim free reward quota to continue."
-    ],
-    "stories": [],
-    "storyNames": [],
-    "storyTargets": [],
-    "storybookIds": [],
-    "dependencies": [],
-    "previewLinks": [
-      {
-        "label": "Storybook: Inside a real assistant message",
-        "kind": "storybook",
-        "href": "http://localhost:6006/?path=/story/design-mockups-agent-mode-reward-quota-card--inside-a-real-assistant-message",
-        "iframeHref": "http://localhost:6006/iframe.html?id=design-mockups-agent-mode-reward-quota-card--inside-a-real-assistant-message&viewMode=story"
-      }
-    ],
-    "hasDefaultExport": false,
-    "hasNiceModal": false,
     "hasTranslation": true
   },
   {
@@ -699,20 +651,14 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "MessageErrTips"
     ],
     "states": [
-      "agentModeRewardClaimed",
-      "agentModeRewardClaimFailed",
-      "agentModeRewardResumeFailed",
       "disabled",
       "error",
       "expanded",
       "isBubbleLayout",
       "isContextLengthError",
-      "isHandlingAgentModeReward",
       "isHtmlContent",
       "isTranslating",
       "isTruncated",
-      "loading",
-      "success",
       "translatedText",
       "visible"
     ],
@@ -741,7 +687,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "OCR processing failed (provider: {{aiProvider}}). Please check your <OpenSettingButton>OCR model settings</OpenSettingButton> and ensure the configured model is available.",
       "Request ID: {{requestId}}",
       "Retry",
-      "Reward claimed, but the task could not resume automatically. Please retry.",
       "Show original",
       "Translate",
       "unknown error tips"
@@ -751,19 +696,12 @@ export const uiInventoryItems: UiInventoryItem[] = [
     "storyTargets": [],
     "storybookIds": [],
     "dependencies": [
-      "src/renderer/components/chat/AgentModeRewardQuotaCard",
       "src/renderer/components/chat/message-error-presentation",
       "src/renderer/components/chat/QuotaExhaustedCard",
       "src/renderer/components/common/ChatboxAIErrorMessage",
       "src/renderer/components/ui/tooltip"
     ],
     "previewLinks": [
-      {
-        "label": "Storybook: Agent Mode Reward — Reminder Card",
-        "kind": "storybook",
-        "href": "http://localhost:6006/?path=/story/real-components-messageerrtips--agent-mode-reward-reminder-card",
-        "iframeHref": "http://localhost:6006/iframe.html?id=real-components-messageerrtips--agent-mode-reward-reminder-card&viewMode=story"
-      },
       {
         "label": "Storybook: Auth Error (401)",
         "kind": "storybook",
@@ -850,7 +788,7 @@ export const uiInventoryItems: UiInventoryItem[] = [
       }
     ],
     "hasDefaultExport": true,
-    "hasNiceModal": true,
+    "hasNiceModal": false,
     "hasTranslation": true
   },
   {
@@ -3282,7 +3220,8 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "ProviderGroupLabel"
     ],
     "states": [
-      "isCustom"
+      "isCustom",
+      "isValidElement"
     ],
     "variants": [
       "size:sm",
@@ -3471,7 +3410,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "isLockedDisabled",
       "isModelDisabled",
       "isNewSession",
-      "isPremium",
       "isProviderAvailable",
       "isSelected",
       "isSmartSwitchingDisabled",
@@ -3617,6 +3555,7 @@ export const uiInventoryItems: UiInventoryItem[] = [
     "platformNotes": [],
     "previewModes": [],
     "text": [
+      "Cannot index",
       "chunks",
       "Click to view parsed content",
       "Content",
@@ -3635,13 +3574,12 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "Preparing",
       "Processing failed",
       "Queued",
-      "Sign in needed",
       "Status",
       "Still indexing",
       "Switch model",
       "This attachment is too large for chat attachments. Please upload it through Knowledge Base instead.",
       "This document contains too much text for chat attachments. Please upload it through Knowledge Base instead.",
-      "This large file needs Chatbox AI to finish indexing. Sign in to Chatbox AI, then retry this file.",
+      "This large file cannot be indexed here. Upload it through Knowledge Base, or use a smaller file.",
       "Too large",
       "Too much text",
       "Unavailable"
@@ -4199,7 +4137,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "isConfirmDisabled",
       "isEmbedding",
       "isEmbeddingDisabled",
-      "isLoggedIn",
       "isProviderAvailable",
       "isUnsupportedPlatform",
       "isWin32Arm64",
@@ -4208,7 +4145,8 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "newEmbeddingModel",
       "newKbName",
       "newProviderMode",
-      "newRerankModel"
+      "newRerankModel",
+      "newVisionModel"
     ],
     "variants": [
       "color:orange",
@@ -4256,7 +4194,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "Provider unavailable",
       "Rerank",
       "Save",
-      "Sign in to Chatbox AI to use this knowledge base",
       "This action cannot be undone. All documents and their embeddings will be permanently deleted.",
       "Unknown",
       "Vision"
@@ -5033,7 +4970,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
     "states": [
       "checked",
       "disabled",
-      "isPremium",
       "opened"
     ],
     "variants": [
@@ -5859,64 +5795,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
     "hasTranslation": true
   },
   {
-    "path": "src/renderer/components/ModelSelectorV2/ChatboxProviderRows.tsx",
-    "title": "components/ModelSelectorV2/ChatboxProviderRows",
-    "kind": "component",
-    "area": "app",
-    "components": [
-      "ChatboxProviderRows"
-    ],
-    "states": [
-      "active",
-      "collapsed",
-      "isAdvanced",
-      "isChatboxAIAdvancedGroup",
-      "isChatboxAIModelLocked",
-      "isFavorited",
-      "isFeaturedOnly",
-      "isLocked",
-      "isMobile",
-      "selected",
-      "visible"
-    ],
-    "variants": [
-      "chatbox",
-      "size:sm",
-      "size:xs",
-      "transparent"
-    ],
-    "platforms": [
-      "mobile"
-    ],
-    "platformNotes": [
-      "uses isMobile state/prop"
-    ],
-    "previewModes": [],
-    "text": [
-      "Collapse",
-      "Unavailable",
-      "Upgrade to Pro",
-      "View all advanced models"
-    ],
-    "stories": [],
-    "storyNames": [],
-    "storyTargets": [],
-    "storybookIds": [],
-    "dependencies": [
-      "src/renderer/components/common/ScalableIcon",
-      "src/renderer/components/ModelSelectorV2/chatboxCatalog",
-      "src/renderer/components/ModelSelectorV2/constants",
-      "src/renderer/components/ModelSelectorV2/helpers",
-      "src/renderer/components/ModelSelectorV2/ModelRow",
-      "src/renderer/components/ModelSelectorV2/ProviderRowHeader",
-      "src/renderer/components/ModelSelectorV2/types"
-    ],
-    "previewLinks": [],
-    "hasDefaultExport": false,
-    "hasNiceModal": false,
-    "hasTranslation": true
-  },
-  {
     "path": "src/renderer/components/ModelSelectorV2/DetailCard.tsx",
     "title": "components/ModelSelectorV2/DetailCard",
     "kind": "component",
@@ -5949,7 +5827,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
     "platformNotes": [],
     "previewModes": [],
     "text": [
-      "Available on Pro and above",
       "Capabilities",
       "Close",
       "Compute point exchange",
@@ -5959,8 +5836,7 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "Otherwise",
       "Output",
       "Pricing",
-      "Tiered pricing",
-      "Upgrade to Pro"
+      "Tiered pricing"
     ],
     "stories": [],
     "storyNames": [],
@@ -6032,9 +5908,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
     ],
     "states": [
       "activeTab",
-      "advancedExpanded",
-      "collapsed",
-      "collapsedGroupIds",
       "desktopDetail",
       "hasRightSideSpace",
       "isCustom",
@@ -6066,7 +5939,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
     "text": [
       "All",
       "Auto",
-      "Chatbox AI",
       "Favorite",
       "Model details",
       "No eligible models available",
@@ -6082,7 +5954,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "src/renderer/components/common/ScalableIcon",
       "src/renderer/components/ModelSelector/filterModels",
       "src/renderer/components/ModelSelectorV2/chatboxCatalog",
-      "src/renderer/components/ModelSelectorV2/ChatboxProviderRows",
       "src/renderer/components/ModelSelectorV2/constants",
       "src/renderer/components/ModelSelectorV2/DetailCard",
       "src/renderer/components/ModelSelectorV2/GenericProviderRows",
@@ -6439,49 +6310,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       }
     ],
     "hasDefaultExport": true,
-    "hasNiceModal": false,
-    "hasTranslation": true
-  },
-  {
-    "path": "src/renderer/components/settings/mcp/BuiltinServersSection.tsx",
-    "title": "components/settings/mcp/BuiltinServersSection",
-    "kind": "component",
-    "area": "settings",
-    "components": [
-      "BuiltinServersSection"
-    ],
-    "states": [
-      "checked",
-      "disabled",
-      "isPremium"
-    ],
-    "variants": [
-      "size:sm",
-      "size:xs"
-    ],
-    "platforms": [
-      "all"
-    ],
-    "platformNotes": [],
-    "previewModes": [],
-    "text": [
-      "Builtin MCP Servers",
-      "One-click MCP servers for Chatbox AI subscribers"
-    ],
-    "stories": [],
-    "storyNames": [],
-    "storyTargets": [],
-    "storybookIds": [],
-    "dependencies": [],
-    "previewLinks": [
-      {
-        "label": "Storybook: Builtin MCP server premium accessible states",
-        "kind": "storybook",
-        "href": "http://localhost:6006/?path=/story/real-components-settings-management--builtin-mcp-server-premium-accessible-states",
-        "iframeHref": "http://localhost:6006/iframe.html?id=real-components-settings-management--builtin-mcp-server-premium-accessible-states&viewMode=story"
-      }
-    ],
-    "hasDefaultExport": false,
     "hasNiceModal": false,
     "hasTranslation": true
   },
@@ -7319,67 +7147,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
         "kind": "storybook",
         "href": "http://localhost:6006/?path=/story/real-components-app-base--app-icons-provider-avatars-file-icons-and-static-feedback-states",
         "iframeHref": "http://localhost:6006/iframe.html?id=real-components-app-base--app-icons-provider-avatars-file-icons-and-static-feedback-states&viewMode=story"
-      }
-    ],
-    "hasDefaultExport": true,
-    "hasNiceModal": false,
-    "hasTranslation": false
-  },
-  {
-    "path": "src/renderer/components/stories/AgentModeRewardQuotaCardReal.stories.tsx",
-    "title": "components/stories/AgentModeRewardQuotaCardReal.stories",
-    "kind": "story",
-    "area": "app",
-    "components": [
-      "AgentMessageFixture"
-    ],
-    "states": [
-      "active",
-      "error",
-      "loading",
-      "ready",
-      "success"
-    ],
-    "variants": [
-      "color:teal",
-      "color:var(--chatbox-tint-white)",
-      "size:lg",
-      "size:sm",
-      "size:xs"
-    ],
-    "platforms": [
-      "all"
-    ],
-    "platformNotes": [],
-    "previewModes": [],
-    "text": [
-      "Inside a real assistant message"
-    ],
-    "stories": [
-      "InAgentMessage"
-    ],
-    "storyNames": [
-      "Inside a real assistant message"
-    ],
-    "storyTargets": [
-      [
-        "src/renderer/components/chat/AgentModeRewardQuotaCard"
-      ]
-    ],
-    "storybookTitle": "Design Mockups/Agent Mode Reward Quota Card",
-    "storybookIds": [
-      "design-mockups-agent-mode-reward-quota-card--inside-a-real-assistant-message"
-    ],
-    "dependencies": [
-      "src/renderer/components/chat/AgentModeRewardQuotaCard",
-      "src/renderer/components/common/Avatar"
-    ],
-    "previewLinks": [
-      {
-        "label": "Storybook: Inside a real assistant message",
-        "kind": "storybook",
-        "href": "http://localhost:6006/?path=/story/design-mockups-agent-mode-reward-quota-card--inside-a-real-assistant-message",
-        "iframeHref": "http://localhost:6006/iframe.html?id=design-mockups-agent-mode-reward-quota-card--inside-a-real-assistant-message&viewMode=story"
       }
     ],
     "hasDefaultExport": true,
@@ -9282,7 +9049,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
     "platformNotes": [],
     "previewModes": [],
     "text": [
-      "Agent Mode Reward — Reminder Card",
       "Auth Error (401)",
       "Chatbox AI OCR Free Daily Quota Exhausted — Reminder Card",
       "Chatbox AI OCR Quota Exhausted — Reminder Card",
@@ -9299,7 +9065,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "Server Error (500)"
     ],
     "stories": [
-      "AgentModeRewardReminder",
       "AuthError",
       "ContextLengthError",
       "FreeOcrQuotaExhaustedReminder",
@@ -9316,7 +9081,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "WithoutRetry"
     ],
     "storyNames": [
-      "Agent Mode Reward — Reminder Card",
       "Auth Error (401)",
       "Context Length Error",
       "Chatbox AI OCR Free Daily Quota Exhausted — Reminder Card",
@@ -9346,12 +9110,10 @@ export const uiInventoryItems: UiInventoryItem[] = [
       [],
       [],
       [],
-      [],
       []
     ],
     "storybookTitle": "Real Components/MessageErrTips",
     "storybookIds": [
-      "real-components-messageerrtips--agent-mode-reward-reminder-card",
       "real-components-messageerrtips--auth-error-401",
       "real-components-messageerrtips--context-length-error",
       "real-components-messageerrtips--chatbox-ai-ocr-free-daily-quota-exhausted-reminder-card",
@@ -9371,12 +9133,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "src/renderer/components/chat/MessageErrTips"
     ],
     "previewLinks": [
-      {
-        "label": "Storybook: Agent Mode Reward — Reminder Card",
-        "kind": "storybook",
-        "href": "http://localhost:6006/?path=/story/real-components-messageerrtips--agent-mode-reward-reminder-card",
-        "iframeHref": "http://localhost:6006/iframe.html?id=real-components-messageerrtips--agent-mode-reward-reminder-card&viewMode=story"
-      },
       {
         "label": "Storybook: Auth Error (401)",
         "kind": "storybook",
@@ -9472,7 +9228,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
     "kind": "story",
     "area": "app",
     "components": [
-      "AgentModeRewardClaimSuccessFixture",
       "LoadedSettingsModal",
       "ModalPreview",
       "OpenModal",
@@ -9486,7 +9241,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "checked",
       "error",
       "opened",
-      "ready",
       "success"
     ],
     "variants": [
@@ -9513,8 +9267,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "Actual model editor modal with model id, nickname, type, capabilities, context window, max output, test, cancel, and save actions.",
       "Actual report content modal with content id, report type selector, details textarea, cancel, and submit action.",
       "Actual thread name edit modal backed by the session query cache, with input, cancel, and save actions.",
-      "Agent Mode limited-time reward success",
-      "AgentModeRewardClaimSuccess",
       "App Store rating modal rate now and maybe later actions",
       "AppStoreRating",
       "Artifact preview modal html preview refresh and close states",
@@ -9544,7 +9296,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "ModelEdit",
       "Pricing page copy",
       "Primary action",
-      "Production success modal with mocked reward points and expiry. Does not call the claim API.",
       "Promise",
       "Report content modal type and detail states",
       "ReportContent",
@@ -9564,7 +9315,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "Welcome modal setup provider and later states"
     ],
     "stories": [
-      "AgentModeRewardClaimSuccessStates",
       "AppStoreRatingStates",
       "ArtifactPreviewStates",
       "AttachLinkStates",
@@ -9584,7 +9334,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "WelcomeStates"
     ],
     "storyNames": [
-      "Agent Mode limited-time reward success",
       "App Store rating modal rate now and maybe later actions",
       "Artifact preview modal html preview refresh and close states",
       "Attach link modal multiline URL entry states",
@@ -9604,9 +9353,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "Welcome modal setup provider and later states"
     ],
     "storyTargets": [
-      [
-        "src/renderer/modals/AgentModeRewardClaimSuccess"
-      ],
       [
         "src/renderer/modals/AppStoreRating"
       ],
@@ -9661,7 +9407,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
     ],
     "storybookTitle": "Real Components/Modals",
     "storybookIds": [
-      "real-components-modals--agent-mode-limited-time-reward-success",
       "real-components-modals--app-store-rating-modal-rate-now-and-maybe-later-actions",
       "real-components-modals--artifact-preview-modal-html-preview-refresh-and-close-states",
       "real-components-modals--attach-link-modal-multiline-url-entry-states",
@@ -9682,12 +9427,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
     ],
     "dependencies": [],
     "previewLinks": [
-      {
-        "label": "Storybook: Agent Mode limited-time reward success",
-        "kind": "storybook",
-        "href": "http://localhost:6006/?path=/story/real-components-modals--agent-mode-limited-time-reward-success",
-        "iframeHref": "http://localhost:6006/iframe.html?id=real-components-modals--agent-mode-limited-time-reward-success&viewMode=story"
-      },
       {
         "label": "Storybook: App Store rating modal rate now and maybe later actions",
         "kind": "storybook",
@@ -10197,7 +9936,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
     ],
     "states": [
       "active",
-      "disabled",
       "hasUpdate",
       "isBuiltin",
       "isCustom",
@@ -10217,7 +9955,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
     "text": [
       "A Claude Code compatible workflow discovered from the local skills folder.",
       "Actual add-provider modal with provider name validation and API compatibility mode selector.",
-      "Actual Chatbox built-in MCP server cards with enabled and disabled switch states.",
       "Actual custom MCP grid with add-server tile, existing server cards, and install-config modal state.",
       "Actual install-from-GitHub modal with detected skills, checkboxes, install status badges, cancel, and install action.",
       "Actual MCP server editor modal with name, transport type, URL/header fields, delete, test, and save actions.",
@@ -10232,8 +9969,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "Add provider modal name and API mode states",
       "AddProviderModal",
       "Answer questions about Chatbox product features and plans.",
-      "Builtin MCP server premium accessible states",
-      "BuiltinServersSection",
       "Chatbox AI",
       "chatbox-product-info",
       "Claude",
@@ -10276,7 +10011,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
     ],
     "stories": [
       "AddProviderModalStates",
-      "BuiltinMcpServersStates",
       "CustomMcpServersStates",
       "DocumentParserSettingsStates",
       "GitHubInstallModalStates",
@@ -10291,7 +10025,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
     ],
     "storyNames": [
       "Add provider modal name and API mode states",
-      "Builtin MCP server premium accessible states",
       "Custom MCP server cards add edit and install states",
       "Document parser desktop mineru and token states",
       "GitHub install modal detected skill selection states",
@@ -10307,9 +10040,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
     "storyTargets": [
       [
         "src/renderer/components/settings/provider/AddProviderModal"
-      ],
-      [
-        "src/renderer/components/settings/mcp/BuiltinServersSection"
       ],
       [
         "src/renderer/components/settings/mcp/CustomServersSection"
@@ -10348,7 +10078,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
     "storybookTitle": "Real Components/Settings Management",
     "storybookIds": [
       "real-components-settings-management--add-provider-modal-name-and-api-mode-states",
-      "real-components-settings-management--builtin-mcp-server-premium-accessible-states",
       "real-components-settings-management--custom-mcp-server-cards-add-edit-and-install-states",
       "real-components-settings-management--document-parser-desktop-mineru-and-token-states",
       "real-components-settings-management--git-hub-install-modal-detected-skill-selection-states",
@@ -10363,7 +10092,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
     ],
     "dependencies": [
       "src/renderer/components/settings/DocumentParserSettings",
-      "src/renderer/components/settings/mcp/BuiltinServersSection",
       "src/renderer/components/settings/mcp/ConfigModal",
       "src/renderer/components/settings/mcp/CustomServersSection",
       "src/renderer/components/settings/mcp/ServerRegistrySpotlight",
@@ -10382,12 +10110,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
         "kind": "storybook",
         "href": "http://localhost:6006/?path=/story/real-components-settings-management--add-provider-modal-name-and-api-mode-states",
         "iframeHref": "http://localhost:6006/iframe.html?id=real-components-settings-management--add-provider-modal-name-and-api-mode-states&viewMode=story"
-      },
-      {
-        "label": "Storybook: Builtin MCP server premium accessible states",
-        "kind": "storybook",
-        "href": "http://localhost:6006/?path=/story/real-components-settings-management--builtin-mcp-server-premium-accessible-states",
-        "iframeHref": "http://localhost:6006/iframe.html?id=real-components-settings-management--builtin-mcp-server-premium-accessible-states&viewMode=story"
       },
       {
         "label": "Storybook: Custom MCP server cards add edit and install states",
@@ -10859,57 +10581,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
     "hasTranslation": false
   },
   {
-    "path": "src/renderer/modals/AgentModeRewardClaimSuccess.tsx",
-    "title": "modals/AgentModeRewardClaimSuccess",
-    "kind": "modal",
-    "area": "modal",
-    "components": [
-      "AgentModeRewardClaimSuccess"
-    ],
-    "states": [
-      "isNaN",
-      "opened",
-      "visible"
-    ],
-    "variants": [
-      "size:32px",
-      "size:sm",
-      "size:xl",
-      "size:xs"
-    ],
-    "platforms": [
-      "all"
-    ],
-    "platformNotes": [],
-    "previewModes": [],
-    "text": [
-      "A limited-time Work Mode gift",
-      "Congratulations! Your bonus points are here",
-      "Continue with Work Mode",
-      "Gifted points",
-      "These limited-time points are a gift for you. Enjoy the full power of Work Mode on complex tasks.",
-      "Valid until {{expiry}}"
-    ],
-    "stories": [],
-    "storyNames": [],
-    "storyTargets": [],
-    "storybookIds": [],
-    "dependencies": [
-      "src/renderer/components/common/AdaptiveModal"
-    ],
-    "previewLinks": [
-      {
-        "label": "Storybook: Agent Mode limited-time reward success",
-        "kind": "storybook",
-        "href": "http://localhost:6006/?path=/story/real-components-modals--agent-mode-limited-time-reward-success",
-        "iframeHref": "http://localhost:6006/iframe.html?id=real-components-modals--agent-mode-limited-time-reward-success&viewMode=story"
-      }
-    ],
-    "hasDefaultExport": true,
-    "hasNiceModal": true,
-    "hasTranslation": true
-  },
-  {
     "path": "src/renderer/modals/AppStoreRating.tsx",
     "title": "modals/AppStoreRating",
     "kind": "modal",
@@ -11293,7 +10964,7 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "Large file Q&A requires a model with tool use support. Switch to a compatible model or remove this file.",
       "This attachment is too large for chat attachments. Please upload it through Knowledge Base instead.",
       "This document contains too much text for chat attachments. Please upload it through Knowledge Base instead.",
-      "This large file needs Chatbox AI to finish indexing. Sign in to Chatbox AI, then retry this file. If you do not want to use Chatbox AI, remove the file and upload a smaller attachment instead.",
+      "This large file cannot be indexed here. Upload it through Knowledge Base, or remove it and use a smaller attachment instead.",
       "This PDF is password-protected, so its content cannot be read. Remove the password and upload it again.",
       "This PDF is too large to process (max {{size}}). Please upload a smaller file."
     ],
@@ -11326,8 +10997,7 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "index"
     ],
     "states": [
-      "error",
-      "success"
+      "error"
     ],
     "variants": [],
     "platforms": [
@@ -11822,7 +11492,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "disabled",
       "error",
       "errorMessage",
-      "isLoggedIn",
       "isSmallScreen",
       "loading",
       "opened",
@@ -11840,7 +11509,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "email_required",
       "error",
       "form",
-      "login_required",
       "new",
       "publishing",
       "size:sm",
@@ -11867,7 +11535,7 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "Failed to publish to VibeDrop. Please try again later.",
       "HTML content is empty, nothing to publish.",
       "Link only",
-      "Manage your published pages at <ManageLink>app.vibedrop.cc</ManageLink> — sign in with your Chatbox email.",
+      "Manage your published pages at <ManageLink>app.vibedrop.cc</ManageLink>.",
       "New page",
       "Only people with the link can open this page.",
       "Open",
@@ -11876,9 +11544,7 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "Publish",
       "Publish failed",
       "Publish to VibeDrop",
-      "Publishing requires an email on your Chatbox account. Please add one and try again.",
-      "Sign in",
-      "Sign in to your Chatbox account to publish and manage your pages.",
+      "Publishing requires an email address. Add one and try again.",
       "The selected page keeps the same URL and its content will be replaced.",
       "This page can no longer be updated. Publish it as a new page instead.",
       "Try Again",
@@ -12076,7 +11742,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "filled",
       "light",
       "size:md",
-      "size:sm",
       "size:xs"
     ],
     "platforms": [
@@ -12106,12 +11771,10 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "Github",
       "New version available",
       "Official Site",
-      "Privacy Policy",
       "QR Code",
       "Restart & Update",
       "Retry",
-      "Update failed",
-      "User Terms"
+      "Update failed"
     ],
     "stories": [],
     "storyNames": [],
@@ -13588,7 +13251,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "Image Creator",
       "New Creation",
       "No models available",
-      "Please log in to Chatbox AI first",
       "Please select a model",
       "Resume Generation",
       "Upload"
@@ -13630,11 +13292,8 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "error",
       "forceShowNewUserScenarioCards",
       "hasCompletedFirstSuccessfulChat",
-      "hasExpiredLicense",
-      "hasUserSelectedModelRef",
       "isExceeded",
       "isExceededResolved",
-      "isLoggedIn",
       "isSmallScreen",
       "selected",
       "session"
@@ -13694,7 +13353,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
     ],
     "states": [
       "error",
-      "hasExpiredLicense",
       "isExceeded",
       "isExceededResolved",
       "isFetching",
@@ -14307,7 +13965,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
     "storyTargets": [],
     "storybookIds": [],
     "dependencies": [
-      "src/renderer/components/settings/mcp/BuiltinServersSection",
       "src/renderer/components/settings/mcp/CustomServersSection",
       "src/renderer/components/settings/mcp/utils"
     ],

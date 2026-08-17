@@ -85,7 +85,6 @@ import { useUIStore } from '@/stores/uiStore'
 import {
   type KnowledgeBase,
   type Message,
-  ModelProviderEnum,
   type ProviderModelInfo,
   type SessionAttachment,
   type SessionAttachmentIndexingStage,
@@ -259,8 +258,8 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
       if (sessionValue !== undefined) {
         return sessionValue
       }
-      // Default: true for ChatboxAI, false for others
-      return model?.provider === ModelProviderEnum.ChatboxAI
+      // Default: off until the user enables it for this session
+      return false
     }, [sessionWebBrowsingMap, currentSessionId, model?.provider])
 
     // this is used for keyboard shortcut. if we don't provide this, kbd wont know what to set when it's a new session(it doesnt have provider info)

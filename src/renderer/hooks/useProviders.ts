@@ -5,16 +5,13 @@ import { useCallback, useMemo } from 'react'
 import { enrichModelsFromRegistry, useModelRegistryVersion } from '@/packages/model-registry'
 import platform from '@/platform'
 import { useSettingsStore } from '@/stores/settingsStore'
-import useChatboxAIModels from './useChatboxAIModels'
 
 export const useProviders = () => {
   useModelRegistryVersion()
 
-  const { chatboxAIModels } = useChatboxAIModels()
   const setSettings = useSettingsStore((state) => state.setSettings)
   const customProviders = useSettingsStore((state) => state.customProviders)
   const favoritedModelsSetting = useSettingsStore((state) => state.favoritedModels)
-  const licenseKey = useSettingsStore((state) => state.licenseKey)
   const providerSettingsMap = useSettingsStore((state) => state.providers)
 
   const allProviderBaseInfos = useMemo(() => [...SystemProviders(), ...(customProviders || [])], [customProviders])
@@ -22,14 +19,9 @@ export const useProviders = () => {
     () =>
       allProviderBaseInfos
         .map((p) => {
+          if (p.id === ModelProviderEnum.ChatboxAI) return null
           const providerSettings = mergeSharedOAuthProviderSettings(p.id, providerSettingsMap)
-          if (p.id === ModelProviderEnum.ChatboxAI && licenseKey) {
-            return {
-              ...p,
-              ...providerSettings,
-              models: chatboxAIModels,
-            }
-          } else if (
+          if (
             (!p.isCustom &&
               (providerSettings?.apiKey ||
                 isUsingOAuth(providerSettings || {}, platform.type) ||
@@ -41,15 +33,13 @@ export const useProviders = () => {
             return {
               ...p,
               ...providerSettings,
-              // 如果没有自定义 models 列表，使用 defaultSettings，否则被自定义的列表（可能有添加或删除部分 model）覆盖, 不能包含用户排除过的 models
               models: enrichModelsFromRegistry(baseModels, p.id),
             } as ProviderInfo
-          } else {
-            return null
           }
+          return null
         })
         .filter((p) => !!p),
-    [providerSettingsMap, allProviderBaseInfos, chatboxAIModels, licenseKey]
+    [providerSettingsMap, allProviderBaseInfos]
   )
 
   const favoritedModels = useMemo(

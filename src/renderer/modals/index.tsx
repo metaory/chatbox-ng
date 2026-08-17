@@ -1,6 +1,5 @@
 import NiceModal from '@ebay/nice-modal-react'
 import CopilotSettingsModal from '../routes/copilots/-components/CopilotSettingsModal'
-import AgentModeRewardClaimSuccess from './AgentModeRewardClaimSuccess'
 import AppStoreRating from './AppStoreRating'
 import ArtifactPreview from './ArtifactPreview'
 import ClearSessionList from './ClearSessionList'
@@ -18,7 +17,6 @@ import VibedropPublish from './VibedropPublish'
 import Welcome from './Welcome'
 
 NiceModal.register('welcome', Welcome)
-NiceModal.register('agent-mode-reward-claim-success', AgentModeRewardClaimSuccess)
 NiceModal.register('file-parse-error', FileParseError)
 NiceModal.register('content-viewer', ContentViewer)
 NiceModal.register('session-settings', SessionSettings)

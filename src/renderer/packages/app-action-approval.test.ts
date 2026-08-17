@@ -5,13 +5,11 @@ describe('Chatbox app action approval', () => {
   it('throws a persistent pause with localized UI details', () => {
     const details = {
       type: 'image_generation' as const,
-      provider: 'chatbox-ai',
-      modelId: 'gpt-image-1.5',
+      provider: 'openai',
+      modelId: 'gpt-image-1',
       prompt: 'A cat in watercolor',
       count: 1,
-      billing: 'chatbox_quota' as const,
-      imageQuota: { remaining: 9, total: 10 },
-      computePointsRemainingRatio: 0.84,
+      billing: 'provider' as const,
     }
 
     try {

@@ -1,6 +1,6 @@
 import type { ChatboxCliCommandDefinition } from './types'
 
-export type ChatboxCliCommandDomain = 'account' | 'settings' | 'chats' | 'image'
+export type ChatboxCliCommandDomain = 'settings' | 'chats' | 'image'
 
 export interface ChatboxCliCommandCatalogEntry
   extends Pick<ChatboxCliCommandDefinition, 'path' | 'description' | 'usage'> {
@@ -13,34 +13,10 @@ export interface ChatboxCliCommandCatalogEntry
  */
 export const chatboxCliCommandCatalog: ChatboxCliCommandCatalogEntry[] = [
   {
-    domain: 'account',
+    domain: 'settings',
     path: ['version'],
     description: 'Show installed Chatbox client version and platform.',
     usage: 'chatbox version',
-  },
-  {
-    domain: 'account',
-    path: ['account', 'status'],
-    description: 'Show masked account, plan, and cached quota status.',
-    usage: 'chatbox account status',
-  },
-  {
-    domain: 'account',
-    path: ['account', 'license'],
-    description: 'Show masked license and plan details.',
-    usage: 'chatbox account license',
-  },
-  {
-    domain: 'account',
-    path: ['account', 'quota'],
-    description: 'Show cached token, image, and expansion-pack quota.',
-    usage: 'chatbox account quota',
-  },
-  {
-    domain: 'account',
-    path: ['account', 'refresh'],
-    description: 'Refresh license and quota details from Chatbox API.',
-    usage: 'chatbox account refresh',
   },
   {
     domain: 'settings',

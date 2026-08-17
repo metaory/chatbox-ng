@@ -7,7 +7,6 @@ export type MessageErrorPresentation =
   | 'free-quota-exhausted'
   | 'ocr-quota-exhausted'
   | 'free-ocr-quota-exhausted'
-  | 'agent-mode-reward'
 
 /**
  * Resolves a persisted client error code into a renderer-only presentation kind.
@@ -24,7 +23,7 @@ export function resolveMessageErrorPresentation(msg: Message): MessageErrorPrese
     case MESSAGE_ERROR_CODES.CHATBOX_AI_FREE_OCR_QUOTA_EXHAUSTED:
       return 'free-ocr-quota-exhausted'
     case MESSAGE_ERROR_CODES.CHATBOX_AI_FREE_AGENT_MODE_QUOTA_EXHAUSTED:
-      return 'agent-mode-reward'
+      return 'quota-exhausted'
   }
   return 'generic-error'
 }

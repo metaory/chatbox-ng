@@ -1,4 +1,3 @@
-import NiceModal from '@ebay/nice-modal-react'
 import { ActionIcon, Flex, Loader, Text } from '@mantine/core'
 import { Link } from '@mui/material'
 import { aiProviderNameHash } from '@shared/models'
@@ -13,13 +12,9 @@ import { ChatboxAIErrorMessage } from '@/components/common/ChatboxAIErrorMessage
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
 import { useCopied } from '@/hooks/useCopied'
 import { navigateToSettings } from '@/modals/Settings'
-import { AgentModeRewardResumeError, claimAgentModeRewardAndResume } from '@/packages/agent-mode-reward'
-import { claimFreeAgentModeReward } from '@/packages/remote'
 import { translateTexts } from '@/packages/translation'
 import * as settingActions from '@/stores/settingActions'
-import { useLanguage, useSettingsStore } from '@/stores/settingsStore'
-import * as toastActions from '@/stores/toastActions'
-import { AgentModeRewardQuotaCard } from './AgentModeRewardQuotaCard'
+import { useLanguage } from '@/stores/settingsStore'
 import { resolveMessageErrorPresentation } from './message-error-presentation'
 import { QuotaExhaustedCard } from './QuotaExhaustedCard'
 
@@ -153,14 +148,9 @@ export default function MessageErrTips(props: {
   const { msg, sessionId, onRetry, isBubbleLayout } = props
   const { t } = useTranslation()
   const [expanded, setExpanded] = useState(false)
-  const licenseKey = useSettingsStore((state) => state.licenseKey)
   const language = useLanguage()
   const [translatedText, setTranslatedText] = useState<string | null>(null)
   const [isTranslating, setIsTranslating] = useState(false)
-  const [isHandlingAgentModeReward, setIsHandlingAgentModeReward] = useState(false)
-  const [agentModeRewardClaimFailed, setAgentModeRewardClaimFailed] = useState(false)
-  const [agentModeRewardClaimed, setAgentModeRewardClaimed] = useState(false)
-  const [agentModeRewardResumeFailed, setAgentModeRewardResumeFailed] = useState(false)
 
   const errorMessage = msg.errorExtra?.responseBody
     ? (() => {
@@ -206,53 +196,6 @@ export default function MessageErrTips(props: {
     }
   }, [errorMessage, language, translatedText])
 
-  const handleAgentModeRewardAction = useCallback(async () => {
-    if (isHandlingAgentModeReward || !onRetry || !licenseKey) {
-      return
-    }
-    setIsHandlingAgentModeReward(true)
-    setAgentModeRewardClaimFailed(false)
-    setAgentModeRewardResumeFailed(false)
-
-    if (agentModeRewardClaimed) {
-      try {
-        await onRetry()
-      } catch (error) {
-        console.error('Failed to resume Agent Mode after claiming the reward:', error)
-        setAgentModeRewardResumeFailed(true)
-        toastActions.add(t('Reward claimed, but the task could not resume automatically. Please retry.'))
-      } finally {
-        setIsHandlingAgentModeReward(false)
-      }
-      return
-    }
-
-    try {
-      await claimAgentModeRewardAndResume({
-        claim: () => claimFreeAgentModeReward(licenseKey),
-        showSuccess: (reward) => {
-          setAgentModeRewardClaimed(true)
-          void NiceModal.show('agent-mode-reward-claim-success', reward).catch(() => undefined)
-        },
-        resume: async () => {
-          await onRetry()
-        },
-      })
-    } catch (error) {
-      if (error instanceof AgentModeRewardResumeError) {
-        console.error('Failed to resume Agent Mode after claiming the reward:', error.resumeCause)
-        setAgentModeRewardClaimed(true)
-        setAgentModeRewardResumeFailed(true)
-        toastActions.add(t('Reward claimed, but the task could not resume automatically. Please retry.'))
-        return
-      }
-      console.error('Failed to claim Agent Mode reward:', error)
-      setAgentModeRewardClaimFailed(true)
-    } finally {
-      setIsHandlingAgentModeReward(false)
-    }
-  }, [agentModeRewardClaimed, isHandlingAgentModeReward, licenseKey, onRetry, t])
-
   const handleConfigureOcr = useCallback(() => {
     navigateToSettings('/default-models')
   }, [])
@@ -268,18 +211,6 @@ export default function MessageErrTips(props: {
     errorPresentation === 'free-ocr-quota-exhausted'
   ) {
       return <QuotaExhaustedCard kind={errorPresentation} onConfigureOcr={handleConfigureOcr} />
-  }
-
-  if (errorPresentation === 'agent-mode-reward') {
-    return (
-      <AgentModeRewardQuotaCard
-        loading={isHandlingAgentModeReward}
-        claimFailed={agentModeRewardClaimFailed}
-        rewardClaimed={agentModeRewardClaimed}
-        resumeFailed={agentModeRewardResumeFailed}
-        onAction={handleAgentModeRewardAction}
-      />
-    )
   }
 
   const tips: React.ReactNode[] = []

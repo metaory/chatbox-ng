@@ -69,7 +69,6 @@ export interface PrepareAgentGenerationHarnessOptions {
   preserveLastPromptMessageToolCalls?: boolean
   sideEffects?: AgentGenerationSideEffects
   sandboxProviderFactory?: () => SandboxProvider | null
-  isPro?: () => boolean
 }
 
 export interface PreparedAgentGenerationHarness {
@@ -200,7 +199,6 @@ export async function prepareAgentGenerationHarness(
     preserveLastPromptMessageToolCalls = false,
     sideEffects,
     sandboxProviderFactory = createSandboxProvider,
-    isPro = () => true,
   } = options
 
   const allMessages = messages.slice(0, targetMsgIx)
@@ -222,7 +220,7 @@ export async function prepareAgentGenerationHarness(
   }
   let canExecuteCode = Boolean(sandboxProvider && model.isSupportToolUse('agent'))
 
-  if (canExecuteCode && sandboxProvider?.type === 'cloud' && !isPro()) {
+  if (canExecuteCode && sandboxProvider?.type === 'cloud') {
     canExecuteCode = false
   }
 

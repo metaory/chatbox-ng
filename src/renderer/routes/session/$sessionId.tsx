@@ -19,7 +19,7 @@ import useVersion from '@/hooks/useVersion'
 import { defaultSessionsForCN, defaultSessionsForEN } from '@/packages/initial_data'
 import * as remote from '@/packages/remote'
 import { updateSession as updateSessionStore, useSession } from '@/stores/chatStore'
-import { applyChatboxLicenseDefaultModelToSession } from '@/stores/defaultChatModel'
+import { applyFallbackChatModelToSession } from '@/stores/defaultChatModel'
 import { lastUsedModelStore } from '@/stores/lastUsedModelStore'
 import * as scrollActions from '@/stores/scrollActions'
 import {
@@ -53,10 +53,7 @@ function RouteComponent() {
   const navigate = useNavigate()
   const { session: currentSession, isFetching } = useSession(currentSessionId)
   const { providers } = useProviders()
-  const licenseKey = useSettingsStore((s) => s.licenseKey)
-  const licenseDetail = useSettingsStore((s) => s.licenseDetail)
-  const licensePlanName = useSettingsStore((s) => s.licensePlanName)
-  const hasExpiredLicense = useSettingsStore((s) => s.hasExpiredLicense)
+  const defaultChatModel = useSettingsStore((s) => s.defaultChatModel)
   const { isExceeded, isExceededResolved } = useVersion()
   const widthFull = useUIStore((s) => s.widthFull)
   const isSmallScreen = useIsSmallScreen()
@@ -87,13 +84,8 @@ function RouteComponent() {
     if (!currentSession || !builtInTemplateSessionIds.has(currentSession.id)) {
       return currentSession
     }
-    return applyChatboxLicenseDefaultModelToSession(currentSession, {
-      licenseKey,
-      hasExpiredLicense,
-      licenseDetail,
-      licensePlanName,
-    })
-  }, [currentSession, hasExpiredLicense, licenseDetail, licenseKey, licensePlanName])
+    return applyFallbackChatModelToSession(currentSession, defaultChatModel)
+  }, [currentSession, defaultChatModel])
   const generatingMessages = useMemo(
     () => generationControlMessages.filter((message) => message.generating),
     [generationControlMessages]

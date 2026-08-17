@@ -1,4 +1,5 @@
 import { Theme } from '@shared/types'
+import platform from '@/platform'
 import { settingsStore } from '@/stores/settingsStore'
 import { ChatboxCliUsageError } from './parser'
 import type { ChatboxCliCommandDefinition } from './types'
@@ -118,6 +119,18 @@ function findSetting(key: string): SafeSettingSpec {
 }
 
 export const settingsCommands: ChatboxCliCommandDefinition[] = [
+  {
+    path: ['version'],
+    description: 'Show installed Chatbox client version and platform.',
+    usage: 'chatbox version',
+    async execute() {
+      const [installedVersion, platformName] = await Promise.all([
+        platform.getVersion().catch(() => 'unknown'),
+        platform.getPlatform().catch(() => 'unknown'),
+      ])
+      return { installedVersion, platform: platformName }
+    },
+  },
   {
     path: ['settings', 'list'],
     description: 'List settings exposed through the read-only CLI allowlist.',

@@ -1,4 +1,4 @@
-import { type ImageGeneration, ModelProviderEnum } from '@shared/types'
+import type { ImageGeneration } from '@shared/types'
 import { requestAppActionApproval } from '@/packages/app-action-approval'
 import { getAvailableImageModels } from '@/packages/image-model-catalog'
 import platform from '@/platform'
@@ -6,7 +6,6 @@ import storage from '@/storage'
 import { startImageGeneration } from '@/stores/imageGenerationActions'
 import { imageGenerationStore } from '@/stores/imageGenerationStore'
 import { settingsStore } from '@/stores/settingsStore'
-import { getComputePointsRemainingRatio } from './compute-points'
 import { queueImageTaskCompletion, queueImageTaskCompletionError } from './image-task-follow-up'
 import { ChatboxCliUsageError, integerFlag, stringFlag } from './parser'
 import type { ChatboxCliCommandContext, ChatboxCliCommandDefinition } from './types'
@@ -216,7 +215,7 @@ async function generateImage(context: ChatboxCliCommandContext): Promise<Record<
     provider ??= selected?.provider
     modelId ??= selected?.modelId
   }
-  if (!provider) throw new ChatboxCliUsageError('Missing --provider (or configure a Chatbox license).')
+  if (!provider) throw new ChatboxCliUsageError('Missing --provider.')
   if (!modelId) throw new ChatboxCliUsageError('Missing --model.')
   const signature = JSON.stringify({ prompt, provider, modelId, count, aspectRatio, dalleStyle })
   if (existing) {
@@ -250,7 +249,6 @@ async function generateImage(context: ChatboxCliCommandContext): Promise<Record<
   }
 
   if (!approvedRequest) {
-    const licenseDetail = settings.licenseDetail
     await requestAppActionApproval(
       toolCallId,
       'image.generate',
@@ -271,16 +269,7 @@ async function generateImage(context: ChatboxCliCommandContext): Promise<Record<
         count,
         aspectRatio,
         style: dalleStyle,
-        billing: provider === ModelProviderEnum.ChatboxAI ? 'chatbox_quota' : 'provider',
-        ...(provider === ModelProviderEnum.ChatboxAI && licenseDetail
-          ? {
-              imageQuota: {
-                remaining: Math.max(licenseDetail.image_total_quota - licenseDetail.image_used_count, 0),
-                total: licenseDetail.image_total_quota,
-              },
-              computePointsRemainingRatio: getComputePointsRemainingRatio(licenseDetail),
-            }
-          : {}),
+        billing: 'provider',
       }
     )
     throw new Error('Image generation cannot start without matching structured approval details.')

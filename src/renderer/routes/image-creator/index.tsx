@@ -48,7 +48,6 @@ import {
   useImageGenerationRecord,
 } from '@/stores/imageGenerationStore'
 import { queryClient } from '@/stores/queryClient'
-import { settingsStore } from '@/stores/settingsStore'
 import * as toastActions from '@/stores/toastActions'
 import { getHomeWelcomeCardMode } from '@/utils/homeWelcomeCard'
 import {
@@ -233,7 +232,7 @@ function ImageCreatorPage() {
   const tempUploadKeysRef = useRef<Set<string>>(new Set())
   const [showHistory, setShowHistory] = useState(true)
   const [showMobileHistory, setShowMobileHistory] = useState(false)
-  const [selectedProvider, setSelectedProvider] = useState<string>(ModelProviderEnum.ChatboxAI)
+  const [selectedProvider, setSelectedProvider] = useState<string>(ModelProviderEnum.OpenAI)
   const [selectedModel, setSelectedModel] = useState<string>('')
   const [selectedRatio, setSelectedRatio] = useState<string>('auto')
   const [showModelDrawer, setShowModelDrawer] = useState(false)
@@ -362,11 +361,6 @@ function ImageCreatorPage() {
       return
     }
 
-    if (selectedProvider === ModelProviderEnum.ChatboxAI && !settingsStore.getState().licenseKey) {
-      toastActions.add(t('Please log in to Chatbox AI first'))
-      return
-    }
-
     try {
       // Collect all unique source record IDs from reference images (DAG support)
       const parentIds = [
@@ -399,11 +393,6 @@ function ImageCreatorPage() {
       if (isCurrentlyGenerating) return
       if (!selectedModel) {
         toastActions.add(t('Please select a model'))
-        return
-      }
-
-      if (selectedProvider === ModelProviderEnum.ChatboxAI && !settingsStore.getState().licenseKey) {
-        toastActions.add(t('Please log in to Chatbox AI first'))
         return
       }
 

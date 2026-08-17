@@ -57,27 +57,6 @@ function RouteComponent() {
               </Flex>
               <Text>{t('about-slogan')}</Text>
               <Text c="chatbox-tertiary">{t('about-introduction')}</Text>
-
-              <Flex gap="sm">
-                <Anchor
-                  size="sm"
-                  href="https://chatboxai.app/privacy"
-                  target="_blank"
-                  underline="hover"
-                  c="chatbox-tertiary"
-                >
-                  {t('Privacy Policy')}
-                </Anchor>
-                <Anchor
-                  size="sm"
-                  href="https://chatboxai.app/terms"
-                  target="_blank"
-                  underline="hover"
-                  c="chatbox-tertiary"
-                >
-                  {t('User Terms')}
-                </Anchor>
-              </Flex>
             </Stack>
           </Flex>
 

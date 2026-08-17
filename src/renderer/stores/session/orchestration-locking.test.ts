@@ -40,7 +40,7 @@ const approvalDetails = {
   modelId: 'image-model',
   prompt: 'first image',
   count: 1,
-  billing: 'chatbox_quota' as const,
+  billing: 'provider' as const,
 }
 
 describe('paused tool-call generation entry-point locking', () => {

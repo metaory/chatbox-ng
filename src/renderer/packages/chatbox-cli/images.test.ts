@@ -41,15 +41,7 @@ vi.mock('@/stores/imageGenerationStore', () => ({
 vi.mock('@/stores/settingsStore', () => ({
   settingsStore: {
     getState: () => ({
-      licenseKey: 'license-key',
       providers: {},
-      licenseDetail: {
-        image_total_quota: 10,
-        image_used_count: 3,
-        remaining_quota_unified: 0.894,
-        unified_token_usage: 106,
-        unified_token_limit: 1_000,
-      },
     }),
   },
 }))
@@ -110,7 +102,7 @@ describe('Chatbox CLI image commands', () => {
       modelId: 'manifest-image',
       prompt: 'red fox',
       count: 1,
-      billing: 'chatbox_quota' as const,
+      billing: 'provider' as const,
     }
     startImageGenerationMock.mockResolvedValue({
       recordId: 'record-1',
@@ -169,7 +161,7 @@ describe('Chatbox CLI image commands', () => {
     expect(startImageGenerationMock).not.toHaveBeenCalled()
   })
 
-  it('requests structured approval with quota and compute-point context', async () => {
+  it('requests structured approval with provider billing', async () => {
     const pause = new Error('approval required')
     requestAppActionApprovalMock.mockRejectedValueOnce(pause)
 
@@ -190,9 +182,7 @@ describe('Chatbox CLI image commands', () => {
         prompt: 'red fox\nProvider: spoof',
         count: 1,
         style: 'vivid',
-        billing: 'chatbox_quota',
-        imageQuota: { remaining: 7, total: 10 },
-        computePointsRemainingRatio: 0.894,
+        billing: 'provider',
       })
     )
     expect(startImageGenerationMock).not.toHaveBeenCalled()
@@ -278,7 +268,7 @@ describe('Chatbox CLI image commands', () => {
       modelId: 'manifest-image',
       prompt: 'red fox',
       count: 1,
-      billing: 'chatbox_quota' as const,
+      billing: 'provider' as const,
     }
     const createdRecord: ImageGeneration = {
       id: 'record-persisted',

@@ -54,14 +54,20 @@ export const ImageModelSelect = forwardRef<HTMLButtonElement, ImageModelSelectPr
     }
 
     const target = isValidElement(children) ? (
-      cloneElement(children as ReactElement<{ onClick?: (event: MouseEvent<HTMLButtonElement>) => void }>, {
-        onClick: (event: MouseEvent<HTMLButtonElement>) => {
-          const child = children as ReactElement<{ onClick?: (event: MouseEvent<HTMLButtonElement>) => void }>
-          child.props.onClick?.(event)
-          combobox.toggleDropdown()
-        },
-        ref,
-      })
+      cloneElement(
+        children as ReactElement<{
+          onClick?: (event: MouseEvent<HTMLButtonElement>) => void
+          ref?: typeof ref
+        }>,
+        {
+          onClick: (event: MouseEvent<HTMLButtonElement>) => {
+            const child = children as ReactElement<{ onClick?: (event: MouseEvent<HTMLButtonElement>) => void }>
+            child.props.onClick?.(event)
+            combobox.toggleDropdown()
+          },
+          ref,
+        }
+      )
     ) : (
       <button
         type="button"

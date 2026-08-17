@@ -24,14 +24,13 @@ import { estimateTokens } from '@/packages/token'
 import platform from '@/platform'
 import storage from '@/storage'
 import { StorageKey, StorageKeyGenerator } from '@/storage/StoreStorage'
-import { authInfoStore } from '@/stores/authInfoStore'
 import { getMetaStorage } from '@/stores/chatStore'
 import { migrateSession, sortSessions } from '@/utils/session-utils'
 import * as defaults from '../../shared/defaults'
 import { SESSION_ATTACHMENT_RAG_LOG_PREFIX } from '../../shared/session-attachment-rag/logging'
 import { createMessage, type Message, SessionSettingsSchema, TOKEN_CACHE_KEYS } from '../../shared/types'
 import type { AttachmentPreparationResult, PreprocessedFile } from '../types/input-box'
-import { resolveChatboxLicenseDefaultModel } from './defaultChatModel'
+import { FALLBACK_CHAT_MODEL } from './defaultChatModel'
 import { lastUsedModelStore } from './lastUsedModelStore'
 import {
   SESSION_ATTACHMENT_RAG_LARGE_ATTACHMENT_WARNING,
@@ -235,18 +234,11 @@ function hasParsedText(content: string): boolean {
 }
 
 function canFallbackToChatboxAI(): boolean {
-  return Boolean(settingActions.getLicenseKey())
+  return false
 }
 
 function hasUsableSessionAttachmentRagLicense(): boolean {
-  const settings = settingsStore.getState()
-  if (!settings.licenseKey) {
-    return false
-  }
-  if (settings.licenseActivationMethod === 'login') {
-    return !!authInfoStore.getState().getTokens()
-  }
-  return true
+  return false
 }
 
 function hasDefaultSessionAttachmentEmbeddingModel(): boolean {
@@ -708,7 +700,6 @@ export async function preprocessLink(
   error?: string
 }> {
   try {
-    const isPro = settingActions.isPro()
     const uniqKey = StorageKeyGenerator.linkUniqKey(url)
 
     // 检查是否已经处理过这个链接
@@ -739,65 +730,29 @@ export async function preprocessLink(
       }
     }
 
-    if (isPro) {
-      // ChatboxAI 方案：使用远程解析
-      const licenseKey = settingActions.getLicenseKey()
-      const parsed = await remote.parseUserLinkPro({ licenseKey: licenseKey || '', url })
+    const { key, title } = await localParser.parseUrl(url)
+    const content = (await storage.getBlob(key).catch(() => '')) || ''
 
-      // 获取解析后的内容
-      const content = (await storage.getBlob(parsed.storageKey).catch(() => '')) || ''
+    if (content) {
+      await storage.setBlob(uniqKey, content)
+    }
 
-      // 将内容存储到唯一键下
-      if (content) {
-        await storage.setBlob(uniqKey, content)
-      }
+    const { lineCount, byteLength, tokenCountMap } = content
+      ? computePreviewMetadata(content)
+      : { lineCount: undefined, byteLength: undefined, tokenCountMap: {} }
 
-      // Calculate token counts including preview metadata
-      const { lineCount, byteLength, tokenCountMap } = content
-        ? computePreviewMetadata(content)
-        : { lineCount: undefined, byteLength: undefined, tokenCountMap: {} }
+    if (content) {
+      await storage.setItem(`${uniqKey}_tokenMap`, tokenCountMap)
+    }
 
-      // Store token map for future use
-      if (content) {
-        await storage.setItem(`${uniqKey}_tokenMap`, tokenCountMap)
-      }
-
-      return {
-        url,
-        title: parsed.title,
-        content,
-        storageKey: uniqKey,
-        tokenCountMap,
-        lineCount,
-        byteLength,
-      }
-    } else {
-      // 本地方案：解析链接内容
-      const { key, title } = await localParser.parseUrl(url)
-      const content = (await storage.getBlob(key).catch(() => '')) || ''
-
-      // 将内容存储到唯一键下
-      if (content) {
-        await storage.setBlob(uniqKey, content)
-      }
-
-      const { lineCount, byteLength, tokenCountMap } = content
-        ? computePreviewMetadata(content)
-        : { lineCount: undefined, byteLength: undefined, tokenCountMap: {} }
-
-      if (content) {
-        await storage.setItem(`${uniqKey}_tokenMap`, tokenCountMap)
-      }
-
-      return {
-        url,
-        title,
-        content,
-        storageKey: uniqKey,
-        tokenCountMap,
-        lineCount,
-        byteLength,
-      }
+    return {
+      url,
+      title,
+      content,
+      storageKey: uniqKey,
+      tokenCountMap,
+      lineCount,
+      byteLength,
     }
   } catch (error) {
     return {
@@ -944,7 +899,7 @@ export function initEmptyChatSession(): Omit<Session, 'id'> {
         provider: settings.defaultChatModel.provider,
         modelId: settings.defaultChatModel.model,
       }
-    : lastUsedChatModel || resolveChatboxLicenseDefaultModel(settings)
+    : lastUsedChatModel || FALLBACK_CHAT_MODEL
   const newSession: Omit<Session, 'id'> = {
     name: 'Untitled',
     type: 'chat',

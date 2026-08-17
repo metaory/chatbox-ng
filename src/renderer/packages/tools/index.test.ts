@@ -7,10 +7,6 @@ import { getToolName } from './index'
 describe('getToolName', () => {
   it.each([
     [{ argv: ['version'] }, 'Chatbox Version'],
-    [{ argv: ['account', 'status'] }, 'Account Status'],
-    [{ argv: ['account', 'license'] }, 'License Details'],
-    [{ argv: ['account', 'quota'] }, 'Quota Details'],
-    [{ argv: ['account', 'refresh'] }, 'Refresh Account Status'],
     [{ argv: ['settings', 'list'] }, 'List Settings'],
     [{ command: 'chatbox settings get appearance.theme' }, 'Read Setting'],
     [{ argv: ['chats', 'list', '--limit', '10'] }, 'Conversation List'],
@@ -24,9 +20,7 @@ describe('getToolName', () => {
     expect(getToolName('chatbox_cli', input)).toBe(expected)
   })
 
-  it('supports legacy account aliases and safe fallback names', () => {
-    expect(getToolName('chatbox_cli', { argv: ['quota'] })).toBe('Quota Details')
-    expect(getToolName('chatbox_cli', { argv: ['license', 'refresh'] })).toBe('Refresh Account Status')
+  it('falls back to Chatbox for unknown or invalid commands', () => {
     expect(getToolName('chatbox_cli', { argv: ['help'] })).toBe('Chatbox')
     expect(getToolName('chatbox_cli', { command: '"unterminated' })).toBe('Chatbox')
   })

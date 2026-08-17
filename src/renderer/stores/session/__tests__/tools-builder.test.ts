@@ -6,9 +6,7 @@ const {
   discoverSkillsMock,
   installFromSandboxMock,
   loadSkillMock,
-  settingsState,
   getSettingsMock,
-  isProMock,
   webSearchProvider,
   buildCodeExecutionToolsMock,
   getSessionAttachmentRagToolSetMock,
@@ -20,15 +18,7 @@ const {
   discoverSkillsMock: vi.fn(),
   installFromSandboxMock: vi.fn(),
   loadSkillMock: vi.fn(),
-  settingsState: {
-    licenseKey: undefined as string | undefined,
-    licenseDetail: undefined as unknown,
-    licensePlanName: undefined as string | undefined,
-    licenseActivationMethod: undefined as 'login' | 'manual' | undefined,
-    hasExpiredLicense: false,
-  },
   getSettingsMock: vi.fn(),
-  isProMock: vi.fn(),
   webSearchProvider: { current: 'build-in' },
   buildCodeExecutionToolsMock: vi.fn(),
   getSessionAttachmentRagToolSetMock: vi.fn(),
@@ -55,7 +45,11 @@ vi.hoisted(() => {
 })
 
 vi.mock('@/platform', () => ({
-  default: { type: 'web' },
+  default: {
+    type: 'web',
+    getVersion: vi.fn().mockResolvedValue('test-version'),
+    getPlatform: vi.fn().mockResolvedValue('web'),
+  },
 }))
 
 vi.mock('@/packages/mcp/controller', () => ({
@@ -87,17 +81,10 @@ vi.mock('@/packages/user-exec-approval', () => ({
 vi.mock('@/stores/settingsStore', () => ({
   settingsStore: {
     getState: () => ({
-      ...settingsState,
       getSettings: getSettingsMock,
     }),
-    setState: (patch: Record<string, unknown>) => {
-      Object.assign(settingsState, patch)
-    },
+    setState: vi.fn(),
   },
-}))
-
-vi.mock('@/packages/remote', () => ({
-  getLicenseDetailRealtime: vi.fn(),
 }))
 
 vi.mock('@/stores/settingActions', () => ({
@@ -106,7 +93,6 @@ vi.mock('@/stores/settingActions', () => ({
       provider: webSearchProvider.current,
     },
   }),
-  isPro: isProMock,
 }))
 
 vi.mock('@/packages/model-calls/toolsets/code-execution', () => ({
@@ -208,13 +194,7 @@ beforeEach(() => {
   getSettingsMock.mockReturnValue({
     skills: { enabledSkillNames: ['test-skill'] },
   })
-  settingsState.licenseKey = undefined
-  settingsState.licenseDetail = undefined
-  settingsState.licensePlanName = undefined
-  settingsState.licenseActivationMethod = undefined
-  settingsState.hasExpiredLicense = false
   webSearchProvider.current = 'build-in'
-  isProMock.mockReturnValue(true)
   buildCodeExecutionToolsMock.mockReturnValue({
     description: 'code execution toolset',
     tools: {
@@ -818,12 +798,9 @@ describe('chatbox_cli tool', () => {
     expect(disabled.tools.chatbox_cli).toBeUndefined()
   })
 
-  test('returns masked license status for CLI-style command', async () => {
+  test('returns version through CLI-style command', async () => {
     const model = createMockModel()
     const onAgentModeActivated = vi.fn()
-    settingsState.licenseKey = 'license-key-secret-1234'
-    settingsState.licenseActivationMethod = 'manual'
-    settingsState.licensePlanName = 'Chatbox AI Pro'
 
     getSettingsMock.mockReturnValue({
       skills: { enabledSkillNames: ['chatbox-product-info'] },
@@ -837,16 +814,14 @@ describe('chatbox_cli tool', () => {
     })
     if (!result.tools.chatbox_cli.execute) throw new Error('chatbox_cli execute missing')
 
-    const executeResult = await result.tools.chatbox_cli.execute({ command: 'chatbox account status' }, {} as never)
+    const executeResult = await result.tools.chatbox_cli.execute({ command: 'chatbox version' }, {} as never)
 
     expect(onAgentModeActivated).toHaveBeenCalledTimes(1)
     expect(executeResult).toMatchObject({
-      licenseConfigured: true,
-      licenseKey: 'configured (...1234)',
-      activationMethod: 'manual',
-      plan: { name: 'Chatbox AI Pro' },
+      ok: true,
+      command: 'version',
+      installedVersion: 'test-version',
     })
-    expect(JSON.stringify(executeResult)).not.toContain('license-key-secret-1234')
   })
 
   test('advertises the structured command hierarchy through capabilities', async () => {
@@ -867,7 +842,7 @@ describe('chatbox_cli tool', () => {
     expect(executeResult).toMatchObject({
       ok: true,
       command: 'capabilities',
-      domains: ['account', 'settings', 'chats', 'image'],
+      domains: ['settings', 'chats', 'image'],
     })
   })
 })

@@ -86,7 +86,6 @@ vi.mock('@/stores/settingActions', () => ({
     webSearch: { provider: 'tavily' },
   }),
   getRemoteConfig: vi.fn().mockResolvedValue({}),
-  isPro: () => true,
 }))
 
 vi.mock('@/packages/user-exec-approval', () => ({
@@ -219,7 +218,6 @@ describe('prepareAgentGenerationHarness', () => {
       agentModeSupported: true,
       signal: new AbortController().signal,
       sandboxProviderFactory: () => sandboxProviderMock as unknown as SandboxProvider,
-      isPro: () => true,
       sideEffects: {
         lockAgentMode,
       },
@@ -284,7 +282,6 @@ describe('prepareAgentGenerationHarness', () => {
       agentModeSupported: true,
       signal: new AbortController().signal,
       sandboxProviderFactory: () => sandboxProviderMock as unknown as SandboxProvider,
-      isPro: () => true,
     })
 
     expect(prepared.debug.effectiveAgentMode).toBe('off')
@@ -333,7 +330,6 @@ describe('prepareAgentGenerationHarness', () => {
       agentModeSupported: true,
       signal: new AbortController().signal,
       sandboxProviderFactory: () => sandboxProviderMock as unknown as SandboxProvider,
-      isPro: () => true,
       sideEffects: {
         lockAgentMode,
       },
@@ -371,7 +367,6 @@ describe('prepareAgentGenerationHarness', () => {
       agentModeSupported: true,
       signal: new AbortController().signal,
       sandboxProviderFactory: () => sandboxProviderMock as unknown as SandboxProvider,
-      isPro: () => true,
     })
 
     expect(prepared.debug.effectiveAgentMode).toBe('off')
@@ -436,7 +431,6 @@ describe('prepareAgentGenerationHarness', () => {
       signal: new AbortController().signal,
       preserveLastPromptMessageToolCalls: true,
       sandboxProviderFactory: () => sandboxProviderMock as unknown as SandboxProvider,
-      isPro: () => true,
     })
 
     expect(prepared.tools.chatbox_cli).toBeDefined()
@@ -487,7 +481,6 @@ describe('prepareAgentGenerationHarness', () => {
       signal: new AbortController().signal,
       preserveLastPromptMessageToolCalls: true,
       sandboxProviderFactory: () => sandboxProviderMock as unknown as SandboxProvider,
-      isPro: () => true,
     })
 
     expect(prepared.promptMsgs.some((message) => message.id === 'assistant-1')).toBe(true)

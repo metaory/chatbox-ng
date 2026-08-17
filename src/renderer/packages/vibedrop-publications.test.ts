@@ -29,12 +29,6 @@ vi.mock('@/stores/settingsStore', () => ({
   },
 }))
 
-vi.mock('@/stores/authInfoStore', () => ({
-  authInfoStore: {
-    getState: () => ({ accessToken: '' }),
-  },
-}))
-
 vi.mock('@/platform', () => ({
   default: { type: 'desktop' },
 }))

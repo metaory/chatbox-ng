@@ -1,15 +1,14 @@
 import { Badge, Button, Flex, Stack, Text, UnstyledButton } from '@mantine/core'
-import { IconDatabase, IconSparkles } from '@tabler/icons-react'
+import { IconDatabase } from '@tabler/icons-react'
 import clsx from 'clsx'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
-import platform from '@/platform'
 import { formatNumber } from '@/utils/format'
 import { ScalableIcon } from '../common/ScalableIcon'
 import { ModelIcon } from '../icons/ModelIcon'
 import { CapabilityIconRow } from './CapabilityIconRow'
-import { CARD_SURFACE_STYLE, FALLBACK_UPGRADE_URL, MODEL_SELECTOR_SURFACE_CLASS } from './constants'
+import { CARD_SURFACE_STYLE, MODEL_SELECTOR_SURFACE_CLASS } from './constants'
 import { getCostLabel, getCostLevelBarCount } from './helpers'
 import type { DetailModel } from './types'
 
@@ -284,23 +283,19 @@ function CostLevelIndicator({
 
 export function DetailCard({
   model,
-  upgradeLink,
   onClose,
-  onUpgradeClick,
   mobile,
 }: {
   model: DetailModel
   pricingLink?: string
-  upgradeLink?: string
   onClose?: () => void
-  onUpgradeClick?: () => void
   mobile?: boolean
 }) {
   const { t, i18n } = useTranslation()
   const costLabel = getCostLabel(model.costLevel, t)
   const isCN = i18n.language.toLowerCase().startsWith('zh')
   const showPricing = false
-  const showActionRow = !!onClose || model.locked
+  const showActionRow = !!onClose
   return (
     <Stack
       gap={mobile ? 'md' : 'md'}
@@ -331,12 +326,7 @@ export function DetailCard({
         </Text>
         <CapabilityIconRow capabilities={model.capabilities} />
       </Stack>
-      {model.locked && (
-        <Text size="sm" c="chatbox-tertiary" ta="center" mt={mobile ? 'xs' : 0}>
-          {t('Available on Pro and above')}
-        </Text>
-      )}
-      {!model.locked && model.disabledReason && (
+      {model.disabledReason && (
         <Text size="sm" c="chatbox-tertiary" ta="center" mt={mobile ? 'xs' : 0}>
           {model.disabledReason}
         </Text>
@@ -352,21 +342,6 @@ export function DetailCard({
               styles={{ root: { height: mobile ? 46 : 42, minHeight: mobile ? 46 : 42, minWidth: mobile ? 88 : 76 } }}
             >
               {t('Close')}
-            </Button>
-          )}
-          {model.locked && (
-            <Button
-              variant="light"
-              fullWidth
-              size={mobile ? 'md' : 'sm'}
-              leftSection={<ScalableIcon icon={IconSparkles} size={16} />}
-              className="font-semibold"
-              onClick={() => {
-                onUpgradeClick?.()
-                platform.openLink(upgradeLink || FALLBACK_UPGRADE_URL)
-              }}
-            >
-              {t('Upgrade to Pro')}
             </Button>
           )}
         </Flex>

@@ -26,31 +26,6 @@ describe('image model catalog', () => {
     vi.clearAllMocks()
   })
 
-  it('loads the Chatbox manifest, applies exclusions, and preserves server order', async () => {
-    const settings = createSettings()
-    settings.licenseKey = 'license'
-    settings.providers = {
-      [ModelProviderEnum.ChatboxAI]: { excludedModels: ['disabled-image'] },
-    }
-    getModelManifestMock.mockResolvedValue(
-      manifest([
-        { modelId: 'other-image', modelName: 'Other Image' },
-        { modelId: 'gpt-image-1.5', modelName: 'GPT Image 1.5' },
-        { modelId: 'disabled-image', modelName: 'Disabled Image' },
-      ])
-    )
-
-    await expect(getAvailableImageModels(settings)).resolves.toEqual([
-      { provider: ModelProviderEnum.ChatboxAI, modelId: 'other-image', nickname: 'Other Image' },
-      { provider: ModelProviderEnum.ChatboxAI, modelId: 'gpt-image-1.5', nickname: 'GPT Image 1.5' },
-    ])
-    expect(getModelManifestMock).toHaveBeenCalledWith({
-      aiProvider: ModelProviderEnum.ChatboxAI,
-      language: settings.language,
-      licenseKey: 'license',
-    })
-  })
-
   it('merges remote and manual models for configured built-in and custom providers', async () => {
     const settings = createSettings()
     settings.providers = {

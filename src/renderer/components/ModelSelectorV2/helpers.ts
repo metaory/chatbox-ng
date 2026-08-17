@@ -1,17 +1,5 @@
 import type { ProviderModelInfo } from '@shared/types'
-import type { ChatboxAIModel, FavoriteModel, FilteredProvider } from './types'
-
-export function toProviderModelInfo(model: ChatboxAIModel): ProviderModelInfo {
-  return {
-    modelId: model.modelId,
-    nickname: model.modelName,
-    labels: model.labels,
-    capabilities: model.capabilities,
-    type: model.type,
-    apiStyle: model.apiStyle,
-    contextWindow: model.contextWindow || undefined,
-  }
-}
+import type { FavoriteModel, FilteredProvider } from './types'
 
 export function groupFavorites(favorites: FavoriteModel[] | undefined) {
   return (favorites || []).reduce(
@@ -36,12 +24,6 @@ export function searchGenericModel(provider: FilteredProvider, model: ProviderMo
     model.modelId.toLowerCase().includes(query) ||
     (model.nickname || '').toLowerCase().includes(query)
   )
-}
-
-export function getGroupLabel(groupId: string, t: (key: string) => string) {
-  if (groupId === 'advanced') return t('Advanced')
-  if (groupId === 'basic') return t('Basic')
-  return groupId
 }
 
 export function getCostLevelBarCount(costLevel: string | undefined) {

@@ -28,7 +28,6 @@ import { StorageKeyGenerator } from '@/storage/StoreStorage'
 import * as chatStore from '../chatStore'
 import { markFirstSuccessfulChatCompleted } from '../firstSuccessfulChat'
 import { markSessionReplyCompleted } from '../sessionActivityStore'
-import * as settingActions from '../settingActions'
 import { settingsStore } from '../settingsStore'
 import { uiStore } from '../uiStore'
 import { prepareAgentGenerationHarness, refreshSessionAttachmentStatuses } from './agent-harness'
@@ -696,7 +695,6 @@ async function runGeneration(
       // Retrying from an archived thread must use that thread's points.
       compactionPoints: getCompactionPointsForTarget(session, targetMsg.id),
       preserveLastPromptMessageToolCalls: Boolean(options?.appendToMessage),
-      isPro: settingActions.isPro,
       sideEffects: {
         lockAgentMode: (reason) => {
           void lockSessionAgentMode(sessionId, reason)
@@ -958,7 +956,7 @@ async function buildToolsForPausedToolCall(session: Session, settings: SessionSe
     sandboxProvider.setExtraWritableDirs(userWorkingDirectories)
   }
   let canExecuteCode = Boolean(sandboxProvider && model.isSupportToolUse('agent'))
-  if (canExecuteCode && sandboxProvider?.type === 'cloud' && !settingActions.isPro()) {
+  if (canExecuteCode && sandboxProvider?.type === 'cloud') {
     canExecuteCode = false
   }
   if (canExecuteCode && sandboxProvider) {

@@ -18,7 +18,6 @@ if (typeof globalThis.window === 'undefined') {
 
 vi.mock('@/stores/settingActions', () => ({
   getLicenseKey: () => '',
-  isPro: () => false,
   getRemoteConfig: () => ({}),
 }))
 

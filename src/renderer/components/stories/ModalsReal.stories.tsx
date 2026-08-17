@@ -5,9 +5,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createMemoryHistory, createRootRoute, createRoute, createRouter, RouterProvider } from '@tanstack/react-router'
 import { type ComponentType, useEffect, useReducer, useRef, useState } from 'react'
-import i18n from '@/i18n'
 import { QueryKeys } from '@/stores/chatStore'
-import { settingsStore } from '@/stores/settingsStore'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -49,7 +47,7 @@ export const ModalRegistryStates: StoryObj = {
       <Paper withBorder radius="md" p="md">
         <Text size="sm" c="dimmed">
           Registered modal ids include welcome, file-parse-error, content-viewer, session-settings, app-store-rating,
-          agent-mode-reward-claim-success, artifact-preview, clear-session-list, export-chat, message-edit, json-viewer,
+          artifact-preview, clear-session-list, export-chat, message-edit, json-viewer,
           report-content, model-edit, thread-name-edit, vibedrop-publish, and copilot-settings.
         </Text>
       </Paper>
@@ -70,48 +68,6 @@ export const AppStoreRatingStates: StoryObj = {
       <OpenModal loadModal={() => import('@/modals/AppStoreRating').then((module) => module.default)} />
     </ModalPreview>
   ),
-}
-
-export const AgentModeRewardClaimSuccessStates: StoryObj = {
-  name: 'Agent Mode limited-time reward success',
-  parameters: {
-    uiInventoryTargets: ['src/renderer/modals/AgentModeRewardClaimSuccess'],
-  },
-  render: () => <AgentModeRewardClaimSuccessFixture />,
-}
-
-function AgentModeRewardClaimSuccessFixture() {
-  const [ready, setReady] = useState(i18n.language === 'zh-Hans')
-
-  useEffect(() => {
-    const previousLanguage = i18n.language
-    const previousSettingsLanguage = settingsStore.getState().language
-    settingsStore.setState({ language: 'zh-Hans' })
-    void i18n.changeLanguage('zh-Hans').then(() => setReady(true))
-    return () => {
-      settingsStore.setState({ language: previousSettingsLanguage })
-      void i18n.changeLanguage(previousLanguage)
-    }
-  }, [])
-
-  if (!ready) {
-    return null
-  }
-
-  return (
-    <ModalPreview
-      title="AgentModeRewardClaimSuccess"
-      description="Production success modal with mocked reward points and expiry. Does not call the claim API."
-    >
-      <OpenModal
-        loadModal={() => import('@/modals/AgentModeRewardClaimSuccess').then((module) => module.default)}
-        props={{
-          tokenLimit: 200000,
-          expiresAt: '2026-08-03T12:00:00.000000+08:00',
-        }}
-      />
-    </ModalPreview>
-  )
 }
 
 export const AttachLinkStates: StoryObj = {

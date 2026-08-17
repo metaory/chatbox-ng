@@ -13,7 +13,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createMemoryHistory, createRootRoute, createRoute, createRouter, RouterProvider } from '@tanstack/react-router'
 import { createContext, type ReactNode, useContext, useEffect } from 'react'
 import { DocumentParserSettings } from '@/components/settings/DocumentParserSettings'
-import { BuiltinServersSection } from '@/components/settings/mcp/BuiltinServersSection'
 import { ConfigModal } from '@/components/settings/mcp/ConfigModal'
 import CustomServersSection from '@/components/settings/mcp/CustomServersSection'
 import ServerRegistrySpotlight from '@/components/settings/mcp/ServerRegistrySpotlight'
@@ -294,21 +293,6 @@ export const ProviderSpotlightStates: StoryObj = {
         onImportProvider={() => undefined}
         isImporting={false}
       />
-    </SettingsSurface>
-  ),
-}
-
-export const BuiltinMcpServersStates: StoryObj = {
-  name: 'Builtin MCP server premium accessible states',
-  parameters: {
-    uiInventoryTargets: ['src/renderer/components/settings/mcp/BuiltinServersSection'],
-  },
-  render: () => (
-    <SettingsSurface
-      title="BuiltinServersSection"
-      description="Actual Chatbox built-in MCP server cards with enabled and disabled switch states."
-    >
-      <BuiltinServersSection />
     </SettingsSurface>
   ),
 }

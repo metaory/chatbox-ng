@@ -1,64 +1,30 @@
-import { type ChatboxAILicenseDetail, ModelProviderEnum, type Session } from '@shared/types'
-import { isChatboxAILowTierPlan } from './licensePlan'
-
-export type ChatboxLicenseDefaultModelId = NonNullable<ChatboxAILicenseDetail['defaultModel']>
-
-type ChatboxLicenseDetailForDefaultModel = Pick<ChatboxAILicenseDetail, 'defaultModel' | 'type' | 'name' | 'plan'>
-
-export type ChatboxDefaultModelSettings = {
-  licenseKey?: string
-  hasExpiredLicense?: boolean
-  licenseDetail?: ChatboxLicenseDetailForDefaultModel
-  licensePlanName?: string
-}
+import { ModelProviderEnum, type Session } from '@shared/types'
 
 export type DefaultChatModelSelection = {
   provider: string
   modelId: string
 }
 
-const CHATBOX_AI_35_MODEL_ID: ChatboxLicenseDefaultModelId = 'chatboxai-3.5'
-const CHATBOX_AI_4_MODEL_ID: ChatboxLicenseDefaultModelId = 'chatboxai-4'
-
-function isChatboxLicenseDefaultModelId(value: string | undefined): value is ChatboxLicenseDefaultModelId {
-  return value === CHATBOX_AI_35_MODEL_ID || value === CHATBOX_AI_4_MODEL_ID
+export const FALLBACK_CHAT_MODEL: DefaultChatModelSelection = {
+  provider: ModelProviderEnum.OpenAI,
+  modelId: 'gpt-4.1',
 }
 
-export function resolveChatboxLicenseDefaultModel(
-  settings: ChatboxDefaultModelSettings
-): DefaultChatModelSelection | undefined {
-  if (!settings.licenseKey || settings.hasExpiredLicense) {
-    return undefined
+export function resolveFallbackChatModel(defaultChatModel?: {
+  provider: string
+  model: string
+}): DefaultChatModelSelection {
+  if (defaultChatModel?.provider && defaultChatModel.model) {
+    return { provider: defaultChatModel.provider, modelId: defaultChatModel.model }
   }
-
-  const licenseModel = settings.licenseDetail?.defaultModel ?? settings.licenseDetail?.type
-  if (isChatboxLicenseDefaultModelId(licenseModel)) {
-    return {
-      provider: ModelProviderEnum.ChatboxAI,
-      modelId: licenseModel,
-    }
-  }
-
-  const modelId = isChatboxAILowTierPlan(settings.licenseDetail, settings.licensePlanName)
-    ? CHATBOX_AI_35_MODEL_ID
-    : CHATBOX_AI_4_MODEL_ID
-
-  return {
-    provider: ModelProviderEnum.ChatboxAI,
-    modelId,
-  }
+  return FALLBACK_CHAT_MODEL
 }
 
-export function applyChatboxLicenseDefaultModelToSession<T extends Pick<Session, 'type' | 'settings'>>(
+export function applyFallbackChatModelToSession<T extends Pick<Session, 'type' | 'settings'>>(
   session: T,
-  settings: ChatboxDefaultModelSettings
+  defaultChatModel?: { provider: string; model: string }
 ): T {
   if (session.type !== 'chat' || (session.settings?.provider && session.settings?.modelId)) {
-    return session
-  }
-
-  const defaultModel = resolveChatboxLicenseDefaultModel(settings)
-  if (!defaultModel) {
     return session
   }
 
@@ -66,7 +32,7 @@ export function applyChatboxLicenseDefaultModelToSession<T extends Pick<Session,
     ...session,
     settings: {
       ...(session.settings || {}),
-      ...defaultModel,
+      ...resolveFallbackChatModel(defaultChatModel),
     },
   }
 }

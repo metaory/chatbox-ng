@@ -16,7 +16,6 @@ import type {
 export const CHATBOX_CLI_API_VERSION = 1
 
 const domainLoaders: Record<ChatboxCliCommandDomain, () => Promise<ChatboxCliCommandDefinition[]>> = {
-  account: async () => (await import('./account')).accountCommands,
   settings: async () => (await import('./settings')).settingsCommands,
   chats: async () => (await import('./chats')).chatCommands,
   image: async () => (await import('./images')).imageCommands,
@@ -33,18 +32,6 @@ async function executeCatalogCommand(
   return await definition.execute(context)
 }
 
-function normalizeAliases(argv: string[]): string[] {
-  const [first, second] = argv.map((value) => value.toLowerCase())
-  if (first === 'status' || first === 'whoami') return ['account', 'status', ...argv.slice(1)]
-  if (first === 'quota' || first === 'usage') return ['account', 'quota', ...argv.slice(1)]
-  if (first === 'license' && (second === 'refresh' || second === 'sync'))
-    return ['account', 'refresh', ...argv.slice(2)]
-  if (first === 'license') return ['account', 'license', ...argv.slice(1)]
-  if (first === 'refresh' || first === 'sync') return ['account', 'refresh', ...argv.slice(1)]
-  if (first === 'account' && !second) return ['account', 'status']
-  return argv
-}
-
 function commandHelp(domain?: string): Record<string, unknown> {
   const visible = domain
     ? chatboxCliCommandCatalog.filter((command) => command.domain === domain || command.path[0] === domain)
@@ -57,7 +44,7 @@ function commandHelp(domain?: string): Record<string, unknown> {
       usage: command.usage,
       description: command.description,
     })),
-    domains: ['account', 'settings', 'chats', 'image'],
+    domains: ['settings', 'chats', 'image'],
     notes: [
       'This is a controlled virtual CLI, not a system shell.',
       'Conversation history reads do not require approval.',
@@ -82,7 +69,7 @@ export async function executeChatboxCli(
   try {
     const parsedInput = parseChatboxCliInput(input)
     displayCommand = parsedInput.displayCommand
-    const argv = normalizeAliases(parsedInput.argv)
+    const argv = parsedInput.argv
     const first = argv[0]?.toLowerCase()
 
     if (!first || first === 'help' || first === '--help' || first === '-h') {
@@ -136,7 +123,7 @@ export async function executeChatboxCli(
 export function getChatboxCliDescription(): string {
   return `
 ### Chatbox Virtual CLI
-Use \`chatbox_cli\` for Chatbox account status, read-only settings, conversation history, and image generation.
+Use \`chatbox_cli\` for read-only settings, conversation history, and image generation.
 Prefer structured \`argv\` input. This is a controlled app tool, not a real shell.
 - Read history without approval: \`["chats", "list"]\`, \`["chats", "search", "query"]\`, \`["chats", "read", "<id>"]\`.
 - Read safe settings: \`["settings", "list"]\`, \`["settings", "get", "appearance.theme"]\`. Settings cannot be changed through this tool; guide the user to the returned Chatbox Settings location to change them manually.

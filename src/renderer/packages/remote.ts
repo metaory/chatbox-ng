@@ -1,20 +1,12 @@
 import { ofetch } from 'ofetch'
 import { z } from 'zod'
 import { getLogger } from '@/lib/utils'
-import { type ClaimedAgentModeReward, ClaimFreeAgentModeRewardResponseSchema } from '@/packages/agent-mode-reward'
 import { VibedropEmailRequiredError } from '@/packages/vibedrop'
 import platform from '@/platform'
-import { authInfoStore } from '@/stores/authInfoStore'
 import { CHATBOX_BUILD_CHANNEL, USE_BETA_CHATBOX, USE_LOCAL_CHATBOX } from '@/variables'
 import { ApiError } from '../../shared/models/errors'
 import * as chatboxaiAPI from '../../shared/request/chatboxai_pool'
 import { createAfetch, createAuthenticatedAfetch, uploadFile } from '../../shared/request/request'
-import {
-  activateNativeLicense,
-  deactivateNativeLicense,
-  type NativeLicenseRequestOptions,
-  validateNativeLicense,
-} from '../../shared/services/native-license'
 import { reportNativeContent } from '../../shared/services/native-report'
 import {
   type ChatboxAILicenseDetail,
@@ -71,18 +63,11 @@ async function initAuthenticatedAfetch(): Promise<ReturnType<typeof createAuthen
         os: getOS(),
         version: await platform.getVersion(),
       },
-      getTokens: async () => {
-        const tokens = authInfoStore.getState().getTokens()
-        return tokens
+      getTokens: async () => null,
+      refreshTokens: async () => {
+        throw new Error('not signed in')
       },
-      refreshTokens: async (refreshToken: string) => {
-        const result = await refreshAccessToken({ refreshToken })
-        authInfoStore.getState().setTokens(result)
-        return result
-      },
-      clearTokens: async () => {
-        authInfoStore.getState().clearTokens()
-      },
+      clearTokens: async () => {},
     })
     return _authenticatedAfetch
   })()
@@ -533,28 +518,6 @@ export async function getChatboxWebSearchRequestOptions(): Promise<{
     fetchFn: (input, init) => afetch(input, init, { parseChatboxRemoteError: true, retry: 2 }),
     headers: await getChatboxHeaders(),
   }
-}
-
-async function getLicenseRequestOptions(): Promise<NativeLicenseRequestOptions> {
-  const afetch = await getAfetch()
-  return {
-    apiOrigin: getAPIOrigin(),
-    fetchFn: (input, init) => afetch(input, init, { parseChatboxRemoteError: true, retry: 5 }),
-    headers: await getChatboxHeaders(),
-  }
-}
-
-export async function activateLicense(params: { licenseKey: string; instanceName: string }) {
-  const result = await activateNativeLicense(params.licenseKey, params.instanceName, await getLicenseRequestOptions())
-  return { ...result, error: result.error ?? '' }
-}
-
-export async function deactivateLicense(params: { licenseKey: string; instanceId: string }) {
-  await deactivateNativeLicense(params.licenseKey, params.instanceId, await getLicenseRequestOptions())
-}
-
-export async function validateLicense(params: { licenseKey: string; instanceId: string }) {
-  return { valid: await validateNativeLicense(params.licenseKey, params.instanceId, await getLicenseRequestOptions()) }
 }
 
 const RemoteModelInfoSchema = z.object({
@@ -1059,30 +1022,6 @@ export async function listLicensesByUser(): Promise<UserLicense[]> {
   )
   const json: Response = await res.json()
   return json.data
-}
-
-export async function claimFreeAgentModeReward(licenseKey: string): Promise<ClaimedAgentModeReward> {
-  const normalizedLicenseKey = licenseKey.trim()
-  if (!normalizedLicenseKey) {
-    throw new Error('A license key is required to claim the Agent Mode reward')
-  }
-
-  const afetch = await getAfetch()
-  const res = await afetch(
-    `${getAPIOrigin()}/api/license/claim-free-agent-mode-reward`,
-    {
-      method: 'POST',
-      headers: {
-        ...(await getChatboxHeaders()),
-        Authorization: `Bearer ${normalizedLicenseKey}`,
-      },
-    },
-    {
-      parseChatboxRemoteError: true,
-      retry: 0,
-    }
-  )
-  return ClaimFreeAgentModeRewardResponseSchema.parse(await res.json())
 }
 
 // ========== Image Generation API ==========
