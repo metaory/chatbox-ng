@@ -2,60 +2,45 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="%VIEWPORT_CONTENT%"
-    />
+    <meta name="viewport" content="%VIEWPORT_CONTENT%" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-title" content="chatbox" />
-    <meta name="theme-color" content="#f8f4fc" />
-    <meta name="description" content="chatbox" />
+    <meta name="apple-mobile-web-app-title" content="chatbox-ng" />
+    <meta name="theme-color" content="#efeeef" />
+    <meta name="description" content="chatbox-ng" />
     <link rel="apple-touch-icon" href="/logo192.png" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
-    <title>Chatbox</title>
+    <title>Chatbox-ng</title>
     <script>
-      var initialTheme = localStorage.getItem("initial-theme");
-      if (initialTheme !== "light" && initialTheme !== "dark") {
-        initialTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light";
-        localStorage.setItem("initial-theme", initialTheme);
+      var initialTheme = localStorage.getItem('initial-theme')
+      if (initialTheme !== 'light' && initialTheme !== 'dark') {
+        initialTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        localStorage.setItem('initial-theme', initialTheme)
       }
-      document.documentElement.setAttribute("data-theme", initialTheme);
-      document.documentElement.setAttribute(
-        "data-mantine-color-scheme",
-        initialTheme
-      );
-      var splashPrimary = initialTheme === "dark" ? "#1a1226" : "#f8f4fc";
-      var splashRing = initialTheme === "dark" ? "#3d2854" : "#ddd0ee";
-      var hex = /^#[0-9a-f]{6}$/i;
-      var raw = localStorage.getItem("initial-interface-colors");
+      document.documentElement.setAttribute('data-theme', initialTheme)
+      document.documentElement.setAttribute('data-mantine-color-scheme', initialTheme)
+      var splashPrimary = initialTheme === 'dark' ? '#331144' : '#efeeef'
+      var hex = /^#[0-9a-f]{6}$/i
+      var raw = localStorage.getItem('initial-interface-colors')
       if (raw) {
         try {
-          var stored = JSON.parse(raw);
-          var pal = stored && stored[initialTheme];
-          if (pal && hex.test(pal.backgroundPrimary) && hex.test(pal.backgroundTertiary)) {
-            splashPrimary = pal.backgroundPrimary;
-            splashRing = pal.backgroundTertiary;
-          }
+          var stored = JSON.parse(raw)
+          var pal = stored && stored[initialTheme]
+          if (pal && hex.test(pal.backgroundPrimary)) splashPrimary = pal.backgroundPrimary
         } catch (e) {}
       }
-      document.documentElement.style.setProperty("--splash-bg", splashPrimary);
-      document.documentElement.style.setProperty("--splash-ring", splashRing);
-      var themeColor = document.querySelector('meta[name="theme-color"]');
-      if (themeColor) themeColor.setAttribute("content", splashPrimary);
+      document.documentElement.style.setProperty('--splash-bg', splashPrimary)
+      var themeColor = document.querySelector('meta[name="theme-color"]')
+      if (themeColor) themeColor.setAttribute('content', splashPrimary)
     </script>
     <style>
       html,
-      .splash-screen {
-        background-color: var(--splash-bg, #f8f4fc);
-      }
-      html[data-theme="dark"],
-      html[data-theme="dark"] .splash-screen {
-        background-color: var(--splash-bg, #1a1226);
+      html[data-theme='dark'],
+      html[data-theme='dark'] .splash-screen {
+        background-color: var(--splash-bg, #331144);
       }
 
       .splash-screen {
+        background-color: var(--splash-bg, #efeeef);
         position: fixed;
         z-index: 99999;
         top: 0;
@@ -66,7 +51,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        opacity: 1;
+        opacity: 0.2;
         overflow: hidden;
       }
 
@@ -81,6 +66,7 @@
       .splash-screen-content {
         flex: 0 0 auto;
         position: relative;
+        z-index: 1;
       }
 
       .splash-screen-logo {
@@ -91,14 +77,11 @@
 
       .splash-screen-logo-bg {
         position: absolute;
-        z-index: -1;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: var(--splash-ring, #ddd0ee);
-      }
-      html[data-theme="dark"] .splash-screen-logo-bg {
-        color: var(--splash-ring, #3d2854);
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
       }
 
       .splash-screen-fade-out {
@@ -119,98 +102,65 @@
   <body>
     <div id="root"></div>
     <div class="splash-screen">
+      <canvas class="splash-screen-logo-bg"></canvas>
       <div class="splash-screen-top"></div>
       <div class="splash-screen-content">
-        <img
-          class="splash-screen-logo"
-          src="./static/icon.png"
-          width="96"
-          height="96"
-          alt=""
-        />
-
-        <svg
-          class="splash-screen-logo-bg"
-          width="660"
-          height="660"
-          viewBox="0 0 660 660"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <circle
-            opacity="0.6"
-            cx="331"
-            cy="330"
-            r="229.75"
-            stroke="currentColor"
-            stroke-width="0.5"
-          />
-          <circle
-            opacity="0.5"
-            cx="330"
-            cy="330"
-            r="254.75"
-            stroke="currentColor"
-            stroke-width="0.5"
-          />
-          <circle
-            opacity="0.8"
-            cx="330"
-            cy="330"
-            r="179.75"
-            stroke="currentColor"
-            stroke-width="0.5"
-          />
-          <circle
-            opacity="0.9"
-            cx="331"
-            cy="330"
-            r="154.75"
-            stroke="currentColor"
-            stroke-width="0.5"
-          />
-          <circle
-            cx="330"
-            cy="330"
-            r="129.75"
-            stroke="currentColor"
-            stroke-width="0.5"
-          />
-          <circle
-            opacity="0.7"
-            cx="331"
-            cy="330"
-            r="204.75"
-            stroke="currentColor"
-            stroke-width="0.5"
-          />
-          <circle
-            opacity="0.4"
-            cx="331"
-            cy="330"
-            r="279.75"
-            stroke="currentColor"
-            stroke-width="0.5"
-          />
-          <circle
-            opacity="0.3"
-            cx="330"
-            cy="330"
-            r="304.75"
-            stroke="currentColor"
-            stroke-width="0.5"
-          />
-          <circle
-            opacity="0.2"
-            cx="330"
-            cy="330"
-            r="329.75"
-            stroke="currentColor"
-            stroke-width="0.5"
-          />
-        </svg>
+        <img class="splash-screen-logo" src="./static/icon.png" width="96" height="96" alt="" />
       </div>
       <div class="splash-screen-bottom" id="log-root"></div>
+      <script>
+        const splashCanvas = document.querySelector('.splash-screen-logo-bg')
+        const splashCtx = splashCanvas.getContext('2d')
+        const splashRamp = '.,-~:;=*#%@$'
+        const splashSpin = { a: 0, last: 0 }
+        const splashFps = 1000 / 30
+        const splashTau = Math.PI * 2
+        splashCanvas.width = innerWidth
+        splashCanvas.height = innerHeight
+        const splashFont = Math.max(12, Math.min(innerWidth, innerHeight) / 32)
+        splashCtx.font = splashFont + 'px ui-monospace, monospace'
+        splashCtx.textAlign = 'left'
+        splashCtx.textBaseline = 'top'
+        splashCtx.fillStyle = '#ffffff80'
+        const splashCharW = splashCtx.measureText('@').width
+        const splashCols = Math.max(16, (splashCanvas.width / splashCharW) | 0)
+        const splashRows = Math.max(16, (splashCanvas.height / splashFont) | 0)
+        const splashCx = splashCanvas.width / 2
+        const splashCy = splashCanvas.height * 0.4
+        const splashRadius = Math.min(splashCanvas.width, splashCanvas.height) * 0.42
+
+        function splashFrame(now) {
+          if (!splashCanvas.isConnected) return
+          requestAnimationFrame(splashFrame)
+          const wait = now - splashSpin.last
+          if (wait < splashFps) return
+          const dt = Math.min(0.05, wait / 1000)
+          splashSpin.last = now
+          splashSpin.a += 3.2 * dt
+          splashCtx.clearRect(0, 0, splashCanvas.width, splashCanvas.height)
+          for (let row = 0; row < splashRows; row++) {
+            let line = ''
+            const py = (row + 0.5) * splashFont - splashCy
+            for (let col = 0; col < splashCols; col++) {
+              const px = (col + 0.5) * splashCharW - splashCx
+              const dist = Math.hypot(px, py) / splashRadius
+              if (dist > 1 || dist < 0.12) {
+                line += ' '
+                continue
+              }
+              const theta = Math.atan2(px, -py)
+              const d = splashSpin.a - theta - Math.floor((splashSpin.a - theta) / splashTau) * splashTau
+              const fade = d < 2.4 ? (1 - d / 2.4) ** 2 : 0
+              const ring = Math.abs((dist * 3) % 1) < 0.055 ? 0.32 : 0
+              const n = Math.min(1, fade * 0.95 + ring * (0.18 + fade * 0.55))
+              line += n < 0.05 ? ' ' : splashRamp[(n * (splashRamp.length - 1)) | 0]
+            }
+            splashCtx.fillText(line, 0, row * splashFont)
+          }
+        }
+
+        requestAnimationFrame(splashFrame)
+      </script>
     </div>
     <script type="module" src="./index.tsx"></script>
   </body>

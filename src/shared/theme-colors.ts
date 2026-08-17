@@ -143,16 +143,26 @@ export const INITIAL_INTERFACE_COLORS_KEY = 'initial-interface-colors'
 const isHex = (color: unknown): color is string => typeof color === 'string' && /^#[0-9a-f]{6}$/i.test(color)
 
 export function toSplashColorCache(colors: InterfaceColors) {
-  const slice = ({ backgroundPrimary, backgroundTertiary }: InterfaceThemeColors) => ({
+  const slice = ({ backgroundPrimary, backgroundTertiary, brand }: InterfaceThemeColors) => ({
     backgroundPrimary,
     backgroundTertiary,
+    brand,
   })
   return { light: slice(colors.light), dark: slice(colors.dark) }
 }
 
 export function splashPaletteFromCache(cache: unknown, theme: InterfaceTheme) {
   if (!cache || typeof cache !== 'object') return null
-  const pal = (cache as Record<InterfaceTheme, { backgroundPrimary?: unknown; backgroundTertiary?: unknown }>)[theme]
+  const pal = (
+    cache as Record<
+      InterfaceTheme,
+      { backgroundPrimary?: unknown; backgroundTertiary?: unknown; brand?: unknown }
+    >
+  )[theme]
   if (!isHex(pal?.backgroundPrimary) || !isHex(pal?.backgroundTertiary)) return null
-  return { backgroundPrimary: pal.backgroundPrimary, backgroundTertiary: pal.backgroundTertiary }
+  return {
+    backgroundPrimary: pal.backgroundPrimary,
+    backgroundTertiary: pal.backgroundTertiary,
+    ...(isHex(pal.brand) ? { brand: pal.brand } : {}),
+  }
 }

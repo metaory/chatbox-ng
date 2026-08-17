@@ -101,10 +101,12 @@ describe('splash color cache', () => {
       light: {
         backgroundPrimary: INTERFACE_COLOR_PRESETS[2].colors.light.backgroundPrimary,
         backgroundTertiary: INTERFACE_COLOR_PRESETS[2].colors.light.backgroundTertiary,
+        brand: INTERFACE_COLOR_PRESETS[2].colors.light.brand,
       },
       dark: {
         backgroundPrimary: INTERFACE_COLOR_PRESETS[2].colors.dark.backgroundPrimary,
         backgroundTertiary: INTERFACE_COLOR_PRESETS[2].colors.dark.backgroundTertiary,
+        brand: INTERFACE_COLOR_PRESETS[2].colors.dark.brand,
       },
     })
   })
@@ -113,6 +115,7 @@ describe('splash color cache', () => {
     expect(splashPaletteFromCache(toSplashColorCache(DEFAULT_INTERFACE_COLORS), 'dark')).toEqual({
       backgroundPrimary: DEFAULT_INTERFACE_COLORS.dark.backgroundPrimary,
       backgroundTertiary: DEFAULT_INTERFACE_COLORS.dark.backgroundTertiary,
+      brand: DEFAULT_INTERFACE_COLORS.dark.brand,
     })
   })
 
