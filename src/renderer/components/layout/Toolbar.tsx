@@ -83,7 +83,7 @@ export default function Toolbar({ sessionId }: { sessionId: string }) {
         <Button
           h={28}
           px="xs"
-          radius="lg"
+          radius="md"
           variant="outline"
           color="chatbox-tertiary"
           leftSection={<ScalableIcon icon={IconSearch} size={16} strokeWidth={1.8} />}

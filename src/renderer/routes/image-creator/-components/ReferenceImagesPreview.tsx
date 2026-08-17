@@ -62,7 +62,7 @@ function ReferenceImageItem({ storageKey, onRemove }: { storageKey: string; onRe
         size="xs"
         variant="filled"
         color="dark"
-        radius="lg"
+        radius="md"
         className="absolute -top-2 -right-2 shadow-md opacity-90"
         onClick={() => onRemove(storageKey)}
       >

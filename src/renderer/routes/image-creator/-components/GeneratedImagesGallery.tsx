@@ -266,7 +266,7 @@ function GeneratedImageGalleryItem({
                 color="red"
                 variant="white"
                 size="sm"
-                radius="lg"
+                radius="md"
                 onClick={handleReport}
                 className="absolute right-3 bottom-3 z-[1] !bg-chatbox-background-primary/70 !text-chatbox-tint-error shadow-sm opacity-65 transition-opacity hover:opacity-100 pointer-events-auto"
               >
@@ -288,7 +288,7 @@ function GeneratedImageGalleryItem({
               <ActionIcon
                 variant="white"
                 size="lg"
-                radius="lg"
+                radius="md"
                 onClick={open}
                 className="shadow-lg hover:scale-105 transition-transform pointer-events-auto"
               >
@@ -300,7 +300,7 @@ function GeneratedImageGalleryItem({
               <ActionIcon
                 variant="white"
                 size="lg"
-                radius="lg"
+                radius="md"
                 onClick={handleUseRef}
                 className="shadow-lg hover:scale-105 transition-transform pointer-events-auto"
               >
@@ -312,7 +312,7 @@ function GeneratedImageGalleryItem({
               <ActionIcon
                 variant="white"
                 size="lg"
-                radius="lg"
+                radius="md"
                 onClick={handleDownload}
                 className="shadow-lg hover:scale-105 transition-transform pointer-events-auto"
               >

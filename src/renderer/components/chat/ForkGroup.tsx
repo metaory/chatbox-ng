@@ -155,7 +155,7 @@ export default function ForkGroup(props: ForkGroupProps) {
       <ActionIcon
         variant="subtle"
         size={20}
-        radius="lg"
+        radius="md"
         color={flash ? 'chatbox-secondary' : 'chatbox-tertiary'}
         aria-label={forkControlsLocked ? lockReason : 'Previous reply'}
         aria-disabled={forkControlsLocked}
@@ -207,7 +207,7 @@ export default function ForkGroup(props: ForkGroupProps) {
       <ActionIcon
         variant="subtle"
         size={20}
-        radius="lg"
+        radius="md"
         color={flash ? 'chatbox-secondary' : 'chatbox-tertiary'}
         aria-label={forkControlsLocked ? lockReason : 'Next reply'}
         aria-disabled={forkControlsLocked}

@@ -46,7 +46,7 @@ const Welcome = NiceModal.create(() => {
             <Button
               size="lg"
               h={54}
-              radius="lg"
+              radius="md"
               classNames={{ root: '!outline-none', label: 'flex flex-col items-center justify-center' }}
               onClick={() => {
                 navigateToSettings('provider')

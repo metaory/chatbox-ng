@@ -17,7 +17,7 @@ export const CARD_SURFACE_STYLE: CSSProperties = {
 }
 
 export const DRAWER_SURFACE_STYLE: CSSProperties = {
-  background: 'var(--chatbox-background-primary)',
+  background: 'var(--chatbox-drawer-bg)',
   borderColor: 'var(--chatbox-border-primary)',
 }
 

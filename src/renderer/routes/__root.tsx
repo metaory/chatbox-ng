@@ -1,5 +1,6 @@
 import NiceModal from '@ebay/nice-modal-react'
 import {
+  ActionIcon,
   Avatar,
   Button,
   Checkbox,
@@ -335,8 +336,8 @@ const creteMantineTheme = (scale = 1) =>
       if (variant !== 'filled' && variant !== 'gradient') return resolved
       return {
         ...resolved,
-        color: 'var(--chatbox-tint-black)',
-        hoverColor: 'var(--chatbox-tint-black)',
+        color: '#000',
+        hoverColor: '#000',
       }
     },
     colors: {
@@ -453,6 +454,7 @@ const creteMantineTheme = (scale = 1) =>
         defaultProps: {
           color: 'chatbox-brand',
           variant: 'filled',
+          radius: 'md',
         },
         styles: (_theme, props) => ({
           root: {
@@ -460,10 +462,15 @@ const creteMantineTheme = (scale = 1) =>
             '--button-height-compact-xs': rem('24px'),
             fontWeight: '400',
             ...(!props.variant || props.variant === 'filled' || props.variant === 'gradient'
-              ? { '--button-color': 'var(--chatbox-tint-black)' }
+              ? { '--button-color': '#000' }
               : {}),
           },
         }),
+      }),
+      ActionIcon: ActionIcon.extend({
+        defaultProps: {
+          radius: 'md',
+        },
       }),
       Input: Input.extend({
         styles: (_theme, props) => ({
@@ -586,7 +593,7 @@ const creteMantineTheme = (scale = 1) =>
             color: 'var(--chatbox-tint-secondary)',
           },
           content: {
-            backgroundColor: 'var(--chatbox-background-primary)',
+            backgroundColor: 'var(--chatbox-drawer-bg)',
           },
           overlay: {
             '--overlay-bg': 'var(--chatbox-background-mask-overlay)',
@@ -629,7 +636,7 @@ const mantineCssVariablesResolver: CSSVariablesResolver = () => {
     '--mantine-color-default-color': 'var(--chatbox-tint-primary)',
     '--mantine-color-default-border': 'var(--chatbox-border-primary)',
     '--mantine-color-body': 'var(--chatbox-background-primary)',
-    '--mantine-primary-color-contrast': 'var(--chatbox-tint-black)',
+    '--mantine-primary-color-contrast': '#000',
   }
   return {
     variables: {},

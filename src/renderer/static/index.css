@@ -28,6 +28,8 @@ html > body {
         Arial, sans-serif; */
   /* padding: 0; */
   margin: auto;
+  color: var(--chatbox-tint-primary);
+  background-color: var(--chatbox-background-primary);
 }
 
 html,

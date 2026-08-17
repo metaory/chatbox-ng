@@ -90,7 +90,7 @@ export const SettingsModal: FC<SettingsModalProps> = (props) => {
             h={36}
             w={36}
             p={0}
-            radius="lg"
+            radius="md"
             onClick={onClose}
             autoFocus={false}
           >

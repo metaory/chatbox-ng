@@ -189,7 +189,7 @@ export default function SessionList(props: Props) {
             itemContent={(_index, item) => {
               if (item.type === 'section') {
                 return (
-                  <Text px="md" pt="sm" pb={4} size="xs" fw={600} c="chatbox-tertiary">
+                  <Text px="md" pt="sm" pb={4} size="xs" radius="xs" fw={600} c="chatbox-tertiary">
                     {item.label}
                   </Text>
                 )

@@ -179,7 +179,7 @@ const SessionSettingsModal = NiceModal.create(
                       <ActionIcon
                         color="chatbox-error"
                         size={24}
-                        radius="lg"
+                        radius="md"
                         bottom={0}
                         right={0}
                         className="absolute"
@@ -315,7 +315,7 @@ const SessionSettingsModal = NiceModal.create(
                     <ActionIcon
                       color="chatbox-error"
                       size={20}
-                      radius="lg"
+                      radius="md"
                       bottom={3}
                       right={3}
                       className="absolute"

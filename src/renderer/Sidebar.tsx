@@ -229,7 +229,7 @@ export default function Sidebar() {
             <Button
               variant="light"
               fullWidth
-              radius="lg"
+              radius="md"
               data-testid={TestId.sidebar.newChat}
               onClick={handleCreateNewSession}
             >
@@ -239,7 +239,7 @@ export default function Sidebar() {
             <Button
               variant="light"
               fullWidth
-              radius="lg"
+              className="rounded-md"
               data-testid={TestId.sidebar.newImage}
               onClick={handleCreateNewPictureSession}
             >
@@ -251,7 +251,6 @@ export default function Sidebar() {
           {isSmallScreen ? (
             <Flex gap="md" align="center">
               <NavLink
-                c="chatbox-secondary"
                 className="rounded-lg"
                 label="My Copilots"
                 leftSection={<ScalableIcon icon={IconMessageChatbot} size={20} />}
@@ -282,7 +281,6 @@ export default function Sidebar() {
           ) : (
             <>
               <NavLink
-                c="chatbox-secondary"
                 className="rounded-lg"
                 label="My Copilots"
                 leftSection={<ScalableIcon icon={IconMessageChatbot} size={20} />}
@@ -299,7 +297,6 @@ export default function Sidebar() {
               />
               <NavLink
                 data-testid={TestId.sidebar.settingsTrigger}
-                c="chatbox-secondary"
                 className="rounded-lg"
                 label="Settings"
                 leftSection={<ScalableIcon icon={IconSettingsFilled} size={20} />}
@@ -309,7 +306,6 @@ export default function Sidebar() {
               />
               {FORCE_ENABLE_DEV_PAGES && (
                 <NavLink
-                  c="chatbox-secondary"
                   className="rounded-lg"
                   label="Dev Tools"
                   leftSection={<ScalableIcon icon={IconCode} size={20} />}
@@ -390,7 +386,6 @@ function AboutNavLink({
 
   return (
     <NavLink
-      c="chatbox-tertiary"
       className="rounded-lg"
       label={
         <Flex align="center" gap={6}>

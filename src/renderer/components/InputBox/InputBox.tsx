@@ -19,7 +19,7 @@ import {
   IconAdjustmentsHorizontal,
   IconAlertCircle,
   IconArrowBackUp,
-  IconArrowUp,
+  IconArrowBigUpFilled,
   IconChevronRight,
   IconCirclePlus,
   IconFilePencil,
@@ -931,7 +931,6 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
         await waitForReasoningPersist()
 
         await onSubmit?.(params)
-
       } catch (e) {
         console.error('Error submitting message:', e)
         toastActions.add((e as Error)?.message || 'An error occurred while sending the message.')
@@ -1464,9 +1463,7 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
                 isNewSession={isNewSession}
                 viewportHeight={viewportHeight}
                 isReadOnly={isCompactionRunning || isAwaitingToolApproval}
-                placeholder={
-                  isAwaitingToolApproval ? 'Waiting for approval' : 'Type your question here...'
-                }
+                placeholder={isAwaitingToolApproval ? 'Waiting for approval' : 'Type your question here...'}
                 ariaLabel="Type your question here..."
                 autoFocus={!isSmallScreen}
                 onValueChange={onMessageInputValueChange}
@@ -1489,15 +1486,21 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
                   size={32}
                   variant="filled"
                   color={generating ? 'dark' : 'chatbox-brand'}
-                  radius="lg"
+                  radius="md"
                   onClick={generating ? onStopGenerating : () => handleSubmit()}
                   className={cn('shrink-0 mb-1', !generating && submitBlocked && 'disabled:!opacity-100 !text-black')}
-                  style={!generating && submitBlocked ? { backgroundColor: 'rgba(222, 226, 230, 1)' } : undefined}
+                  style={
+                    generating
+                      ? { backgroundColor: 'var(--chatbox-tint-error)' }
+                      : submitBlocked
+                      ? { backgroundColor: 'var(--chatbox-tint-warning)' }
+                      : { backgroundColor: 'var(--chatbox-brand)' }
+                  }
                 >
                   {generating ? (
                     <ScalableIcon icon={IconPlayerStopFilled} size={16} />
                   ) : (
-                    <ScalableIcon icon={IconArrowUp} size={16} />
+                    <ScalableIcon icon={IconArrowBigUpFilled} size={16} />
                   )}
                 </ActionIcon>
               </Tooltip>
@@ -1535,7 +1538,8 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
                       <ScalableIcon icon={IconAlertCircle} size={14} />
                     </Box>
                     <Text size="xs" lh={1.35} c="chatbox-warning" className="min-w-0">
-                      This model may not be able to read the uploaded document. Try another model if you want to ask about the file.
+                      This model may not be able to read the uploaded document. Try another model if you want to ask
+                      about the file.
                     </Text>
                   </Flex>
                 )}
@@ -1564,7 +1568,8 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
                       <ScalableIcon icon={IconAlertCircle} size={14} />
                     </Box>
                     <Text size="xs" lh={1.35} c="chatbox-warning" className="min-w-0">
-                      This attachment is very large and may consume more points. You can send it anyway, or remove it and use a smaller file.
+                      This attachment is very large and may consume more points. You can send it anyway, or remove it
+                      and use a smaller file.
                     </Text>
                   </Flex>
                 )}
@@ -1578,12 +1583,12 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
                     (f) => StorageKeyGenerator.fileUniqKey(f.file) === fileKey
                   )
                   const effectiveIndexStatus = preprocessedFile?.sessionAttachmentId
-                    ? (preprocessedAttachmentIndexStatusMap.get(preprocessedFile.sessionAttachmentId) ??
-                      preprocessedFile.sessionAttachmentIndexStatus)
+                    ? preprocessedAttachmentIndexStatusMap.get(preprocessedFile.sessionAttachmentId) ??
+                      preprocessedFile.sessionAttachmentIndexStatus
                     : preprocessedFile?.sessionAttachmentIndexStatus
                   const effectiveAttachmentError = preprocessedFile?.sessionAttachmentId
-                    ? (preprocessedAttachmentErrorMap.get(preprocessedFile.sessionAttachmentId) ??
-                      preprocessedFile?.error)
+                    ? preprocessedAttachmentErrorMap.get(preprocessedFile.sessionAttachmentId) ??
+                      preprocessedFile?.error
                     : preprocessedFile?.error
                   const attachmentProgress = preprocessedFile?.sessionAttachmentId
                     ? preprocessedAttachmentProgressMap.get(preprocessedFile.sessionAttachmentId)
@@ -1602,13 +1607,17 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
                   const statusText =
                     preprocessedFile?.ragMode === 'session-retrieval' && effectiveIndexStatus !== 'ready'
                       ? progressValue !== undefined
-                        ? `${isSessionAttachmentTakingLong ? 'Still indexing' : getSessionAttachmentStageLabel(indexingStage, t)} · ${progressValue}%`
+                        ? `${
+                            isSessionAttachmentTakingLong
+                              ? 'Still indexing'
+                              : getSessionAttachmentStageLabel(indexingStage, t)
+                          } · ${progressValue}%`
                         : isSessionAttachmentTakingLong
-                          ? 'Still indexing'
-                          : getSessionAttachmentStageLabel(indexingStage, t)
+                        ? 'Still indexing'
+                        : getSessionAttachmentStageLabel(indexingStage, t)
                       : status === 'processing'
-                        ? 'Preparing'
-                        : undefined
+                      ? 'Preparing'
+                      : undefined
                   return (
                     <FileMiniCard
                       key={fileKey}
@@ -1618,10 +1627,10 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
                         effectiveAttachmentError
                           ? 'error'
                           : preprocessedFile?.ragMode === 'session-retrieval'
-                            ? effectiveIndexStatus === 'ready'
-                              ? 'completed'
-                              : 'processing'
-                            : status
+                          ? effectiveIndexStatus === 'ready'
+                            ? 'completed'
+                            : 'processing'
+                          : status
                       }
                       statusText={statusText}
                       parserType={preprocessedFile?.parserType}
@@ -1861,7 +1870,7 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
                       tokenPercentage && tokenPercentage > 80 ? 'text-red-500' : 'text-chatbox-tint-tertiary'
                     }`}
                   >
-                    <ScalableIcon icon={IconArrowUp} size={14} />
+                    <ScalableIcon icon={IconArrowBigUpFilled} size={14} />
                     {isCalculating && <Loader size={10} />}
                     <Text span size="xs" className="whitespace-nowrap" c="inherit">
                       {isCalculating ? '~' : ''}

@@ -182,14 +182,14 @@ function InputToolbar({
       <Flex align="center" gap={4}>
         {/* New Creation Button */}
         {isSmallScreen ? (
-          <ActionIcon variant="light" size="md" radius="lg" onClick={onNewCreation}>
+          <ActionIcon variant="light" size="md" radius="md" onClick={onNewCreation}>
             <IconPlus size={18} />
           </ActionIcon>
         ) : (
           <Button
             variant="light"
             size="compact-md"
-            radius="lg"
+            radius="md"
             fz="sm"
             leftSection={<IconPlus size={16} />}
             onClick={onNewCreation}
@@ -514,7 +514,7 @@ function ImageCreatorPage() {
       variant="subtle"
       color="gray"
       size="md"
-      radius="lg"
+      radius="md"
       onClick={() => setShowMobileHistory(true)}
       className="controls"
     >
@@ -645,7 +645,7 @@ function ImageCreatorPage() {
                       size={32}
                       variant="filled"
                       color={isCurrentlyGenerating ? 'dark' : 'chatbox-brand'}
-                      radius="lg"
+                      radius="md"
                       onClick={isCurrentlyGenerating ? cancelGeneration : handleSubmit}
                       disabled={(!prompt.trim() || !selectedModel) && !isCurrentlyGenerating}
                       className={`shrink-0 mb-1 ${(!prompt.trim() || !selectedModel) && !isCurrentlyGenerating ? 'disabled:!opacity-100 !text-black' : ''}`}

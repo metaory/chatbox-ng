@@ -87,6 +87,11 @@ export function getThemeDesign(
         main: brandColor,
         contrastText: '#000000',
       },
+      text: {
+        primary: 'var(--chatbox-tint-primary)',
+        secondary: 'var(--chatbox-tint-secondary)',
+        disabled: 'var(--chatbox-tint-disabled)',
+      },
       ...(realTheme === 'light'
         ? {}
         : {
@@ -98,6 +103,14 @@ export function getThemeDesign(
           }),
     },
     components: {
+      MuiDrawer: {
+        styleOverrides: {
+          paper: {
+            backgroundColor: 'var(--chatbox-drawer-bg)',
+            backgroundImage: 'none',
+          },
+        },
+      },
       MuiPaper: {
         styleOverrides: {
           outlined: {

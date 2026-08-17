@@ -8,9 +8,9 @@
   --chatbox-radius-xs: 0.125rem;
   --chatbox-radius-sm: 0.25rem;
   --chatbox-radius-md: 0.5rem;
-  --chatbox-radius-lg: 1rem;
-  --chatbox-radius-xl: 1.5rem;
-  --chatbox-radius-xxl: 2rem;
+  --chatbox-radius-lg: 0.8rem;
+  --chatbox-radius-xl: 1rem;
+  --chatbox-radius-xxl: 1.2rem;
   --chatbox-border-width: 4px;
 
   /* spacing */
@@ -27,18 +27,16 @@
 
 :root {
   /* colors */
-  --chatbox-tint-primary: #212529;
-  --chatbox-tint-secondary: #495057;
-  --chatbox-tint-tertiary: #868e96;
-
-  --chatbox-tint-white: #ffffff;
-  --chatbox-tint-black: #000000;
-  --chatbox-tint-gray: #868e96;
-
-  --chatbox-tint-disabled: #adb5bd;
+  --chatbox-tint-black: color-mix(in srgb, var(--chatbox-brand) 16%, #000);
+  --chatbox-tint-white: color-mix(in srgb, var(--chatbox-brand) 6%, #fff);
+  --chatbox-tint-primary: color-mix(in srgb, var(--chatbox-brand) 34%, #121212);
+  --chatbox-tint-secondary: color-mix(in oklch, oklch(from var(--chatbox-brand) l c calc(h + 48)) 46%, #3a3a3a);
+  --chatbox-tint-tertiary: color-mix(in srgb, var(--chatbox-brand) 16%, #6a6a6a);
+  --chatbox-tint-gray: var(--chatbox-tint-tertiary);
+  --chatbox-tint-disabled: color-mix(in srgb, var(--chatbox-brand) 6%, #8a8a8a);
   --chatbox-brand: #c026d3;
   --chatbox-tint-brand: var(--chatbox-brand);
-  --chatbox-tint-placeholder: #adb5bd;
+  --chatbox-tint-placeholder: var(--chatbox-tint-disabled);
   --chatbox-tint-error: #fa5252;
   --chatbox-tint-error-disabled: #ff8787;
   --chatbox-tint-warning: #fab005;
@@ -75,6 +73,8 @@
   --chatbox-border-primary: color-mix(in srgb, var(--chatbox-tint-primary) 5%, transparent);
   --chatbox-border-secondary: color-mix(in srgb, var(--chatbox-tint-primary) 10%, transparent);
   --chatbox-input-bg: var(--chatbox-background-primary);
+  --chatbox-drawer-bg: color-mix(in srgb, var(--chatbox-brand) 28%, var(--chatbox-background-primary));
+  --chatbox-nav-link: color-mix(in srgb, var(--chatbox-brand) 52%, var(--chatbox-tint-primary));
 
   --chatbox-background-brand-primary: var(--chatbox-brand);
   --chatbox-background-brand-primary-hover: color-mix(in srgb, var(--chatbox-brand), black 12%);
@@ -126,20 +126,29 @@
   --ring: var(--chatbox-tint-brand);
 }
 
+html,
+body {
+  color: var(--chatbox-tint-primary);
+  background-color: var(--chatbox-background-primary);
+}
+
+:root[data-theme='dark'] {
+  --chatbox-tint-black: color-mix(in srgb, var(--chatbox-brand) 14%, #000);
+  --chatbox-tint-white: color-mix(in srgb, var(--chatbox-brand) 12%, #fff);
+  --chatbox-tint-primary: color-mix(in srgb, var(--chatbox-brand) 38%, #fff);
+  --chatbox-tint-secondary: color-mix(in oklch, oklch(from var(--chatbox-brand) l c calc(h + 48)) 46%, #ececec);
+  --chatbox-tint-tertiary: color-mix(in srgb, var(--chatbox-brand) 18%, #c2c2c2);
+  --chatbox-tint-gray: var(--chatbox-tint-tertiary);
+  --chatbox-tint-disabled: color-mix(in srgb, var(--chatbox-brand) 8%, #9a9a9a);
+  --chatbox-tint-placeholder: var(--chatbox-tint-disabled);
+  --chatbox-drawer-bg: color-mix(in srgb, var(--chatbox-brand) 24%, var(--chatbox-background-primary));
+  --chatbox-nav-link: color-mix(in srgb, var(--chatbox-brand) 58%, var(--chatbox-tint-primary));
+}
+
 :root[data-mantine-color-scheme='dark'] {
   /* colors */
-  --chatbox-tint-primary: #ffffff;
-  --chatbox-tint-secondary: #ced4da;
-  --chatbox-tint-tertiary: #828282;
-
-  --chatbox-tint-white: #ffffff;
-  --chatbox-tint-black: #000000;
-  --chatbox-tint-gray: #868e96;
-
-  --chatbox-tint-disabled: #696969;
   --chatbox-brand: #f472d0;
   --chatbox-tint-brand: var(--chatbox-brand);
-  --chatbox-tint-placeholder: #828282;
   --chatbox-tint-error: #f03e3e;
   --chatbox-tint-error-disabled: rgb(224, 49, 49, 0.5);
   --chatbox-tint-warning: #ffe066;
@@ -244,13 +253,31 @@
   --mantine-color-chatbox-primary-light-color: var(--chatbox-tint-primary);
   --mantine-color-chatbox-primary-outline: var(--chatbox-border-primary);
   --mantine-color-chatbox-primary-outline-hover: color-mix(in srgb, var(--chatbox-border-primary), transparent 95%);
+
+  --mantine-color-chatbox-secondary-text: var(--chatbox-tint-secondary);
+  --mantine-color-chatbox-secondary-filled: var(--chatbox-tint-secondary);
+  --mantine-color-chatbox-secondary-filled-hover: color-mix(in srgb, var(--chatbox-tint-secondary), black 12%);
+  --mantine-color-chatbox-secondary-light: color-mix(in srgb, var(--chatbox-tint-secondary), transparent 88%);
+  --mantine-color-chatbox-secondary-light-hover: color-mix(in srgb, var(--chatbox-tint-secondary), transparent 80%);
+  --mantine-color-chatbox-secondary-light-color: var(--chatbox-tint-secondary);
+  --mantine-color-chatbox-secondary-outline: var(--chatbox-tint-secondary);
+  --mantine-color-chatbox-secondary-outline-hover: color-mix(in srgb, var(--chatbox-tint-secondary), transparent 95%);
+
+  --mantine-color-chatbox-tertiary-text: var(--chatbox-tint-tertiary);
+  --mantine-color-chatbox-tertiary-filled: var(--chatbox-tint-tertiary);
+  --mantine-color-chatbox-tertiary-filled-hover: color-mix(in srgb, var(--chatbox-tint-tertiary), black 12%);
+  --mantine-color-chatbox-tertiary-light: color-mix(in srgb, var(--chatbox-tint-tertiary), transparent 88%);
+  --mantine-color-chatbox-tertiary-light-hover: color-mix(in srgb, var(--chatbox-tint-tertiary), transparent 80%);
+  --mantine-color-chatbox-tertiary-light-color: var(--chatbox-tint-tertiary);
+  --mantine-color-chatbox-tertiary-outline: var(--chatbox-tint-tertiary);
+  --mantine-color-chatbox-tertiary-outline-hover: color-mix(in srgb, var(--chatbox-tint-tertiary), transparent 95%);
 }
 
 .mantine-Button-root:where([data-variant='filled'], [data-variant='gradient']),
 .mantine-ActionIcon-root:where([data-variant='filled'], [data-variant='gradient']) {
-  --button-color: var(--chatbox-tint-black);
-  --ai-color: var(--chatbox-tint-black);
-  color: var(--chatbox-tint-black);
+  --button-color: #000;
+  --ai-color: #000;
+  color: #000;
 }
 
 [data-mantine-color-scheme] .mantine-Paper-root,
@@ -377,11 +404,15 @@ div[data-vaul-handle] {
   user-select: none;
   opacity: 0.5;
 }
-div[data-vaul-overlay] {
-  z-index: 2000;
+
+.mantine-Drawer-content,
+.MuiDrawer-paper {
+  background-color: var(--chatbox-drawer-bg);
 }
-div[data-vaul-drawer] {
-  z-index: 2000;
+
+.MuiDrawer-paperAnchorLeft .mantine-NavLink-label,
+.MuiDrawer-paperAnchorLeft .mantine-NavLink-section {
+  color: var(--chatbox-nav-link);
 }
 
 /* Rotating border beam on the pending-approval card (ToolCallPartUI): a bright amber

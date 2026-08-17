@@ -91,7 +91,7 @@ export const ScrollToBottomButton = ({ onClick, style }: { onClick?(): void; sty
       <Button
         w={38}
         h={38}
-        radius="lg"
+        radius="md"
         p={0}
         bg="var(--chatbox-background-primary)"
         c="chatbox-primary"

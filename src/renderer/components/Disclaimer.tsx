@@ -1,9 +1,8 @@
 import { Text } from '@mantine/core'
 
 export function Disclaimer() {
-
   return (
-    <Text className="disclaimer-safe-area" size="xs" c="dimmed" ta="center">
+    <Text className="disclaimer-safe-area" size="xs" c="chatbox-secondary" ta="center">
       AI-generated content may be inaccurate. Please verify important information.
     </Text>
   )
