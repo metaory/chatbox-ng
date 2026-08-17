@@ -18,7 +18,6 @@ import { useIsSmallScreen } from '@/hooks/useScreenChange'
 import useVersion from '@/hooks/useVersion'
 import { defaultSessionsForCN, defaultSessionsForEN } from '@/packages/initial_data'
 import * as remote from '@/packages/remote'
-import { useAuthInfoStore } from '@/stores/authInfoStore'
 import { updateSession as updateSessionStore, useSession } from '@/stores/chatStore'
 import { applyChatboxLicenseDefaultModelToSession } from '@/stores/defaultChatModel'
 import { lastUsedModelStore } from '@/stores/lastUsedModelStore'
@@ -55,11 +54,9 @@ function RouteComponent() {
   const { session: currentSession, isFetching } = useSession(currentSessionId)
   const { providers } = useProviders()
   const licenseKey = useSettingsStore((s) => s.licenseKey)
-  const hasLicense = Boolean(licenseKey)
   const licenseDetail = useSettingsStore((s) => s.licenseDetail)
   const licensePlanName = useSettingsStore((s) => s.licensePlanName)
   const hasExpiredLicense = useSettingsStore((s) => s.hasExpiredLicense)
-  const isLoggedIn = useAuthInfoStore((s) => Boolean(s.accessToken && s.refreshToken))
   const { isExceeded, isExceededResolved } = useVersion()
   const widthFull = useUIStore((s) => s.widthFull)
   const isSmallScreen = useIsSmallScreen()
@@ -73,12 +70,9 @@ function RouteComponent() {
     () =>
       getHomeWelcomeCardMode({
         providerCount: providers.length,
-        isLoggedIn,
-        hasLicense,
-        hasExpiredLicense,
         hideForStoreReview: isExceeded || !isExceededResolved,
       }),
-    [providers.length, isLoggedIn, hasLicense, hasExpiredLicense, isExceeded, isExceededResolved]
+    [providers.length, isExceeded, isExceededResolved]
   )
 
   const generationControlMessages = useMemo(
@@ -263,10 +257,7 @@ function RouteComponent() {
           // bottom: '100%' — positioned right above the parent box's top edge (like a tooltip anchoring upward)
           <Box className="pointer-events-none absolute left-0 right-0 z-10" style={{ bottom: '100%' }} px="sm" mb="sm">
             <Box className={widthFull ? 'w-full' : 'max-w-4xl mx-auto'}>
-              <ChatboxWelcomeCard
-                mode={welcomeCardMode}
-                className="pointer-events-auto w-full"
-              />
+              <ChatboxWelcomeCard mode={welcomeCardMode} className="pointer-events-auto w-full" />
             </Box>
           </Box>
         )}

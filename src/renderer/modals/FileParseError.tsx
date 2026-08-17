@@ -9,11 +9,8 @@ import { ChatboxAIAPIError } from '@shared/models/errors'
 import { IconAlertCircle } from '@tabler/icons-react'
 import { Trans, useTranslation } from 'react-i18next'
 import { AdaptiveModal } from '@/components/common/AdaptiveModal'
-import LinkTargetBlank from '@/components/common/Link'
 import { ScalableIcon } from '@/components/common/ScalableIcon'
 import { navigateToSettings } from '@/modals/Settings'
-import { buildChatboxUrl } from '@/packages/remote'
-import platform from '@/platform'
 import {
   isSessionAttachmentRagAuthError,
   isSessionAttachmentRagIndexingError,
@@ -21,7 +18,6 @@ import {
   SESSION_ATTACHMENT_RAG_REQUIRES_KNOWLEDGE_BASE_ERROR,
   SESSION_ATTACHMENT_RAG_REQUIRES_TOOL_USE_MODEL_ERROR,
 } from '@/stores/sessionAttachmentRagErrors'
-import * as settingActions from '@/stores/settingActions'
 
 interface FileParseErrorProps {
   errorCode: string
@@ -62,7 +58,7 @@ const FileParseError = NiceModal.create(({ errorCode, fileName }: FileParseError
       return (
         <Text>
           {t(
-            'This large file needs Chatbox AI to finish indexing. Sign in to Chatbox AI, then retry this file. If you do not want to use Chatbox AI, remove the file and upload a smaller attachment instead.'
+            'This large file cannot be indexed here. Upload it through Knowledge Base, or remove it and use a smaller attachment instead.'
           )}
         </Text>
       )
@@ -116,18 +112,7 @@ const FileParseError = NiceModal.create(({ errorCode, fileName }: FileParseError
         components={{
           OpenSettingButton: <span />,
           OpenExtensionSettingButton: <span />,
-          OpenMorePlanButton: (
-            <a
-              className="cursor-pointer underline font-semibold text-blue-600 hover:text-blue-700"
-              onClick={() => {
-                platform.openLink(
-                  buildChatboxUrl(
-                    `/redirect_app/view_more_plans/${settingActions.getLanguage()}?utm_source=app&utm_content=file_parse_error`
-                  )
-                )
-              }}
-            />
-          ),
+          OpenMorePlanButton: <span />,
           OpenDocumentParserSettingButton: (
             <a
               className="cursor-pointer underline font-semibold text-blue-600 hover:text-blue-700"
@@ -137,21 +122,9 @@ const FileParseError = NiceModal.create(({ errorCode, fileName }: FileParseError
               }}
             />
           ),
-          LinkToHomePage: <LinkTargetBlank href="https://chatboxai.app" />,
-          LinkToAdvancedFileProcessing: (
-            <LinkTargetBlank
-              href={buildChatboxUrl(
-                `/redirect_app/advanced_file_processing/${settingActions.getLanguage()}?utm_source=app&utm_content=file_parse_error`
-              )}
-            />
-          ),
-          LinkToAdvancedUrlProcessing: (
-            <LinkTargetBlank
-              href={buildChatboxUrl(
-                `/redirect_app/advanced_url_processing/${settingActions.getLanguage()}?utm_source=app&utm_content=file_parse_error`
-              )}
-            />
-          ),
+          LinkToHomePage: <span />,
+          LinkToAdvancedFileProcessing: <span />,
+          LinkToAdvancedUrlProcessing: <span />,
         }}
       />
     )

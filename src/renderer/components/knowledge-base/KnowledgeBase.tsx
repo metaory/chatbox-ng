@@ -3,7 +3,7 @@ import { SystemProviders } from '@shared/defaults'
 import type { KnowledgeBase, ProviderModelInfo } from '@shared/types'
 import type { DocumentParserConfig, DocumentParserType } from '@shared/types/settings'
 import { parseKnowledgeBaseModelString } from '@shared/utils/knowledge-base-model-parser'
-import { IconAlertTriangle, IconInfoCircle, IconLogin, IconPlus } from '@tabler/icons-react'
+import { IconAlertTriangle, IconInfoCircle, IconPlus } from '@tabler/icons-react'
 import compact from 'lodash/compact'
 import flatten from 'lodash/flatten'
 import type React from 'react'
@@ -12,11 +12,9 @@ import { useTranslation } from 'react-i18next'
 import { Modal } from '@/components/layout/Overlay'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
 import { useProviders } from '@/hooks/useProviders'
-import { navigateToSettings } from '@/modals/Settings'
 import * as remote from '@/packages/remote'
 import { toastError } from '@/packages/toast'
 import platform from '@/platform'
-import { useAuthInfoStore } from '@/stores/authInfoStore'
 import { useSettingsStore } from '@/stores/settingsStore'
 import { ScalableIcon } from '../common/ScalableIcon'
 import KnowledgeBaseDocuments from './KnowledgeBaseDocuments'
@@ -119,9 +117,6 @@ const KnowledgeBasePage: React.FC = () => {
   const [showCreate, setShowCreate] = useState(false)
   const licenseKey = useSettingsStore((state) => state.licenseKey)
   const customProviders = useSettingsStore((state) => state.customProviders)
-  const accessToken = useAuthInfoStore((state) => state.accessToken)
-  const refreshToken = useAuthInfoStore((state) => state.refreshToken)
-  const isLoggedIn = !!(accessToken && refreshToken)
 
   const [newEmbeddingModel, setNewEmbeddingModel] = useState<string | null>(null)
   const [newRerankModel, setNewRerankModel] = useState<string | null>(null)
@@ -155,15 +150,6 @@ const KnowledgeBasePage: React.FC = () => {
     },
     [chatboxAIModels]
   )
-
-  // Check if there are Chatbox AI KBs but user is not logged in — show login prompt.
-  // A KB counts as a Chatbox AI KB when its embedding model is the Chatbox AI embedding model.
-  const chatboxAIKbNeedsLogin = useMemo(() => {
-    if (canUseChatboxAIProvider) return false
-    if (!chatboxAIModels) return false
-    // key
-    return kbList.some((kb) => kb.embeddingModel === chatboxAIModels.embedding)
-  }, [canUseChatboxAIProvider, chatboxAIModels, kbList])
 
   const [newProviderMode, setNewProviderMode] = useState<'chatbox-ai' | 'custom'>('custom')
 
@@ -350,7 +336,6 @@ const KnowledgeBasePage: React.FC = () => {
         providerMode: newProviderMode,
       })
 
-
       // Reset form
       setNewKbName('')
       setNewProviderMode('chatbox-ai')
@@ -531,30 +516,6 @@ const KnowledgeBasePage: React.FC = () => {
       </Modal>
       {!isUnsupportedPlatform && (
         <Stack gap="xl">
-          {chatboxAIKbNeedsLogin && (
-            <Alert
-              variant="light"
-              color="orange"
-              icon={<IconAlertTriangle size={16} />}
-              title={t('Sign in to Chatbox AI')}
-            >
-              <Text size="sm">
-                {t(
-                  'Your Chatbox AI knowledge base requires an active login. Please sign in to Chatbox AI to use this knowledge base.'
-                )}
-              </Text>
-              <Group mt="sm">
-                <Button
-                  size="xs"
-                  variant="light"
-                  leftSection={<IconLogin size={14} />}
-                  onClick={() => navigateToSettings('chatbox-ai')}
-                >
-                  {t('Log in to Chatbox AI')}
-                </Button>
-              </Group>
-            </Alert>
-          )}
           {kbList.length === 0 ? (
             <Paper withBorder p="xl" style={{ textAlign: 'center' }}>
               <Stack gap="md" align="center">
@@ -602,12 +563,7 @@ const KnowledgeBasePage: React.FC = () => {
                             isProviderAvailable={() => canUseChatboxAIProvider}
                             type="embedding"
                             t={t}
-                            unavailableTooltip={
-                              !isLoggedIn
-                                ? String(t('Sign in to Chatbox AI to use this knowledge base'))
-                                : String(t('Provider unavailable'))
-                            }
-                            onUnavailableClick={!isLoggedIn ? () => navigateToSettings('chatbox-ai') : undefined}
+                            unavailableTooltip={String(t('Provider unavailable'))}
                           />
                         </>
                       ) : (

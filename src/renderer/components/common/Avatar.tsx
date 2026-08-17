@@ -9,7 +9,6 @@ import { ScalableIcon } from './ScalableIcon'
 
 export type SystemAvatarProps = {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | number
-  sessionType?: 'chat' | 'picture' | 'guide'
 } & PolymorphicComponentProps<'div', AvatarProps>
 
 export const SystemAvatar: FC<SystemAvatarProps> = ({ size = 'md', className, ...avatarProps }) => {

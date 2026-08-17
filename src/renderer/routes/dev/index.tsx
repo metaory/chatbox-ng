@@ -3,12 +3,7 @@ import { IconAdjustmentsHorizontal, IconCode, IconExternalLink, IconEye } from '
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useState } from 'react'
 import { ScalableIcon } from '@/components/common/ScalableIcon'
-import {
-  getForceShowNewUserScenarioCardsFlag,
-  getShowGuideDevButtonsFlag,
-  setForceShowNewUserScenarioCardsFlag,
-  setShowGuideDevButtonsFlag,
-} from '@/dev/devToolsFlags'
+import { getForceShowNewUserScenarioCardsFlag, setForceShowNewUserScenarioCardsFlag } from '@/dev/devToolsFlags'
 
 export const Route = createFileRoute('/dev/')({
   component: DevIndexPage,
@@ -56,21 +51,10 @@ interface DevControl {
 }
 
 function DevIndexPage() {
-  const [showGuideDevButtons, setShowGuideDevButtons] = useState(getShowGuideDevButtonsFlag)
   const [forceShowNewUserScenarioCards, setForceShowNewUserScenarioCards] = useState(
     getForceShowNewUserScenarioCardsFlag
   )
   const devControls: DevControl[] = [
-    {
-      id: 'guide-dev-buttons',
-      label: 'Guide dev buttons',
-      description: 'Show guide debug actions on the Getting Started page.',
-      checked: showGuideDevButtons,
-      onChange: (checked) => {
-        setShowGuideDevButtonsFlag(checked)
-        setShowGuideDevButtons(checked)
-      },
-    },
     {
       id: 'new-user-scenario-cards',
       label: 'New user scenario cards',

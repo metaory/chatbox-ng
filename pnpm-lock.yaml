@@ -304,9 +304,6 @@ importers:
       '@types/big.js':
         specifier: ^6.2.2
         version: 6.2.2
-      '@types/canvas-confetti':
-        specifier: ^1.9.0
-        version: 1.9.0
       '@types/d3':
         specifier: ^7.4.3
         version: 7.4.3
@@ -391,9 +388,6 @@ importers:
       big.js:
         specifier: ^7.0.1
         version: 7.0.1
-      canvas-confetti:
-        specifier: ^1.9.4
-        version: 1.9.4
       capacitor-plugin-safe-area:
         specifier: ^4.0.0
         version: 4.0.3(@capacitor/core@7.6.8)
@@ -4534,9 +4528,6 @@ packages:
   '@types/cacheable-request@6.0.3':
     resolution: {integrity: sha512-IQ3EbTzGxIigb1I3qPZc1rWJnH0BmSKv5QYTalEwweFvyBDLSAe24zP0le/hyi7ecGfZVlIVAg4BZqb8WBwKqw==}
 
-  '@types/canvas-confetti@1.9.0':
-    resolution: {integrity: sha512-aBGj/dULrimR1XDZLtG9JwxX1b4HPRF6CX9Yfwh3NvstZEm1ZL7RBnel4keCPSqs1ANRu1u2Aoz9R+VmtjYuTg==}
-
   '@types/chai@5.2.3':
     resolution: {integrity: sha512-Mw558oeA9fFbv65/y4mHtXDs9bPnFMZAL/jxdPFUpOHHIXX91mcgEHbS5Lahr+pwZFR8A7GQleRWeI6cGFC2UA==}
 
@@ -5613,9 +5604,6 @@ packages:
 
   caniuse-lite@1.0.30001809:
     resolution: {integrity: sha512-xxWVywk6a6Arlk+hymeycyn/VgqEfLDxupvhH/xiY5SJ/18kmi9o6MiO320DCUzypORHLtvh0I4i04tUhCNHNQ==}
-
-  canvas-confetti@1.9.4:
-    resolution: {integrity: sha512-yxQbJkAVrFXWNbTUjPqjF7G+g6pDotOUHGbkZq2NELZUMDpiJ85rIEazVb8GTaAptNW2miJAXbs1BtioA251Pw==}
 
   capacitor-plugin-safe-area@4.0.3:
     resolution: {integrity: sha512-RteQU+EcwfQFup66fOrlfYNfkGi3jSVwD8YimUAdyZlelriiqRctmKK5ONYXyt+Wd2e5y5F1A081kB9SRHGg2Q==}
@@ -16430,8 +16418,6 @@ snapshots:
       '@types/node': 20.2.5
       '@types/responselike': 1.0.3
 
-  '@types/canvas-confetti@1.9.0': {}
-
   '@types/chai@5.2.3':
     dependencies:
       '@types/deep-eql': 4.0.2
@@ -17760,8 +17746,6 @@ snapshots:
     optional: true
 
   caniuse-lite@1.0.30001809: {}
-
-  canvas-confetti@1.9.4: {}
 
   capacitor-plugin-safe-area@4.0.3(@capacitor/core@7.6.8):
     dependencies:

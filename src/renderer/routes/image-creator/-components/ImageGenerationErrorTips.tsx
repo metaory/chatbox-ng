@@ -3,13 +3,9 @@ import { ChatboxAIAPIError } from '@shared/models/errors'
 import type { ImageGeneration } from '@shared/types'
 import { IconCheck, IconCopy, IconRefresh, IconSettings, IconX } from '@tabler/icons-react'
 import { Trans, useTranslation } from 'react-i18next'
-import LinkTargetBlank from '@/components/common/Link'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
 import { useCopied } from '@/hooks/useCopied'
 import { navigateToSettings } from '@/modals/Settings'
-import { buildChatboxUrl } from '@/packages/remote'
-import platform from '@/platform'
-import * as settingActions from '@/stores/settingActions'
 
 export interface ImageGenerationErrorTipsProps {
   record: ImageGeneration
@@ -87,21 +83,8 @@ export function ImageGenerationErrorTips({ record, onRetry, isRetrying }: ImageG
                     onClick={() => navigateToSettings()}
                   />
                 ),
-                OpenMorePlanButton: (
-                  <Text
-                    component="span"
-                    className="cursor-pointer underline"
-                    c="chatbox-brand"
-                    onClick={() => {
-                      platform.openLink(
-                        buildChatboxUrl(
-                          `/redirect_app/view_more_plans/${settingActions.getLanguage()}?utm_source=app&utm_content=image_creator_upgrade_required`
-                        )
-                      )
-                    }}
-                  />
-                ),
-                LinkToHomePage: <LinkTargetBlank href="https://chatboxai.app" />,
+                OpenMorePlanButton: <span />,
+                LinkToHomePage: <span />,
               }}
             />
           </Text>

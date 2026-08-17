@@ -58,10 +58,6 @@ vi.mock('@/hooks/useScreenChange', () => ({
   useIsSmallScreen: () => false,
 }))
 
-vi.mock('@/modals/Settings', () => ({
-  navigateToSettings: vi.fn(),
-}))
-
 vi.mock('@/packages/remote', () => ({
   issueVibedropKey: vi.fn(),
 }))
@@ -79,11 +75,6 @@ vi.mock('@/packages/vibedrop', () => ({
   VibedropAuthError: class VibedropAuthError extends Error {},
   VibedropEmailRequiredError: class VibedropEmailRequiredError extends Error {},
   VibedropSlugNotOwnedError: mocks.VibedropSlugNotOwnedError,
-}))
-
-vi.mock('@/stores/authInfoStore', () => ({
-  useAuthInfoStore: (selector: (state: { accessToken: string; refreshToken: string }) => boolean) =>
-    selector({ accessToken: 'access-token', refreshToken: 'refresh-token' }),
 }))
 
 import VibedropPublish from './VibedropPublish'

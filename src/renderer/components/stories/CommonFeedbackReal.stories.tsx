@@ -99,7 +99,7 @@ export const ChatboxAIErrorMessageStates: StoryObj = {
 }
 
 export const ChatboxWelcomeCardStates: StoryObj = {
-  name: 'Chatbox welcome card login no-license and expired states',
+  name: 'Chatbox welcome card setup provider state',
   parameters: {
     uiInventoryTargets: ['src/renderer/components/common/ChatboxWelcomeCard'],
   },
@@ -107,19 +107,11 @@ export const ChatboxWelcomeCardStates: StoryObj = {
     <Stack gap="lg">
       <SurfaceLabel
         title="ChatboxWelcomeCard"
-        description="Actual account/license welcome card variants shown on empty chat and image creator surfaces."
+        description="Setup prompt shown on empty chat and image creator when no provider is configured."
       />
-      <Group align="stretch">
-        <Box w={260}>
-          <ChatboxWelcomeCard mode="login" />
-        </Box>
-        <Box w={260}>
-          <ChatboxWelcomeCard mode="no-license" />
-        </Box>
-        <Box w={260}>
-          <ChatboxWelcomeCard mode="expired-license" />
-        </Box>
-      </Group>
+      <Box w={260}>
+        <ChatboxWelcomeCard mode="setup" />
+      </Box>
     </Stack>
   ),
 }

@@ -43,7 +43,6 @@ import { useI18nEffect } from '@/hooks/useI18nEffect'
 import useNeedRoomForWinControls from '@/hooks/useNeedRoomForWinControls'
 import useScreenChange, { useSidebarWidth } from '@/hooks/useScreenChange'
 import useShortcut from '@/hooks/useShortcut'
-import useVersion from '@/hooks/useVersion'
 import '@/modals'
 import SettingsModal, { navigateToSettings } from '@/modals/Settings'
 import { prefetchModelRegistry } from '@/packages/model-registry'
@@ -58,12 +57,9 @@ import Sidebar from '@/Sidebar'
 import storage from '@/storage'
 import * as atoms from '@/stores/atoms'
 import { useSession } from '@/stores/chatStore'
-import { initOnboardingStore, onboardingStore } from '@/stores/onboardingStore'
 import * as premiumActions from '@/stores/premiumActions'
-import * as settingActions from '@/stores/settingActions'
 import { initSettingsStore, settingsStore, useLanguage, useSettingsStore, useTheme } from '@/stores/settingsStore'
 import { useUIStore } from '@/stores/uiStore'
-import { CHATBOX_BUILD_CHANNEL, CHATBOX_BUILD_PLATFORM } from '@/variables'
 import { blobToDataUrl } from './image-creator/-components/constants'
 
 function BackgroundImageOverlay() {
@@ -147,8 +143,6 @@ function useHasBackgroundImage() {
 function Root() {
   useScreenChange()
 
-  const { isExceeded, isExceededResolved } = useVersion()
-  const location = useLocation()
   const spellCheck = useSettingsStore((state) => state.spellCheck)
   const language = useLanguage()
   const hasBackgroundImage = useHasBackgroundImage()
@@ -164,8 +158,7 @@ function Root() {
     }
     // biome-ignore lint/nursery/noFloatingPromises: inline call
     ;(async () => {
-      // Wait for stores to hydrate from persistent storage
-      await Promise.all([initSettingsStore(), initOnboardingStore()])
+      await initSettingsStore()
       void prefetchModelRegistry()
 
       const remoteConfig = await remote
@@ -173,39 +166,7 @@ function Root() {
         .catch(() => ({ setting_chatboxai_first: false }) as RemoteConfig)
       setRemoteConfig(async (prev) => ({ ...(await prev), ...remoteConfig }))
 
-      // Skip guide-related checks if already on guide, dev tools, or settings/mcp page
-      if (
-        location.pathname === '/guide' ||
-        location.pathname.startsWith('/dev') ||
-        location.pathname === '/settings/mcp'
-      ) {
-        initialized.current = true
-        return
-      }
-
-      // On store builds (iOS / Google Play), wait for both version AND remoteConfig.current_version
-      // before making guide/navigation decisions. isExceeded depends on both async data sources;
-      // if we only wait for version, remoteConfig may still be empty, causing isExceeded to be
-      // falsely falsy and letting the guide navigation slip through during store review.
-      const isStoreReviewPlatform =
-        CHATBOX_BUILD_PLATFORM === 'ios' ||
-        (CHATBOX_BUILD_PLATFORM === 'android' && CHATBOX_BUILD_CHANNEL === 'google_play')
-      if (isStoreReviewPlatform && !isExceededResolved) {
-        return
-      }
-
       initialized.current = true
-
-      // Check if user needs onboarding guide
-      // Conditions: not completed onboarding AND no valid config
-      const onboardingCompleted = onboardingStore.getState().completed
-      const needsSetup = settingActions.needEditSetting()
-
-      // Auto-navigate to guide for new users who need setup
-      if (!isExceeded && !onboardingCompleted && needsSetup) {
-        router.navigate({ to: '/guide', replace: true })
-        return
-      }
 
       // 是否需要弹出关于窗口（更新后首次启动）
       // 目前仅在桌面版本更新后首次启动、且网络环境为"外网"的情况下才自动弹窗
@@ -215,7 +176,7 @@ function Root() {
         return
       }
     })()
-  }, [setOpenAboutDialog, setRemoteConfig, location.pathname, isExceeded, isExceededResolved])
+  }, [setOpenAboutDialog, setRemoteConfig])
 
   const showSidebar = useUIStore((s) => s.showSidebar)
   const sidebarWidth = useSidebarWidth()

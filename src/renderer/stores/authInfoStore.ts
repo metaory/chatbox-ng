@@ -1,7 +1,11 @@
 import { createStore, useStore } from 'zustand'
 import { persist, subscribeWithSelector } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
-import type { AuthTokens } from '../routes/settings/provider/chatbox-ai/-components/types'
+
+export interface AuthTokens {
+  accessToken: string
+  refreshToken: string
+}
 
 interface AuthTokensState {
   accessToken: string | null

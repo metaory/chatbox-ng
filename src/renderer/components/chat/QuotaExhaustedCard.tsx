@@ -1,14 +1,13 @@
 import { Box, Button, Group, Paper, Stack, Text, ThemeIcon } from '@mantine/core'
-import { IconArrowUpRight, IconInfoCircle } from '@tabler/icons-react'
+import { IconInfoCircle } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 
 interface QuotaExhaustedCardProps {
   kind: 'quota-exhausted' | 'free-quota-exhausted' | 'ocr-quota-exhausted' | 'free-ocr-quota-exhausted'
-  onUpgrade: () => void
   onConfigureOcr?: () => void
 }
 
-export function QuotaExhaustedCard({ kind, onUpgrade, onConfigureOcr }: QuotaExhaustedCardProps) {
+export function QuotaExhaustedCard({ kind, onConfigureOcr }: QuotaExhaustedCardProps) {
   const { t } = useTranslation()
   const isOcrQuota = kind === 'ocr-quota-exhausted' || kind === 'free-ocr-quota-exhausted'
   const isFreeQuota = kind === 'free-quota-exhausted' || kind === 'free-ocr-quota-exhausted'
@@ -63,28 +62,13 @@ export function QuotaExhaustedCard({ kind, onUpgrade, onConfigureOcr }: QuotaExh
             </Text>
           </Stack>
 
-          <Group mt={10} gap={8}>
-            <Button
-              h={32}
-              px={14}
-              radius={6}
-              size="xs"
-              rightSection={<IconArrowUpRight size={14} stroke={2} />}
-              onClick={onUpgrade}
-              style={{
-                fontWeight: 600,
-                color: 'var(--chatbox-tint-white)',
-                background: 'var(--chatbox-background-brand-primary)',
-              }}
-            >
-              {t('Upgrade plan')}
-            </Button>
-            {isOcrQuota && onConfigureOcr && (
+          {isOcrQuota && onConfigureOcr && (
+            <Group mt={10} gap={8}>
               <Button h={32} px={14} radius={6} size="xs" variant="light" onClick={onConfigureOcr}>
                 {t('OCR model settings')}
               </Button>
-            )}
-          </Group>
+            </Group>
+          )}
         </Box>
       </Group>
     </Paper>

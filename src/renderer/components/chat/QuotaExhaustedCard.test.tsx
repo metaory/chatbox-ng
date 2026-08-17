@@ -26,24 +26,22 @@ vi.mock('react-i18next', () => ({
 }))
 
 describe('QuotaExhaustedCard', () => {
-  test('renders a normal status card and dispatches the upgrade action', () => {
-    const onUpgrade = vi.fn()
+  test('renders a normal status card without an upgrade action', () => {
     render(
       <MantineProvider>
-        <QuotaExhaustedCard kind="quota-exhausted" onUpgrade={onUpgrade} />
+        <QuotaExhaustedCard kind="quota-exhausted" />
       </MantineProvider>
     )
 
     expect(screen.getByRole('status')).toBeTruthy()
     expect(screen.queryByRole('alert')).toBeNull()
-    fireEvent.click(screen.getByRole('button', { name: 'Upgrade plan' }))
-    expect(onUpgrade).toHaveBeenCalledOnce()
+    expect(screen.queryByRole('button', { name: 'Upgrade plan' })).toBeNull()
   })
 
   test('uses daily-reset copy for Free quota exhaustion', () => {
     render(
       <MantineProvider>
-        <QuotaExhaustedCard kind="free-quota-exhausted" onUpgrade={vi.fn()} />
+        <QuotaExhaustedCard kind="free-quota-exhausted" />
       </MantineProvider>
     )
 
@@ -54,7 +52,7 @@ describe('QuotaExhaustedCard', () => {
     const onConfigureOcr = vi.fn()
     render(
       <MantineProvider>
-        <QuotaExhaustedCard kind="ocr-quota-exhausted" onUpgrade={vi.fn()} onConfigureOcr={onConfigureOcr} />
+        <QuotaExhaustedCard kind="ocr-quota-exhausted" onConfigureOcr={onConfigureOcr} />
       </MantineProvider>
     )
 
@@ -66,7 +64,7 @@ describe('QuotaExhaustedCard', () => {
   test('uses daily-reset copy for free Chatbox AI OCR quota exhaustion', () => {
     render(
       <MantineProvider>
-        <QuotaExhaustedCard kind="free-ocr-quota-exhausted" onUpgrade={vi.fn()} onConfigureOcr={vi.fn()} />
+        <QuotaExhaustedCard kind="free-ocr-quota-exhausted" onConfigureOcr={vi.fn()} />
       </MantineProvider>
     )
 

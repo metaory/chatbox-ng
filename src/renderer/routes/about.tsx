@@ -13,15 +13,7 @@ import {
   Title,
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import {
-  IconChevronRight,
-  IconFileText,
-  IconHome,
-  IconMail,
-  IconMessage2,
-  IconPencil,
-  IconRefresh,
-} from '@tabler/icons-react'
+import { IconChevronRight, IconFileText, IconHome, IconMail, IconPencil, IconRefresh } from '@tabler/icons-react'
 import { createFileRoute } from '@tanstack/react-router'
 import { Children, Fragment, type ReactElement, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -112,18 +104,13 @@ function RouteComponent() {
             <ListItem
               icon={<IconFileText className="w-full h-full" />}
               title={t('Changelog')}
-              link={`https://chatboxai.app/${language.split('-')[0] || 'en'}/help-center/changelog`}
+              link="https://github.com/metaory/chatbox-ng/releases"
             />
             <ListItem
               icon={<IconMail className="w-full h-full" />}
               title={t('E-mail')}
               link={`mailto:metaory@gmail.com`}
               value="metaory@gmail.com"
-            />
-            <ListItem
-              icon={<IconMessage2 className="w-full h-full" />}
-              title={t('FAQs')}
-              link={`https://chatboxai.app/${language.split('-')[0] || 'en'}/help-center/chatbox-ai-service-faqs`}
             />
           </List>
         </Stack>

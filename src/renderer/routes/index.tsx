@@ -5,7 +5,6 @@ import {
   type CopilotDetail,
   createMessage,
   type ImageSource,
-  ModelProviderEnum,
   type Session,
   type SessionSettings,
 } from '@shared/types'
@@ -30,7 +29,6 @@ import { useIsSmallScreen } from '@/hooks/useScreenChange'
 import useVersion from '@/hooks/useVersion'
 import * as remote from '@/packages/remote'
 import { router } from '@/router'
-import { useAuthInfoStore } from '@/stores/authInfoStore'
 import { createSession as createSessionStore } from '@/stores/chatStore'
 import { resolveChatboxLicenseDefaultModel } from '@/stores/defaultChatModel'
 import { getHasCompletedFirstSuccessfulChat } from '@/stores/firstSuccessfulChat'
@@ -47,11 +45,6 @@ const scenarioAgentModeOff = {
   locked: false,
   lockReason: null,
 } satisfies AgentModeEntry
-
-const firstChatScenarioDefaultModel = {
-  provider: ModelProviderEnum.ChatboxAI,
-  modelId: 'chatboxai-3.5',
-} satisfies Pick<SessionSettings, 'provider' | 'modelId'>
 
 export const Route = createFileRoute('/')({
   component: Index,
@@ -86,27 +79,21 @@ function Index() {
   const [forceShowNewUserScenarioCards, setForceShowNewUserScenarioCards] = useState(
     getForceShowNewUserScenarioCardsFlag
   )
-  const hasUserSelectedModelRef = useRef(false)
 
   const { providers } = useProviders()
   const defaultChatModel = useSettingsStore((s) => s.defaultChatModel)
-  const hasLicense = useSettingsStore((s) => Boolean(s.licenseKey))
   const licenseKey = useSettingsStore((s) => s.licenseKey)
   const licenseDetail = useSettingsStore((s) => s.licenseDetail)
   const licensePlanName = useSettingsStore((s) => s.licensePlanName)
   const hasExpiredLicense = useSettingsStore((s) => s.hasExpiredLicense)
-  const isLoggedIn = useAuthInfoStore((s) => Boolean(s.accessToken && s.refreshToken))
   const { isExceeded, isExceededResolved } = useVersion()
   const welcomeCardMode = useMemo(
     () =>
       getHomeWelcomeCardMode({
         providerCount: providers.length,
-        isLoggedIn,
-        hasLicense,
-        hasExpiredLicense,
         hideForStoreReview: isExceeded || !isExceededResolved,
       }),
-    [providers.length, isLoggedIn, hasLicense, hasExpiredLicense, isExceeded, isExceededResolved]
+    [providers.length, isExceeded, isExceededResolved]
   )
 
   const selectedModel = useMemo(() => {
@@ -143,26 +130,6 @@ function Index() {
 
   useEffect(() => {
     setSession((old) => {
-      if (
-        hasCompletedFirstSuccessfulChat === false &&
-        isLoggedIn &&
-        !session.copilotId &&
-        !hasUserSelectedModelRef.current
-      ) {
-        if (
-          old.settings?.provider === firstChatScenarioDefaultModel.provider &&
-          old.settings?.modelId === firstChatScenarioDefaultModel.modelId
-        ) {
-          return old
-        }
-        return {
-          ...old,
-          settings: {
-            ...(old.settings || {}),
-            ...firstChatScenarioDefaultModel,
-          },
-        }
-      }
       if (old.settings?.provider && old.settings?.modelId) {
         return old
       }
@@ -188,16 +155,7 @@ function Index() {
         },
       }
     })
-  }, [
-    defaultChatModel,
-    hasCompletedFirstSuccessfulChat,
-    hasExpiredLicense,
-    isLoggedIn,
-    licenseDetail,
-    licenseKey,
-    licensePlanName,
-    session.copilotId,
-  ])
+  }, [defaultChatModel, hasExpiredLicense, licenseDetail, licenseKey, licensePlanName])
 
   const { copilots: myCopilots } = useMyCopilots()
   const { copilots: remoteCopilots } = useRemoteCopilotsByCursor({ limit: 10 })
@@ -385,7 +343,6 @@ function Index() {
   )
 
   const onSelectModel = useCallback((p: string, m: string) => {
-    hasUserSelectedModelRef.current = true
     setSession((old) => ({
       ...old,
       settings: {
@@ -411,7 +368,7 @@ function Index() {
   }, [session])
 
   const showNewUserScenarios =
-    (forceShowNewUserScenarioCards || (hasCompletedFirstSuccessfulChat === false && isLoggedIn)) && !session.copilotId
+    (forceShowNewUserScenarioCards || hasCompletedFirstSuccessfulChat === false) && !session.copilotId
 
   return (
     <Page title="">
@@ -481,10 +438,7 @@ function Index() {
                 mb="sm"
               >
                 <Box className={widthFull ? 'w-full' : 'w-full max-w-4xl mx-auto'}>
-                  <ChatboxWelcomeCard
-                    mode={welcomeCardMode}
-                    className="pointer-events-auto w-full"
-                  />
+                  <ChatboxWelcomeCard mode={welcomeCardMode} className="pointer-events-auto w-full" />
                 </Box>
               </Box>
             )}

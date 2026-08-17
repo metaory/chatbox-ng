@@ -14,13 +14,11 @@ import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
 import { useCopied } from '@/hooks/useCopied'
 import { navigateToSettings } from '@/modals/Settings'
 import { AgentModeRewardResumeError, claimAgentModeRewardAndResume } from '@/packages/agent-mode-reward'
-import { buildChatboxUrl, claimFreeAgentModeReward } from '@/packages/remote'
+import { claimFreeAgentModeReward } from '@/packages/remote'
 import { translateTexts } from '@/packages/translation'
-import platform from '@/platform'
 import * as settingActions from '@/stores/settingActions'
 import { useLanguage, useSettingsStore } from '@/stores/settingsStore'
 import * as toastActions from '@/stores/toastActions'
-import LinkTargetBlank from '../common/Link'
 import { AgentModeRewardQuotaCard } from './AgentModeRewardQuotaCard'
 import { resolveMessageErrorPresentation } from './message-error-presentation'
 import { QuotaExhaustedCard } from './QuotaExhaustedCard'
@@ -255,12 +253,6 @@ export default function MessageErrTips(props: {
     }
   }, [agentModeRewardClaimed, isHandlingAgentModeReward, licenseKey, onRetry, t])
 
-  const handleUpgradePlan = useCallback(() => {
-    platform.openLink(
-      buildChatboxUrl(`/redirect_app/view_more_plans/${language}?utm_source=app&utm_content=msg_quota_exhausted`)
-    )
-  }, [language])
-
   const handleConfigureOcr = useCallback(() => {
     navigateToSettings('/default-models')
   }, [])
@@ -275,9 +267,7 @@ export default function MessageErrTips(props: {
     errorPresentation === 'ocr-quota-exhausted' ||
     errorPresentation === 'free-ocr-quota-exhausted'
   ) {
-    return (
-      <QuotaExhaustedCard kind={errorPresentation} onUpgrade={handleUpgradePlan} onConfigureOcr={handleConfigureOcr} />
-    )
+      return <QuotaExhaustedCard kind={errorPresentation} onConfigureOcr={handleConfigureOcr} />
   }
 
   if (errorPresentation === 'agent-mode-reward') {
@@ -345,7 +335,7 @@ export default function MessageErrTips(props: {
               <a
                 className="cursor-pointer underline font-bold hover:text-blue-600 transition-colors"
                 onClick={() => {
-                  navigateToSettings(`/provider/${ModelProviderEnum.ChatboxAI}`)
+                  navigateToSettings('/provider')
                 }}
               />
             ),
@@ -370,15 +360,8 @@ export default function MessageErrTips(props: {
                 }}
               />
             ),
-            LinkToLicensePricing: (
-              <LinkTargetBlank
-                className="!font-bold !text-gray-700 hover:!text-blue-600 transition-colors"
-                href={buildChatboxUrl(
-                  `/redirect_app/advanced_url_processing/${settingActions.getLanguage()}?utm_source=app&utm_content=msg_bad_provider`
-                )}
-              />
-            ),
-            a: <a href={buildChatboxUrl(`/redirect_app/faqs/${settingActions.getLanguage()}`)} target="_blank" />,
+            LinkToLicensePricing: <span />,
+            a: <span />,
           }}
         />
       )
@@ -420,20 +403,7 @@ export default function MessageErrTips(props: {
     onlyShowTips = true
     tips.push(<ChatboxAIErrorMessage errorCode={msg.errorCode} model={msg.model} />)
   } else {
-    tips.push(
-      <Trans
-        i18nKey="unknown error tips"
-        components={[
-          <a
-            key="a"
-            href={buildChatboxUrl(
-              `/redirect_app/faqs/${settingActions.getLanguage()}?utm_source=app&utm_content=msg_error_unknown`
-            )}
-            target="_blank"
-          ></a>,
-        ]}
-      />
-    )
+      tips.push(<Trans i18nKey="unknown error tips" components={[<span key="a" />]} />)
   }
   return (
     <div
@@ -514,35 +484,6 @@ export default function MessageErrTips(props: {
             </div>
           )}
         </>
-      )}
-      {/* Free trial suggestion for users without license (skip for ChatboxAI errors) */}
-      {!licenseKey && msg.aiProvider !== ModelProviderEnum.ChatboxAI && (
-        <div className="mt-3 pt-3 border-t border-red-200 dark:border-red-800/30 text-right">
-          <Tooltip
-            label={t(
-              'If you have never had a license before, you can claim it after logging in on the official website.'
-            )}
-            withArrow
-            multiline
-            maw={240}
-            position="bottom-end"
-            styles={{
-              tooltip: {
-                backgroundColor: 'rgba(0, 0, 0, 0.75)',
-                backdropFilter: 'blur(4px)',
-              },
-            }}
-          >
-            <span
-              className="text-sm font-medium text-blue-600 cursor-pointer hover:text-blue-700 hover:underline transition-colors"
-              onClick={() => {
-                platform.openLink('https://chatboxai.app/login')
-              }}
-            >
-              {t('Chatbox AI free trial available')} →
-            </span>
-          </Tooltip>
-        </div>
       )}
     </div>
   )

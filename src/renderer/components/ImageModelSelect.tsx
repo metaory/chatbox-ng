@@ -1,7 +1,14 @@
 import { Combobox, type ComboboxProps, Flex, Text, useCombobox } from '@mantine/core'
 import type { ModelProvider } from '@shared/types'
 import { IconServer } from '@tabler/icons-react'
-import { forwardRef, type PropsWithChildren } from 'react'
+import {
+  cloneElement,
+  forwardRef,
+  isValidElement,
+  type MouseEvent,
+  type PropsWithChildren,
+  type ReactElement,
+} from 'react'
 import { useTranslation } from 'react-i18next'
 import type { ImageModelGroup } from '@/hooks/useImageModelGroups'
 import { ScalableIcon } from './common/ScalableIcon'
@@ -46,6 +53,26 @@ export const ImageModelSelect = forwardRef<HTMLButtonElement, ImageModelSelectPr
       combobox.closeDropdown()
     }
 
+    const target = isValidElement(children) ? (
+      cloneElement(children as ReactElement<{ onClick?: (event: MouseEvent<HTMLButtonElement>) => void }>, {
+        onClick: (event: MouseEvent<HTMLButtonElement>) => {
+          const child = children as ReactElement<{ onClick?: (event: MouseEvent<HTMLButtonElement>) => void }>
+          child.props.onClick?.(event)
+          combobox.toggleDropdown()
+        },
+        ref,
+      })
+    ) : (
+      <button
+        type="button"
+        ref={ref}
+        onClick={() => combobox.toggleDropdown()}
+        className="border-none bg-transparent p-0 flex"
+      >
+        {children}
+      </button>
+    )
+
     return (
       <Combobox
         store={combobox}
@@ -55,11 +82,7 @@ export const ImageModelSelect = forwardRef<HTMLButtonElement, ImageModelSelectPr
         {...comboboxProps}
         onOptionSubmit={handleOptionSubmit}
       >
-        <Combobox.Target targetType="button">
-          <button ref={ref} onClick={() => combobox.toggleDropdown()} className="border-none bg-transparent p-0 flex">
-            {children}
-          </button>
-        </Combobox.Target>
+        <Combobox.Target targetType="button">{target}</Combobox.Target>
 
         <Combobox.Dropdown className="!rounded-lg !border-[var(--chatbox-border-primary)] !shadow-lg overflow-hidden">
           <Combobox.Options mah={400} style={{ overflowY: 'auto' }} className="p-1">
