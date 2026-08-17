@@ -18,7 +18,7 @@ export function RouteComponent() {
   const navigate = useNavigate()
   useEffect(() => {
     if (!isSmallScreen) {
-      navigate({ to: '/settings/provider', replace: true })
+      navigate({ to: '/settings/general', replace: true })
     }
   }, [isSmallScreen, navigate])
 

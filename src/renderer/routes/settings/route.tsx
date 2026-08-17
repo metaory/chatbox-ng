@@ -28,6 +28,11 @@ import { featureFlags } from '@/utils/feature-flags'
 
 const ITEMS = [
   {
+    key: 'general',
+    label: 'General Settings',
+    icon: <IconAdjustmentsHorizontal className="w-full h-full" />,
+  },
+  {
     key: 'provider',
     label: 'Model Provider',
     icon: <IconCategory className="w-full h-full" />,
@@ -94,11 +99,6 @@ const ITEMS = [
           icon: <IconKeyboard className="w-full h-full" />,
         },
       ]),
-  {
-    key: 'general',
-    label: 'General Settings',
-    icon: <IconAdjustmentsHorizontal className="w-full h-full" />,
-  },
 ]
 
 export const Route = createFileRoute('/settings')({
