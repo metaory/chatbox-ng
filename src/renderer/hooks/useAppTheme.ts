@@ -1,9 +1,9 @@
 import { createTheme, type ThemeOptions } from '@mui/material/styles'
 import { getDefaultInterfaceColors, resolveInterfaceBrandColor } from '@shared/theme-colors'
 import { useLayoutEffect, useMemo } from 'react'
-import { settingsStore, useLanguage, useSettingsStore } from '@/stores/settingsStore'
+import { settingsStore, useSettingsStore } from '@/stores/settingsStore'
 import { uiStore, useUIStore } from '@/stores/uiStore'
-import { type Language, Theme } from '../../shared/types'
+import { Theme } from '../../shared/types'
 import platform from '../platform'
 import DesktopPlatform from '../platform/desktop_platform'
 
@@ -27,7 +27,6 @@ export default function useAppTheme() {
   const theme = useSettingsStore((state) => state.theme)
   const interfaceColors = useSettingsStore((state) => state.interfaceColors ?? getDefaultInterfaceColors())
   const realTheme = useUIStore((state) => state.realTheme)
-  const language = useLanguage()
 
   useLayoutEffect(() => {
     switchTheme(theme)
@@ -64,16 +63,15 @@ export default function useAppTheme() {
   const themeObj = useMemo(
     () =>
       createTheme(
-        getThemeDesign(realTheme, language, resolveInterfaceBrandColor(interfaceColors[realTheme].brand, realTheme))
+        getThemeDesign(realTheme, resolveInterfaceBrandColor(interfaceColors[realTheme].brand, realTheme))
       ),
-    [interfaceColors, language, realTheme]
+    [interfaceColors, realTheme]
   )
   return themeObj
 }
 
 export function getThemeDesign(
   realTheme: 'light' | 'dark',
-  language: Language,
   brandColor = getDefaultInterfaceColors()[realTheme].brand
 ): ThemeOptions {
   return {
@@ -103,16 +101,9 @@ export function getThemeDesign(
       },
     },
     typography: {
-      // In Chinese and Japanese the characters are usually larger,
-      // so a smaller fontsize may be appropriate.
-      ...(language === 'ar'
-        ? {
-            fontFamily: 'Cairo, Arial, sans-serif',
-          }
-        : {}),
       fontSize: 14,
     },
-    direction: language === 'ar' ? 'rtl' : 'ltr',
+    direction: 'ltr',
     breakpoints: {
       values: {
         xs: 0,

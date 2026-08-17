@@ -27,7 +27,7 @@ import {
   resolveInterfaceBrandColors,
   withColorOpacity,
 } from '@shared/theme-colors'
-import { type Language, Theme } from '@shared/types'
+import { Theme } from '@shared/types'
 import { formatFileSize } from '@shared/utils'
 import { getBackupFilename } from '@shared/utils/backup'
 import { IconCheck, IconDeviceFloppy, IconInfoCircle, IconPencil, IconPlus, IconTrash } from '@tabler/icons-react'
@@ -38,7 +38,6 @@ import { useTranslation } from 'react-i18next'
 import { AdaptiveSelect } from '@/components/AdaptiveSelect'
 import { InterfaceColorInput } from '@/components/common/InterfaceColorInput'
 import LazySlider from '@/components/common/LazySlider'
-import { languageNameMap, languages } from '@/i18n/locales'
 import {
   type BackupExportItem,
   type BackupProgress,
@@ -182,28 +181,6 @@ export function RouteComponent() {
         <Title order={5}>{t('Display Settings')}</Title>
 
         <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
-          <AdaptiveSelect
-            comboboxProps={{ withinPortal: true }}
-            value={settings.language}
-            data={languages.map((language) => ({
-              value: language,
-              label: languageNameMap[language],
-              // style: language === 'ar' ? { fontFamily: 'Cairo, Arial, sans-serif' } : {},
-            }))}
-            label={t('Language')}
-            styles={{
-              label: {
-                fontWeight: 400,
-              },
-            }}
-            onChange={(val) => {
-              if (val) {
-                setSettings({
-                  language: val as Language,
-                })
-              }
-            }}
-          />
           <AdaptiveSelect
             comboboxProps={{ withinPortal: true, withArrow: true }}
             label={t('Theme')}

@@ -148,10 +148,6 @@ vi.mock('@/hooks/dom', () => ({
   focusMessageInput: vi.fn(),
 }))
 
-vi.mock('@/i18n/locales', () => ({
-  languageNameMap: {},
-}))
-
 vi.mock('@/packages/apple_app_store', () => ({}))
 
 vi.mock('@/stores/settingsStore', () => ({

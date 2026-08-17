@@ -79,7 +79,6 @@ export class OCRError extends BaseError {
 
 // Chatbox AI 服务错误
 // 注意，在开发时 i18nKey 中的标签和参数，都需要在 MessageErrTips 中定义
-// NOTE： 这个文件不会被 translate script 扫描到，`pnpm translate` 会先同步这里的 key 到 `src/renderer/i18n/for-key-scan.ts`
 export class ChatboxAIAPIError extends BaseError {
   static codeNameMap: { [codename: string]: ChatboxAIAPIErrorDetail } = {
     // 超出配额

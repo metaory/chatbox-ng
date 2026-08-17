@@ -16,7 +16,6 @@ import {
   IconSettingsFilled,
 } from '@tabler/icons-react'
 import { useNavigate } from '@tanstack/react-router'
-import clsx from 'clsx'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
@@ -31,7 +30,6 @@ import useVersion from './hooks/useVersion'
 import { navigateToSettings } from './modals/Settings'
 import { getSidebarModalSx } from './sidebar-drawer'
 import icon from './static/icon.png'
-import { useLanguage } from './stores/settingsStore'
 import { useUIStore } from './stores/uiStore'
 import { installUpdate, useUpdateStore } from './stores/updateStore'
 import { CHATBOX_BUILD_PLATFORM, CHATBOX_BUILD_TARGET } from './variables'
@@ -55,7 +53,6 @@ function setIosTextInteractionEnabled(enabled: boolean) {
 export default function Sidebar() {
   const { t } = useTranslation()
   const versionHook = useVersion()
-  const language = useLanguage()
   const navigate = useNavigate()
   const showSidebar = useUIStore((s) => s.showSidebar)
   const setShowSidebar = useUIStore((s) => s.setShowSidebar)
@@ -105,8 +102,7 @@ export default function Sidebar() {
     if (!isResizing) return
 
     const handleMouseMove = (e: MouseEvent) => {
-      const isRTL = language === 'ar'
-      const deltaX = isRTL ? resizeStartX.current - e.clientX : e.clientX - resizeStartX.current
+      const deltaX = e.clientX - resizeStartX.current
       const newWidth = Math.max(200, Math.min(500, resizeStartWidth.current + deltaX))
       setSidebarWidth(newWidth)
     }
@@ -122,7 +118,7 @@ export default function Sidebar() {
       document.removeEventListener('mousemove', handleMouseMove)
       document.removeEventListener('mouseup', handleMouseUp)
     }
-  }, [isResizing, language, setSidebarWidth])
+  }, [isResizing, setSidebarWidth])
 
   useEffect(() => {
     setIosTextInteractionEnabled(!(isSmallScreen && showSidebar))
@@ -134,7 +130,7 @@ export default function Sidebar() {
 
   return (
     <SwipeableDrawer
-      anchor={language === 'ar' ? 'right' : 'left'}
+      anchor="left"
       variant={isSmallScreen ? 'temporary' : 'persistent'}
       open={showSidebar}
       onClose={() => setShowSidebar(false)}
@@ -154,10 +150,7 @@ export default function Sidebar() {
           maxWidth: '75vw',
         },
       }}
-      SlideProps={language === 'ar' ? { direction: 'left' } : undefined}
-      PaperProps={
-        language === 'ar' ? { sx: { direction: 'rtl', overflowY: 'initial' } } : { sx: { overflowY: 'initial' } }
-      }
+      PaperProps={{ sx: { overflowY: 'initial' } }}
       disableSwipeToOpen={CHATBOX_BUILD_PLATFORM !== 'ios'} // 只在iOS设备上启用SwipeToOpen
     >
       <Stack
@@ -334,10 +327,7 @@ export default function Sidebar() {
         {!isSmallScreen && (
           <Box
             onMouseDown={handleResizeStart}
-            className={clsx(
-              `sidebar-resizer absolute top-0 bottom-0 w-1 cursor-col-resize z-[1] bg-chatbox-border-primary opacity-0 hover:opacity-70 transition-opacity duration-200`,
-              language === 'ar' ? '-left-1' : '-right-1'
-            )}
+            className="sidebar-resizer absolute top-0 bottom-0 w-1 cursor-col-resize z-[1] bg-chatbox-border-primary opacity-0 hover:opacity-70 transition-opacity duration-200 -right-1"
           />
         )}
       </Stack>

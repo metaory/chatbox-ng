@@ -38,8 +38,6 @@ import Toasts from '@/components/common/Toasts'
 import DesktopDownloadReminder from '@/components/layout/DesktopDownloadReminder'
 import ExitFullscreenButton from '@/components/layout/ExitFullscreenButton'
 import useAppTheme from '@/hooks/useAppTheme'
-import { useSystemLanguageWhenInit } from '@/hooks/useDefaultSystemLanguage'
-import { useI18nEffect } from '@/hooks/useI18nEffect'
 import useNeedRoomForWinControls from '@/hooks/useNeedRoomForWinControls'
 import useScreenChange, { useSidebarWidth } from '@/hooks/useScreenChange'
 import useShortcut from '@/hooks/useShortcut'
@@ -57,7 +55,7 @@ import Sidebar from '@/Sidebar'
 import storage from '@/storage'
 import * as atoms from '@/stores/atoms'
 import { useSession } from '@/stores/chatStore'
-import { initSettingsStore, settingsStore, useLanguage, useSettingsStore, useTheme } from '@/stores/settingsStore'
+import { initSettingsStore, settingsStore, useSettingsStore, useTheme } from '@/stores/settingsStore'
 import { useUIStore } from '@/stores/uiStore'
 import { blobToDataUrl } from './image-creator/-components/constants'
 
@@ -143,7 +141,6 @@ function Root() {
   useScreenChange()
 
   const spellCheck = useSettingsStore((state) => state.spellCheck)
-  const language = useLanguage()
   const hasBackgroundImage = useHasBackgroundImage()
   const initialized = useRef(false)
 
@@ -239,11 +236,7 @@ function Root() {
   }, [needRoomForMacWindowControls])
 
   return (
-    <Box
-      className="box-border App relative bg-chatbox-background-primary"
-      spellCheck={spellCheck}
-      dir={language === 'ar' ? 'rtl' : 'ltr'}
-    >
+    <Box className="box-border App relative bg-chatbox-background-primary" spellCheck={spellCheck}>
       <BackgroundImageOverlay />
       {platform.type === 'desktop' && (getOS() === 'Windows' || getOS() === 'Linux') && <ExitFullscreenButton />}
       <Grid container className="h-full relative z-[1]">
@@ -259,11 +252,7 @@ function Root() {
                   ? theme.transitions.duration.enteringScreen
                   : theme.transitions.duration.leavingScreen,
               }),
-            ...(showSidebar
-              ? language === 'ar'
-                ? { paddingRight: { sm: `${sidebarWidth}px` } }
-                : { paddingLeft: { sm: `${sidebarWidth}px` } }
-              : {}),
+            ...(showSidebar ? { paddingLeft: { sm: `${sidebarWidth}px` } } : {}),
           }}
         >
           <Box
@@ -596,8 +585,6 @@ const creteMantineTheme = (scale = 1) =>
 
 export const Route = createRootRoute({
   component: () => {
-    useI18nEffect()
-    useSystemLanguageWhenInit()
     useShortcut()
     const theme = useAppTheme()
     const _theme = useTheme()

@@ -1,7 +1,6 @@
 import { isExpectedGenerationError } from '@shared/models/error-classification'
-import type { Language, Message, ModelProvider, SessionSettings, Settings } from '@shared/types'
+import type { Message, ModelProvider, SessionSettings, Settings } from '@shared/types'
 import { createModel } from '@/adapters'
-import { languageNameMap } from '@/i18n/locales'
 import { generateText } from '@/packages/model-calls'
 import { convertToModelMessages } from '@/packages/model-calls/message-utils'
 import * as promptFormat from '@/packages/prompts'
@@ -10,7 +9,6 @@ import { settingsStore } from '@/stores/settingsStore'
 
 export interface SummaryGeneratorOptions {
   messages: Message[]
-  language?: Language
   sessionSettings?: SessionSettings
 }
 
@@ -28,8 +26,7 @@ export async function generateSummary(options: SummaryGeneratorOptions): Promise
   }
 
   const globalSettings = settingsStore.getState().getSettings()
-  const language = options.language ?? globalSettings.language
-  const languageName = languageNameMap[language]
+  const languageName = 'English'
 
   const settings = buildModelSettings(globalSettings, sessionSettings)
 
@@ -126,8 +123,7 @@ export async function generateSummaryWithStream(options: StreamingSummaryOptions
   }
 
   const globalSettings = settingsStore.getState().getSettings()
-  const language = options.language ?? globalSettings.language
-  const languageName = languageNameMap[language]
+  const languageName = 'English'
 
   const settings = buildModelSettings(globalSettings, sessionSettings)
 

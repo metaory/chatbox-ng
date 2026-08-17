@@ -57,7 +57,7 @@ import { useOAuthProviders } from '@/hooks/useOAuthProviders'
 import { enrichModelsFromRegistry, forceRefreshRegistry, useModelRegistryVersion } from '@/packages/model-registry'
 import { getModelSettingUtil } from '@/packages/model-setting-utils'
 import platform from '@/platform'
-import { settingsStore, useLanguage, useProviderSettings, useSettingsStore } from '@/stores/settingsStore'
+import { settingsStore, useProviderSettings, useSettingsStore } from '@/stores/settingsStore'
 import { add as addToast } from '@/stores/toastActions'
 import { type ModelTestState, testModelCapabilities } from '@/utils/model-tester'
 
@@ -158,8 +158,6 @@ function ProviderSettings({ providerId }: { providerId: string }) {
   const { t } = useTranslation()
   const setSettings = useSettingsStore((state) => state.setSettings)
   const customProviders = useSettingsStore((state) => state.customProviders)
-
-  const language = useLanguage()
 
   const baseInfo = [...SystemProviders(), ...(customProviders || [])].find((p) => p.id === providerId)
 
@@ -496,7 +494,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
           </PopoverConfirm>
         )}
       </Flex>
-      {baseInfo.isCustom && language === 'zh-Hans' && (
+      {baseInfo.isCustom && (
         <Flex>
           <ScalableIcon icon={IconHelpCircle} />
           <Text span size="xs" c="chatbox-tertiary">

@@ -195,7 +195,7 @@ function ReasoningLevelStatusIcon({
   )
 }
 
-// Literal t() calls so i18next-parser (which only scans src/renderer) can extract the keys
+// Literal t() calls so keys stay in the English catalog
 function getDisabledReasonLabel(reason: ReasoningControlDisabledReason, t: (key: string) => string): string {
   switch (reason) {
     case 'requires-anthropic-api-style':

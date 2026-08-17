@@ -16,7 +16,6 @@ vi.mock('@/stores/chatStore', () => ({
 }))
 
 vi.mock('@/packages/initial_data', () => ({
-  defaultSessionsForCN: [],
   defaultSessionsForEN: [
     {
       id: 'default-session',
@@ -25,12 +24,6 @@ vi.mock('@/packages/initial_data', () => ({
       type: 'chat',
     },
   ],
-}))
-
-vi.mock('@/platform', () => ({
-  default: {
-    getLocale: vi.fn(() => Promise.resolve('en')),
-  },
 }))
 
 vi.mock('@/storage', () => ({

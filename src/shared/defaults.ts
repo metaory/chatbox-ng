@@ -85,6 +85,7 @@ export function settings(): Settings {
     interfaceColors: getDefaultInterfaceColors(),
     interfaceColorPresets: [],
     language: 'en',
+    languageInited: true,
     fontSize: 14,
     spellCheck: true,
 

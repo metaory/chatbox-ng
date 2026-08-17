@@ -9,9 +9,8 @@ import { ProviderRowHeader } from './ProviderRowHeader'
 import type { DetailModel, FavoriteModel, FilteredProvider } from './types'
 
 function ByokSectionDivider({ mobile }: { mobile: boolean }) {
-  const { t, i18n } = useTranslation()
-  const language = i18n.language.toLowerCase()
-  const byokLabel = language === 'zh-hans' || language.startsWith('zh-cn') ? '自带API KEY' : 'BYOK'
+  const { t } = useTranslation()
+  const byokLabel = 'BYOK'
 
   return (
     <div

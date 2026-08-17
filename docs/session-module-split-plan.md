@@ -100,7 +100,6 @@ moveCurrentThreadToConversations
 | `uuid` (uuidv4) | refreshContextAndCreateNewThread, switchThread, compressAndCreateThread, fork operations |
 | `@/adapters` (createModelDependencies) | submitNewUserMessage, generate, _generateName |
 | `@/hooks/dom` | startNewThread, compressAndCreateThread |
-| `@/i18n/locales` | _generateName |
 | `@/packages/apple_app_store` | generate |
 | `@/packages/context-management` | submitNewUserMessage, genMessageContext |
 | `@/packages/model-calls` | generate, _generateName |

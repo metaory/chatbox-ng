@@ -1,5 +1,4 @@
-import { defaultSessionsForCN, defaultSessionsForEN } from '@/packages/initial_data'
-import platform from '@/platform'
+import { defaultSessionsForEN } from '@/packages/initial_data'
 import storage from '@/storage'
 import { StorageKeyGenerator } from '@/storage/StoreStorage'
 import * as chatStore from '@/stores/chatStore'
@@ -17,14 +16,11 @@ async function initSessionsIfNeeded() {
     return
   }
 
-  const lang = await platform.getLocale().catch(() => 'en')
-  const defaultSessions = lang.startsWith('zh') ? defaultSessionsForCN : defaultSessionsForEN
-
-  for (const session of defaultSessions) {
+  for (const session of defaultSessionsForEN) {
     await storage.setItemNow(StorageKeyGenerator.session(session.id), session)
   }
 
-  const records = createSessionMetaRecordsFromLegacyList(defaultSessions.map(getSessionMeta))
+  const records = createSessionMetaRecordsFromLegacyList(defaultSessionsForEN.map(getSessionMeta))
 
   await metaStorage.createMany(records)
 }

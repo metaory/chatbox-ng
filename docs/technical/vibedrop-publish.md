@@ -77,7 +77,6 @@ chatbox-backend：email 为主键身份（邮箱验证码登录，email 已验�
 - `src/renderer/modals/VibedropPublish.tsx`：未登录引导 / 无邮箱提示 / 可见性选择（默认 unlisted）/ 成功态 URL + 管理入口。
 - `src/renderer/components/Markdown.tsx`：`onClickDeploy` 改打开新 modal；首发 slug 存消息元数据，再发复用 slug 覆盖更新。
 - 删除 edgeone 相关（`edgeone.ts`、`EdgeOneDeploySuccess.tsx`、builtin MCP edgeone 项）。
-- i18n：源码加 key，`pnpm translate` 生成，勿手改 locale JSON。
 
 ## 接口契约
 

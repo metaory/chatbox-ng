@@ -63,9 +63,6 @@
     "mobile:android": "pnpm run mobile:sync:android && npx cap open android",
     "mobile:assets": "npx capacitor-assets generate --ios --android",
     "prepare": "node -e \"try { require('husky') } catch(e) { process.exit(0) }\" && husky || true",
-    "check:error-i18n-keys": "node scripts/sync-error-i18n-keys.mjs --check",
-    "sync:error-i18n-keys": "node scripts/sync-error-i18n-keys.mjs",
-    "translate": "pnpm run sync:error-i18n-keys && i18next && node scripts/translate.mjs",
     "storybook": "cross-env NODE_OPTIONS=\"--require=./.storybook/ignore-root-env.cjs\" storybook dev -p 6006",
     "build-storybook": "cross-env NODE_OPTIONS=\"--require=./.storybook/ignore-root-env.cjs\" storybook build"
   },
@@ -204,7 +201,6 @@
     "highlight.js": "^11.7.0",
     "husky": "^9.0.11",
     "i18next": "^22.4.13",
-    "i18next-parser": "^9.3.0",
     "immer": "^10.1.1",
     "jotai": "^2.1.0",
     "jotai-immer": "^0.4.1",

@@ -17,7 +17,7 @@
 
 - [x] Remove all Tracking and Telemetry
 - [ ] Remove all paid marketing interface
-- [ ] Remove all i18n
+- [x] Remove all i18n
 
 ---
 
@@ -172,20 +172,6 @@ For more information: [metaory.app](https://metaory.app/)
 - **Mobile Apps**  
   :phone: Native iOS and Android applications for on-the-go access.
 
-### 🌍 Localization
-
-- **Multilingual Support**  
-  :earth_americas: Catering to a global audience by offering support in multiple languages:
-  - English
-  - 简体中文 (Simplified Chinese)
-  - 繁體中文 (Traditional Chinese)
-  - 日本語 (Japanese)
-  - 한국어 (Korean)
-  - Français (French)
-  - Deutsch (German)
-  - Русский (Russian)
-  - Español (Spanish)
-
 ### ✨ More Features
 
 - **And More...**  
@@ -212,14 +198,6 @@ We welcome contributions from the community! Here's how you can help make chatbo
 3. Test your changes thoroughly
 4. Update documentation if needed
 5. Submit a pull request with a clear description of the changes
-
-### 🌍 Translations
-
-Help make chatbox-ng accessible to more people by contributing translations:
-
-- Translation files are located in the `src/locales` directory
-- Follow the existing translation format
-- Submit a PR with your translation improvements
 
 ### 📖 Documentation
 

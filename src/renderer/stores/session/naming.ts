@@ -1,7 +1,6 @@
 import { isExpectedGenerationError } from '@shared/models/error-classification'
 import type { ModelProvider } from '@shared/types'
 import { createModel } from '@/adapters'
-import { languageNameMap } from '@/i18n/locales'
 import { generateText } from '@/packages/model-calls'
 import * as promptFormat from '@/packages/prompts'
 import * as chatStore from '../chatStore'
@@ -52,7 +51,7 @@ async function _generateName(sessionId: string, modifyName: (sessionId: string, 
       model,
       promptFormat.nameConversation(
         session.messages.filter((m) => m.role !== 'system').slice(0, 4),
-        languageNameMap[settings.language]
+        'English'
       )
     )
     let name =

@@ -156,10 +156,6 @@ Add a 36x36 PNG icon for the provider list display.
 
 ## Optional Steps
 
-### Translations
-
-If your provider requires custom UI text, add translations to the appropriate locale files in `/src/renderer/i18n/locales/`.
-
 ### Testing
 
 Create test files for your provider implementation:
