@@ -377,14 +377,6 @@ const MCPSettingsSchema = z.object({
   enabledBuiltinServers: z.array(z.string()),
 })
 
-const VibedropPublicationSchema = z.object({
-  slug: z.string(),
-  url: z.string(),
-  visibility: z.enum(['unlisted', 'public']),
-  uniqueId: z.string().optional(),
-  updatedAt: z.number(),
-})
-
 export enum Theme {
   Dark,
   Light,
@@ -466,17 +458,6 @@ export const SettingsSchema = GlobalSessionSettingsSchema.extend({
     .catch(undefined),
   defaultEmbeddingModel: DefaultModelSelectionSchema,
   defaultRerankModel: DefaultModelSelectionSchema,
-
-  // VibeDrop HTML artifact publishing
-  // Cached publish key issued by chatbox-backend, bound to the account email it
-  // was issued for so it is never reused across accounts. Cleared on logout.
-  vibedropPublishKey: z.object({ email: z.string(), key: z.string() }).optional().catch(undefined),
-  // Maps a code block's uniqueId → its published VibeDrop slug, so re-publishing
-  // the same artifact updates the same site (stable URL) instead of creating new.
-  vibedropSlugs: z.record(z.string(), z.string()).optional().catch(undefined),
-  // Recent published sites grouped by session. Used to let users explicitly
-  // choose between creating a page and replacing an existing page.
-  vibedropSessionPublications: z.record(z.string(), z.array(VibedropPublicationSchema)).optional().catch(undefined),
 
   // chat settings
   showWordCount: z.boolean().optional().catch(undefined),

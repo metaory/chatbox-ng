@@ -1,10 +1,8 @@
 import { ofetch } from 'ofetch'
 import { z } from 'zod'
 import { getLogger } from '@/lib/utils'
-import { VibedropEmailRequiredError } from '@/packages/vibedrop'
 import platform from '@/platform'
 import { CHATBOX_BUILD_CHANNEL, USE_BETA_CHATBOX, USE_LOCAL_CHATBOX } from '@/variables'
-import { ApiError } from '../../shared/models/errors'
 import * as chatboxaiAPI from '../../shared/request/chatboxai_pool'
 import { createAfetch, createAuthenticatedAfetch } from '../../shared/request/request'
 import { reportNativeContent } from '../../shared/services/native-report'
@@ -669,44 +667,3 @@ export async function getUserProfile() {
   const json: Response = await res.json()
   return json.data
 }
-
-/**
- * Issue (or fetch the cached) VibeDrop publish key for the logged-in user.
- * chatbox-backend acts as a trusted VibeDrop partner: it derives the email from
- * the JWT and returns a key bound to that account. Throws
- * VibedropEmailRequiredError when the account has no email.
- */
-export async function issueVibedropKey(): Promise<{ vdKey: string; tier: string }> {
-  const afetch = await getAuthenticatedAfetch()
-  try {
-    const res = await afetch(
-      `${getAPIOrigin()}/api/vibedrop/issue-key`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(await getChatboxHeaders()),
-        },
-      },
-      // No retry: issue-key is a fast upsert; email_required is a deterministic
-      // 400 and retrying it just wastes a round-trip (afetch retries all non-2xx).
-      { retry: 0 }
-    )
-    const json: { vd_key: string; tier: string } = await res.json()
-    return { vdKey: json.vd_key, tier: json.tier }
-  } catch (e) {
-    if (e instanceof ApiError && e.responseBody) {
-      try {
-        const parsed = JSON.parse(e.responseBody)
-        if (parsed?.error?.code === 'email_required') {
-          throw new VibedropEmailRequiredError('email required')
-        }
-      } catch (parseErr) {
-        if (parseErr instanceof VibedropEmailRequiredError) throw parseErr
-      }
-    }
-    throw e
-  }
-}
-
-

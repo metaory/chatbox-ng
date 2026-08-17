@@ -81,44 +81,6 @@ describe('SettingsSchema shortcut compatibility', () => {
   })
 })
 
-describe('SettingsSchema VibeDrop publication history', () => {
-  test('parses session publication metadata without a schema migration', () => {
-    const parsed = SettingsSchema.parse({
-      ...defaultSettings(),
-      vibedropSessionPublications: {
-        'session-1': [
-          {
-            slug: 'site-1',
-            url: 'https://site-1.vibedrop.site',
-            visibility: 'public',
-            uniqueId: 'artifact-1',
-            updatedAt: 1,
-          },
-        ],
-      },
-    })
-
-    expect(parsed.vibedropSessionPublications?.['session-1']?.[0]).toEqual({
-      slug: 'site-1',
-      url: 'https://site-1.vibedrop.site',
-      visibility: 'public',
-      uniqueId: 'artifact-1',
-      updatedAt: 1,
-    })
-  })
-
-  test('ignores malformed publication history from older or external settings', () => {
-    const parsed = SettingsSchema.parse({
-      ...defaultSettings(),
-      vibedropSessionPublications: {
-        'session-1': [{ slug: 'site-1' }],
-      },
-    })
-
-    expect(parsed.vibedropSessionPublications).toBeUndefined()
-  })
-})
-
 describe('SessionSettingsSchema per-model provider options', () => {
   test('parses the per-model map alongside the legacy shared field', () => {
     const parsed = SessionSettingsSchema.parse({

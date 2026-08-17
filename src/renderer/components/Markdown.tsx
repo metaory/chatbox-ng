@@ -54,7 +54,6 @@ import {
   IconJson,
   IconPlayerPlayFilled,
   type IconProps,
-  IconWorldUpload,
 } from '@tabler/icons-react'
 import clsx from 'clsx'
 import { visit } from 'unist-util-visit'
@@ -104,7 +103,6 @@ function Markdown(props: {
   generating?: boolean
   forceColorScheme?: 'light' | 'dark'
   onCodeCopy?: () => void
-  onPreviewWebpage?: () => void
 }) {
   const {
     children,
@@ -118,7 +116,6 @@ function Markdown(props: {
     generating,
     forceColorScheme,
     onCodeCopy,
-    onPreviewWebpage,
   } = props
 
   const codeFences = useMemo(() => (children.match(/```/g) || []).length, [children])
@@ -156,14 +153,12 @@ function Markdown(props: {
                 <CodeRenderer
                   {...props}
                   uniqueId={uniqueId ? `${uniqueId}-code-${codeIndex}` : undefined}
-                  sessionId={sessionId}
                   hiddenCodeActions={hiddenCodeActions}
                   hiddenCodeCopyButton={hiddenCodeCopyButton}
                   enableMermaidRendering={enableMermaidRendering}
                   generating={generating && generatingCodeIndex === codeIndex}
                   forceColorScheme={forceColorScheme}
                   onCodeCopy={onCodeCopy}
-                  onPreviewWebpage={onPreviewWebpage}
                 />
               )
             },
@@ -205,7 +200,6 @@ function Markdown(props: {
             generatingCodeIndex,
             forceColorScheme,
             onCodeCopy,
-            onPreviewWebpage,
           ]
         )}
       >
@@ -275,14 +269,12 @@ export const CodeRenderer = memo(
     children: string
     className?: string
     uniqueId?: string
-    sessionId?: string
     hiddenCodeActions?: boolean
     hiddenCodeCopyButton?: boolean
     generating?: boolean
     enableMermaidRendering?: boolean
     forceColorScheme?: 'light' | 'dark'
     onCodeCopy?: () => void
-    onPreviewWebpage?: () => void
   }) => {
     const theme = useTheme()
     const {
@@ -294,7 +286,6 @@ export const CodeRenderer = memo(
       enableMermaidRendering,
       forceColorScheme,
       onCodeCopy,
-      onPreviewWebpage,
     } = props
     const language = /language-(\w+)/.exec(className || '')?.[1] || 'text'
     if (!String(children).includes('\n')) {
@@ -308,14 +299,12 @@ export const CodeRenderer = memo(
       <>
         <BlockCode
           uniqueId={props.uniqueId}
-          sessionId={props.sessionId}
           hiddenCodeActions={hiddenCodeActions}
           hiddenCodeCopyButton={hiddenCodeCopyButton}
           language={language}
           generating={generating}
           forceColorScheme={forceColorScheme}
           onCodeCopy={onCodeCopy}
-          onPreviewWebpage={onPreviewWebpage}
         >
           {children}
         </BlockCode>
@@ -436,13 +425,11 @@ type BlockCodeProps = {
   language: string
   children: string
   uniqueId?: string
-  sessionId?: string
   hiddenCodeActions?: boolean
   hiddenCodeCopyButton?: boolean
   generating?: boolean
   forceColorScheme?: 'light' | 'dark'
   onCodeCopy?: () => void
-  onPreviewWebpage?: () => void
 }
 
 const CodeIcons: { [key: string]: ElementType<IconProps> } = {
@@ -535,14 +522,12 @@ const BlockCode = memo(
   ({
     children,
     uniqueId,
-    sessionId,
     hiddenCodeActions,
     hiddenCodeCopyButton,
     language,
     generating,
     forceColorScheme,
     onCodeCopy,
-    onPreviewWebpage,
   }: BlockCodeProps) => {
     const { t } = useTranslation()
     const computedColorScheme = useComputedColorScheme()
@@ -550,10 +535,6 @@ const BlockCode = memo(
     const shikiTheme: ShikiTheme = colorScheme !== 'light' ? 'one-dark-pro' : 'one-light'
     const languageName = useMemo(() => language.toUpperCase(), [language])
     const isRenderableCode = useMemo(() => isRenderableCodeLanguage(language), [language])
-    const canDeploy = useMemo(
-      () => isRenderableCode && String(children).trim().length > 0,
-      [children, isRenderableCode]
-    )
 
     const icon = useMemo(() => CodeIcons[languageName] || IconCode, [languageName])
 
@@ -573,25 +554,9 @@ const BlockCode = memo(
         event.preventDefault()
         NiceModal.show('artifact-preview', {
           htmlCode: String(children),
-          uniqueId,
-          sessionId,
         }).catch(() => null)
       },
-      [children, uniqueId, sessionId]
-    )
-
-    const onClickDeploy = useCallback(
-      (event: React.MouseEvent) => {
-        event.stopPropagation()
-        event.preventDefault()
-        if (!canDeploy) {
-          return
-        }
-        // 应投放侧要求改触发点为分享按钮。但注意现在语义上是 mismatch 的
-        onPreviewWebpage?.()
-        NiceModal.show('vibedrop-publish', { html: String(children), uniqueId, sessionId }).catch(() => null)
-      },
-      [canDeploy, children, uniqueId, sessionId, onPreviewWebpage]
+      [children]
     )
 
     const needCollapse = useMemo(
@@ -647,14 +612,6 @@ const BlockCode = memo(
                 <Tooltip label={t('Preview')} withArrow openDelay={1000}>
                   <ActionIcon variant="transparent" color="chatbox-tertiary" size={18} onClick={onClickArtifact}>
                     <IconPlayerPlayFilled size={14} />
-                  </ActionIcon>
-                </Tooltip>
-              )}
-
-              {canDeploy && (
-                <Tooltip label={t('Publish Webpage')} withArrow openDelay={1000}>
-                  <ActionIcon variant="transparent" color="chatbox-tertiary" size={18} onClick={onClickDeploy}>
-                    <IconWorldUpload size={14} />
                   </ActionIcon>
                 </Tooltip>
               )}

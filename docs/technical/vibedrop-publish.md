@@ -1,5 +1,7 @@
 # HTML Artifact 发布：VibeDrop 集成设计
 
+> Fork note: chatbox-ng does not use the Chatbox-backend partner publish path (in-app modal / `issue-key`). The builtin VibeDrop agent skill remains.
+>
 > 状态：实施中（分支 `feat/vibedrop-publish`，三 repo 并行 worktree）
 > 替换原 EdgeOne MCP 匿名发布，改为可登录、可管理的 VibeDrop 集成。
 

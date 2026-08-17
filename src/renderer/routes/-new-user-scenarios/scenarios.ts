@@ -1774,7 +1774,7 @@ After completing the conversion, respond using the following structure by defaul
 4. If any content could not be recognized, is missing, or requires user confirmation, list it separately after the HTML code.
 5. After completion, send:
 
-The resume HTML has been generated. In the HTML preview page, click **Publish Webpage** in the upper-right corner. Once it has been published successfully, you can use features such as online editing, PDF export, and HTML export.
+The resume HTML has been generated. Open the HTML preview to review it, then save the file locally or print to PDF from the browser.
 
 Do not include Markdown explanatory text inside the HTML code.
 

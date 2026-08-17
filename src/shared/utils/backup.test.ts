@@ -4,7 +4,6 @@ import { cleanSettingsForBackup } from './backup'
 
 function credentialSettings(): Settings {
   return {
-    vibedropPublishKey: { email: 'user@example.com', key: 'publish-key' },
     providers: {
       provider: {
         apiKey: 'api-key',
@@ -58,7 +57,6 @@ describe('cleanSettingsForBackup', () => {
   it('removes every managed credential class when keys are excluded', () => {
     const cleaned = cleanSettingsForBackup(credentialSettings(), false)
 
-    expect(cleaned).not.toHaveProperty('vibedropPublishKey')
     expect(cleaned.providers).toEqual({ provider: { apiHost: 'https://example.com' } })
     expect(cleaned.customProviders).toEqual([
       {
@@ -96,7 +94,6 @@ describe('cleanSettingsForBackup', () => {
     const cleaned = cleanSettingsForBackup(credentialSettings(), true)
 
     expect(cleaned).toMatchObject({
-      vibedropPublishKey: { key: 'publish-key' },
       providers: { provider: { apiKey: 'api-key', oauth: { accessToken: 'access-token' } } },
       customProviders: [{ defaultSettings: { apiKey: 'default-api-key' } }],
       extension: {

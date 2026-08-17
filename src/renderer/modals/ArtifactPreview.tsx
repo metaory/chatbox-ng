@@ -1,63 +1,27 @@
 import NiceModal, { useModal } from '@ebay/nice-modal-react'
-import { ActionIcon, Button, Flex, Loader, Stack, Text } from '@mantine/core'
-import {
-  IconArrowsMaximize,
-  IconArrowsMinimize,
-  IconExternalLink,
-  IconReload,
-  IconWorldUpload,
-  IconX,
-} from '@tabler/icons-react'
+import { ActionIcon, Button, Flex, Stack, Text } from '@mantine/core'
+import { IconArrowsMaximize, IconArrowsMinimize, IconExternalLink, IconReload, IconX } from '@tabler/icons-react'
 import clsx from 'clsx'
 import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Artifact } from '@/components/Artifact'
 import { ScalableIcon } from '@/components/common/ScalableIcon'
 import { Modal } from '@/components/layout/Overlay'
-import { inlineSandboxHtmlAssets } from '@/components/message-parts/html-artifact-assets'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
 import { useIsSmallScreen } from '@/hooks/useScreenChange'
 import platform from '@/platform'
-import * as toastActions from '@/stores/toastActions'
 
 export interface ArtifactPreviewProps {
   htmlCode: string
   previewUrl?: string
-  sandboxPath?: string
-  uniqueId?: string
-  sessionId?: string
-}
-
-function decodeBase64Utf8(base64: string): string {
-  const binary = atob(base64)
-  const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0))
-  return new TextDecoder().decode(bytes)
-}
-
-async function readSandboxHtml(sandboxPath: string): Promise<string> {
-  if (!platform.sandboxReadFileBase64) {
-    throw new Error('Preview not available')
-  }
-  const res = await platform.sandboxReadFileBase64({ filePath: sandboxPath })
-  if (!res.success || !res.base64) {
-    throw new Error(res.error || 'Preview not available')
-  }
-  return inlineSandboxHtmlAssets(decodeBase64Utf8(res.base64), sandboxPath, (assetPath) => {
-    if (!platform.sandboxReadFileBase64) {
-      return Promise.resolve({ success: false })
-    }
-    return platform.sandboxReadFileBase64({ filePath: assetPath })
-  })
 }
 
 const ArtifactPreview = NiceModal.create((props: ArtifactPreviewProps) => {
-  const { htmlCode, previewUrl, sandboxPath, uniqueId, sessionId } = props
+  const { htmlCode, previewUrl } = props
   const modal = useModal()
   const { t } = useTranslation()
   const [reloadSign, setReloadSign] = useState(0)
   const [isFullscreen, setIsFullscreen] = useState(false)
-  const [deploying, setDeploying] = useState(false)
-  const canPublish = useMemo(() => htmlCode.trim().length > 0 || !!sandboxPath, [htmlCode, sandboxPath])
   const canOpenInBrowser = useMemo(() => !!previewUrl, [previewUrl])
   const onReload = () => {
     setReloadSign(Math.random())
@@ -72,20 +36,6 @@ const ArtifactPreview = NiceModal.create((props: ArtifactPreviewProps) => {
     }
     await platform.openLink(previewUrl)
   }, [previewUrl])
-  const onPublish = useCallback(async () => {
-    if (!canPublish) {
-      return
-    }
-    setDeploying(true)
-    try {
-      const publishHtml = htmlCode.trim() ? htmlCode : await readSandboxHtml(sandboxPath || '')
-      NiceModal.show('vibedrop-publish', { html: publishHtml, uniqueId, sessionId }).catch(() => null)
-    } catch (error) {
-      toastActions.add((error as Error)?.message || t('Publish failed'))
-    } finally {
-      setDeploying(false)
-    }
-  }, [canPublish, htmlCode, sandboxPath, uniqueId, sessionId, t])
   const isSmallScreen = useIsSmallScreen()
   const showFullscreen = isSmallScreen || isFullscreen
   const showLabeledActions = !isSmallScreen
@@ -169,22 +119,6 @@ const ArtifactPreview = NiceModal.create((props: ArtifactPreviewProps) => {
                     <ScalableIcon icon={IconExternalLink} size={18} />
                   </ActionIcon>
                 </Tooltip>
-                <Tooltip
-                  label={canPublish ? t('Publish Webpage') : t('HTML content is empty, nothing to deploy.')}
-                  withArrow
-                  openDelay={500}
-                >
-                  <ActionIcon
-                    variant="transparent"
-                    color="chatbox-brand"
-                    size={mobileActionSize}
-                    onClick={onPublish}
-                    aria-label={t('Publish Webpage')}
-                    disabled={!canPublish || deploying}
-                  >
-                    {deploying ? <Loader size={14} /> : <ScalableIcon icon={IconWorldUpload} size={18} />}
-                  </ActionIcon>
-                </Tooltip>
               </Flex>
               <Tooltip label={t('Close')} withArrow openDelay={500}>
                 <ActionIcon
@@ -233,15 +167,6 @@ const ArtifactPreview = NiceModal.create((props: ArtifactPreviewProps) => {
               disabled={!canOpenInBrowser}
             >
               {t('Open in Browser')}
-            </Button>
-            <Button
-              variant="subtle"
-              size="xs"
-              leftSection={deploying ? <Loader size={14} /> : <ScalableIcon icon={IconWorldUpload} size={16} />}
-              onClick={onPublish}
-              disabled={!canPublish || deploying}
-            >
-              {t('Publish Webpage')}
             </Button>
             <Button variant="subtle" size="xs" leftSection={<ScalableIcon icon={IconX} size={16} />} onClick={onClose}>
               {t('Close')}

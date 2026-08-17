@@ -27,14 +27,14 @@ export type UiInventoryItem = {
   hasTranslation: boolean
 }
 
-export const uiInventoryGeneratedAt = "2026-08-17T13:43:55.952Z"
+export const uiInventoryGeneratedAt = "2026-08-17T14:59:34.916Z"
 
 export const uiInventorySummary = {
-  "total": 225,
+  "total": 223,
   "byKind": {
-    "component": 142,
+    "component": 141,
     "story": 19,
-    "modal": 18,
+    "modal": 17,
     "ui": 2,
     "page": 31,
     "route-component": 13
@@ -44,19 +44,19 @@ export const uiInventorySummary = {
     "chat": 15,
     "common": 26,
     "input": 12,
-    "knowledge-base": 6,
+    "knowledge-base": 5,
     "layout": 7,
     "message-parts": 2,
     "model-selector": 5,
     "session": 3,
     "settings": 27,
-    "modal": 18,
+    "modal": 17,
     "copilots": 9,
     "dev": 7,
     "image-creator": 10
   },
   "byPlatform": {
-    "all": 194,
+    "all": 192,
     "desktop": 14,
     "mobile": 18,
     "web": 3
@@ -3602,10 +3602,10 @@ export const uiInventoryItems: UiInventoryItem[] = [
         "iframeHref": "http://localhost:6006/iframe.html?id=real-components-input-surfaces--attachment-mini-card-image-file-processing-completed-error-states&viewMode=story"
       },
       {
-        "label": "Storybook: Attachment parser type label local chatbox-ai mineru inline and indexed",
+        "label": "Storybook: Attachment parser type label local mineru inline and indexed",
         "kind": "storybook",
-        "href": "http://localhost:6006/?path=/story/real-components-input-surfaces--attachment-parser-type-label-local-chatbox-ai-mineru-inline-and-indexed",
-        "iframeHref": "http://localhost:6006/iframe.html?id=real-components-input-surfaces--attachment-parser-type-label-local-chatbox-ai-mineru-inline-and-indexed&viewMode=story"
+        "href": "http://localhost:6006/?path=/story/real-components-input-surfaces--attachment-parser-type-label-local-mineru-inline-and-indexed",
+        "iframeHref": "http://localhost:6006/iframe.html?id=real-components-input-surfaces--attachment-parser-type-label-local-mineru-inline-and-indexed&viewMode=story"
       },
       {
         "label": "Storybook: Message attachment inline retrieval indexed indexing blocked failed states",
@@ -4104,10 +4104,10 @@ export const uiInventoryItems: UiInventoryItem[] = [
     ],
     "previewLinks": [
       {
-        "label": "Storybook: Knowledge base chunks preview and remote retry modal states",
+        "label": "Storybook: Knowledge base chunks preview modal",
         "kind": "storybook",
-        "href": "http://localhost:6006/?path=/story/real-components-knowledge-base--knowledge-base-chunks-preview-and-remote-retry-modal-states",
-        "iframeHref": "http://localhost:6006/iframe.html?id=real-components-knowledge-base--knowledge-base-chunks-preview-and-remote-retry-modal-states&viewMode=story"
+        "href": "http://localhost:6006/?path=/story/real-components-knowledge-base--knowledge-base-chunks-preview-modal",
+        "iframeHref": "http://localhost:6006/iframe.html?id=real-components-knowledge-base--knowledge-base-chunks-preview-modal&viewMode=story"
       }
     ],
     "hasDefaultExport": true,
@@ -4123,17 +4123,13 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "KnowledgeBase"
     ],
     "states": [
-      "chatboxAIModels",
       "deleteConfirmKb",
       "disabled",
       "editKb",
       "editRerankModel",
       "editVisionModel",
       "error",
-      "hasError",
       "hasModel",
-      "isChatboxAIDisabled",
-      "isChatboxAIKnowledgeBase",
       "isConfirmDisabled",
       "isEmbedding",
       "isEmbeddingDisabled",
@@ -4144,9 +4140,10 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "newDocumentParser",
       "newEmbeddingModel",
       "newKbName",
-      "newProviderMode",
       "newRerankModel",
-      "newVisionModel"
+      "newVisionModel",
+      "opened",
+      "showCreate"
     ],
     "variants": [
       "color:orange",
@@ -4179,13 +4176,11 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "Edit Knowledge Base",
       "Embedding",
       "Failed to create knowledge base, Error: {{error}}",
-      "Failed to fetch Chatbox AI models config, Error: {{error}}",
       "Failed to fetch knowledge base list, Error: {{error}}",
       "Failed to update knowledge base, Error: {{error}}",
       "Knowledge Base",
       "Knowledge Base functionality is not available on Windows ARM64 due to library compatibility issues. This feature is supported on Windows x64, macOS, and Linux.",
       "Local",
-      "Models",
       "Name",
       "No Knowledge Base Yet",
       "None",
@@ -4250,10 +4245,10 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "isToday",
       "loading",
       "opened",
-      "showRemoteRetryModal",
       "showScrollIndicator",
       "showUploadArea",
-      "sizeRejectedFiles"
+      "sizeRejectedFiles",
+      "success"
     ],
     "variants": [
       "color:blue",
@@ -4266,7 +4261,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "color:var(--chatbox-tint-primary)",
       "color:var(--chatbox-tint-success)",
       "color:var(--chatbox-tint-warning)",
-      "color:yellow",
       "light",
       "size:lg",
       "size:sm",
@@ -4280,11 +4274,9 @@ export const uiInventoryItems: UiInventoryItem[] = [
     "previewModes": [],
     "text": [
       "{{count}} file(s) exceed the {{limit}} knowledge base upload limit.",
-      "{{count}} file(s) failed to parse",
       "{{count}} file(s) not supported: {{files}}. Supported formats: {{formats}}",
       "Add File",
       "And {{count}} more file(s).",
-      "Chatbox AI parse failed",
       "chunks",
       "Delete",
       "Documents",
@@ -4310,8 +4302,7 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "Supported formats",
       "Too much text",
       "Upload failed: {{error}}",
-      "Upload your first document to get started",
-      "Use server parsing"
+      "Upload your first document to get started"
     ],
     "stories": [],
     "storyNames": [],
@@ -4319,7 +4310,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
     "storybookIds": [],
     "dependencies": [
       "src/renderer/components/knowledge-base/ChunksPreviewModal",
-      "src/renderer/components/knowledge-base/RemoteRetryModal",
       "src/renderer/components/ui/tooltip"
     ],
     "previewLinks": [
@@ -4346,8 +4336,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "connectionResult",
       "disabled",
       "error",
-      "hasError",
-      "isChatboxAIDisabled",
       "isConfirmDisabled",
       "isEmbeddingDisabled",
       "loading",
@@ -4360,7 +4348,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "color:red",
       "default",
       "outline",
-      "size:sm",
       "size:xs"
     ],
     "platforms": [
@@ -4370,21 +4357,14 @@ export const uiInventoryItems: UiInventoryItem[] = [
     "previewModes": [],
     "text": [
       "Cancel",
-      "Chatbox AI",
-      "Chatbox AI provides all the essential model support required for knowledge base processing. Consumes compute points.",
-      "Cloud-based document parsing service, supports PDF, Office files, EPUB and many other file types. Consumes compute points.",
       "Connected",
       "Connection failed",
       "Connection successful",
-      "Custom",
       "Delete",
       "Document Parser",
       "Embedding Model",
       "Enter your MinerU API token",
       "Failed",
-      "Failed to load Chatbox AI models configuration",
-      "Model Provider",
-      "Models",
       "New knowledge base name",
       "Parser used to process uploaded documents",
       "Please enter an API token",
@@ -4394,7 +4374,7 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "Used to extract text feature vectors, add in Settings - Provider - Model List",
       "Used to get more accurate search results",
       "Used to preprocess image files, requires models with vision capabilities enabled",
-      "Uses built-in document parsing feature, supports common file types. Free usage, no compute points will be consumed.",
+      "Uses built-in document parsing feature, supports common file types.",
       "Vision Model (optional)"
     ],
     "stories": [],
@@ -4460,70 +4440,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
     "hasTranslation": true
   },
   {
-    "path": "src/renderer/components/knowledge-base/RemoteRetryModal.tsx",
-    "title": "components/knowledge-base/RemoteRetryModal",
-    "kind": "component",
-    "area": "knowledge-base",
-    "components": [
-      "RemoteRetryModal"
-    ],
-    "states": [
-      "disabled",
-      "error",
-      "isRetryable",
-      "isServerFailed",
-      "loading",
-      "opened",
-      "retryingAll",
-      "retryingIds",
-      "success"
-    ],
-    "variants": [
-      "color:var(--mantine-color-red-6)",
-      "color:yellow",
-      "light",
-      "size:lg",
-      "size:sm",
-      "size:xs"
-    ],
-    "platforms": [
-      "all"
-    ],
-    "platformNotes": [],
-    "previewModes": [],
-    "text": [
-      "{{count}} file(s) failed to queue",
-      "{{count}} file(s) queued for server parsing",
-      "Failed to retry {{filename}}: {{error}}",
-      "File {{filename}} queued for server parsing",
-      "No retry available",
-      "Parsed document content must be {{limit}} or smaller.",
-      "Retry",
-      "Retry All",
-      "Retry with Server Parsing",
-      "Server parsing will consume compute credits. Please be cautious with large files."
-    ],
-    "stories": [],
-    "storyNames": [],
-    "storyTargets": [],
-    "storybookIds": [],
-    "dependencies": [
-      "src/renderer/components/layout/Overlay",
-      "src/renderer/components/ui/tooltip"
-    ],
-    "previewLinks": [
-      {
-        "label": "Storybook: Knowledge base chunks preview and remote retry modal states",
-        "kind": "storybook",
-        "href": "http://localhost:6006/?path=/story/real-components-knowledge-base--knowledge-base-chunks-preview-and-remote-retry-modal-states",
-        "iframeHref": "http://localhost:6006/iframe.html?id=real-components-knowledge-base--knowledge-base-chunks-preview-and-remote-retry-modal-states&viewMode=story"
-      }
-    ],
-    "hasDefaultExport": false,
-    "hasNiceModal": false,
-    "hasTranslation": true
-  },
-  {
     "path": "src/renderer/components/layout/DesktopDownloadReminder.tsx",
     "title": "components/layout/DesktopDownloadReminder",
     "kind": "component",
@@ -4531,9 +4447,11 @@ export const uiInventoryItems: UiInventoryItem[] = [
     "components": [
       "ANDROID_APK_URL",
       "DesktopDownloadReminder",
+      "DISMISS_KEY",
       "IOS_APP_STORE_URL"
     ],
     "states": [
+      "dismissed",
       "isSmallScreen"
     ],
     "variants": [
@@ -4928,8 +4846,7 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "Collapse",
       "copy",
       "Expand",
-      "Preview",
-      "Publish Webpage"
+      "Preview"
     ],
     "stories": [],
     "storyNames": [],
@@ -5220,11 +5137,9 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "Aspect ratio",
       "Bash is not available on this Windows device.",
       "Cancel",
-      "Chatbox AI image quota will not be used.",
       "Checking every {{time}}",
       "Command",
       "Completed",
-      "Compute points remaining: {{points}}",
       "Continue",
       "Copy reasoning content",
       "Deeply thought",
@@ -5232,7 +5147,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "Deny",
       "Download Git Bash",
       "Error",
-      "Exact compute point usage is calculated after generation.",
       "Explanation failed",
       "Failed",
       "Failed to update the setting. Please try again.",
@@ -5243,7 +5157,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "Image generated",
       "Image generation failed",
       "Image generation interrupted",
-      "Image quota remaining: {{remaining}} / {{total}}",
       "Image style",
       "Install Git Bash or enable WSL to run Bash code. You can continue using Node.js code execution without either.",
       "More continue options",
@@ -5265,7 +5178,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "Thinking",
       "This chat is no longer available.",
       "This request may incur charges from {{provider}}.",
-      "This request will consume {{count}} image quota and compute points.",
       "Thought for {{time}}",
       "Tool call failed",
       "Tool execution is paused.",
@@ -7831,7 +7743,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
     "area": "app",
     "components": [
       "AvatarSample",
-      "SeedLicensePlan",
       "SeedToasts",
       "SurfaceLabel",
       "ThrowOnRender"
@@ -8591,7 +8502,7 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "AgentModeButton",
       "AgentModePanel",
       "Attachment mini card image file processing completed error states",
-      "Attachment parser type label local chatbox-ai mineru inline and indexed",
+      "Attachment parser type label local mineru inline and indexed",
       "Auto with popover",
       "Chatbox AI parsed",
       "Document parser label",
@@ -8632,7 +8543,7 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "Agent mode button auto on off unsupported popover states",
       "Agent mode panel auto on off unsupported and extension states",
       "Attachment mini card image file processing completed error states",
-      "Attachment parser type label local chatbox-ai mineru inline and indexed",
+      "Attachment parser type label local mineru inline and indexed",
       "InputBox composer ready selected model generating and missing model states",
       "Message attachment inline retrieval indexed indexing blocked failed states"
     ],
@@ -8661,7 +8572,7 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "real-components-input-surfaces--agent-mode-button-auto-on-off-unsupported-popover-states",
       "real-components-input-surfaces--agent-mode-panel-auto-on-off-unsupported-and-extension-states",
       "real-components-input-surfaces--attachment-mini-card-image-file-processing-completed-error-states",
-      "real-components-input-surfaces--attachment-parser-type-label-local-chatbox-ai-mineru-inline-and-indexed",
+      "real-components-input-surfaces--attachment-parser-type-label-local-mineru-inline-and-indexed",
       "real-components-input-surfaces--input-box-composer-ready-selected-model-generating-and-missing-model-states",
       "real-components-input-surfaces--message-attachment-inline-retrieval-indexed-indexing-blocked-failed-states"
     ],
@@ -8691,10 +8602,10 @@ export const uiInventoryItems: UiInventoryItem[] = [
         "iframeHref": "http://localhost:6006/iframe.html?id=real-components-input-surfaces--attachment-mini-card-image-file-processing-completed-error-states&viewMode=story"
       },
       {
-        "label": "Storybook: Attachment parser type label local chatbox-ai mineru inline and indexed",
+        "label": "Storybook: Attachment parser type label local mineru inline and indexed",
         "kind": "storybook",
-        "href": "http://localhost:6006/?path=/story/real-components-input-surfaces--attachment-parser-type-label-local-chatbox-ai-mineru-inline-and-indexed",
-        "iframeHref": "http://localhost:6006/iframe.html?id=real-components-input-surfaces--attachment-parser-type-label-local-chatbox-ai-mineru-inline-and-indexed&viewMode=story"
+        "href": "http://localhost:6006/?path=/story/real-components-input-surfaces--attachment-parser-type-label-local-mineru-inline-and-indexed",
+        "iframeHref": "http://localhost:6006/iframe.html?id=real-components-input-surfaces--attachment-parser-type-label-local-mineru-inline-and-indexed&viewMode=story"
       },
       {
         "label": "Storybook: InputBox composer ready selected model generating and missing model states",
@@ -8734,7 +8645,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "name",
       "opened",
       "parserConfig",
-      "providerMode",
       "rerankModel",
       "selected",
       "success",
@@ -8753,16 +8663,15 @@ export const uiInventoryItems: UiInventoryItem[] = [
     "text": [
       "Actual composer knowledge base selector menu with selected state and settings/create entry points.",
       "Actual documents section with upload affordance, completed file, processing progress, paused file, local parse failure, server parse failure, retry, pause, resume, delete, and chunks preview entry points.",
-      "Actual form controls used for create/edit knowledge base flows, including provider mode, parser selection, model selectors, read-only parser display, Chatbox AI info, and destructive edit actions.",
-      "Actual knowledge base modals for inspecting parsed chunks and retrying local parser failures with server parsing.",
+      "Actual form controls used for create/edit knowledge base flows, including parser selection, model selectors, read-only parser display, and destructive edit actions.",
+      "Actual knowledge base modal for inspecting parsed chunks.",
       "Actual knowledge base settings page with configured bases, provider pills, parser pills, edit actions, and embedded document lists.",
-      "Chatbox AI support handbook",
-      "ChunksPreviewModal and RemoteRetryModal",
+      "ChunksPreviewModal",
       "Empty knowledge base",
       "Empty onboarding docs",
       "Empty state uses the same menu after the query returns no knowledge bases.",
       "Knowledge Base",
-      "Knowledge base chunks preview and remote retry modal states",
+      "Knowledge base chunks preview modal",
       "Knowledge base documents upload ready processing paused failed states",
       "Knowledge base form provider parser model and action states",
       "Knowledge base menu selected and create states",
@@ -8774,7 +8683,8 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "KnowledgeBaseMenu",
       "Name",
       "Product launch knowledge base",
-      "The production modals are mounted open in this preview."
+      "Support handbook",
+      "The production modal is mounted open in this preview."
     ],
     "stories": [
       "KnowledgeBaseDocumentsStates",
@@ -8787,7 +8697,7 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "Knowledge base documents upload ready processing paused failed states",
       "Knowledge base form provider parser model and action states",
       "Knowledge base menu selected and create states",
-      "Knowledge base chunks preview and remote retry modal states",
+      "Knowledge base chunks preview modal",
       "Knowledge base page list documents and provider states"
     ],
     "storyTargets": [
@@ -8801,8 +8711,7 @@ export const uiInventoryItems: UiInventoryItem[] = [
         "src/renderer/components/knowledge-base/KnowledgeBaseMenu"
       ],
       [
-        "src/renderer/components/knowledge-base/ChunksPreviewModal",
-        "src/renderer/components/knowledge-base/RemoteRetryModal"
+        "src/renderer/components/knowledge-base/ChunksPreviewModal"
       ],
       [
         "src/renderer/components/knowledge-base/KnowledgeBase"
@@ -8813,7 +8722,7 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "real-components-knowledge-base--knowledge-base-documents-upload-ready-processing-paused-failed-states",
       "real-components-knowledge-base--knowledge-base-form-provider-parser-model-and-action-states",
       "real-components-knowledge-base--knowledge-base-menu-selected-and-create-states",
-      "real-components-knowledge-base--knowledge-base-chunks-preview-and-remote-retry-modal-states",
+      "real-components-knowledge-base--knowledge-base-chunks-preview-modal",
       "real-components-knowledge-base--knowledge-base-page-list-documents-and-provider-states"
     ],
     "dependencies": [
@@ -8821,8 +8730,7 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "src/renderer/components/knowledge-base/KnowledgeBase",
       "src/renderer/components/knowledge-base/KnowledgeBaseDocuments",
       "src/renderer/components/knowledge-base/KnowledgeBaseForm",
-      "src/renderer/components/knowledge-base/KnowledgeBaseMenu",
-      "src/renderer/components/knowledge-base/RemoteRetryModal"
+      "src/renderer/components/knowledge-base/KnowledgeBaseMenu"
     ],
     "previewLinks": [
       {
@@ -8844,10 +8752,10 @@ export const uiInventoryItems: UiInventoryItem[] = [
         "iframeHref": "http://localhost:6006/iframe.html?id=real-components-knowledge-base--knowledge-base-menu-selected-and-create-states&viewMode=story"
       },
       {
-        "label": "Storybook: Knowledge base chunks preview and remote retry modal states",
+        "label": "Storybook: Knowledge base chunks preview modal",
         "kind": "storybook",
-        "href": "http://localhost:6006/?path=/story/real-components-knowledge-base--knowledge-base-chunks-preview-and-remote-retry-modal-states",
-        "iframeHref": "http://localhost:6006/iframe.html?id=real-components-knowledge-base--knowledge-base-chunks-preview-and-remote-retry-modal-states&viewMode=story"
+        "href": "http://localhost:6006/?path=/story/real-components-knowledge-base--knowledge-base-chunks-preview-modal",
+        "iframeHref": "http://localhost:6006/iframe.html?id=real-components-knowledge-base--knowledge-base-chunks-preview-modal&viewMode=story"
       },
       {
         "label": "Storybook: Knowledge base page list documents and provider states",
@@ -9240,8 +9148,7 @@ export const uiInventoryItems: UiInventoryItem[] = [
     "states": [
       "checked",
       "error",
-      "opened",
-      "success"
+      "opened"
     ],
     "variants": [
       "size:sm"
@@ -9273,7 +9180,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "ArtifactPreview",
       "Attach link modal multiline URL entry states",
       "AttachLink",
-      "Chatbox demo",
       "Clear session list modal numeric retention state",
       "ClearSessionList",
       "Content viewer modal parser index metadata content copy state",
@@ -9282,7 +9188,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "ExportChat",
       "File parse error modal unknown and file-specific state",
       "FileParseError",
-      "Hello",
       "JSON viewer modal pretty printed copy state",
       "JsonViewer",
       "Launch Brief",
@@ -9308,9 +9213,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "This is a real ArtifactPreview modal rendering generated HTML content.",
       "Thread name edit modal current and historical thread states",
       "ThreadNameEdit",
-      "VibeDrop publish modal visibility and success states",
-      "VibeDrop publish modal: visibility choice (link-only/public) and the published URL success state with copy and open actions.",
-      "VibedropPublish",
       "Welcome",
       "Welcome modal setup provider and later states"
     ],
@@ -9330,7 +9232,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "SessionSettingsStates",
       "SettingsModalStates",
       "ThreadNameEditStates",
-      "VibedropPublishStates",
       "WelcomeStates"
     ],
     "storyNames": [
@@ -9349,7 +9250,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "Session settings modal chat config background and system prompt states",
       "Settings modal general route and navigation shell state",
       "Thread name edit modal current and historical thread states",
-      "VibeDrop publish modal visibility and success states",
       "Welcome modal setup provider and later states"
     ],
     "storyTargets": [
@@ -9399,9 +9299,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
         "src/renderer/modals/ThreadNameEdit"
       ],
       [
-        "src/renderer/modals/VibedropPublish"
-      ],
-      [
         "src/renderer/modals/Welcome"
       ]
     ],
@@ -9422,7 +9319,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "real-components-modals--session-settings-modal-chat-config-background-and-system-prompt-states",
       "real-components-modals--settings-modal-general-route-and-navigation-shell-state",
       "real-components-modals--thread-name-edit-modal-current-and-historical-thread-states",
-      "real-components-modals--vibe-drop-publish-modal-visibility-and-success-states",
       "real-components-modals--welcome-modal-setup-provider-and-later-states"
     ],
     "dependencies": [],
@@ -9516,12 +9412,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
         "kind": "storybook",
         "href": "http://localhost:6006/?path=/story/real-components-modals--thread-name-edit-modal-current-and-historical-thread-states",
         "iframeHref": "http://localhost:6006/iframe.html?id=real-components-modals--thread-name-edit-modal-current-and-historical-thread-states&viewMode=story"
-      },
-      {
-        "label": "Storybook: VibeDrop publish modal visibility and success states",
-        "kind": "storybook",
-        "href": "http://localhost:6006/?path=/story/real-components-modals--vibe-drop-publish-modal-visibility-and-success-states",
-        "iframeHref": "http://localhost:6006/iframe.html?id=real-components-modals--vibe-drop-publish-modal-visibility-and-success-states&viewMode=story"
       },
       {
         "label": "Storybook: Welcome modal setup provider and later states",
@@ -10642,18 +10532,14 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "ArtifactPreview"
     ],
     "states": [
-      "deploying",
       "disabled",
-      "error",
       "isFullscreen",
       "isSmallScreen",
       "opened",
       "reloadSign",
-      "success",
       "visible"
     ],
     "variants": [
-      "color:chatbox-brand",
       "color:chatbox-tertiary",
       "size:100%",
       "size:md",
@@ -10675,12 +10561,9 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "Close",
       "Exit fullscreen",
       "Fullscreen",
-      "HTML content is empty, nothing to deploy.",
       "Open in Browser",
       "Open in Browser requires a preview URL",
       "Preview",
-      "Publish failed",
-      "Publish Webpage",
       "Refresh"
     ],
     "stories": [],
@@ -10691,7 +10574,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "src/renderer/components/Artifact",
       "src/renderer/components/common/ScalableIcon",
       "src/renderer/components/layout/Overlay",
-      "src/renderer/components/message-parts/html-artifact-assets",
       "src/renderer/components/ui/tooltip"
     ],
     "previewLinks": [
@@ -11473,102 +11355,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
         "kind": "storybook",
         "href": "http://localhost:6006/?path=/story/real-components-modals--thread-name-edit-modal-current-and-historical-thread-states",
         "iframeHref": "http://localhost:6006/iframe.html?id=real-components-modals--thread-name-edit-modal-current-and-historical-thread-states&viewMode=story"
-      }
-    ],
-    "hasDefaultExport": true,
-    "hasNiceModal": true,
-    "hasTranslation": true
-  },
-  {
-    "path": "src/renderer/modals/VibedropPublish.tsx",
-    "title": "modals/VibedropPublish",
-    "kind": "modal",
-    "area": "modal",
-    "components": [
-      "ManageSitesHint",
-      "VibedropPublish"
-    ],
-    "states": [
-      "disabled",
-      "error",
-      "errorMessage",
-      "isSmallScreen",
-      "loading",
-      "opened",
-      "publishMode",
-      "selected",
-      "selectedSlug",
-      "stage",
-      "success",
-      "url",
-      "visibility",
-      "visible"
-    ],
-    "variants": [
-      "default",
-      "email_required",
-      "error",
-      "form",
-      "new",
-      "publishing",
-      "size:sm",
-      "size:xs",
-      "subtle",
-      "success",
-      "update"
-    ],
-    "platforms": [
-      "all"
-    ],
-    "platformNotes": [
-      "responsive branch via isSmallScreen/useIsSmallScreen"
-    ],
-    "previewModes": [
-      "desktop-wide",
-      "narrow/mobile-layout"
-    ],
-    "text": [
-      "Anyone can find this page in the VibeDrop explore gallery.",
-      "Close",
-      "Copied",
-      "Copy",
-      "Failed to publish to VibeDrop. Please try again later.",
-      "HTML content is empty, nothing to publish.",
-      "Link only",
-      "Manage your published pages at <ManageLink>app.vibedrop.cc</ManageLink>.",
-      "New page",
-      "Only people with the link can open this page.",
-      "Open",
-      "Page to update",
-      "Public",
-      "Publish",
-      "Publish failed",
-      "Publish to VibeDrop",
-      "Publishing requires an email address. Add one and try again.",
-      "The selected page keeps the same URL and its content will be replaced.",
-      "This page can no longer be updated. Publish it as a new page instead.",
-      "Try Again",
-      "Update page",
-      "VibeDrop authorization failed",
-      "Your HTML page will be published to VibeDrop. Choose who can access it.",
-      "Your page is published. You can access it via the link below."
-    ],
-    "stories": [],
-    "storyNames": [],
-    "storyTargets": [],
-    "storybookIds": [],
-    "dependencies": [
-      "src/renderer/components/AdaptiveSelect",
-      "src/renderer/components/common/AdaptiveModal",
-      "src/renderer/components/common/ScalableIcon",
-      "src/renderer/components/ui/tooltip"
-    ],
-    "previewLinks": [
-      {
-        "label": "Storybook: VibeDrop publish modal visibility and success states",
-        "kind": "storybook",
-        "href": "http://localhost:6006/?path=/story/real-components-modals--vibe-drop-publish-modal-visibility-and-success-states",
-        "iframeHref": "http://localhost:6006/iframe.html?id=real-components-modals--vibe-drop-publish-modal-visibility-and-success-states&viewMode=story"
       }
     ],
     "hasDefaultExport": true,
@@ -13593,7 +13379,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
     "text": [
       "Auto",
       "Auto (Use Chat Model)",
-      "Auto (Use Chatbox AI)",
       "Auto (Use Last Used)",
       "Chatbox OCRs images with this model and sends the text to models without image support.",
       "Chatbox will automatically use this model to construct search term.",
@@ -13769,7 +13554,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "Import canceled",
       "Import failed: {{error}}",
       "Importing...",
-      "Language",
       "Last Session",
       "Launch at system startup",
       "Light Mode",
@@ -14372,7 +14156,6 @@ export const uiInventoryItems: UiInventoryItem[] = [
       "API key invalid!",
       "Bing Search is provided for free use, but it may have limitations and is subject to change by Microsoft.",
       "BoCha API Key",
-      "Chatbox Search is a paid feature with advanced capabilities and better performance.",
       "Check",
       "Connection successful!",
       "Enter your Querit API Key",

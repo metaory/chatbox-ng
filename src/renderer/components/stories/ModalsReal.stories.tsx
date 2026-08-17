@@ -4,7 +4,7 @@ import { MessageRoleEnum, ModelProviderEnum, type Session } from '@shared/types'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createMemoryHistory, createRootRoute, createRoute, createRouter, RouterProvider } from '@tanstack/react-router'
-import { type ComponentType, useEffect, useReducer, useRef, useState } from 'react'
+import { type ComponentType, useEffect, useReducer, useRef } from 'react'
 import { QueryKeys } from '@/stores/chatStore'
 
 const queryClient = new QueryClient({
@@ -48,7 +48,7 @@ export const ModalRegistryStates: StoryObj = {
         <Text size="sm" c="dimmed">
           Registered modal ids include welcome, file-parse-error, content-viewer, session-settings, app-store-rating,
           artifact-preview, clear-session-list, export-chat, message-edit, json-viewer,
-          report-content, model-edit, thread-name-edit, vibedrop-publish, and copilot-settings.
+          report-content, model-edit, thread-name-edit, and copilot-settings.
         </Text>
       </Paper>
     </Stack>
@@ -154,24 +154,6 @@ export const JsonViewerStates: StoryObj = {
             flags: ['streaming', 'tool_use'],
           },
         }}
-      />
-    </ModalPreview>
-  ),
-}
-
-export const VibedropPublishStates: StoryObj = {
-  name: 'VibeDrop publish modal visibility and success states',
-  parameters: {
-    uiInventoryTargets: ['src/renderer/modals/VibedropPublish'],
-  },
-  render: () => (
-    <ModalPreview
-      title="VibedropPublish"
-      description="VibeDrop publish modal: visibility choice (link-only/public) and the published URL success state with copy and open actions."
-    >
-      <OpenModal
-        loadModal={() => import('@/modals/VibedropPublish').then((module) => module.default)}
-        props={{ html: '<!doctype html><title>Chatbox demo</title><h1>Hello</h1>', uniqueId: 'story-demo' }}
       />
     </ModalPreview>
   ),
