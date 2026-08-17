@@ -13,7 +13,6 @@ import {
   useMemo,
   useState,
 } from 'react'
-import { useTranslation } from 'react-i18next'
 import ReactMarkdown from 'react-markdown'
 import rehypeKatex from 'rehype-katex'
 import remarkBreaks from 'remark-breaks'
@@ -530,7 +529,6 @@ const BlockCode = memo(
     forceColorScheme,
     onCodeCopy,
   }: BlockCodeProps) => {
-    const { t } = useTranslation()
     const computedColorScheme = useComputedColorScheme()
     const colorScheme = forceColorScheme || computedColorScheme
     const shikiTheme: ShikiTheme = colorScheme !== 'light' ? 'one-dark-pro' : 'one-light'
@@ -606,7 +604,7 @@ const BlockCode = memo(
           {!hiddenCodeActions && (
             <Flex gap="xs" align="center">
               {!hiddenCodeCopyButton && (
-                <Tooltip label={t('copy')} withArrow openDelay={1000}>
+                <Tooltip label="copy" withArrow openDelay={1000}>
                   <ActionIcon
                     variant="transparent"
                     color={copied ? 'chatbox-success' : 'chatbox-tertiary'}
@@ -619,7 +617,7 @@ const BlockCode = memo(
               )}
 
               {isRenderableCode && (
-                <Tooltip label={t('Preview')} withArrow openDelay={1000}>
+                <Tooltip label="Preview" withArrow openDelay={1000}>
                   <ActionIcon variant="transparent" color="chatbox-tertiary" size={18} onClick={onClickArtifact}>
                     <IconPlayerPlayFilled size={14} />
                   </ActionIcon>
@@ -627,7 +625,7 @@ const BlockCode = memo(
               )}
 
               {isRenderableCode && String(children).trim() && (
-                <Tooltip label={t('Publish Webpage')} withArrow openDelay={1000}>
+                <Tooltip label="Publish Webpage" withArrow openDelay={1000}>
                   <ActionIcon variant="transparent" color="chatbox-tertiary" size={18} onClick={onClickPublish}>
                     <IconWorldUpload size={14} />
                   </ActionIcon>
@@ -635,7 +633,7 @@ const BlockCode = memo(
               )}
 
               {needCollapse && (
-                <Tooltip label={collapsed ? t('Expand') : t('Collapse')} withArrow openDelay={1000}>
+                <Tooltip label={collapsed ? 'Expand' : 'Collapse'} withArrow openDelay={1000}>
                   <ActionIcon
                     variant="transparent"
                     color="chatbox-tertiary"

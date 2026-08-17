@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { TextField, Slider, Typography, Box } from '@mui/material'
-import { useTranslation } from 'react-i18next'
 
 export interface Props {
   value: number
@@ -9,7 +8,6 @@ export interface Props {
 }
 
 export default function TemperatureSlider(props: Props) {
-  const { t } = useTranslation()
   const [input, setInput] = useState('0.70')
   useEffect(() => {
     setInput(`${props.value}`)
@@ -44,7 +42,7 @@ export default function TemperatureSlider(props: Props) {
   return (
     <Box sx={{ margin: '10px' }} className={props.className}>
       <Box>
-        <Typography gutterBottom>{t('temperature')}</Typography>
+        <Typography gutterBottom>temperature</Typography>
       </Box>
       <Box
         sx={{

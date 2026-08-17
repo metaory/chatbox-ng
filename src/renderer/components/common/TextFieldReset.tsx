@@ -1,6 +1,5 @@
 import type React from 'react'
 import { TextField, Button } from '@mui/material'
-import { useTranslation } from 'react-i18next'
 
 export default function TextFieldReset(
   props: {
@@ -9,7 +8,6 @@ export default function TextFieldReset(
     onValueChange: (value: string) => void
   } & Omit<React.ComponentProps<typeof TextField>, 'defaultValue' | 'value' | 'onChange'>
 ) {
-  const { t } = useTranslation()
   const { onValueChange, defaultValue = '', value, ...rest } = props
   const handleReset = () => onValueChange(defaultValue)
   const handleMouseDown = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -26,7 +24,7 @@ export default function TextFieldReset(
           : {
               endAdornment: (
                 <Button variant="text" onClick={handleReset} onMouseDown={handleMouseDown}>
-                  {t('Reset')}
+                  Reset
                 </Button>
               ),
             }

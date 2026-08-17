@@ -2,7 +2,6 @@ import { ActionIcon, Button, Flex, Image, Popover, Skeleton, Stack, Text, Unstyl
 import type { ImageGeneration } from '@shared/types'
 import { IconPhoto, IconPhotoOff, IconTrash } from '@tabler/icons-react'
 import { useCallback, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useBlob } from '@/hooks/useBlob'
 import { blobToDataUrl, isDirectImageSource } from './constants'
 
@@ -16,7 +15,6 @@ export interface HistoryItemProps {
 }
 
 export function HistoryItem({ record, isActive, isMobile, modelDisplayName, onClick, onDelete }: HistoryItemProps) {
-  const { t } = useTranslation()
   const [deletePopoverOpened, setDeletePopoverOpened] = useState(false)
   const firstImage = record.generatedImages[0]
   const firstThumbnail = record.generatedImageThumbnails?.[0] || firstImage
@@ -25,14 +23,14 @@ export function HistoryItem({ record, isActive, isMobile, modelDisplayName, onCl
     (e: React.MouseEvent) => {
       e.stopPropagation()
       if (isMobile) {
-        if (window.confirm(t('Delete this record?') ?? '')) {
+        if (window.confirm('Delete this record?')) {
           onDelete(record.id)
         }
       } else {
         setDeletePopoverOpened(true)
       }
     },
-    [isMobile, onDelete, record.id, t]
+    [isMobile, onDelete, record.id]
   )
 
   const handleConfirmDelete = useCallback(
@@ -122,13 +120,13 @@ export function HistoryItem({ record, isActive, isMobile, modelDisplayName, onCl
             </Popover.Target>
             <Popover.Dropdown>
               <Stack gap="xs">
-                <Text size="sm">{t('Delete this record?')}</Text>
+                <Text size="sm">Delete this record?</Text>
                 <Flex gap="xs" justify="flex-end">
                   <Button size="xs" variant="default" onClick={handleCancelDelete}>
-                    {t('Cancel')}
+                    Cancel
                   </Button>
                   <Button size="xs" color="red" onClick={handleConfirmDelete}>
-                    {t('Delete')}
+                    Delete
                   </Button>
                 </Flex>
               </Stack>

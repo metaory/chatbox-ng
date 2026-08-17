@@ -41,7 +41,7 @@ const FileParseError = NiceModal.create(({ errorCode, fileName }: FileParseError
     if (errorCode === LOCAL_PARSER_PDF_PASSWORD_PROTECTED_ERROR) {
       return (
         <Text>
-          {t('This PDF is password-protected, so its content cannot be read. Remove the password and upload it again.')}
+          This PDF is password-protected, so its content cannot be read. Remove the password and upload it again.
         </Text>
       )
     }
@@ -57,57 +57,49 @@ const FileParseError = NiceModal.create(({ errorCode, fileName }: FileParseError
     if (isSessionAttachmentRagAuthError(errorCode)) {
       return (
         <Text>
-          {t(
-            'This large file cannot be indexed here. Upload it through Knowledge Base, or remove it and use a smaller attachment instead.'
-          )}
+          This large file cannot be indexed here. Upload it through Knowledge Base, or remove it and use a smaller attachment instead.
         </Text>
       )
     }
     if (isSessionAttachmentRagIndexingError(errorCode)) {
       return (
         <Text>
-          {t(
-            'Large file indexing failed. The file was parsed, but Chatbox could not save the local search index. Remove this file and try uploading it again. If the problem continues, use a smaller file or Knowledge Base.'
-          )}
+          Large file indexing failed. The file was parsed, but Chatbox could not save the local search index. Remove this file and try uploading it again. If the problem continues, use a smaller file or Knowledge Base.
         </Text>
       )
     }
     if (errorCode === SESSION_ATTACHMENT_RAG_REQUIRES_KNOWLEDGE_BASE_ERROR) {
       return (
         <Text>
-          {t('This attachment is too large for chat attachments. Please upload it through Knowledge Base instead.')}
+          This attachment is too large for chat attachments. Please upload it through Knowledge Base instead.
         </Text>
       )
     }
     if (errorCode === SESSION_ATTACHMENT_RAG_PARSED_CONTENT_TOO_LARGE_ERROR) {
       return (
         <Text>
-          {t(
-            'This document contains too much text for chat attachments. Please upload it through Knowledge Base instead.'
-          )}
+          This document contains too much text for chat attachments. Please upload it through Knowledge Base instead.
         </Text>
       )
     }
     if (errorCode === SESSION_ATTACHMENT_RAG_REQUIRES_TOOL_USE_MODEL_ERROR) {
       return (
         <Text>
-          {t(
-            'Large file Q&A requires a model with tool use support. Switch to a compatible model or remove this file.'
-          )}
+          Large file Q&A requires a model with tool use support. Switch to a compatible model or remove this file.
         </Text>
       )
     }
 
     if (!errorDetail) {
       // 未知错误
-      return <Text>{t('Failed to parse file. Please try again or use a different file format.')}</Text>
+      return <Text>Failed to parse file. Please try again or use a different file format.</Text>
     }
 
     return (
       <Trans
         i18nKey={errorDetail.i18nKey}
         values={{
-          model: t('current model'),
+          model: 'current model',
         }}
         components={{
           OpenSettingButton: <span />,
@@ -131,11 +123,11 @@ const FileParseError = NiceModal.create(({ errorCode, fileName }: FileParseError
   }
 
   return (
-    <AdaptiveModal opened={modal.visible} onClose={onClose} size="md" centered title={t('File Processing Error')}>
+    <AdaptiveModal opened={modal.visible} onClose={onClose} size="md" centered title="File Processing Error">
       <Stack gap="md">
         {fileName && (
           <Text size="sm" c="chatbox-secondary">
-            {t('File')}: {fileName}
+            File: {fileName}
           </Text>
         )}
 

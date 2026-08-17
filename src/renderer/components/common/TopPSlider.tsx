@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { TextField, Slider, Typography, Box } from '@mui/material'
-import { useTranslation } from 'react-i18next'
 
 export interface Props {
   topP: number
@@ -9,7 +8,6 @@ export interface Props {
 }
 
 export default function TopPSlider(props: Props) {
-  const { t } = useTranslation()
   const [input, setInput] = useState('1')
   useEffect(() => {
     setInput(`${props.topP}`)
@@ -45,7 +43,7 @@ export default function TopPSlider(props: Props) {
     <Box sx={{ margin: '10px' }} className={props.className}>
       <Box>
         <Typography id="discrete-slider" gutterBottom>
-          {t('Top P')}
+          Top P
         </Typography>
       </Box>
       <Box

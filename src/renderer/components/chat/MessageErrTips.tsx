@@ -124,13 +124,13 @@ function ErrorActionButtons(props: {
   return (
     <Flex justify="flex-end" mt="xs" gap={4}>
       {showTranslateButton && (
-        <Tooltip label={translatedText ? t('Show original') : t('Translate')} withArrow openDelay={1000}>
+        <Tooltip label={translatedText ? 'Show original' : 'Translate'} withArrow openDelay={1000}>
           <ActionIcon variant="subtle" size="sm" color="red" disabled={isTranslating} onClick={onTranslate}>
             {isTranslating ? <Loader size={14} color="red" /> : <IconLanguage size={14} />}
           </ActionIcon>
         </Tooltip>
       )}
-      <Tooltip label={t('Copy')} withArrow openDelay={1000}>
+      <Tooltip label="Copy" withArrow openDelay={1000}>
         <ActionIcon variant="subtle" size="sm" color="red" onClick={onCopy}>
           {copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
         </ActionIcon>
@@ -347,7 +347,7 @@ export default function MessageErrTips(props: {
       {/* Intentional: icon + text label are separate click targets to enlarge the tap area */}
       {onRetry && (
         <Flex mt="xs" gap="xs" align="center">
-          <ActionIcon variant="light" size="sm" color="red" onClick={onRetry} aria-label={t('Retry')}>
+          <ActionIcon variant="light" size="sm" color="red" onClick={onRetry} aria-label="Retry">
             <IconReload size={14} />
           </ActionIcon>
           <Text
@@ -357,7 +357,7 @@ export default function MessageErrTips(props: {
             className="cursor-pointer border-0 bg-transparent p-0"
             onClick={onRetry}
           >
-            {t('Retry')}
+            Retry
           </Text>
         </Flex>
       )}

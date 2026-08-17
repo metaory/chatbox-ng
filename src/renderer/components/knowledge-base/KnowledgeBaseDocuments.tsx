@@ -381,7 +381,7 @@ const KnowledgeBaseDocuments: React.FC<KnowledgeBaseDocumentsProps> = ({ knowled
 
       const files = e.dataTransfer.files
       if (files.length === 0) {
-        toast.warning(t('No files were dropped'))
+        toast.warning('No files were dropped')
         return
       }
 
@@ -574,20 +574,20 @@ const KnowledgeBaseDocuments: React.FC<KnowledgeBaseDocumentsProps> = ({ knowled
         // Determine label based on actual parser type used
         const getParserLabel = () => {
           if (isParsedContentTooLarge) {
-            return t('Too much text')
+            return 'Too much text'
           }
           switch (parserType) {
             case 'mineru':
-              return t('MinerU parse failed')
+              return 'MinerU parse failed'
             default:
-              return t('Local parse failed')
+              return 'Local parse failed'
           }
         }
         const errorLabel = isParsedContentTooLarge
           ? t('Parsed document content must be {{limit}} or smaller.', {
               limit: KNOWLEDGE_BASE_MAX_PARSED_CONTENT_SIZE_LABEL,
             })
-          : error || t('Processing failed')
+          : error || 'Processing failed'
         const isRemoteParser = parserType === 'mineru'
         return (
           <Flex gap={4} align="center">
@@ -688,7 +688,7 @@ const KnowledgeBaseDocuments: React.FC<KnowledgeBaseDocumentsProps> = ({ knowled
                 <IconChevronRight size={16} color="var(--chatbox-tint-gray)" />
               )}
               <Text size="sm" fw={600} className="text-chatbox-tint-primary">
-                {t('Documents')}
+                Documents
               </Text>
               <Pill
                 size="xs"
@@ -714,7 +714,7 @@ const KnowledgeBaseDocuments: React.FC<KnowledgeBaseDocumentsProps> = ({ knowled
                 handleAddFile()
               }}
             >
-              {showUploadArea ? t('Done') : t('Add File')}
+              {showUploadArea ? 'Done' : 'Add File'}
             </Button>
           </Group>
 
@@ -752,13 +752,13 @@ const KnowledgeBaseDocuments: React.FC<KnowledgeBaseDocumentsProps> = ({ knowled
                       color={isDragOver ? 'var(--chatbox-tint-brand)' : 'var(--chatbox-tint-gray)'}
                     />
                     <Text size="sm" fw={500} ta="center" c={isDragOver ? 'blue' : 'dimmed'}>
-                      {isDragOver ? t('Drop files here') : t('Drag and drop files here, or click to browse')}
+                      {isDragOver ? 'Drop files here' : 'Drag and drop files here, or click to browse'}
                     </Text>
                     <Text size="xs" c="dimmed" ta="center" mt={-4}>
-                      {t('Supported formats')}: {supportedTypes.display.join(', ')}
+                      Supported formats: {supportedTypes.display.join(', ')}
                     </Text>
                     <Text size="xs" c="dimmed" ta="center" mt={-8}>
-                      {t('Maximum file size')}: {KNOWLEDGE_BASE_MAX_FILE_SIZE_LABEL}
+                      Maximum file size: {KNOWLEDGE_BASE_MAX_FILE_SIZE_LABEL}
                     </Text>
                   </Stack>
                 </Paper>
@@ -768,7 +768,7 @@ const KnowledgeBaseDocuments: React.FC<KnowledgeBaseDocumentsProps> = ({ knowled
                     variant="light"
                     color="red"
                     icon={<IconExclamationCircle size={18} />}
-                    title={t('Some files were not uploaded')}
+                    title="Some files were not uploaded"
                     styles={{
                       root: {
                         border: 'var(--chatbox-border-width) solid var(--chatbox-border-primary)',
@@ -853,7 +853,7 @@ const KnowledgeBaseDocuments: React.FC<KnowledgeBaseDocumentsProps> = ({ knowled
                                         chunksPreview.openPreview(doc)
                                       }}
                                     >
-                                      {doc.chunk_count} {t('chunks')}
+                                      {doc.chunk_count} chunks
                                     </Text>
                                     {doc.parser_type && (
                                       <Pill size="xs" c="dimmed">
@@ -874,7 +874,7 @@ const KnowledgeBaseDocuments: React.FC<KnowledgeBaseDocumentsProps> = ({ knowled
                                           chunksPreview.openPreview(doc)
                                         }}
                                       >
-                                        {doc.chunk_count}/{doc.total_chunks} {t('chunks')} (
+                                        {doc.chunk_count}/{doc.total_chunks} chunks (
                                         {getProgressPercentage(doc.chunk_count, doc.total_chunks)}%)
                                       </Text>
                                     </Group>
@@ -905,7 +905,7 @@ const KnowledgeBaseDocuments: React.FC<KnowledgeBaseDocumentsProps> = ({ knowled
                                 color="blue"
                                 size="sm"
                                 onClick={() => handleRetryFile(doc.id)}
-                                title={t('Retry locally')}
+                                title="Retry locally"
                               >
                                 <IconRefresh size={14} />
                               </ActionIcon>
@@ -916,7 +916,7 @@ const KnowledgeBaseDocuments: React.FC<KnowledgeBaseDocumentsProps> = ({ knowled
                                 color="orange"
                                 size="sm"
                                 onClick={() => handlePauseFile(doc.id)}
-                                title={t('Pause')}
+                                title="Pause"
                               >
                                 <IconPlayerPause size={14} />
                               </ActionIcon>
@@ -927,7 +927,7 @@ const KnowledgeBaseDocuments: React.FC<KnowledgeBaseDocumentsProps> = ({ knowled
                                 color="green"
                                 size="sm"
                                 onClick={() => handleResumeFile(doc.id)}
-                                title={t('Resume')}
+                                title="Resume"
                               >
                                 <IconPlayerPlay size={14} />
                               </ActionIcon>
@@ -938,7 +938,7 @@ const KnowledgeBaseDocuments: React.FC<KnowledgeBaseDocumentsProps> = ({ knowled
                               size="sm"
                               onClick={() => handleDeleteFile(doc.id)}
                               disabled={doc.status === 'processing'}
-                              title={t('Delete')}
+                              title="Delete"
                             >
                               <IconTrash size={14} />
                             </ActionIcon>
@@ -984,10 +984,10 @@ const KnowledgeBaseDocuments: React.FC<KnowledgeBaseDocumentsProps> = ({ knowled
                 <Stack align="center" gap="sm">
                   <IconFile size={48} color="var(--chatbox-tint-placeholder)" />
                   <Text size="sm" c="dimmed" ta="center">
-                    {t('No documents yet')}
+                    No documents yet
                   </Text>
                   <Text size="xs" c="dimmed" ta="center">
-                    {t('Upload your first document to get started')}
+                    Upload your first document to get started
                   </Text>
                 </Stack>
               </Box>

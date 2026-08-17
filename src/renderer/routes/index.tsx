@@ -58,7 +58,7 @@ export const Route = createFileRoute('/')({
 })
 
 function Index() {
-  const { t, i18n } = useTranslation()
+  const { i18n } = useTranslation()
   const isSmallScreen = useIsSmallScreen()
 
   const newSessionState = useUIStore((s) => s.newSessionState)
@@ -327,7 +327,7 @@ function Index() {
 
       void generate(newSession.id, assistantMessage, { operationType: 'send_message' })
     },
-    [createPersistedChatSession, i18n.language, session.settings?.modelId, t]
+    [createPersistedChatSession, i18n.language, session.settings?.modelId]
   )
 
   const onSelectModel = useCallback((p: string, m: string) => {
@@ -372,7 +372,7 @@ function Index() {
             <Stack align="center" justify="center" gap="sm" className="min-h-full">
               <HomepageIcon className="h-8 w-8" />
               <Text fw="600" size={isSmallScreen ? 'sm' : 'md'}>
-                {t('What can I help you with today?')}
+                What can I help you with today?
               </Text>
             </Stack>
           )}
@@ -450,7 +450,6 @@ function Index() {
 const MAX_COPILOTS_TO_SHOW = 10
 
 const CopilotPicker = ({ selectedId, onSelect }: { selectedId?: string; onSelect?(copilot?: CopilotDetail): void }) => {
-  const { t } = useTranslation()
   const isSmallScreen = useIsSmallScreen()
   const widthFull = useUIStore((s) => s.widthFull)
   const { copilots: myCopilots } = useMyCopilots()
@@ -487,7 +486,7 @@ const CopilotPicker = ({ selectedId, onSelect }: { selectedId?: string; onSelect
       <Stack gap="xs" className={widthFull ? 'w-full' : 'w-full max-w-4xl mx-auto'}>
         <Flex align="center" justify="space-between">
           <Text size="xxs" c="chatbox-tertiary">
-            {t('My Copilots').toUpperCase()}
+            {'My Copilots'.toUpperCase()}
           </Text>
 
           {!isSmallScreen && (
@@ -563,7 +562,7 @@ const CopilotPicker = ({ selectedId, onSelect }: { selectedId?: string; onSelect
             )}
             {showMoreButton && (
               <CopilotItem
-                name={t('View All Copilots')}
+                name="View All Copilots"
                 noAvatar={true}
                 selected={false}
                 onClick={() =>

@@ -3,7 +3,6 @@ import { Avatar, Button, FileButton, Flex, Stack, Text, Textarea, TextInput } fr
 import type { CopilotDetail } from '@shared/types'
 import { IconMessageCircle2Filled, IconPhoto, IconUpload } from '@tabler/icons-react'
 import { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { v4 as uuidv4 } from 'uuid'
 import { AdaptiveModal } from '@/components/common/AdaptiveModal'
 import { ScalableIcon } from '@/components/common/ScalableIcon'
@@ -24,7 +23,6 @@ export interface CopilotSettingsModalProps {
 const CopilotSettingsModal = NiceModal.create(
   ({ copilot, onSave, onDelete, mode = 'create' }: CopilotSettingsModalProps) => {
     const modal = useModal()
-    const { t } = useTranslation()
     const isSmallScreen = useIsSmallScreen()
     const [formData, setFormData] = useState<CopilotDetail | null>(null)
     const [errors, setErrors] = useState<Record<string, string>>({})
@@ -56,7 +54,7 @@ const CopilotSettingsModal = NiceModal.create(
     const handleIconUpload = (file: File | null) => {
       if (!file || !formData) return
       if (file.size > MAX_IMAGE_SIZE) {
-        setErrors((prev) => ({ ...prev, avatar: t('Support jpg or png file smaller than 5MB') }))
+        setErrors((prev) => ({ ...prev, avatar: 'Support jpg or png file smaller than 5MB' }))
 
         return
       }
@@ -74,7 +72,7 @@ const CopilotSettingsModal = NiceModal.create(
     const handleBackgroundUpload = (file: File | null) => {
       if (!file || !formData) return
       if (file.size > MAX_IMAGE_SIZE) {
-        setErrors((prev) => ({ ...prev, backgroundImage: t('Support jpg or png file smaller than 5MB') }))
+        setErrors((prev) => ({ ...prev, backgroundImage: 'Support jpg or png file smaller than 5MB' }))
         return
       }
       const key = StorageKeyGenerator.picture(`copilot-bg:${formData.id}`)
@@ -93,10 +91,10 @@ const CopilotSettingsModal = NiceModal.create(
       const newErrors: Record<string, string> = {}
 
       if (!formData.name?.trim()) {
-        newErrors.name = t('cannot be empty')
+        newErrors.name = 'cannot be empty'
       }
       if (!formData.prompt?.trim()) {
-        newErrors.prompt = t('cannot be empty')
+        newErrors.prompt = 'cannot be empty'
       }
 
       setErrors(newErrors)
@@ -132,7 +130,7 @@ const CopilotSettingsModal = NiceModal.create(
       <AdaptiveModal
         opened={modal.visible}
         onClose={handleClose}
-        title={t('Copilot Settings')}
+        title="Copilot Settings"
         centered
         size="lg"
         trapFocus={false}
@@ -145,13 +143,13 @@ const CopilotSettingsModal = NiceModal.create(
           <TextInput
             label={
               <Text size="sm" fw={500}>
-                {t('Title')}
+                Title
                 <Text component="span" c="red">
                   *
                 </Text>
               </Text>
             }
-            placeholder={t('Title') || ''}
+            placeholder="Title"
             value={formData.name || ''}
             onChange={(e) => updateField('name', e.currentTarget.value)}
             error={errors.name}
@@ -163,7 +161,7 @@ const CopilotSettingsModal = NiceModal.create(
             {/* Icon Upload */}
             <Stack gap="xs" className="flex-1">
               <Text size="sm" fw={500}>
-                {t('Icon')}
+                Icon
               </Text>
               <Flex align="center" gap="sm">
                 {formData.avatar?.type === 'storage-key' || formData.avatar?.type === 'url' || formData.picUrl ? (
@@ -202,7 +200,7 @@ const CopilotSettingsModal = NiceModal.create(
                       size="xs"
                       leftSection={<ScalableIcon icon={IconUpload} size={14} />}
                     >
-                      {t('Upload')}
+                      Upload
                     </Button>
                   )}
                 </FileButton>
@@ -217,7 +215,7 @@ const CopilotSettingsModal = NiceModal.create(
             {/* Background Image Upload */}
             <Stack gap="xs" className="flex-1">
               <Text size="sm" fw={500}>
-                {t('Set Background Image')}
+                Set Background Image
               </Text>
               <Flex align="center" gap="sm">
                 {formData.backgroundImage ? (
@@ -253,7 +251,7 @@ const CopilotSettingsModal = NiceModal.create(
                       size="xs"
                       leftSection={<ScalableIcon icon={IconUpload} size={14} />}
                     >
-                      {t('Upload')}
+                      Upload
                     </Button>
                   )}
                 </FileButton>
@@ -270,10 +268,10 @@ const CopilotSettingsModal = NiceModal.create(
           <Textarea
             label={
               <Text size="sm" fw={500}>
-                {t('Description')}
+                Description
               </Text>
             }
-            placeholder={t('Description') || ''}
+            placeholder="Description"
             value={formData.description || ''}
             onChange={(e) => updateField('description', e.currentTarget.value)}
             error={errors.description}
@@ -286,13 +284,13 @@ const CopilotSettingsModal = NiceModal.create(
           <Textarea
             label={
               <Text size="sm" fw={500}>
-                {t('Prompt Content')}
+                Prompt Content
                 <Text component="span" c="red">
                   *
                 </Text>
               </Text>
             }
-            placeholder={t('Copilot Prompt Demo') || ''}
+            placeholder="You are a translator, and your job is to translate from Non-English to English"
             value={formData.prompt || ''}
             onChange={(e) => updateField('prompt', e.currentTarget.value)}
             error={errors.prompt}
@@ -306,9 +304,9 @@ const CopilotSettingsModal = NiceModal.create(
         <Flex justify="flex-end" align="center" mt="lg">
           <Flex gap="sm">
             <Button variant="outline" onClick={handleClose}>
-              {t('cancel')}
+              cancel
             </Button>
-            <Button onClick={handleSave}>{t('save')}</Button>
+            <Button onClick={handleSave}>save</Button>
           </Flex>
         </Flex>
       </AdaptiveModal>

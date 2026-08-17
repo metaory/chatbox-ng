@@ -34,5 +34,5 @@ export function getCostLevelBarCount(costLevel: string | undefined) {
 }
 
 export function getCostLabel(costLevel: string | undefined, t: (key: string) => string) {
-  return getCostLevelBarCount(costLevel) > 1 ? t('Consumes more token') : ''
+  return getCostLevelBarCount(costLevel) > 1 ? 'Consumes more token' : ''
 }

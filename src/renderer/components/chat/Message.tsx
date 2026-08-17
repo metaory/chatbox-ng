@@ -147,7 +147,7 @@ const BackgroundTaskNotificationUI: FC<{ task: MessageBackgroundTask; className?
             className={failed ? 'text-chatbox-tint-error' : 'text-chatbox-tint-success'}
           />
           <Text size="xs" c={failed ? 'chatbox-error' : 'chatbox-secondary'} fw={500} truncate="end">
-            {failed ? t('Image generation failed') : t('Image generated')}
+            {failed ? 'Image generation failed' : 'Image generated'}
           </Text>
           <Text size="xs" c="chatbox-tertiary" className="shrink-0 tabular-nums">
             · {t('Waited {{time}}', { time: formatElapsedTime(task.elapsedMs) })}
@@ -229,7 +229,7 @@ const _Message: FC<Props> = (props) => {
   }, [sessionId, msg])
 
   const notifyGenerationLocked = useCallback(() => {
-    toastActions.add(t('Wait for the current replies to finish'), 2500)
+    toastActions.add('Wait for the current replies to finish', 2500)
   }, [t])
 
   const handleRefresh = useCallback(async () => {
@@ -325,7 +325,7 @@ const _Message: FC<Props> = (props) => {
 
   const onCopyMsg = useCallback(() => {
     copyToClipboard(getMessageText(msg, true, false))
-    toastActions.add(t('copied to clipboard'), 2000)
+    toastActions.add('copied to clipboard', 2000)
   }, [msg, t])
 
   // 复制特定 reasoning 内容
@@ -335,7 +335,7 @@ const _Message: FC<Props> = (props) => {
       e.stopPropagation()
       if (content) {
         copyToClipboard(content)
-        toastActions.add(t('copied to clipboard'))
+        toastActions.add('copied to clipboard')
       }
     }
 
@@ -366,7 +366,7 @@ const _Message: FC<Props> = (props) => {
   }, [generationLocked, msg, notifyGenerationLocked, sessionId])
 
   const onViewMessageJson = useCallback(async () => {
-    await NiceModal.show('json-viewer', { title: t('Message Raw JSON'), data: msg })
+    await NiceModal.show('json-viewer', { title: 'Message Raw JSON', data: msg })
   }, [msg, t])
 
   // Units like "tokens", "words", "tkn", "s" are intentionally kept as hardcoded English
@@ -374,31 +374,31 @@ const _Message: FC<Props> = (props) => {
   const tips: { label: string; tooltip?: string }[] = []
   if (props.sessionType === 'chat' || !props.sessionType) {
     if (showModelName && props.msg.role === 'assistant') {
-      tips.push({ label: props.msg.model || 'unknown', tooltip: t('Model') as string })
+      tips.push({ label: props.msg.model || 'unknown', tooltip: 'Model' as string })
     }
     if (showTokenUsed && msg.role === 'assistant' && !msg.generating) {
       const consumedTokens = getMessageTokenDisplay(msg)
       if (consumedTokens) {
         tips.push({
           label: `${consumedTokens} tokens`,
-          tooltip: t('Total tokens consumed') as string,
+          tooltip: 'Total tokens consumed' as string,
         })
       }
     }
     if (showWordCount && !msg.generating) {
       const wc = msg.wordCount !== undefined ? msg.wordCount : countWord(getMessageText(msg))
-      tips.push({ label: `${wc} words`, tooltip: t('Word count') as string })
+      tips.push({ label: `${wc} words`, tooltip: 'Word count' as string })
     }
     if (showFirstTokenLatency && msg.role === 'assistant' && !msg.generating) {
       if (msg.firstTokenLatency)
         tips.push({
           label: `${(msg.firstTokenLatency / 1000).toFixed(1)}s`,
-          tooltip: t('First token latency') as string,
+          tooltip: 'First token latency' as string,
         })
     }
   } else if (props.sessionType === 'picture') {
     if (showModelName && props.msg.role === 'assistant') {
-      tips.push({ label: props.msg.model || 'unknown', tooltip: t('Model') as string })
+      tips.push({ label: props.msg.model || 'unknown', tooltip: 'Model' as string })
       if (props.msg.style) tips.push({ label: props.msg.style })
     }
   }
@@ -531,7 +531,7 @@ const _Message: FC<Props> = (props) => {
                  hover:bg-chatbox-background-brand-secondary transition-colors"
       onClick={() => setIsCollapsed(!isCollapsed)}
     >
-      {isCollapsed ? t('Expand') : t('Collapse')}
+      {isCollapsed ? 'Expand' : 'Collapse'}
     </span>
   )
 
@@ -547,26 +547,26 @@ const _Message: FC<Props> = (props) => {
         ? [
             !msg.generating &&
               msg.role === 'assistant' && {
-                text: t('Reply Again'),
+                text: 'Reply Again',
                 icon: IconReload,
                 testId: TestId.message.actionMenuRetry,
                 onClick: handleRefresh,
                 disabled: generationLocked && !isSmallScreen,
               },
             msg.role !== 'assistant' && {
-              text: t('Reply Again Below'),
+              text: 'Reply Again Below',
               icon: IconArrowDown,
               testId: TestId.message.actionMenuRetryBelow,
               onClick: onGenerateMore,
             },
             !(msg.role === 'assistant' && props.sessionType === 'picture') && {
-                text: t('Edit'),
+                text: 'Edit',
                 icon: IconPencil,
                 testId: TestId.message.actionMenuEdit,
                 onClick: onEditClick,
               },
             !(props.sessionType === 'picture' && msg.role === 'assistant') && {
-              text: t('copy'),
+              text: 'copy',
               icon: IconCopy,
               testId: TestId.message.actionMenuCopy,
               onClick: onCopyMsg,
@@ -574,14 +574,14 @@ const _Message: FC<Props> = (props) => {
             !msg.generating &&
               props.sessionType === 'picture' &&
               msg.role === 'assistant' && {
-                text: t('Generate More Images Below'),
+                text: 'Generate More Images Below',
                 icon: IconPhotoPlus,
                 onClick: onGenerateMore,
               },
           ].filter((i) => !!i)
         : []),
       {
-        text: t('Quote'),
+        text: 'Quote',
         icon: IconQuoteFilled,
         testId: TestId.message.actionQuote,
         onClick: quoteMsg,
@@ -590,7 +590,7 @@ const _Message: FC<Props> = (props) => {
       ...(msg.role === 'assistant'
         ? [
             {
-              text: t('report'),
+              text: 'report',
               icon: IconMessageReport,
               onClick: onReport,
             },
@@ -599,7 +599,7 @@ const _Message: FC<Props> = (props) => {
       ...(process.env.NODE_ENV === 'development'
         ? [
             {
-              text: t('View Message JSON'),
+              text: 'View Message JSON',
               icon: IconCode,
               onClick: onViewMessageJson,
             },
@@ -607,7 +607,7 @@ const _Message: FC<Props> = (props) => {
         : []),
       {
         doubleCheck: true,
-        text: t('delete'),
+        text: 'delete',
         icon: IconTrash,
         testId: TestId.message.actionDelete,
         confirmTestId: TestId.message.actionDeleteConfirm,
@@ -773,7 +773,7 @@ const _Message: FC<Props> = (props) => {
                         </div>
                         <Stack gap={2} className="min-w-0 flex-1">
                           <Text size="sm" fw={600} c="chatbox-primary">
-                            {t('Work Mode suggested')}
+                            Work Mode suggested
                           </Text>
                           {item.reason && (
                             <Text size="xs" c="chatbox-secondary" className="break-words [overflow-wrap:anywhere]">
@@ -789,7 +789,7 @@ const _Message: FC<Props> = (props) => {
                             className="shrink-0"
                             onClick={handleContinueNormalResponse}
                           >
-                            {t('Continue in Chat Mode')}
+                            Continue in Chat Mode
                           </Button>
                           <Button
                             size="xs"
@@ -799,7 +799,7 @@ const _Message: FC<Props> = (props) => {
                             leftSection={<IconRobot size={14} />}
                             onClick={handleStartAgentModeResponse}
                           >
-                            {t('Use Work Mode')}
+                            Use Work Mode
                           </Button>
                         </Flex>
                       </Flex>
@@ -819,7 +819,7 @@ const _Message: FC<Props> = (props) => {
                           onClick={async (e) => {
                             e.stopPropagation()
                             await NiceModal.show('content-viewer', {
-                              title: t('OCR Text Content'),
+                              title: 'OCR Text Content',
                               content: item.ocrResult,
                             })
                           }}
@@ -827,23 +827,23 @@ const _Message: FC<Props> = (props) => {
                           {isUserBubble ? (
                             <>
                               <span className="block mb-1 text-xs text-white/80">
-                                {t('OCR Text')} ({item.ocrResult.length} {t('characters')})
+                                OCR Text ({item.ocrResult.length} characters)
                               </span>
                               <span className="block text-sm text-white line-clamp-2" title={item.ocrResult}>
                                 {item.ocrResult}
                               </span>
-                              <span className="block mt-1 text-xs text-white/60">{t('Click to view full text')}</span>
+                              <span className="block mt-1 text-xs text-white/60">Click to view full text</span>
                             </>
                           ) : (
                             <>
                               <Text size="xs" className="block mb-1" c="chatbox-tertiary">
-                                {t('OCR Text')} ({item.ocrResult.length} {t('characters')})
+                                OCR Text ({item.ocrResult.length} characters)
                               </Text>
                               <Text size="sm" className="line-clamp-2" c="chatbox-secondary" title={item.ocrResult}>
                                 {item.ocrResult}
                               </Text>
                               <Text size="xs" className="mt-1 inline-block" c="blue">
-                                {t('Click to view full text')}
+                                Click to view full text
                               </Text>
                             </>
                           )}
@@ -899,18 +899,18 @@ const _Message: FC<Props> = (props) => {
         <Modal
           opened={retryChoiceOpened}
           onClose={() => setRetryChoiceOpened(false)}
-          title={t('Retry failed response')}
+          title="Retry failed response"
           centered
         >
           <Stack gap="sm">
             <Text size="sm" c="chatbox-secondary">
-              {t('The response failed after the last step. What would you like to retry?')}
+              The response failed after the last step. What would you like to retry?
             </Text>
             <Button color="chatbox-brand" onClick={handleRetryLastStep}>
-              {t('Retry from last step')}
+              Retry from last step
             </Button>
             <Button variant="light" color="chatbox-brand" onClick={handleRetryWholeMessage}>
-              {t('Retry whole message')}
+              Retry whole message
             </Button>
           </Stack>
         </Modal>
@@ -965,7 +965,7 @@ const _Message: FC<Props> = (props) => {
             : ''
         }
       >
-        <MessageActionIcon icon={IconPlayerStopFilled} tooltip={t('Stop generating this reply')} onClick={handleStop} />
+        <MessageActionIcon icon={IconPlayerStopFilled} tooltip="Stop generating this reply" onClick={handleStop} />
       </Flex>
     </Flex>
   )
@@ -994,7 +994,7 @@ const _Message: FC<Props> = (props) => {
           <MessageActionIcon
             testId={TestId.message.actionBarRetry}
             icon={IconReload}
-            tooltip={generationLocked ? t('Wait for the current replies to finish') : t('Reply Again')}
+            tooltip={generationLocked ? 'Wait for the current replies to finish' : 'Reply Again'}
             onClick={handleMessageRetry}
             disabled={generationLocked && !isSmallScreen}
           />
@@ -1003,7 +1003,7 @@ const _Message: FC<Props> = (props) => {
           <MessageActionIcon
             testId={TestId.message.actionBarRetryBelow}
             icon={IconArrowDown}
-            tooltip={t('Reply Again Below')}
+            tooltip="Reply Again Below"
             onClick={onGenerateMore}
           />
         )}
@@ -1011,7 +1011,7 @@ const _Message: FC<Props> = (props) => {
           <MessageActionIcon
             testId={TestId.message.actionBarEdit}
             icon={IconPencil}
-            tooltip={t('Edit')}
+            tooltip="Edit"
             onClick={onEditClick}
           />
         )}
@@ -1019,12 +1019,12 @@ const _Message: FC<Props> = (props) => {
           <MessageActionIcon
             testId={TestId.message.actionBarCopy}
             icon={IconCopy}
-            tooltip={t('Copy')}
+            tooltip="Copy"
             onClick={onCopyMsg}
           />
         )}
         {!msg.generating && props.sessionType === 'picture' && msg.role === 'assistant' && (
-          <MessageActionIcon icon={IconPhotoPlus} tooltip={t('Generate More Images Below')} onClick={onGenerateMore} />
+          <MessageActionIcon icon={IconPhotoPlus} tooltip="Generate More Images Below" onClick={onGenerateMore} />
         )}
         <ActionMenu
           items={actionMenuItems}
@@ -1032,7 +1032,7 @@ const _Message: FC<Props> = (props) => {
           opened={actionMenuOpened}
           onChange={(opened) => setActionMenuOpened(opened)}
         >
-          <MessageActionIcon testId={TestId.message.actionMore} icon={IconDotsVertical} tooltip={t('More')} />
+          <MessageActionIcon testId={TestId.message.actionMore} icon={IconDotsVertical} tooltip="More" />
         </ActionMenu>
       </Flex>
     </Flex>

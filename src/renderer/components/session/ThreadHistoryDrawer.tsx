@@ -5,7 +5,6 @@ import type { Session, SessionThreadBrief } from '@shared/types'
 import { IconDots, IconEdit, IconSwitch, IconTrash, IconX } from '@tabler/icons-react'
 import { useAtom, useAtomValue } from 'jotai'
 import { useCallback, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useIsSmallScreen } from '@/hooks/useScreenChange'
 import { currentSessionIdAtom, showThreadHistoryDrawerAtom } from '@/stores/atoms'
 import { scrollToIndex } from '@/stores/scrollActions'
@@ -16,7 +15,6 @@ import ActionMenu from '../ActionMenu'
 import { ScalableIcon } from '../common/ScalableIcon'
 
 export default function ThreadHistoryDrawer({ session }: { session: Session }) {
-  const { t } = useTranslation()
   const [showDrawer, setShowDrawer] = useAtom(showThreadHistoryDrawerAtom)
 
   const currentMessageList = useMemo(() => getAllMessageList(session), [session])
@@ -57,7 +55,7 @@ export default function ThreadHistoryDrawer({ session }: { session: Session }) {
       open={!!showDrawer}
       onClose={() => setShowDrawer(false)}
       onOpen={() => setShowDrawer(true)}
-      title={t('Thread History') || ''}
+      title="Thread History"
       ModalProps={{
         keepMounted: true, // Better open performance on mobile.
       }}
@@ -71,7 +69,7 @@ export default function ThreadHistoryDrawer({ session }: { session: Session }) {
     >
       <Flex align="center" justify="space-between" className="px-sm py-xs">
         <Text size="md" fw={600}>
-          {t('Thread History')}
+          Thread History
         </Text>
         <ActionIcon variant="transparent" color="chatbox-primary" onClick={() => setShowDrawer(false)}>
           <ScalableIcon icon={IconX} size={20} />
@@ -100,9 +98,8 @@ function ThreadItem(props: {
   switchThread(threadId: string): void
   lastOne?: boolean
 }) {
-  const { t } = useTranslation()
   const { thread, goto, switchThread, lastOne } = props
-  const threadName = thread.name || t('New Thread')
+  const threadName = thread.name || 'New Thread'
   const currentSessionId = useAtomValue(currentSessionIdAtom)
   const isSmallScreen = useIsSmallScreen()
 
@@ -138,14 +135,14 @@ function ThreadItem(props: {
         position="bottom"
         type="desktop"
         items={[
-          { text: t('Edit Thread Name'), icon: IconEdit, onClick: onEditButtonClick },
-          { text: t('Switch'), icon: IconSwitch, onClick: onSwitchButtonClick },
+          { text: 'Edit Thread Name', icon: IconEdit, onClick: onEditButtonClick },
+          { text: 'Switch', icon: IconSwitch, onClick: onSwitchButtonClick },
           {
             divider: true,
           },
           {
             doubleCheck: true,
-            text: t('Delete'),
+            text: 'Delete',
             icon: IconTrash,
             onClick: () => {
               if (!currentSessionId) {

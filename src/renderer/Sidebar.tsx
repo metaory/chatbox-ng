@@ -17,7 +17,6 @@ import {
 } from '@tabler/icons-react'
 import { useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
 import Divider from './components/common/Divider'
 import { ScalableIcon } from './components/common/ScalableIcon'
@@ -51,7 +50,6 @@ function setIosTextInteractionEnabled(enabled: boolean) {
 }
 
 export default function Sidebar() {
-  const { t } = useTranslation()
   const versionHook = useVersion()
   const navigate = useNavigate()
   const showSidebar = useUIStore((s) => s.showSidebar)
@@ -185,7 +183,7 @@ export default function Sidebar() {
           </Flex>
 
           <Flex align="center" gap={2} style={{ flexShrink: 0 }}>
-            <Tooltip label={t('Search')} openDelay={1000} withArrow>
+            <Tooltip label="Search" openDelay={1000} withArrow>
               <ActionIcon
                 variant="subtle"
                 color="chatbox-tertiary"
@@ -196,7 +194,7 @@ export default function Sidebar() {
                 <IconSearch size={18} />
               </ActionIcon>
             </Tooltip>
-            <Tooltip label={t('Clear Conversation List')} openDelay={1000} withArrow>
+            <Tooltip label="Clear Conversation List" openDelay={1000} withArrow>
               <ActionIcon
                 variant="subtle"
                 color="chatbox-tertiary"
@@ -207,7 +205,7 @@ export default function Sidebar() {
                 <IconArchive size={18} />
               </ActionIcon>
             </Tooltip>
-            <Tooltip label={t('Collapse')} openDelay={1000} withArrow>
+            <Tooltip label="Collapse" openDelay={1000} withArrow>
               <ActionIcon
                 variant="subtle"
                 color="chatbox-tertiary"
@@ -236,7 +234,7 @@ export default function Sidebar() {
               onClick={handleCreateNewSession}
             >
               <ScalableIcon icon={IconCirclePlus} className="mr-2" />
-              {t('New Chat')}
+              New Chat
             </Button>
             <Button
               variant="light"
@@ -246,7 +244,7 @@ export default function Sidebar() {
               onClick={handleCreateNewPictureSession}
             >
               <ScalableIcon icon={IconPhotoPlus} className="mr-2" />
-              {t('Create Image')}
+              Create Image
             </Button>
           </Stack>
 
@@ -255,7 +253,7 @@ export default function Sidebar() {
               <NavLink
                 c="chatbox-secondary"
                 className="rounded-lg"
-                label={t('My Copilots')}
+                label="My Copilots"
                 leftSection={<ScalableIcon icon={IconMessageChatbot} size={20} />}
                 onClick={() => {
                   navigate({
@@ -286,7 +284,7 @@ export default function Sidebar() {
               <NavLink
                 c="chatbox-secondary"
                 className="rounded-lg"
-                label={t('My Copilots')}
+                label="My Copilots"
                 leftSection={<ScalableIcon icon={IconMessageChatbot} size={20} />}
                 onClick={() => {
                   navigate({
@@ -303,7 +301,7 @@ export default function Sidebar() {
                 data-testid={TestId.sidebar.settingsTrigger}
                 c="chatbox-secondary"
                 className="rounded-lg"
-                label={t('Settings')}
+                label="Settings"
                 leftSection={<ScalableIcon icon={IconSettingsFilled} size={20} />}
                 onClick={() => navigateToSettings()}
                 variant="light"
@@ -346,7 +344,6 @@ function SidebarUpdateBanner() {
 }
 
 function SidebarUpdateBannerInner() {
-  const { t } = useTranslation()
   const updateStatus = useUpdateStore((s) => s.status)
   const updateVersion = useUpdateStore((s) => s.version)
 
@@ -364,7 +361,7 @@ function SidebarUpdateBannerInner() {
       >
         <ScalableIcon icon={IconDownload} size={16} className="text-chatbox-brand flex-shrink-0" />
         <Text size="sm" c="chatbox-brand" lineClamp={1} flex={1}>
-          {`${t('Update ready to install')}${updateVersion ? ` (v${updateVersion})` : ''}`}
+          {`Update ready to install${updateVersion ? ` (v${updateVersion})` : ''}`}
         </Text>
       </Flex>
     </Box>
@@ -389,7 +386,6 @@ function AboutNavLink({
   versionHook: ReturnType<typeof useVersion>
   navigate: ReturnType<typeof useNavigate>
 }) {
-  const { t } = useTranslation()
   const showDot = useShowUpdateDot(versionHook)
 
   return (
@@ -398,7 +394,7 @@ function AboutNavLink({
       className="rounded-lg"
       label={
         <Flex align="center" gap={6}>
-          <span>{`${t('About')} ${/\d/.test(versionHook.version) ? `(${versionHook.version})` : ''}`}</span>
+          <span>{`About ${/\d/.test(versionHook.version) ? `(${versionHook.version})` : ''}`}</span>
           {showDot && <Box w={8} h={8} miw={8} bg="chatbox-brand" style={{ borderRadius: '50%' }} />}
         </Flex>
       }

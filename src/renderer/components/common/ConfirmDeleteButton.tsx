@@ -3,7 +3,6 @@ import { MenuItem, Button } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import CheckIcon from '@mui/icons-material/Check'
 import { type SxProps, useTheme } from '@mui/material/styles'
-import { useTranslation } from 'react-i18next'
 import { isHotkeyPressed } from 'react-hotkeys-hook'
 
 interface Props {
@@ -15,7 +14,6 @@ interface Props {
 
 export function ConfirmDeleteMenuItem({ onDelete, label, color = 'error', icon }: Props) {
   const theme = useTheme()
-  const { t } = useTranslation()
   const [confirmDelete, setConfirmDelete] = useState(false)
 
   const confirmStyleHash: Record<NonNullable<Props['color']>, SxProps> = {
@@ -59,7 +57,7 @@ export function ConfirmDeleteMenuItem({ onDelete, label, color = 'error', icon }
       sx={confirmStyleHash[color]}
     >
       <CheckIcon fontSize="small" />
-      <b>{t('Confirm?')}</b>
+      <b>Confirm?</b>
     </MenuItem>
   ) : (
     <MenuItem
@@ -76,13 +74,12 @@ export function ConfirmDeleteMenuItem({ onDelete, label, color = 'error', icon }
       sx={hoverStyleHash[color]}
     >
       {icon || <DeleteIcon fontSize="small" />}
-      {label || t('Delete')}
+      {label || 'Delete'}
     </MenuItem>
   )
 }
 
 export function ConfirmDeleteButton({ onDelete, icon, label, color = 'error' }: Props) {
-  const { t } = useTranslation()
   const [confirmDelete, setConfirmDelete] = useState(false)
   const theme = useTheme()
 
@@ -128,7 +125,7 @@ export function ConfirmDeleteButton({ onDelete, icon, label, color = 'error' }: 
       sx={confirmStyleHash[color]}
       startIcon={<CheckIcon />}
     >
-      <b>{t('Confirm?')}</b>
+      <b>Confirm?</b>
     </Button>
   ) : (
     <Button
@@ -145,7 +142,7 @@ export function ConfirmDeleteButton({ onDelete, icon, label, color = 'error' }: 
       sx={hoverStyleHash[color]}
       startIcon={icon || <DeleteIcon />}
     >
-      {label || t('delete')}
+      {label || 'delete'}
     </Button>
   )
 }

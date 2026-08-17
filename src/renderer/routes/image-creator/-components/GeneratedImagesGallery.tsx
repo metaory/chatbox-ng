@@ -4,7 +4,6 @@ import { useQuery } from '@tanstack/react-query'
 import type PhotoSwipe from 'photoswipe'
 import type { UIElementData } from 'photoswipe'
 import { memo, useCallback, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { Gallery, Item as GalleryItem } from 'react-photoswipe-gallery'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
 import { useFetchBlob } from '@/hooks/useBlob'
@@ -131,7 +130,6 @@ function GeneratedImageGalleryItem({
   onReport,
   isSmallScreen,
 }: GeneratedImageGalleryItemProps) {
-  const { t } = useTranslation()
   const [hovered, setHovered] = useState(false)
   const isDirectSource = isDirectImageSource(keyOrUrl)
   const fetchBlob = useFetchBlob()
@@ -215,10 +213,10 @@ function GeneratedImageGalleryItem({
       >
         <IconPhotoOff size={32} className="text-[var(--chatbox-tint-tertiary)]" />
         <Text size="xs" c="dimmed">
-          {t('Failed to load')}
+          Failed to load
         </Text>
         <Text size="xs" c="dimmed" className="underline">
-          {t('Click to retry')}
+          Click to retry
         </Text>
       </Paper>
     )
@@ -262,9 +260,9 @@ function GeneratedImageGalleryItem({
           />
 
           {onReport && (
-            <Tooltip label={t('report')} withArrow disabled={isSmallScreen}>
+            <Tooltip label="report" withArrow disabled={isSmallScreen}>
               <ActionIcon
-                aria-label={t('report')}
+                aria-label="report"
                 color="red"
                 variant="white"
                 size="sm"
@@ -286,7 +284,7 @@ function GeneratedImageGalleryItem({
               ${isSmallScreen || hovered ? 'opacity-100' : 'opacity-0'}
             `}
           >
-            <Tooltip label={t('View')} withArrow disabled={isSmallScreen}>
+            <Tooltip label="View" withArrow disabled={isSmallScreen}>
               <ActionIcon
                 variant="white"
                 size="lg"
@@ -298,7 +296,7 @@ function GeneratedImageGalleryItem({
               </ActionIcon>
             </Tooltip>
 
-            <Tooltip label={t('Use as Reference')} withArrow disabled={isSmallScreen}>
+            <Tooltip label="Use as Reference" withArrow disabled={isSmallScreen}>
               <ActionIcon
                 variant="white"
                 size="lg"
@@ -310,7 +308,7 @@ function GeneratedImageGalleryItem({
               </ActionIcon>
             </Tooltip>
 
-            <Tooltip label={t('Download')} withArrow disabled={isSmallScreen}>
+            <Tooltip label="Download" withArrow disabled={isSmallScreen}>
               <ActionIcon
                 variant="white"
                 size="lg"

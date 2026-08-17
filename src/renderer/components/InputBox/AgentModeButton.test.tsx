@@ -90,7 +90,7 @@ describe('AgentModeButton', () => {
     const view = renderButton()
 
     expect(screen.getByText('Web Search has moved')).toBeTruthy()
-    fireEvent.click(screen.getByRole('button', { name: 'Close' }))
+    fireEvent.click(screen.getByRole('button', { name: 'close' }))
 
     expect(screen.queryByText('Web Search has moved')).toBeNull()
     expect(screen.queryByText('Agent mode menu')).toBeNull()

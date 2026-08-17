@@ -4,7 +4,6 @@ import type { ProviderModelInfo } from '@shared/types'
 import { IconBulb, IconEye, IconInfoCircle, IconLock, IconStar, IconStarFilled } from '@tabler/icons-react'
 import clsx from 'clsx'
 import type { KeyboardEvent, MouseEvent } from 'react'
-import { useTranslation } from 'react-i18next'
 import { ScalableIcon } from '../common/ScalableIcon'
 import { ModelIcon } from '../icons/ModelIcon'
 import { CAPABILITY_ICON_COLOR_CLASSES } from './CapabilityIconRow'
@@ -42,7 +41,6 @@ export function ModelRow({
   onDesktopDetailClose?: () => void
   onDisabledSelect?: () => void
 }) {
-  const { t } = useTranslation()
   const isDisabled = !!detail.disabledReason && !locked
   const handleRowAction = () => {
     if (isDisabled) {
@@ -110,7 +108,7 @@ export function ModelRow({
           <ScalableIcon
             icon={IconEye}
             size={mobile ? 16 : 14}
-            aria-label={t('Vision') as string}
+            aria-label={'Vision' as string}
             className={CAPABILITY_ICON_COLOR_CLASSES.vision}
           />
         )}
@@ -118,13 +116,13 @@ export function ModelRow({
           <ScalableIcon
             icon={IconBulb}
             size={mobile ? 16 : 14}
-            aria-label={t('Reasoning') as string}
+            aria-label={'Reasoning' as string}
             className={CAPABILITY_ICON_COLOR_CLASSES.reasoning}
           />
         )}
         {mobile && (
           <ActionIcon
-            aria-label={t('Model details') as string}
+            aria-label={'Model details' as string}
             variant="transparent"
             size="sm"
             className="text-chatbox-tint-tertiary hover:text-chatbox-tint-secondary"
@@ -141,7 +139,7 @@ export function ModelRow({
         {locked && <ScalableIcon icon={IconLock} size={mobile ? 16 : 15} className="text-chatbox-tint-tertiary" />}
         {!hideFavorite && (
           <ActionIcon
-            aria-label={favorited ? t('Remove from favorites') : t('Add to favorites')}
+            aria-label={favorited ? 'Remove from favorites' : 'Add to favorites'}
             variant="transparent"
             size="sm"
             className={

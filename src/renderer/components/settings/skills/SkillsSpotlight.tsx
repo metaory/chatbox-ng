@@ -390,7 +390,7 @@ const SkillsSpotlight: FC<{
 
       const conflicting = getConflictingSkill(entry)
       if (conflicting) {
-        const unknownSourceLabel = String(t('unknown source'))
+        const unknownSourceLabel = 'unknown source'
         const confirmMessage = String(
           t(
             'Skill "{{name}}" is already installed from {{existingSource}}. Replace with the version from {{newSource}}?',
@@ -436,10 +436,10 @@ const SkillsSpotlight: FC<{
           toast.success(t('Installed "{{name}}"', { name: result.skillName }))
           props.onInstallComplete()
         } else {
-          toastError(result.error || t('Installation failed'))
+          toastError(result.error || 'Installation failed')
         }
       } catch {
-        toastError(t('Installation failed'))
+        toastError('Installation failed')
       } finally {
         setInstalling(null)
       }
@@ -452,14 +452,14 @@ const SkillsSpotlight: FC<{
       if (entryInstalled) {
         return (
           <Badge size="xs" color="green">
-            {t('Installed')}
+            Installed
           </Badge>
         )
       }
       if (installing === getEntryUniqueKey(entry)) {
         return (
           <Badge size="xs" color="blue">
-            {t('Installing')}
+            Installing
           </Badge>
         )
       }
@@ -490,7 +490,7 @@ const SkillsSpotlight: FC<{
     const groups: (SpotlightActionGroupData | SpotlightActionData)[] = []
 
     groups.push({
-      group: String(t('Popular Skills')),
+      group: 'Popular Skills',
       actions: SKILLS_POPULAR.map((entry) => {
         const entryInstalled = isInstalled(entry)
         const translated = translatedPopular.get(entry.name)
@@ -515,12 +515,12 @@ const SkillsSpotlight: FC<{
 
     if (trimmedSearchQuery && trimmedSearchQuery.length < SEARCH_MIN_QUERY_LENGTH) {
       groups.push({
-        group: String(t('Search Results')),
+        group: 'Search Results',
         actions: [
           {
             id: 'search-query-hint',
-            label: String(t('Type at least 2 characters')),
-            description: String(t('Search starts after a short pause to reduce requests')),
+            label: 'Type at least 2 characters',
+            description: 'Search starts after a short pause to reduce requests',
             leftSection: <ScalableIcon icon={IconSearch} size={12} />,
           },
         ],
@@ -529,7 +529,7 @@ const SkillsSpotlight: FC<{
 
     if (debouncedSearchQuery && searchResults.length > 0) {
       groups.push({
-        group: String(t('Search Results')),
+        group: 'Search Results',
         actions: searchResults.map((skill) => {
           const skillInstalled = isInstalled(skill)
           const translated = translatedSearch.get(getSearchResultKey(skill))
@@ -556,12 +556,12 @@ const SkillsSpotlight: FC<{
 
     if (debouncedSearchQuery && isSearchLoading && searchResults.length === 0) {
       groups.push({
-        group: String(t('Search Results')),
+        group: 'Search Results',
         actions: [
           {
             id: 'search-loading',
-            label: String(t('Searching skills...')),
-            description: String(t('Fetching marketplace results')),
+            label: 'Searching skills...',
+            description: 'Fetching marketplace results',
             leftSection: <Loader size="xs" />,
             onClick: () => {},
           },
@@ -571,12 +571,12 @@ const SkillsSpotlight: FC<{
 
     if (debouncedSearchQuery && searchResults.length > 0 && (hasNextPage || isFetchingNextPage)) {
       groups.push({
-        group: String(t('More')),
+        group: 'More',
         actions: [
           {
             id: 'search-load-more',
-            label: isFetchingNextPage ? String(t('Loading more skills...')) : String(t('Load more skills')),
-            description: String(t('Fetch next batch from marketplace')),
+            label: isFetchingNextPage ? 'Loading more skills...' : 'Load more skills',
+            description: 'Fetch next batch from marketplace',
             leftSection: isFetchingNextPage ? <Loader size="xs" /> : <ScalableIcon icon={IconSearch} size={12} />,
             onClick: () => {
               handleLoadMore()
@@ -588,7 +588,7 @@ const SkillsSpotlight: FC<{
 
     if (debouncedSearchQuery && searchResults.length > 0) {
       groups.push({
-        group: String(t('Status')),
+        group: 'Status',
         actions: [
           {
             id: 'search-status',
@@ -598,8 +598,8 @@ const SkillsSpotlight: FC<{
                 ? String(t('Loaded {{count}} skills · Scroll to load more', { count: searchResults.length }))
                 : String(t('Loaded {{count}} skills · Reached end', { count: searchResults.length })),
             description: hasNextPage
-              ? String(t('More results will load automatically when you reach the bottom'))
-              : String(t('No more marketplace results for current query')),
+              ? 'More results will load automatically when you reach the bottom'
+              : 'No more marketplace results for current query',
             leftSection: isFetchingNextPage ? <Loader size="xs" /> : <ScalableIcon icon={IconSearch} size={12} />,
           },
         ],
@@ -628,7 +628,7 @@ const SkillsSpotlight: FC<{
     <Spotlight
       store={skillsSpotlightStore}
       actions={actions}
-      nothingFound={String(t('Nothing found...'))}
+      nothingFound={'Nothing found...'}
       scrollable
       maxHeight={600}
       shortcut={null}
@@ -641,7 +641,7 @@ const SkillsSpotlight: FC<{
       }}
       searchProps={{
         leftSection: <ScalableIcon icon={IconSearch} size={20} stroke={1.5} />,
-        placeholder: String(t('Search skills...')),
+        placeholder: 'Search skills...',
       }}
     />
   )

@@ -179,7 +179,7 @@ function UiInventoryPage() {
 
         <Group justify="space-between">
           <Text size="sm" c="dimmed">
-            Showing {filteredItems.length} of {uiInventoryItems.length}. Generated at{' '}
+            Showing {filteredItems.length} of {uiInventoryItems.length}. Generated at 
             {new Date(uiInventoryGeneratedAt).toLocaleString()}.
           </Text>
           <Badge variant="light">{activeArea ?? 'all areas'}</Badge>

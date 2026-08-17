@@ -1,6 +1,5 @@
 import { ActionIcon, Flex, Image, Skeleton, UnstyledButton } from '@mantine/core'
 import { IconPlus, IconX } from '@tabler/icons-react'
-import { useTranslation } from 'react-i18next'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
 import { useBlob } from '@/hooks/useBlob'
 import { blobToDataUrl, isDirectImageSource, MAX_REFERENCE_IMAGES } from './constants'
@@ -12,7 +11,6 @@ export interface ReferenceImagesPreviewProps {
 }
 
 export function ReferenceImagesPreview({ images, onRemove, onAddClick }: ReferenceImagesPreviewProps) {
-  const { t } = useTranslation()
 
   if (images.length === 0) return null
 
@@ -27,7 +25,7 @@ export function ReferenceImagesPreview({ images, onRemove, onAddClick }: Referen
       ))}
       {canAddMore && (
         <div className="shrink-0 pt-2">
-          <Tooltip label={t('Add Reference Image')}>
+          <Tooltip label="Add Reference Image">
             <UnstyledButton
               onClick={onAddClick}
               className="w-[64px] h-[64px] rounded-lg border border-dashed border-[var(--chatbox-border-primary)] hover:border-[var(--chatbox-tint-tertiary)] flex items-center justify-center transition-colors"

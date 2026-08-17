@@ -2,7 +2,6 @@ import { ActionIcon, CloseButton, Stack, TextInput } from '@mantine/core'
 import { IconChevronDown, IconChevronUp } from '@tabler/icons-react'
 import clsx from 'clsx'
 import { type ChangeEvent, type KeyboardEvent, useCallback, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
 export type Props = {
   value?: number
@@ -34,7 +33,6 @@ export default function LazyNumberInput({
   hideControls = false,
   step = 1,
 }: Props) {
-  const { t } = useTranslation()
 
   const [tempInputValue, setTempInputValue] = useState<string>()
 
@@ -88,7 +86,7 @@ export default function LazyNumberInput({
     <TextInput
       w={width}
       size={size}
-      placeholder={placeholder || t('Not set') || ''}
+      placeholder={placeholder || 'Not set'}
       value={inputValue}
       onChange={handleInputChange}
       onFocus={(e) => e.currentTarget.select()}

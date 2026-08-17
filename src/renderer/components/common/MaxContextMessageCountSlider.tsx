@@ -1,7 +1,6 @@
 import { Flex, Slider, Stack, type StackProps, Text, TextInput, type TextProps } from '@mantine/core'
 import { IconInfoCircle } from '@tabler/icons-react'
 import { type ChangeEvent, type KeyboardEvent, useCallback, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
 import { ScalableIcon } from '../common/ScalableIcon'
 
@@ -26,7 +25,6 @@ export interface Props {
 
 const MESSAGE_COUNT_OPTIONS = [0, 2, 4, 6, 8, 10, 20, 50, 100, 200, 500, Number.MAX_SAFE_INTEGER]
 export default function MaxContextMessageCountSlider({ value, onChange, className, wrapperProps, labelProps }: Props) {
-  const { t } = useTranslation()
 
   const [tempSliderValue, setTempSliderValue] = useState<number>()
   const sliderValue = useMemo(() => {
@@ -63,8 +61,8 @@ export default function MaxContextMessageCountSlider({ value, onChange, classNam
       return tempInputValue
     }
     const v = typeof tempSliderValue === 'number' ? MESSAGE_COUNT_OPTIONS[tempSliderValue] : value
-    return `${v === Number.MAX_SAFE_INTEGER ? t('No Limit') : v}`
-  }, [tempInputValue, value, tempSliderValue, t])
+    return `${v === Number.MAX_SAFE_INTEGER ? 'No Limit' : v}`
+  }, [tempInputValue, value, tempSliderValue])
   const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const v = e.currentTarget.value
     setTempInputValue(v)
@@ -87,13 +85,11 @@ export default function MaxContextMessageCountSlider({ value, onChange, classNam
   return (
     <Stack gap="xs" {...wrapperProps}>
       <Flex align="center" gap="xs">
-        <Text size="sm" fw={'600'} {...labelProps}>
-          {t('Max Message Count in Context')}
+        <Text size="sm" fw="600" {...labelProps}>
+          Max Message Count in Context
         </Text>
         <Tooltip
-          label={t(
-            'Regulate the volume of historical messages sent to the AI, striking a harmonious balance between depth of comprehension and the efficiency of responses.'
-          )}
+          label="Regulate the volume of historical messages sent to the AI, striking a harmonious balance between depth of comprehension and the efficiency of responses."
           withArrow={true}
           maw={320}
           className="!whitespace-normal"
@@ -110,7 +106,7 @@ export default function MaxContextMessageCountSlider({ value, onChange, classNam
           max={MESSAGE_COUNT_OPTIONS.length - 1}
           label={(v) => {
             if (v === MESSAGE_COUNT_OPTIONS.indexOf(Number.MAX_SAFE_INTEGER)) {
-              return t('No Limit')
+              return 'No Limit'
             }
             return MESSAGE_COUNT_OPTIONS[v] ?? value
           }}

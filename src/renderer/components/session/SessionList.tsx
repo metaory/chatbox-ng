@@ -24,7 +24,6 @@ import { areSessionsInSamePinGroup } from '@shared/utils/session-sort'
 import { IconArrowsMoveVertical, IconGripVertical, IconLoader2 } from '@tabler/icons-react'
 import { useRouterState } from '@tanstack/react-router'
 import { type CSSProperties, type MutableRefObject, useCallback, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { Virtuoso } from 'react-virtuoso'
 import { useIsSmallScreen } from '@/hooks/useScreenChange'
 import platform from '@/platform'
@@ -49,7 +48,6 @@ function SessionListLoadingFooter() {
 }
 
 export default function SessionList(props: Props) {
-  const { t } = useTranslation()
   const { sessionMetaList: sortedSessions, fetchNextPage, hasNextPage, isFetchingNextPage } = useSessionList()
   const [activeDragId, setActiveDragId] = useState<string | null>(null)
   const [isReordering, setIsReordering] = useState(false)
@@ -110,16 +108,16 @@ export default function SessionList(props: Props) {
     }
 
     return [
-      { type: 'section', id: 'section:pinned', label: t('Pinned') },
+      { type: 'section', id: 'section:pinned', label: 'Pinned' },
       ...pinnedSessions.map((session) => ({ type: 'session' as const, id: session.id, session })),
       ...(otherSessions.length > 0
         ? [
-            { type: 'section' as const, id: 'section:chats', label: t('Chats') },
+            { type: 'section' as const, id: 'section:chats', label: 'Chats' },
             ...otherSessions.map((session) => ({ type: 'session' as const, id: session.id, session })),
           ]
         : []),
     ]
-  }, [sortedSessions, t])
+  }, [sortedSessions])
   const routerState = useRouterState()
   const onEndReached = useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) {
@@ -160,11 +158,11 @@ export default function SessionList(props: Props) {
               <Flex align="center" gap={6}>
                 <IconArrowsMoveVertical size={16} className="text-chatbox-tertiary" />
                 <Text size="sm" fw={500} c="chatbox-secondary">
-                  {t('Adjust order')}
+                  Adjust order
                 </Text>
               </Flex>
               <Button variant="subtle" size="compact-sm" onClick={() => setIsReordering(false)}>
-                {t('Done')}
+                Done
               </Button>
             </Flex>
           )}
@@ -202,7 +200,7 @@ export default function SessionList(props: Props) {
                   id={item.session.id}
                   disabled={Boolean(isSmallScreen && !isReordering)}
                   showDragHandle={Boolean(isSmallScreen && isReordering)}
-                  dragHandleLabel={t('Adjust order') || undefined}
+                  dragHandleLabel="Adjust order"
                 >
                   <SessionItem
                     selected={routerState.location.pathname === `/session/${item.session.id}`}

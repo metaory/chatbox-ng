@@ -199,7 +199,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
       try {
         const startResult = await startLogin()
         if (!startResult.success) {
-          addToast(startResult.error || t('Login failed'))
+          addToast(startResult.error || 'Login failed')
           return
         }
         // Open auth URL in browser
@@ -218,7 +218,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
       try {
         const startResult = await startDeviceFlow()
         if (!startResult.success) {
-          addToast(startResult.error || t('Login failed'))
+          addToast(startResult.error || 'Login failed')
           return
         }
         setDeviceUserCode(startResult.userCode || '')
@@ -232,7 +232,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
         const result = await waitForDeviceToken()
         setShowDeviceCode(false)
         if (!result.success) {
-          addToast(result.error || t('Login failed'))
+          addToast(result.error || 'Login failed')
         }
       } finally {
         setOAuthLoading(false)
@@ -243,7 +243,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
       try {
         const result = await loginCallback()
         if (!result.success && result.error !== 'Login cancelled') {
-          addToast(result.error || t('Login failed'))
+          addToast(result.error || 'Login failed')
         }
       } finally {
         setOAuthLoading(false)
@@ -267,7 +267,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
         setShowCodeInput(false)
         setCodeInputValue('')
       } else {
-        addToast(result.error || t('Login failed'))
+        addToast(result.error || 'Login failed')
       }
     } finally {
       setOAuthLoading(false)
@@ -323,7 +323,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
     }
 
     if (displayModels?.find((m) => m.modelId === newModel.modelId)) {
-      addToast(t('already existed'))
+      addToast('already existed')
       return
     }
 
@@ -377,7 +377,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
       if (modelList.length) {
         setFetchedModels(modelList)
       } else {
-        addToast(t('Failed to fetch models'))
+        addToast('Failed to fetch models')
       }
       setFetchingModels(false)
     } catch (error) {
@@ -454,7 +454,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
   }
 
   if (!baseInfo) {
-    return <Text>{t('Provider not found')}</Text>
+    return <Text>Provider not found</Text>
   }
 
   return (
@@ -476,7 +476,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
         )}
         {baseInfo.isCustom && (
           <PopoverConfirm
-            title={t('Confirm to delete this custom provider?')}
+            title="Confirm to delete this custom provider?"
             confirmButtonColor="chatbox-error"
             onConfirm={() => {
               setSettings({
@@ -499,7 +499,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
           <ScalableIcon icon={IconHelpCircle} />
           <Text span size="xs" c="chatbox-tertiary">
             <a href="https://docs.chatboxai.app/guides/providers" target="_blank" rel="noopener">
-              {t('Setup guide')}
+              Setup guide
             </a>
           </Text>
         </Flex>
@@ -511,7 +511,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
           <>
             <Stack gap="xxs">
               <Text span fw="600">
-                {t('Name')}
+                Name
               </Text>
               <TextInput
                 flex={1}
@@ -528,7 +528,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
 
             <Stack gap="xxs">
               <Text span fw="600">
-                {t('API Mode')}
+                API Mode
               </Text>
               <AdaptiveSelect
                 value={baseInfo.type}
@@ -542,19 +542,19 @@ function ProviderSettings({ providerId }: { providerId: string }) {
                 data={[
                   {
                     value: ModelProviderType.OpenAI,
-                    label: t('OpenAI API Compatible'),
+                    label: 'OpenAI API Compatible',
                   },
                   {
                     value: ModelProviderType.OpenAIResponses,
-                    label: t('OpenAI Responses API Compatible'),
+                    label: 'OpenAI Responses API Compatible',
                   },
                   {
                     value: ModelProviderType.Claude,
-                    label: t('Claude API Compatible'),
+                    label: 'Claude API Compatible',
                   },
                   {
                     value: ModelProviderType.Gemini,
-                    label: t('Google Gemini API Compatible'),
+                    label: 'Google Gemini API Compatible',
                   },
                 ]}
               />
@@ -575,7 +575,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
         {isDesktop && supportsOAuth && (
           <Stack gap="xs">
             <Text span fw="600">
-              {t('Authentication')}
+              Authentication
             </Text>
 
             {/* Auth mode toggle - show when both OAuth and API key are configured */}
@@ -584,8 +584,8 @@ function ProviderSettings({ providerId }: { providerId: string }) {
                 value={providerSettings?.activeAuthMode || 'apikey'}
                 onChange={handleAuthModeChange}
                 data={[
-                  { label: t('API Key'), value: 'apikey' },
-                  { label: t('OAuth Login'), value: 'oauth' },
+                  { label: 'API Key', value: 'apikey' },
+                  { label: 'OAuth Login', value: 'oauth' },
                 ]}
               />
             )}
@@ -595,7 +595,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
               {hasOAuth ? (
                 <>
                   <Badge color="green" variant="light">
-                    {t('Logged in')}
+                    Logged in
                   </Badge>
                   <Button
                     variant="light"
@@ -604,17 +604,17 @@ function ProviderSettings({ providerId }: { providerId: string }) {
                     leftSection={<ScalableIcon icon={IconLogout} size={14} />}
                     onClick={logout}
                   >
-                    {t('Logout')}
+                    Logout
                   </Button>
                 </>
               ) : oauthLoading ? (
                 <Flex gap="xs" align="center">
                   <Loader size="xs" />
                   <Text size="sm" c="chatbox-tertiary">
-                    {t('Waiting for authorization...')}
+                    Waiting for authorization...
                   </Text>
                   <Button variant="light" color="red" size="compact-sm" onClick={handleCancelOAuth}>
-                    {t('Cancel')}
+                    Cancel
                   </Button>
                 </Flex>
               ) : (
@@ -624,15 +624,13 @@ function ProviderSettings({ providerId }: { providerId: string }) {
                   leftSection={<ScalableIcon icon={IconLogin} size={16} />}
                   onClick={handleOAuthLogin}
                 >
-                  {t('Login with OAuth')}
+                  Login with OAuth
                 </Button>
               )}
             </Flex>
             {usesResponsesTransportForOAuth && (
               <Text size="xs" c="chatbox-tertiary">
-                {t(
-                  'When OAuth Login is enabled, OpenAI requests use the Responses transport instead of the legacy Chat Completions transport.'
-                )}
+                When OAuth Login is enabled, OpenAI requests use the Responses transport instead of the legacy Chat Completions transport.
               </Text>
             )}
           </Stack>
@@ -646,11 +644,11 @@ function ProviderSettings({ providerId }: { providerId: string }) {
             <Stack gap="xxs" style={isOAuthActive ? { opacity: 0.5 } : undefined}>
               <Flex gap="xs" align="center">
                 <Text span fw="600">
-                  {t('API Key')}
+                  API Key
                 </Text>
                 {isOAuthActive && (
                   <Text span size="xs" c="chatbox-tertiary">
-                    ({t('Using OAuth')})
+                    (Using OAuth)
                   </Text>
                 )}
               </Flex>
@@ -665,9 +663,9 @@ function ProviderSettings({ providerId }: { providerId: string }) {
                   disabled={!!providerSettings?.apiKey && displayModels.length > 0}
                   label={
                     !providerSettings?.apiKey
-                      ? t('API Key is required to check connection')
+                      ? 'API Key is required to check connection'
                       : displayModels.length === 0
-                        ? t('Add at least one model to check connection')
+                        ? 'Add at least one model to check connection'
                         : null
                   }
                 >
@@ -677,7 +675,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
                     loading={modelTestResult?.testing || false}
                     onClick={() => setShowTestModelSelector(true)}
                   >
-                    {t('Check')}
+                    Check
                   </Button>
                 </Tooltip>
               </Flex>
@@ -689,7 +687,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
           <Stack gap="xxs" style={isOAuthActive ? { opacity: 0.5, pointerEvents: 'none' } : undefined}>
             <Flex justify="space-between" align="flex-end" gap="md">
               <Text span fw="600" className=" whitespace-nowrap">
-                {t('API Host')}
+                API Host
               </Text>
               {/* <Text span size="xs" flex="0 1 auto" c="chatbox-secondary" lineClamp={1}>
                 {t('Ending with / ignores v1, ending with # forces use of input address')}
@@ -707,7 +705,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
               />
             </Flex>
             <Text span size="xs" flex="0 1 auto" c="chatbox-secondary">
-              {t('Preview')}: {normalizedBuiltinApiHost.apiHost + normalizedBuiltinApiHost.apiPath}
+              Preview: {normalizedBuiltinApiHost.apiHost + normalizedBuiltinApiHost.apiPath}
             </Text>
           </Stack>
         )}
@@ -720,7 +718,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
                 <Stack gap="xxs" flex={3}>
                   <Flex justify="space-between" align="flex-end" gap="md">
                     <Text span fw="600" className=" whitespace-nowrap">
-                      {t('API Host')}
+                      API Host
                     </Text>
                   </Flex>
                   <Flex gap="xs" align="center">
@@ -740,7 +738,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
                 <Stack gap="xxs" flex={2}>
                   <Flex justify="space-between" align="flex-end" gap="md">
                     <Text span fw="600" className=" whitespace-nowrap">
-                      {t('API Path')}
+                      API Path
                     </Text>
                   </Flex>
                   <Flex gap="xs" align="center">
@@ -754,7 +752,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
                 </Stack>
               </Flex>
               <Text span size="xs" flex="0 1 auto" c="chatbox-secondary">
-                {t('Preview')}:{' '}
+                Preview: 
                 {normalizeAPIHost(providerSettings, baseInfo.type).apiHost +
                   normalizeAPIHost(providerSettings, baseInfo.type).apiPath}
               </Text>
@@ -762,14 +760,14 @@ function ProviderSettings({ providerId }: { providerId: string }) {
                 <Flex align="center" gap={4}>
                   <ScalableIcon icon={IconDiscount2} size={14} color="var(--chatbox-tint-tertiary)" />
                   <Text span size="xs" c="chatbox-tertiary">
-                    {t('AIHubMix integration in Chatbox offers 10% discount')}
+                    AIHubMix integration in Chatbox offers 10% discount
                   </Text>
                 </Flex>
               )}
             </Stack>
 
             <Switch
-              label={t('Improve Network Compatibility')}
+              label="Improve Network Compatibility"
               checked={providerSettings?.useProxy || false}
               onChange={(e) =>
                 setProviderSettings({
@@ -783,7 +781,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
         {/* useProxy for Ollama */}
         {baseInfo.id === ModelProviderEnum.Ollama && (
           <Switch
-            label={t('Improve Network Compatibility')}
+            label="Improve Network Compatibility"
             checked={providerSettings?.useProxy || false}
             onChange={(e) =>
               setProviderSettings({
@@ -798,7 +796,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
             {/* Azure Endpoint */}
             <Stack gap="xxs">
               <Text span fw="600">
-                {t('Azure Endpoint')}
+                Azure Endpoint
               </Text>
               <Flex gap="xs" align="center">
                 <TextInput
@@ -824,7 +822,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
             {/* Azure API Version */}
             <Stack gap="xxs">
               <Text span fw="600">
-                {t('Azure API Version')}
+                Azure API Version
               </Text>
               <Flex gap="xs" align="center">
                 <TextInput
@@ -847,7 +845,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
           <>
             <Stack gap="xxs">
               <Text span fw="600">
-                {t('AWS Access Key ID')}
+                AWS Access Key ID
               </Text>
               <PasswordInput
                 flex={1}
@@ -863,7 +861,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
 
             <Stack gap="xxs">
               <Text span fw="600">
-                {t('AWS Secret Access Key')}
+                AWS Secret Access Key
               </Text>
               <PasswordInput
                 flex={1}
@@ -879,7 +877,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
 
             <Stack gap="xxs">
               <Text span fw="600">
-                {t('AWS Region')}
+                AWS Region
               </Text>
               <TextInput
                 flex={1}
@@ -898,9 +896,9 @@ function ProviderSettings({ providerId }: { providerId: string }) {
                 disabled={!!providerSettings?.accessKey && !!providerSettings?.secretKey && displayModels.length > 0}
                 label={
                   !providerSettings?.accessKey || !providerSettings?.secretKey
-                    ? t('AWS Access Key ID and Secret Access Key are required to check connection')
+                    ? 'AWS Access Key ID and Secret Access Key are required to check connection'
                     : displayModels.length === 0
-                      ? t('Add at least one model to check connection')
+                      ? 'Add at least one model to check connection'
                       : null
                 }
               >
@@ -910,7 +908,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
                   loading={modelTestResult?.testing || false}
                   onClick={() => setShowTestModelSelector(true)}
                 >
-                  {t('Check')}
+                  Check
                 </Button>
               </Tooltip>
             </Flex>
@@ -921,7 +919,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
         <Stack gap="xxs">
           <Flex justify="space-between" align="center">
             <Text span fw="600">
-              {t('Model')}
+              Model
             </Text>
             <Flex gap="sm" align="center" justify="flex-end">
               <Button
@@ -931,7 +929,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
                 onClick={handleAddModel}
                 leftSection={<ScalableIcon icon={IconPlus} size={12} />}
               >
-                {t('New')}
+                New
               </Button>
 
               <Button
@@ -943,7 +941,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
                 onClick={resetModels}
                 leftSection={<ScalableIcon icon={IconRestore} size={12} />}
               >
-                {t('Reset')}
+                Reset
               </Button>
 
               <Button
@@ -956,7 +954,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
                 onClick={handleFetchModels}
                 leftSection={<ScalableIcon icon={IconRefresh} size={12} />}
               >
-                {t('Fetch')}
+                Fetch
               </Button>
             </Flex>
           </Flex>
@@ -976,7 +974,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
           onClose={() => {
             setFetchedModels(undefined)
           }}
-          title={t('Models')}
+          title="Models"
           centered={true}
         >
           <ModelList
@@ -995,7 +993,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
         <AdaptiveModal
           opened={showTestModelSelector}
           onClose={() => setShowTestModelSelector(false)}
-          title={t('Select Test Model')}
+          title="Select Test Model"
           centered={true}
           size="md"
         >
@@ -1023,7 +1021,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
               ))
             ) : (
               <Text c="chatbox-secondary" ta="center" py="md">
-                {t('No models available')}
+                No models available
               </Text>
             )}
           </Stack>
@@ -1033,7 +1031,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
         <AdaptiveModal
           opened={showCodeInput}
           onClose={handleCancelOAuth}
-          title={t('Authorization Code')}
+          title="Authorization Code"
           centered={true}
           size="md"
         >
@@ -1046,7 +1044,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
             <TextInput
               value={codeInputValue}
               onChange={(e) => setCodeInputValue(e.currentTarget.value)}
-              placeholder={t('Paste code here') || ''}
+              placeholder="Paste code here"
               onKeyDown={(e) => {
                 if (e.key === 'Enter') void handleCodeSubmit()
               }}
@@ -1054,10 +1052,10 @@ function ProviderSettings({ providerId }: { providerId: string }) {
             <AdaptiveModal.Actions>
               <Flex gap="sm" justify="flex-end">
                 <Button variant="default" onClick={handleCancelOAuth}>
-                  {t('Cancel')}
+                  Cancel
                 </Button>
                 <Button loading={oauthLoading} disabled={!codeInputValue.trim()} onClick={handleCodeSubmit}>
-                  {t('Confirm')}
+                  Confirm
                 </Button>
               </Flex>
             </AdaptiveModal.Actions>
@@ -1068,14 +1066,14 @@ function ProviderSettings({ providerId }: { providerId: string }) {
         <AdaptiveModal
           opened={showDeviceCode}
           onClose={handleCancelOAuth}
-          title={t('Device Authorization')}
+          title="Device Authorization"
           centered={true}
           size="md"
           closeOnClickOutside={false}
         >
           <Stack gap="md" align="center">
             <Text size="sm" c="chatbox-secondary" ta="center">
-              {t('Enter the code below on the authorization page, then wait for approval.')}
+              Enter the code below on the authorization page, then wait for approval.
             </Text>
             <Text
               size="xl"
@@ -1091,7 +1089,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
             <Flex align="center" gap="xs">
               <Loader size="xs" />
               <Text size="sm" c="chatbox-tertiary">
-                {t('Waiting for authorization...')}
+                Waiting for authorization...
               </Text>
             </Flex>
             <Flex gap="sm">
@@ -1102,11 +1100,11 @@ function ProviderSettings({ providerId }: { providerId: string }) {
                   leftSection={<ScalableIcon icon={IconExternalLink} size={14} />}
                   onClick={() => platform.openLink(deviceVerificationUri)}
                 >
-                  {t('Open Authorization Page')}
+                  Open Authorization Page
                 </Button>
               )}
               <Button variant="light" color="red" size="compact-sm" onClick={handleCancelOAuth}>
-                {t('Cancel')}
+                Cancel
               </Button>
             </Flex>
           </Stack>
@@ -1116,7 +1114,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
         <AdaptiveModal
           opened={!!modelTestResult}
           onClose={() => setModelTestResult(null)}
-          title={t('Model Test Results')}
+          title="Model Test Results"
           centered={true}
           size="md"
         >
@@ -1131,7 +1129,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
                 {modelTestResult.basicTest?.status === 'success' ? (
                   <>
                     <Text span c="chatbox-success">
-                      {t('Connection successful!')}
+                      Connection successful!
                     </Text>
                     <Flex
                       direction="column"
@@ -1141,12 +1139,12 @@ function ProviderSettings({ providerId }: { providerId: string }) {
                       p="xs"
                     >
                       <Flex align="center" gap="xs">
-                        <Text style={{ minWidth: '120px' }}>{t('Text Request')}:</Text>
+                        <Text style={{ minWidth: '120px' }}>Text Request:</Text>
                         <ScalableIcon icon={IconCircleCheck} color="var(--chatbox-tint-success)" />
                       </Flex>
                       {/* Vision Test */}
                       <Flex align="center" gap="xs">
-                        <Text style={{ minWidth: '120px' }}>{t('Vision Request')}:</Text>
+                        <Text style={{ minWidth: '120px' }}>Vision Request:</Text>
                         {modelTestResult.visionTest?.status === 'success' ? (
                           <ScalableIcon icon={IconCircleCheck} color="var(--chatbox-tint-success)" />
                         ) : modelTestResult.visionTest?.status === 'error' ? (
@@ -1154,13 +1152,13 @@ function ProviderSettings({ providerId }: { providerId: string }) {
                             <Tooltip label={modelTestResult.visionTest.error} multiline>
                               <ScalableIcon icon={IconX} className="cursor-help" color="var(--chatbox-tint-error)" />
                             </Tooltip>
-                            <Text>{t('This model does not support vision')}</Text>
+                            <Text>This model does not support vision</Text>
                           </Flex>
                         ) : (
                           <Flex align="center" gap="xs">
                             <Loader size="xs" />
                             <Text c="chatbox-tertiary" size="sm">
-                              {t('Testing...')}
+                              Testing...
                             </Text>
                           </Flex>
                         )}
@@ -1168,7 +1166,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
 
                       {/* Tool Use Test */}
                       <Flex align="center" gap="xs">
-                        <Text style={{ minWidth: '120px' }}>{t('Tool Use Request')}:</Text>
+                        <Text style={{ minWidth: '120px' }}>Tool Use Request:</Text>
                         {modelTestResult.toolTest?.status === 'success' ? (
                           <ScalableIcon icon={IconCircleCheck} color="var(--chatbox-tint-success)" />
                         ) : modelTestResult.toolTest?.status === 'error' ? (
@@ -1176,13 +1174,13 @@ function ProviderSettings({ providerId }: { providerId: string }) {
                             <Tooltip label={modelTestResult.toolTest.error} multiline>
                               <ScalableIcon icon={IconX} className="cursor-help" color="var(--chatbox-tint-error)" />
                             </Tooltip>
-                            <Text>{t('This model does not support tool use')}</Text>
+                            <Text>This model does not support tool use</Text>
                           </Flex>
                         ) : (
                           <Flex align="center" gap="xs">
                             <Loader size="xs" />
                             <Text c="chatbox-tertiary" size="sm">
-                              {t('Testing...')}
+                              Testing...
                             </Text>
                           </Flex>
                         )}
@@ -1192,9 +1190,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
                 ) : modelTestResult.basicTest?.status === 'error' ? (
                   <Flex align="center" gap="xs" className="w-full">
                     <Text span c="chatbox-error" maw="100%">
-                      {t(
-                        'Connection failed! Please make sure the API key was copied completely, has no extra spaces, has sufficient balance, matches the provider, and has not expired.'
-                      )}
+                      Connection failed! Please make sure the API key was copied completely, has no extra spaces, has sufficient balance, matches the provider, and has not expired.
                       <div className="bg-red-50 dark:bg-red-900/20 px-2 py-2">
                         <Text size="xs" c="chatbox-error">
                           {modelTestResult.basicTest.error}
@@ -1206,7 +1202,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
                   <Flex align="center" gap="xs">
                     <Loader size="xs" />
                     <Text c="chatbox-tertiary" size="sm">
-                      {t('Testing...')}
+                      Testing...
                     </Text>
                   </Flex>
                 )}
@@ -1215,7 +1211,7 @@ function ProviderSettings({ providerId }: { providerId: string }) {
           )}
           <AdaptiveModal.Actions>
             <Button mt="md" onClick={() => setModelTestResult(null)}>
-              {t('Confirm')}
+              Confirm
             </Button>
           </AdaptiveModal.Actions>
         </AdaptiveModal>

@@ -53,7 +53,7 @@ export default function ReasoningControlButton({
 
   if (capabilities.disabledReason) {
     return (
-      <Tooltip label={getDisabledReasonLabel(capabilities.disabledReason, t)} position="top" withArrow>
+      <Tooltip label={getDisabledReasonLabel(capabilities.disabledReason)} position="top" withArrow>
         <span>
           <UnstyledButton
             data-testid={TestId.reasoning.trigger}
@@ -69,7 +69,7 @@ export default function ReasoningControlButton({
   }
 
   const selectedOption = options.find((item) => item.level === level)
-  const levelLabel = getOptionLabel(selectedOption || { level, label: level }, t)
+  const levelLabel = getOptionLabel(selectedOption || { level, label: level })
 
   return (
     <Menu
@@ -108,7 +108,7 @@ export default function ReasoningControlButton({
         </span>
       </Menu.Target>
       <Menu.Dropdown data-testid={TestId.reasoning.menu}>
-        <Menu.Label fw={600}>{t('Thinking Effort')}</Menu.Label>
+        <Menu.Label fw={600}>Thinking Effort</Menu.Label>
         {options.map((item) => (
           <Menu.Item
             data-testid={TestId.reasoning.level(item.level)}
@@ -117,7 +117,7 @@ export default function ReasoningControlButton({
             onClick={() => onChange(item.level)}
             color={item.level === level ? 'chatbox-brand' : undefined}
           >
-            {getOptionLabel(item, t)}
+            {getOptionLabel(item)}
           </Menu.Item>
         ))}
       </Menu.Dropdown>
@@ -195,44 +195,39 @@ function ReasoningLevelStatusIcon({
   )
 }
 
-// Literal t() calls so keys stay in the English catalog
-function getDisabledReasonLabel(reason: ReasoningControlDisabledReason, t: (key: string) => string): string {
+function getDisabledReasonLabel(reason: ReasoningControlDisabledReason): string {
   switch (reason) {
     case 'requires-anthropic-api-style':
-      return t(
-        'Thinking controls are disabled because this Claude model is not exposed through the Anthropic API style.'
-      )
+      return 'Thinking controls are disabled because this Claude model is not exposed through the Anthropic API style.'
     case 'requires-google-api-style':
-      return t('Thinking controls are disabled because this Gemini model is not exposed through the Google API style.')
+      return 'Thinking controls are disabled because this Gemini model is not exposed through the Google API style.'
     case 'requires-openai-api-style':
-      return t('Thinking controls are disabled because this GPT model is not exposed through an OpenAI API style.')
+      return 'Thinking controls are disabled because this GPT model is not exposed through an OpenAI API style.'
     case 'requires-deepseek-api-style':
-      return t(
-        'Thinking controls are disabled because this DeepSeek model is not exposed through the DeepSeek API style.'
-      )
+      return 'Thinking controls are disabled because this DeepSeek model is not exposed through the DeepSeek API style.'
     case 'requires-qwen-api-style':
-      return t('Thinking controls are disabled because this Qwen model is not exposed through the Qwen API style.')
+      return 'Thinking controls are disabled because this Qwen model is not exposed through the Qwen API style.'
     case 'requires-xai-api-style':
-      return t('Thinking controls are disabled because this Grok model is not exposed through the xAI API style.')
+      return 'Thinking controls are disabled because this Grok model is not exposed through the xAI API style.'
   }
 }
 
-function getOptionLabel(option: ReasoningControlOption, t: (key: string) => string): string {
-  if (option.label === 'on') return t('On')
-  return getLevelLabel(option.level, t)
+function getOptionLabel(option: ReasoningControlOption): string {
+  if (option.label === 'on') return 'On'
+  return getLevelLabel(option.level)
 }
 
-function getLevelLabel(level: ReasoningControlLevel, t: (key: string) => string): string {
+function getLevelLabel(level: ReasoningControlLevel): string {
   switch (level) {
     case 'default':
-      return t('Default')
+      return 'Default'
     case 'off':
-      return t('Off')
+      return 'Off'
     case 'low':
-      return t('Low')
+      return 'Low'
     case 'medium':
-      return t('Medium')
+      return 'Medium'
     case 'high':
-      return t('High')
+      return 'High'
   }
 }

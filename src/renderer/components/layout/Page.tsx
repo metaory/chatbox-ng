@@ -43,7 +43,7 @@ export const Page: FC<PageProps> = ({ children, title, left, right }) => {
             </Flex>
           ))}
 
-        <Flex align="center" gap={'xxs'} flex={1} {...(isSmallScreen ? { justify: 'center', px: 'sm' } : {})}>
+        <Flex align="center" gap="xxs" flex={1} {...(isSmallScreen ? { justify: 'center', px: 'sm' } : {})}>
           {typeof title === 'string' ? (
             <Title order={4} fz={!isSmallScreen ? 18 : undefined} lineClamp={1}>
               {title}

@@ -2,7 +2,6 @@ import NiceModal, { useModal } from '@ebay/nice-modal-react'
 import { ActionIcon, Button, CopyButton, Flex, SegmentedControl, Stack, Text, TextInput } from '@mantine/core'
 import { IconCheck, IconCopy, IconExternalLink, IconWorldUpload } from '@tabler/icons-react'
 import { useCallback, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { AdaptiveModal } from '@/components/common/AdaptiveModal'
 import { ScalableIcon } from '@/components/common/ScalableIcon'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
@@ -22,7 +21,6 @@ export interface VibedropPublishProps {
 
 const VibedropPublish = NiceModal.create(({ html, uniqueId }: VibedropPublishProps) => {
   const modal = useModal()
-  const { t } = useTranslation()
   const isSmallScreen = useIsSmallScreen()
   const storedSlug = getStoredSlug(uniqueId)
   const [visibility, setVisibility] = useState<VibedropVisibility>('unlisted')
@@ -54,23 +52,23 @@ const VibedropPublish = NiceModal.create(({ html, uniqueId }: VibedropPublishPro
           setStage('success')
           return
         } catch (retryErr) {
-          setErrorMessage((retryErr as Error).message || t('Publish failed'))
+          setErrorMessage((retryErr as Error).message || 'Publish failed')
           setStage('error')
           return
         }
       }
-      setErrorMessage((e as Error).message || t('Publish failed'))
+      setErrorMessage((e as Error).message || 'Publish failed')
       setStage('error')
     }
-  }, [html, storedSlug, uniqueId, visibility, t])
+  }, [html, storedSlug, uniqueId, visibility])
 
   return (
-    <AdaptiveModal opened={modal.visible} onClose={onClose} centered title={t('Publish to VibeDrop')}>
+    <AdaptiveModal opened={modal.visible} onClose={onClose} centered title="Publish to VibeDrop">
       <Stack>
         {(stage === 'form' || stage === 'publishing') && (
           <>
             <Text size="sm" c="dimmed">
-              {t('Your HTML page will be published to VibeDrop. Choose who can access it.')}
+              Your HTML page will be published to VibeDrop. Choose who can access it.
             </Text>
             <Text size="xs" c="dimmed">
               Currently Anonymous.
@@ -83,25 +81,25 @@ const VibedropPublish = NiceModal.create(({ html, uniqueId }: VibedropPublishPro
               onChange={(v) => setVisibility(v as VibedropVisibility)}
               disabled={stage === 'publishing'}
               data={[
-                { label: t('Link only'), value: 'unlisted' },
-                { label: t('Public'), value: 'public' },
+                { label: 'Link only', value: 'unlisted' },
+                { label: 'Public', value: 'public' },
               ]}
             />
             <Text size="xs" c="dimmed">
               {visibility === 'public'
-                ? t('Anyone can find this page in the VibeDrop explore gallery.')
-                : t('Only people with the link can open this page.')}
+                ? 'Anyone can find this page in the VibeDrop explore gallery.'
+                : 'Only people with the link can open this page.'}
             </Text>
             <AdaptiveModal.Actions>
               <Button variant="default" onClick={onClose} disabled={stage === 'publishing'}>
-                {t('Close')}
+                close
               </Button>
               <Button
                 onClick={publish}
                 loading={stage === 'publishing'}
                 leftSection={<ScalableIcon icon={IconWorldUpload} size={16} />}
               >
-                {t('Publish')}
+                Publish
               </Button>
             </AdaptiveModal.Actions>
           </>
@@ -113,10 +111,10 @@ const VibedropPublish = NiceModal.create(({ html, uniqueId }: VibedropPublishPro
             </Text>
             <AdaptiveModal.Actions>
               <Button variant="default" onClick={onClose}>
-                {t('Close')}
+                close
               </Button>
               <Button onClick={() => setStage('form')}>
-                {t('Try Again')}
+                Try Again
               </Button>
             </AdaptiveModal.Actions>
           </>
@@ -124,7 +122,7 @@ const VibedropPublish = NiceModal.create(({ html, uniqueId }: VibedropPublishPro
         {stage === 'success' && (
           <>
             <Text size="sm" c="dimmed">
-              {t('Your page is published. You can access it via the link below.')}
+              Your page is published. You can access it via the link below.
             </Text>
             <Flex gap="xs" className={isSmallScreen ? 'flex-col' : ''}>
               <TextInput
@@ -134,7 +132,7 @@ const VibedropPublish = NiceModal.create(({ html, uniqueId }: VibedropPublishPro
                 rightSection={
                   <CopyButton value={url} timeout={2000}>
                     {({ copied, copy }) => (
-                      <Tooltip label={copied ? t('Copied') : t('Copy')} withArrow position="right">
+                      <Tooltip label={copied ? 'Copied' : 'Copy'} withArrow position="right">
                         <ActionIcon color={copied ? 'teal' : 'gray'} variant="subtle" onClick={copy}>
                           {copied ? <IconCheck size={16} /> : <IconCopy size={16} />}
                         </ActionIcon>
@@ -150,21 +148,21 @@ const VibedropPublish = NiceModal.create(({ html, uniqueId }: VibedropPublishPro
                 rel="noopener noreferrer"
                 leftSection={<ScalableIcon icon={IconExternalLink} size={16} />}
               >
-                {t('Open')}
+                Open
               </Button>
             </Flex>
             {claimUrl && (
               <Text size="xs" c="dimmed">
-                {t('Claim this site at VibeDrop to keep and manage it. The claim link expires in 1 hour.')}{' '}
+                Claim this site at VibeDrop to keep and manage it. The claim link expires in 1 hour. 
                 <a href={claimUrl} target="_blank" rel="noopener noreferrer" className="underline">
-                  {t('Claim this site')}
+                  Claim this site
                 </a>
               </Text>
             )}
             {!isSmallScreen && (
               <AdaptiveModal.Actions>
                 <Button variant="default" onClick={onClose}>
-                  {t('Close')}
+                  close
                 </Button>
               </AdaptiveModal.Actions>
             )}

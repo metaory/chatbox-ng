@@ -164,7 +164,7 @@ function DevIndexPage() {
               ⚠️ Note:
             </Text>
             <Text size="sm">
-              These dev tools are hidden in production builds unless <code>FORCE_ENABLE_DEV_PAGES</code> in{' '}
+              These dev tools are hidden in production builds unless <code>FORCE_ENABLE_DEV_PAGES</code> in 
               <code>src/renderer/dev/devToolsConfig.ts</code> is set to <code>true</code>.
             </Text>
           </Group>

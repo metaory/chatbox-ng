@@ -1,6 +1,5 @@
 import { Grid, Stack, Text } from '@mantine/core'
 import { createFileRoute } from '@tanstack/react-router'
-import { useTranslation } from 'react-i18next'
 import { useMyCopilots } from '@/hooks/useCopilots'
 import CopilotItem from './-components/CopilotItem'
 
@@ -9,7 +8,6 @@ export const Route = createFileRoute('/copilots/my')({
 })
 
 function MyCopilots() {
-  const { t } = useTranslation()
   const { copilots } = useMyCopilots()
 
   return (
@@ -18,7 +16,7 @@ function MyCopilots() {
         // Empty State
         <div className="py-12 text-center">
           <Text c="dimmed" size="sm">
-            {t('No copilots yet. Create your first one!')}
+            No copilots yet. Create your first one!
           </Text>
         </div>
       ) : (

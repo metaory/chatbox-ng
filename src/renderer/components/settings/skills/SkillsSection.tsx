@@ -135,7 +135,6 @@ const SectionHeader: FC<{
 )
 
 const EmptyState: FC<{ onAddClick: () => void; onOpenFolder: () => void }> = ({ onAddClick, onOpenFolder }) => {
-  const { t } = useTranslation()
 
   return (
     <Paper radius="lg" p="xl" className="border border-dashed border-chatbox-border-primary">
@@ -145,10 +144,10 @@ const EmptyState: FC<{ onAddClick: () => void; onOpenFolder: () => void }> = ({ 
         </Box>
         <Box className="text-center">
           <Text size="sm" fw={500}>
-            {t('No custom skills yet')}
+            No custom skills yet
           </Text>
           <Text size="xs" c="chatbox-tertiary" mt={4}>
-            {t('Add skills from the marketplace or install from a GitHub repository.')}
+            Add skills from the marketplace or install from a GitHub repository.
           </Text>
         </Box>
         <Flex gap="xs" mt={4}>
@@ -158,7 +157,7 @@ const EmptyState: FC<{ onAddClick: () => void; onOpenFolder: () => void }> = ({ 
             leftSection={<ScalableIcon icon={IconSearch} size={14} />}
             onClick={onAddClick}
           >
-            {t('Browse Skills')}
+            Browse Skills
           </Button>
           <Button
             variant="subtle"
@@ -166,7 +165,7 @@ const EmptyState: FC<{ onAddClick: () => void; onOpenFolder: () => void }> = ({ 
             leftSection={<ScalableIcon icon={IconFolderOpen} size={14} />}
             onClick={onOpenFolder}
           >
-            {t('Open Skills Folder')}
+            Open Skills Folder
           </Button>
         </Flex>
       </Flex>
@@ -334,7 +333,7 @@ export const SkillsSection: FC = () => {
   const handleScanRepo = useCallback(async () => {
     const parsed = parseGitHubRepo(githubUrl)
     if (!parsed) {
-      toastError(t('Please enter a valid GitHub repository URL'))
+      toastError('Please enter a valid GitHub repository URL')
       return
     }
 
@@ -345,13 +344,13 @@ export const SkillsSection: FC = () => {
       setRepoInfo(parsed)
 
       if (!discovered.length) {
-        toastError(t('No skills found in this repository'))
+        toastError('No skills found in this repository')
         return
       }
 
       setInstallModalOpen(true)
     } catch (error) {
-      toastError(error instanceof Error ? error.message : t('Failed to scan repository'))
+      toastError(error instanceof Error ? error.message : 'Failed to scan repository')
     } finally {
       setScanning(false)
     }
@@ -362,7 +361,7 @@ export const SkillsSection: FC = () => {
       try {
         const result = await skillsController.deleteSkill(name)
         if (!result.success) {
-          toastError(result.error ?? t('Failed to delete skill'))
+          toastError(result.error ?? 'Failed to delete skill')
           return
         }
 
@@ -373,10 +372,10 @@ export const SkillsSection: FC = () => {
           },
         }))
 
-        toast.success(t('Skill deleted'))
+        toast.success('Skill deleted')
         await fetchSkills()
       } catch (error) {
-        toastError(error instanceof Error ? error.message : t('Failed to delete skill'))
+        toastError(error instanceof Error ? error.message : 'Failed to delete skill')
       }
     },
     [fetchSkills, t]
@@ -398,7 +397,7 @@ export const SkillsSection: FC = () => {
 
         toast.info(t('No updates for {{name}}', { name }))
       } catch (error) {
-        toastError(error instanceof Error ? error.message : t('Failed to check for updates'))
+        toastError(error instanceof Error ? error.message : 'Failed to check for updates')
       }
     },
     [t]
@@ -414,7 +413,7 @@ export const SkillsSection: FC = () => {
             leftSection={<ScalableIcon icon={IconPlus} size={14} />}
             onClick={skillsSpotlight.open}
           >
-            {t('Add Skills')}
+            Add Skills
           </Button>
           <Button
             variant="subtle"
@@ -423,13 +422,13 @@ export const SkillsSection: FC = () => {
             leftSection={<ScalableIcon icon={IconBrandGithub} size={14} />}
             onClick={() => setShowGithubInput((v) => !v)}
           >
-            {t('Install from GitHub')}
+            Install from GitHub
           </Button>
         </Flex>
 
         <Flex align="center" gap="xs">
           {isTranslating && <Loader size="xs" />}
-          <Switch size="xs" label={t('Translate')} checked={translationEnabled} onChange={() => toggleTranslation()} />
+          <Switch size="xs" label="Translate" checked={translationEnabled} onChange={() => toggleTranslation()} />
         </Flex>
       </Flex>
 
@@ -438,7 +437,7 @@ export const SkillsSection: FC = () => {
           <Flex align="center" gap={8} mb={8}>
             <ScalableIcon icon={IconBrandGithub} size={16} className="text-chatbox-tint-tertiary" />
             <Text size="xs" fw={500}>
-              {t('Install from GitHub Repository')}
+              Install from GitHub Repository
             </Text>
           </Flex>
           <Flex gap="xs">
@@ -456,7 +455,7 @@ export const SkillsSection: FC = () => {
               flex={1}
             />
             <Button size="xs" loading={scanning} onClick={() => void handleScanRepo()}>
-              {t('Scan')}
+              Scan
             </Button>
           </Flex>
         </Paper>
@@ -468,7 +467,7 @@ export const SkillsSection: FC = () => {
           mb="lg"
           value={searchQuery}
           onChange={(event) => setSearchQuery(event.currentTarget.value)}
-          placeholder={String(t('Search skills...'))}
+          placeholder={'Search skills...'}
           leftSection={<ScalableIcon icon={IconSearch} size={14} />}
           rightSection={
             searchQuery ? (
@@ -482,7 +481,7 @@ export const SkillsSection: FC = () => {
 
       {builtinSkills.length > 0 && (
         <>
-          <SectionHeader title={t('Built-in Skills')} count={builtinSkills.length} className="mb-3" />
+          <SectionHeader title="Built-in Skills" count={builtinSkills.length} className="mb-3" />
           <SimpleGrid type="container" cols={{ base: 1, '450px': 2, '800px': 3, '1200px': 4 }} mb="xl">
             {builtinSkills.map((skill) => (
               <SkillCard
@@ -498,12 +497,12 @@ export const SkillsSection: FC = () => {
       )}
 
       <SectionHeader
-        title={t('Installed Skills')}
+        title="Installed Skills"
         count={userSkills.length}
         className="mb-3"
         right={
           <>
-            <Tooltip label={t('Open Skills Folder')} withArrow openDelay={300}>
+            <Tooltip label="Open Skills Folder" withArrow openDelay={300}>
               <ActionIcon variant="subtle" size="sm" color="gray" onClick={() => void handleOpenFolder()}>
                 <ScalableIcon icon={IconFolderOpen} size={16} />
               </ActionIcon>
@@ -515,7 +514,7 @@ export const SkillsSection: FC = () => {
               loading={loading}
               onClick={fetchSkills}
             >
-              {t('Refresh')}
+              Refresh
             </Button>
           </>
         }
@@ -535,18 +534,18 @@ export const SkillsSection: FC = () => {
             const originalSkill = getOriginalUserSkill(skill)
             const actionItems: ActionMenuItemProps[] = [
               {
-                text: t('Check Update'),
+                text: 'Check Update',
                 icon: IconRefresh,
                 onClick: () => {
                   void handleCheckUpdate(originalSkill.name)
                 },
               },
               {
-                text: t('Delete'),
+                text: 'Delete',
                 icon: IconTrash,
                 color: 'red',
                 doubleCheck: {
-                  text: String(t('Confirm Delete?')),
+                  text: 'Confirm Delete?',
                   color: 'red',
                 },
                 onClick: () => {
@@ -572,7 +571,7 @@ export const SkillsSection: FC = () => {
       {claudeCodeSkills.length > 0 && (
         <>
           <SectionHeader
-            title={t('Claude Code Skills')}
+            title="Claude Code Skills"
             subtitle="~/.claude/skills"
             count={claudeCodeSkills.length}
             className="mt-6 mb-3"
@@ -597,7 +596,7 @@ export const SkillsSection: FC = () => {
       {agentSkills.length > 0 && (
         <>
           <SectionHeader
-            title={t('Local Agent Skills')}
+            title="Local Agent Skills"
             subtitle="~/.agents/skills"
             count={agentSkills.length}
             className="mt-6 mb-3"

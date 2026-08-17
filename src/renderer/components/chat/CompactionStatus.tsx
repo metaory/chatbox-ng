@@ -10,7 +10,6 @@ import {
 } from '@tabler/icons-react'
 import { useAtomValue } from 'jotai'
 import { memo, useCallback, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
 import { useCopied } from '@/hooks/useCopied'
 import { runCompactionWithUIState } from '@/packages/context-management'
@@ -42,7 +41,6 @@ interface CompactionStatusProps {
 }
 
 export const CompactionStatus = memo(function CompactionStatus({ sessionId }: CompactionStatusProps) {
-  const { t } = useTranslation()
   const compactionStateMap = useAtomValue(compactionUIStateMapAtom)
   const [expanded, setExpanded] = useState(false)
 
@@ -55,7 +53,7 @@ export const CompactionStatus = memo(function CompactionStatus({ sessionId }: Co
     return lines[lines.length - 1] || ''
   }, [compactionState.streamingText])
 
-  const errorText = (compactionState.error ?? t('Compaction failed')) as string
+  const errorText = (compactionState.error ?? 'Compaction failed') as string
   const { copied, copy } = useCopied(errorText)
   const isTruncated = shouldTruncate(errorText)
 
@@ -97,9 +95,9 @@ export const CompactionStatus = memo(function CompactionStatus({ sessionId }: Co
           </Flex>
           <Flex align="flex-start" gap="xs" className="flex-shrink-0">
             <Button size="xs" variant="light" color="red" onClick={handleRetry}>
-              {t('Retry')}
+              Retry
             </Button>
-            <Tooltip label={t('Dismiss')}>
+            <Tooltip label="Dismiss">
               <ActionIcon size="xs" variant="subtle" color="red" onClick={handleDismiss}>
                 <IconX size={14} />
               </ActionIcon>
@@ -109,7 +107,7 @@ export const CompactionStatus = memo(function CompactionStatus({ sessionId }: Co
         {(expanded || !isTruncated) && (
           <Collapse in={expanded || !isTruncated}>
             <Flex justify="flex-end" mt="xs">
-              <Tooltip label={t('Copy')} withArrow openDelay={1000}>
+              <Tooltip label="Copy" withArrow openDelay={1000}>
                 <ActionIcon
                   variant="subtle"
                   size="sm"
@@ -134,7 +132,7 @@ export const CompactionStatus = memo(function CompactionStatus({ sessionId }: Co
       <Flex align="center" gap="xs" justify="center">
         <ScalableIcon icon={IconLoader2} size={16} className="animate-spin text-chatbox-tertiary" />
         <Text size="sm" c="chatbox-tertiary">
-          {t('Compacting conversation...')}
+          Compacting conversation...
         </Text>
       </Flex>
       {lastLine && (

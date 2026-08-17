@@ -1,7 +1,6 @@
 import { ActionIcon, Box, Button, Flex, Skeleton, Stack, Text } from '@mantine/core'
 import type { ImageGeneration } from '@shared/types'
 import { IconChevronRight, IconClock, IconPlus } from '@tabler/icons-react'
-import { useTranslation } from 'react-i18next'
 import { Virtuoso } from 'react-virtuoso'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
 import { HistoryItem } from './HistoryItem'
@@ -61,7 +60,6 @@ export function HistoryListContent({
   onLoadMore,
   onDelete,
 }: HistoryListContentProps) {
-  const { t } = useTranslation()
 
   return (
     <Box className="h-full">
@@ -77,7 +75,7 @@ export function HistoryListContent({
         <Flex direction="column" align="center" py="xl" gap="sm" opacity={0.5}>
           <IconClock size={24} />
           <Text size="xs" ta="center">
-            {t('No history yet')}
+            No history yet
           </Text>
         </Flex>
       )}
@@ -89,7 +87,7 @@ export function HistoryListContent({
           context={{
             hasNextPage,
             isFetchingNextPage,
-            loadMoreText: t('Load More'),
+            loadMoreText: 'Load More',
             onLoadMore,
           }}
           itemContent={(_index, record) => (
@@ -154,7 +152,6 @@ export function HistoryPanel({
   onClose,
   onDelete,
 }: HistoryPanelProps) {
-  const { t } = useTranslation()
 
   return (
     <Box
@@ -165,15 +162,15 @@ export function HistoryPanel({
       <Flex direction="column" h="100%" w={width}>
         <Flex align="center" justify="space-between" px="xs" py="xs" className="">
           <Text size="sm" fw={600}>
-            {t('History')}
+            History
           </Text>
           <Flex gap={4}>
-            <Tooltip label={t('New Creation')}>
+            <Tooltip label="New Creation">
               <ActionIcon variant="subtle" color="gray" size="sm" onClick={onNewCreation}>
                 <IconPlus size={14} />
               </ActionIcon>
             </Tooltip>
-            <Tooltip label={t('Close')}>
+            <Tooltip label="close">
               <ActionIcon variant="subtle" color="gray" size="sm" onClick={onClose}>
                 <IconChevronRight size={14} />
               </ActionIcon>

@@ -5,7 +5,6 @@ import { IconLayoutSidebarLeftExpand, IconMenu2 } from '@tabler/icons-react'
 import clsx from 'clsx'
 import { PencilIcon } from 'lucide-react'
 import { useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import useNeedRoomForWinControls from '@/hooks/useNeedRoomForWinControls'
 import { useIsSmallScreen } from '@/hooks/useScreenChange'
@@ -18,7 +17,6 @@ import Toolbar from './Toolbar'
 import WindowControls from './WindowControls'
 
 export default function Header(props: { session: Session }) {
-  const { t } = useTranslation()
   const showSidebar = useUIStore((s) => s.showSidebar)
   const setShowSidebar = useUIStore((s) => s.setShowSidebar)
 
@@ -88,13 +86,13 @@ export default function Header(props: { session: Session }) {
                 color="chatbox-tertiary"
                 size={isSmallScreen ? 20 : 16}
                 ml={4}
-                aria-label={t('Customize settings for the current conversation')}
+                aria-label="Customize settings for the current conversation"
                 onClick={editCurrentSession}
               >
                 <PencilIcon size={12} />
               </ActionIcon>
             </TooltipTrigger>
-            <TooltipContent>{t('Customize settings for the current conversation')}</TooltipContent>
+            <TooltipContent>Customize settings for the current conversation</TooltipContent>
           </Tooltip>
         </Flex>
 

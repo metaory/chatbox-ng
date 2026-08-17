@@ -295,7 +295,7 @@ const MessageMinimapRail = ({ anchors, className, onJump }: MessageMinimapRailPr
     return null
   }
 
-  const previewFallback = String(t('Attachment message'))
+  const previewFallback = 'Attachment message'
   const hoveredPreviewText = hoveredAnchor ? normalizePreviewText(hoveredAnchor.anchor.text, previewFallback) : ''
   const hoveredAssistantText = hoveredAnchor?.anchor.assistantText
     ? normalizePreviewText(hoveredAnchor.anchor.assistantText, '')

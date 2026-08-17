@@ -2,7 +2,6 @@ import { Flex, Loader, Menu, Switch, Text } from '@mantine/core'
 import { formatNumber } from '@shared/utils'
 import { IconFileZip } from '@tabler/icons-react'
 import type { FC } from 'react'
-import { useTranslation } from 'react-i18next'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
 import { useIsSmallScreen } from '@/hooks/useScreenChange'
 import { ScalableIcon } from '../common/ScalableIcon'
@@ -43,28 +42,27 @@ const TokenCountMenu: FC<Props> = ({
   contextWindowKnown = true,
   onAutoCompactionChange,
 }) => {
-  const { t } = useTranslation()
   const isSmallScreen = useIsSmallScreen()
 
   const autoCompactionToggle = onAutoCompactionChange !== undefined && (
     <Menu.Item closeMenuOnClick={false} style={{ cursor: 'default' }}>
       <Flex justify="space-between" align="center" gap="xs">
         <Flex align="center" gap="xs">
-          <Text size="sm">{t('Auto Compaction')}</Text>
+          <Text size="sm">Auto Compaction</Text>
           <Text size="xs" c="dimmed">
-            ({t('This session')})
+            (This session)
           </Text>
         </Flex>
         {isCompacting ? (
           <Flex align="center" gap="xs">
             <Loader size="xs" />
             <Text size="xs" c="dimmed">
-              {t('Compacting...')}
+              Compacting...
             </Text>
           </Flex>
         ) : (
           <Tooltip
-            label={t('Context window unknown for this model')}
+            label="Context window unknown for this model"
             disabled={contextWindowKnown}
             withArrow
             position="top"
@@ -98,13 +96,13 @@ const TokenCountMenu: FC<Props> = ({
       <Menu.Dropdown className="min-w-56">
         <Flex justify="space-between" align="center" px="xs" pt="xs" pb="4">
           <Text size="sm" fw={600}>
-            {t('Estimated Token Usage')}
+            Estimated Token Usage
           </Text>
         </Flex>
 
         <Menu.Item disabled style={{ cursor: 'default' }}>
           <Flex justify="space-between" align="center" gap="xs">
-            <Text size="sm">{t('Current input')}:</Text>
+            <Text size="sm">Current input:</Text>
             <Text size="sm" fw={500}>
               {formatNumber(currentInputTokens)}
             </Text>
@@ -113,7 +111,7 @@ const TokenCountMenu: FC<Props> = ({
 
         <Menu.Item disabled style={{ cursor: 'default' }}>
           <Flex justify="space-between" align="center" gap="xs">
-            <Text size="sm">{t('Context')}:</Text>
+            <Text size="sm">Context:</Text>
             <Flex align="center" gap="xs">
               <Text size="sm" fw={500}>
                 {isCalculating ? '~' : ''}
@@ -134,7 +132,7 @@ const TokenCountMenu: FC<Props> = ({
         {maxContextMessageCount !== undefined && currentMessageCount !== undefined && (
           <Menu.Item disabled style={{ cursor: 'default' }}>
             <Flex justify="space-between" align="center" gap="xs">
-              <Text size="sm">{t('Context messages')}:</Text>
+              <Text size="sm">Context messages:</Text>
               <Text size="sm" fw={500}>
                 {maxContextMessageCount === Number.MAX_SAFE_INTEGER
                   ? currentMessageCount
@@ -149,7 +147,7 @@ const TokenCountMenu: FC<Props> = ({
         <Menu.Item disabled style={{ cursor: 'default' }}>
           <Flex justify="space-between" align="center" gap="xs">
             <Text size="sm" fw={600}>
-              {t('Total')}:
+              Total:
             </Text>
             <Text size="sm" fw={600}>
               {formatNumber(totalTokens)}
@@ -160,7 +158,7 @@ const TokenCountMenu: FC<Props> = ({
         {contextWindow && (
           <Menu.Item disabled style={{ cursor: 'default' }}>
             <Flex justify="space-between" align="center" gap="xs">
-              <Text size="sm">{t('Model limit')}:</Text>
+              <Text size="sm">Model limit:</Text>
               <Text size="sm" fw={500}>
                 {formatNumber(contextWindow)}
               </Text>
@@ -183,7 +181,7 @@ const TokenCountMenu: FC<Props> = ({
               onClick={onCompressClick}
               color="chatbox-brand"
             >
-              {t('Compress Conversation')}
+              Compress Conversation
             </Menu.Item>
           </>
         )}

@@ -30,7 +30,7 @@ export const useUpdateStore = create<UpdateState & UpdateActions>((set, get) => 
 
 export function installUpdate() {
   platform.installUpdate().catch(() => {
-    useUpdateStore.setState({ status: 'error', error: t('Update failed') })
+    useUpdateStore.setState({ status: 'error', error: 'Update failed' })
   })
 }
 

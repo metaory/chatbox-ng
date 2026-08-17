@@ -68,7 +68,7 @@ const SearchBox = ({
     <TextInput
       value={search}
       onChange={(event) => onSearchChange(event.currentTarget.value)}
-      placeholder={t('Search models') as string}
+      placeholder={'Search models' as string}
       variant="unstyled"
       className="flex-1 ml-xs"
       styles={{
@@ -84,9 +84,9 @@ const SearchBox = ({
       value={activeTab || 'all'}
       onChange={(value) => onTabChange(value)}
       data={[
-        { label: t('All'), value: 'all' },
+        { label: 'All', value: 'all' },
         {
-          label: t('Favorite'),
+          label: 'Favorite',
           value: 'favorite',
         },
       ]}
@@ -228,24 +228,24 @@ export const DesktopModelSelector = forwardRef<HTMLDivElement, DesktopModelSelec
           <Combobox.Options mah="50vh" style={{ overflowY: 'auto' }} className="px-xs pb-xs">
             {showAuto && activeTab === 'all' && (
               <Combobox.Option
-                value={''}
+                value=""
                 className={clsx(
                   'flex items-center -mx-xs px-xs',
                   !selectedProviderId && !selectedModelId ? SELECTED_BG_CLASS : ''
                 )}
               >
-                {autoText || t('Auto')}
+                {autoText || 'Auto'}
               </Combobox.Option>
             )}
             {(isEmpty && !showAuto) ||
             (activeTab === 'favorite' && (!favoritedModels || favoritedModels.length === 0)) ? (
               <Stack gap="xs" pt="xs" align="center" className="overflow-hidden">
                 <Text c="chatbox-tertiary" size="xs">
-                  {activeTab === 'favorite' ? t('No favorite models') : t('No eligible models available')}
+                  {activeTab === 'favorite' ? 'No favorite models' : 'No eligible models available'}
                 </Text>
                 {activeTab === 'all' && (
                   <Button variant="transparent" size="xs" onClick={() => navigateToSettings('/provider')}>
-                    {t('Click here to set up')}
+                    Click here to set up
                   </Button>
                 )}
               </Stack>
@@ -288,7 +288,7 @@ export const DesktopModelSelector = forwardRef<HTMLDivElement, DesktopModelSelec
                 {favoritedModels && favoritedModels.length > 0 && (
                   <div>
                     <ProviderHeader
-                      provider={{ id: 'favorite', name: t('Favorite') }}
+                      provider={{ id: 'favorite', name: 'Favorite' }}
                       variant="favorite"
                       showChevron={false}
                       showModelCount={false}

@@ -2,7 +2,6 @@ import NiceModal, { useModal } from '@ebay/nice-modal-react'
 import { Button, Input } from '@mantine/core'
 import type { Session } from '@shared/types'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { AdaptiveModal } from '@/components/common/AdaptiveModal'
 import { useIsSmallScreen } from '@/hooks/useScreenChange'
 import { useSession } from '@/stores/chatStore'
@@ -12,7 +11,6 @@ const ThreadNameEdit = NiceModal.create((props: { sessionId: string; threadId: s
   const { sessionId, threadId } = props
   const { session: currentSession } = useSession(sessionId)
   const modal = useModal()
-  const { t } = useTranslation()
   const isSmallScreen = useIsSmallScreen()
   const currentThreadName = useMemo(() => {
     if (currentSession?.id === threadId) {
@@ -41,12 +39,12 @@ const ThreadNameEdit = NiceModal.create((props: { sessionId: string; threadId: s
   }, [])
 
   return (
-    <AdaptiveModal opened={modal.visible} onClose={onClose} centered title={t('Edit Thread Name')}>
+    <AdaptiveModal opened={modal.visible} onClose={onClose} centered title="Edit Thread Name">
       <Input autoFocus={!isSmallScreen} placeholder="Thread Name" value={threadName} onChange={onContentInput} />
 
       <AdaptiveModal.Actions>
         <AdaptiveModal.CloseButton onClick={onClose} />
-        <Button onClick={onSave}>{t('Save')}</Button>
+        <Button onClick={onSave}>Save</Button>
       </AdaptiveModal.Actions>
     </AdaptiveModal>
   )

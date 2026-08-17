@@ -3,7 +3,6 @@ import { Button, Flex, Stack, Switch, Text, Title } from '@mantine/core'
 import type { CopilotDetail } from '@shared/types'
 import { IconChevronRight, IconPlus } from '@tabler/icons-react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useTranslation } from 'react-i18next'
 import { ScalableIcon } from '@/components/common/ScalableIcon'
 import { useMyCopilots, useRemoteCopilotsByCursor } from '@/hooks/useCopilots'
 import { useUIStore } from '@/stores/uiStore'
@@ -16,7 +15,6 @@ export const Route = createFileRoute('/copilots/')({
 const MAX_ITEMS_PER_SECTION = 6
 
 function Copilots() {
-  const { t } = useTranslation()
   const navigate = useNavigate()
   const store = useMyCopilots()
   const { copilots: remoteCopilots } = useRemoteCopilotsByCursor({ limit: MAX_ITEMS_PER_SECTION })
@@ -50,7 +48,7 @@ function Copilots() {
         <Flex align="center" gap="md" justify="space-between" mb="md">
           <Flex align="center" gap="md">
             <Title order={5} c="chatbox-primary" className="font-normal">
-              {t('My Created & Added Copilots')}
+              My Created & Added Copilots
             </Title>
             <Button
               variant="outline"
@@ -60,7 +58,7 @@ function Copilots() {
               onClick={handleCreateCopilot}
               className="flex-shrink-0"
             >
-              {t('Create')}
+              Create
             </Button>
           </Flex>
           {showMyCopilotsSeeAll && (
@@ -71,7 +69,7 @@ function Copilots() {
               onClick={() => navigate({ to: '/copilots/my' })}
             >
               <Text c="chatbox-secondary" size="xs" className="whitespace-nowrap">
-                {t('See All')}
+                See All
               </Text>
               <ScalableIcon icon={IconChevronRight} size={12} className="text-chatbox-tint-secondary" />
             </Flex>
@@ -87,7 +85,7 @@ function Copilots() {
         ) : (
           <div className="py-8 text-center">
             <Text c="dimmed" size="sm">
-              {t('No copilots yet. Create your first one!')}
+              No copilots yet. Create your first one!
             </Text>
           </div>
         )}
@@ -98,7 +96,7 @@ function Copilots() {
         <section>
           <Flex align="center" gap="md" justify="space-between" mb="md">
             <Title order={5} c="chatbox-primary" className="font-normal">
-              {t('Chatbox Featured')}
+              Chatbox Featured
             </Title>
             {showRemoteCopilotsSeeAll && (
               <Flex
@@ -108,7 +106,7 @@ function Copilots() {
                 onClick={() => navigate({ to: '/copilots/featured' })}
               >
                 <Text c="chatbox-secondary" size="xs" className="whitespace-nowrap">
-                  {t('See All')}
+                  See All
                 </Text>
                 <ScalableIcon icon={IconChevronRight} size={12} className="text-chatbox-tint-secondary" />
               </Flex>
@@ -126,12 +124,12 @@ function Copilots() {
       {/* Settings Section */}
       <section>
         <Title order={4} mb="md" className="text-chatbox-tint-primary">
-          {t('Settings')}
+          Settings
         </Title>
         <Switch
           checked={showCopilotsInNewSession}
           onChange={(event) => setShowCopilotsInNewSession(event.currentTarget.checked)}
-          label={t('Show My Copilots in New Conversations')}
+          label="Show My Copilots in New Conversations"
           size="md"
         />
       </section>

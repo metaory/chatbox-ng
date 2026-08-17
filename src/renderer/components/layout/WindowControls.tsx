@@ -3,7 +3,6 @@ import { IconMinus, type IconProps, IconSquare, IconSquares, IconX } from '@tabl
 import clsx from 'clsx'
 import { useAtomValue } from 'jotai'
 import { type FC, memo } from 'react'
-import { useTranslation } from 'react-i18next'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
 import { platformTypeAtom } from '@/hooks/useNeedRoomForWinControls'
 import { useWindowMaximized } from '@/hooks/useWindowMaximized'
@@ -11,19 +10,18 @@ import platform from '@/platform'
 import { ScalableIcon } from '../common/ScalableIcon'
 
 export const WindowControls: FC<FlexProps> = ({ className, ...otherProps }) => {
-  const { t } = useTranslation()
   const windowMaximized = useWindowMaximized()
   const platformType = useAtomValue(platformTypeAtom)
   return platformType === 'win32' || platformType === 'linux' ? (
     <Flex align="center" className={clsx('controls self-start', className)} {...otherProps}>
-      <ControlButton label={t('Minimize') ?? ''} icon={IconMinus} onClick={() => platform.minimize()} />
+      <ControlButton label="Minimize" icon={IconMinus} onClick={() => platform.minimize()} />
       {!windowMaximized ? (
-        <ControlButton label={t('Maximize') ?? ''} icon={IconSquare} onClick={() => platform.maximize()} />
+        <ControlButton label="Maximize" icon={IconSquare} onClick={() => platform.maximize()} />
       ) : (
-        <ControlButton label={t('Restore') ?? ''} icon={IconSquares} onClick={() => platform.unmaximize()} />
+        <ControlButton label="Restore" icon={IconSquares} onClick={() => platform.unmaximize()} />
       )}
       <ControlButton
-        label={t('Close') ?? ''}
+        label="close"
         icon={IconX}
         className="hover:bg-chatbox-tint-error"
         onClick={() => platform.closeWindow()}

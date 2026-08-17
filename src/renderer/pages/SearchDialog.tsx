@@ -3,7 +3,6 @@ import type { Session } from '@shared/types'
 import { useAtomValue } from 'jotai'
 import { Loader2, ScanSearch } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import Message from '@/components/chat/Message'
 import Mark from '@/components/common/Mark'
 import { BlockCodeCollapsedStateProvider } from '@/components/Markdown'
@@ -28,7 +27,6 @@ export default function SearchDialog(props: Props) {
   const [searchInput, _setSearchInput] = useState('')
   const [searchResult, setSearchResult] = useState<Session[]>([])
   const [searchResultMarks, setSearchResultMarks] = useState<string[]>([])
-  const { t } = useTranslation()
   const ref = useRef<HTMLInputElement>(null)
 
   const currentSessionId = useAtomValue(currentSessionIdAtom)
@@ -85,12 +83,12 @@ export default function SearchDialog(props: Props) {
             onInput={onSearchInput}
             onKeyDown={onKeyDown}
             className={cn('border-none', 'shadow-none', 'text-chatbox-tint-primary')}
-            placeholder={globalOnly ? t('Search conversations') + '...' : t('Type a command or search') + '...'}
+            placeholder={globalOnly ? 'Search conversations' + '...' : 'Type a command or search' + '...'}
           />
           {mode === 'command' && !globalOnly && (
             <CommandList>
-              <CommandEmpty>{t('No results found')}</CommandEmpty>
-              <CommandGroup heading={t('Search')}>
+              <CommandEmpty>No results found</CommandEmpty>
+              <CommandGroup heading="Search">
                 <CommandItem
                   value="search-current-session"
                   className="aria-selected:bg-chatbox-background-secondary"
@@ -98,7 +96,7 @@ export default function SearchDialog(props: Props) {
                 >
                   <ScanSearch className="mr-2 h-4 w-4" />
                   <span>
-                    {t('Search in Current Conversation')}
+                    Search in Current Conversation
                     {searchInput.length > 0 ? ` "${searchInput}"` : ''}
                   </span>
                 </CommandItem>
@@ -109,7 +107,7 @@ export default function SearchDialog(props: Props) {
                 >
                   <ScanSearch className="mr-2 h-4 w-4" />
                   <span>
-                    {t('Search All Conversations')}
+                    Search All Conversations
                     {searchInput.length > 0 ? ` "${searchInput}"` : ''}
                   </span>
                 </CommandItem>
@@ -153,11 +151,11 @@ export default function SearchDialog(props: Props) {
             <BlockCodeCollapsedStateProvider defaultCollapsed={true}>
               <Mark marks={[searchInput]}>
                 <CommandList>
-                  <CommandEmpty>{t('No results found')}</CommandEmpty>
+                  <CommandEmpty>No results found</CommandEmpty>
                   {searchResult.map((result, i) => (
                     <CommandGroup
                       key={i}
-                      heading={`${t('Chat')} "${result.name}":`}
+                      heading={`Chat "${result.name}":`}
                       className={cn('[&_[cmdk-group-heading]]:font-bold', '[&_[cmdk-group-heading]]:opacity-50')}
                     >
                       {result.messages.map((message, j) => (

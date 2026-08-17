@@ -56,20 +56,13 @@ function renderModal() {
 }
 
 describe('GitHubInstallModal install status badges', () => {
-  test.each([
-    ['English', 'Installing', 'Install Selected'],
-    ['简体中文', '正在安装', '安装已选'],
-  ])('keeps the %s installing label visible without shrinking', (_language, installing, installSelected) => {
-    mocks.translations = {
-      Installing: installing,
-      'Install Selected': installSelected,
-    }
+  test('keeps the installing label visible without shrinking', () => {
     mocks.installSkill.mockReturnValue(new Promise(() => {}))
 
     renderModal()
-    fireEvent.click(screen.getByRole('button', { name: installSelected }))
+    fireEvent.click(screen.getByRole('button', { name: 'Install Selected' }))
 
-    const badge = screen.getByText(installing).parentElement
+    const badge = screen.getByText('Installing').parentElement
     expect(badge?.getAttribute('style')).toContain('flex: 0 0 auto')
     expect(badge?.getAttribute('style')).toContain('width: max-content')
   })

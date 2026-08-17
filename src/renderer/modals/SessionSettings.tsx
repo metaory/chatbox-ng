@@ -36,7 +36,6 @@ import { getMessageText } from '../../shared/utils/message'
 const SessionSettingsModal = NiceModal.create(
   ({ session, disableAutoSave = false }: { session: Session; disableAutoSave?: boolean }) => {
     const modal = useModal()
-    const { t } = useTranslation()
     const isSmallScreen = useIsSmallScreen()
 
     const [editingData, setEditingData] = useState<Session | null>(session || null)
@@ -144,7 +143,7 @@ const SessionSettingsModal = NiceModal.create(
         // fullScreen={isSmallScreen}
         centered
         size="lg"
-        title={t('Conversation Settings')}
+        title="Conversation Settings"
         onFocus={(e) => e.stopPropagation()}
         trapFocus={false}
         // fullWidth
@@ -197,9 +196,9 @@ const SessionSettingsModal = NiceModal.create(
             </FileButton>
 
             <Stack gap="xs">
-              <Text fw={700}>{t('Name')}</Text>
+              <Text fw={700}>Name</Text>
               <Input
-                placeholder={t('Name')}
+                placeholder="Name"
                 autoFocus={!isSmallScreen}
                 value={editingData.name}
                 onChange={(e) => setEditingData({ ...editingData, name: e.target.value })}
@@ -210,8 +209,8 @@ const SessionSettingsModal = NiceModal.create(
             </Stack>
 
             <Textarea
-              label={t('Instruction (System Prompt)')}
-              placeholder={t('Copilot Prompt Demo') || ''}
+              label="Instruction (System Prompt)"
+              placeholder="You are a translator, and your job is to translate from Non-English to English"
               autosize
               minRows={2}
               maxRows={12}
@@ -227,9 +226,9 @@ const SessionSettingsModal = NiceModal.create(
 
             <Stack gap="xs">
               <Flex align="center" justify="space-between">
-                <Text fw={700}>{t('Specific model settings')}</Text>
+                <Text fw={700}>Specific model settings</Text>
                 <Button size="compact-sm" color="chatbox-brand" variant="transparent" onClick={onReset} fw={600}>
-                  {t('Reset')}
+                  Reset
                 </Button>
               </Flex>
 
@@ -259,7 +258,7 @@ const SessionSettingsModal = NiceModal.create(
             </Stack>
 
             <Stack gap="xs">
-              <Text fw={600}>{t('Background Settings')}</Text>
+              <Text fw={600}>Background Settings</Text>
               <Flex
                 align="center"
                 gap="sm"
@@ -267,9 +266,9 @@ const SessionSettingsModal = NiceModal.create(
                 className="p-sm border border-solid border-chatbox-border-primary rounded-lg"
               >
                 <Flex align="center" gap="xxs">
-                  <Text>{t('Background Image')}</Text>
+                  <Text>Background Image</Text>
                   <Tooltip
-                    label={t('Support jpg or png file smaller than 5MB. Overrides global background when set.')}
+                    label="Support jpg or png file smaller than 5MB. Overrides global background when set."
                     withArrow
                     offset={4}
                   >
@@ -284,7 +283,7 @@ const SessionSettingsModal = NiceModal.create(
                   onChange={(file) => {
                     if (file) {
                       if (file.size > 5 * 1024 * 1024) {
-                        addToast(t('Support jpg or png file smaller than 5MB'))
+                        addToast('Support jpg or png file smaller than 5MB')
                         return
                       }
                       const key = StorageKeyGenerator.picture(`session-bg:${session.id}`)
@@ -301,7 +300,7 @@ const SessionSettingsModal = NiceModal.create(
                   {(props) => (
                     <Button {...props} variant="default" size="compact-sm">
                       <ScalableIcon icon={IconUpload} size={12} className="mr-xs" />
-                      {t('Upload')}
+                      Upload
                     </Button>
                   )}
                 </FileButton>
@@ -340,7 +339,7 @@ const SessionSettingsModal = NiceModal.create(
 
         <AdaptiveModal.Actions>
           <AdaptiveModal.CloseButton onClick={onCancel} />
-          <Button onClick={onSave}>{t('Save')}</Button>
+          <Button onClick={onSave}>Save</Button>
         </AdaptiveModal.Actions>
       </AdaptiveModal>
     )
@@ -370,12 +369,10 @@ export function ChatConfig({
       <Stack gap="xs">
         <Flex align="center" gap="xs">
           <Text size="sm" fw="600">
-            {t('Temperature')}
+            Temperature
           </Text>
           <Tooltip
-            label={t(
-              'Modify the creativity of AI responses; the higher the value, the more random and intriguing the answers become, while a lower value ensures greater stability and reliability.'
-            )}
+            label="Modify the creativity of AI responses; the higher the value, the more random and intriguing the answers become, while a lower value ensures greater stability and reliability."
             withArrow={true}
             maw={320}
             className="!whitespace-normal"
@@ -394,9 +391,7 @@ export function ChatConfig({
             Top P
           </Text>
           <Tooltip
-            label={t(
-              'The topP parameter controls the diversity of AI responses: lower values make the output more focused and predictable, while higher values allow for more varied and creative replies.'
-            )}
+            label="The topP parameter controls the diversity of AI responses: lower values make the output more focused and predictable, while higher values allow for more varied and creative replies."
             withArrow={true}
             maw={320}
             className="!whitespace-normal"
@@ -412,12 +407,10 @@ export function ChatConfig({
       <Flex justify="space-between" align="center">
         <Flex align="center" gap="xs">
           <Text size="sm" fw="600">
-            {t('Max Output Tokens')}
+            Max Output Tokens
           </Text>
           <Tooltip
-            label={t(
-              'Set the maximum number of tokens for model output. Please set it within the acceptable range of the model, otherwise errors may occur.'
-            )}
+            label="Set the maximum number of tokens for model output. Please set it within the acceptable range of the model, otherwise errors may occur."
             withArrow={true}
             maw={320}
             className="!whitespace-normal"
@@ -434,7 +427,7 @@ export function ChatConfig({
           min={0}
           step={1024}
           allowDecimal={false}
-          placeholder={t('Not set') || ''}
+          placeholder="Not set"
         />
       </Flex>
 
@@ -442,7 +435,7 @@ export function ChatConfig({
         <Stack gap="xs" py="xs">
           <Flex align="center" justify="space-between" gap="xs">
             <Text size="sm" fw="600">
-              {t('Stream output')}
+              Stream output
             </Text>
             <Switch
               checked={settings?.stream ?? globalSettingsStream ?? true}
@@ -483,7 +476,6 @@ export function ChatConfig({
 }
 
 function PictureConfig(props: { dataEdit: Session; setDataEdit: (data: Session) => void }) {
-  const { t } = useTranslation()
   const { dataEdit, setDataEdit } = props
   const globalSettings = settingsStore.getState().getSettings()
   const sessionSettings = mergeSettings(globalSettings, dataEdit.settings || {}, dataEdit.type || 'chat')
@@ -505,7 +497,7 @@ function PictureConfig(props: { dataEdit: Session; setDataEdit: (data: Session) 
       />
       <Stack>
         <Text size="sm" fw="600">
-          {t('Number of Images per Reply')}
+          Number of Images per Reply
         </Text>
         <Slider
           value={sessionSettings.imageGenerateNum || pictureSessionSettings().imageGenerateNum!}

@@ -184,7 +184,7 @@ export function CopilotDetailModal({ opened, onClose, type, copilot, onUse }: Co
           {description && (
             <Stack gap="xxs">
               <Text size="sm" c="chatbox-secondary">
-                {t('Description')}
+                Description
               </Text>
               <Text size="sm" c="chatbox-secondary" py={6} className="whitespace-pre-wrap">
                 {description}
@@ -196,7 +196,7 @@ export function CopilotDetailModal({ opened, onClose, type, copilot, onUse }: Co
           {prompt && (
             <Stack gap="xxs" my="xs">
               <Text size="sm" c="chatbox-secondary">
-                {t('Prompt Content')}
+                Prompt Content
               </Text>
               <ScrollArea.Autosize mah="40vh" className="rounded-lg border border-solid border-chatbox-border-primary ">
                 <Text size="sm" c="chatbox-primary" p="xs" className="whitespace-pre-wrap">
@@ -210,7 +210,7 @@ export function CopilotDetailModal({ opened, onClose, type, copilot, onUse }: Co
           {screenshots && screenshots.length > 0 && (
             <Stack gap="xxs">
               <Text size="sm" c="chatbox-secondary">
-                {t('Screenshots')}
+                Screenshots
               </Text>
               <Gallery
                 onOpen={(pswp) => {
@@ -257,7 +257,7 @@ export function CopilotDetailModal({ opened, onClose, type, copilot, onUse }: Co
                 })
               }}
             >
-              {t('Edit')}
+              Edit
             </Button>
           )}
           {type === 'remote' && (
@@ -275,7 +275,7 @@ export function CopilotDetailModal({ opened, onClose, type, copilot, onUse }: Co
                 onClose()
               }}
             >
-              {t('Add to My Copilots')}
+              Add to My Copilots
             </Button>
           )}
           <Button
@@ -285,7 +285,7 @@ export function CopilotDetailModal({ opened, onClose, type, copilot, onUse }: Co
               onClose()
             }}
           >
-            {t('Use this Copilot')}
+            Use this Copilot
           </Button>
         </Flex>
       </Stack>

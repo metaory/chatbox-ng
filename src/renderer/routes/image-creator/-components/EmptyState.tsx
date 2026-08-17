@@ -1,20 +1,18 @@
 import { Flex, Text, UnstyledButton } from '@mantine/core'
 import { IconPhoto } from '@tabler/icons-react'
-import { useTranslation } from 'react-i18next'
 
 export interface EmptyStateProps {
   onPromptSelect: (prompt: string) => void
 }
 
 export function EmptyState({ onPromptSelect }: EmptyStateProps) {
-  const { t } = useTranslation()
 
   const quickPrompts = [
-    t('A serene mountain landscape at sunset'),
-    t('A futuristic city with flying cars'),
-    t('A cozy coffee shop interior'),
-    t('An abstract painting with vibrant colors'),
-    t('A cute rabbit in Pixar animation style'),
+    'A serene mountain landscape at sunset',
+    'A futuristic city with flying cars',
+    'A cozy coffee shop interior',
+    'An abstract painting with vibrant colors',
+    'A cute rabbit in Pixar animation style',
   ]
 
   return (
@@ -25,10 +23,10 @@ export function EmptyState({ onPromptSelect }: EmptyStateProps) {
       </div>
 
       <Text size="xl" fw={600} mb="xs" className="text-center">
-        {t('Create amazing images')}
+        Create amazing images
       </Text>
       <Text size="sm" c="dimmed" maw={420} className="text-center" mb="xl">
-        {t('Describe the image you want to generate. Be as detailed as possible for best results.')}
+        Describe the image you want to generate. Be as detailed as possible for best results.
       </Text>
 
       {/* Quick Prompts - Grid Layout */}

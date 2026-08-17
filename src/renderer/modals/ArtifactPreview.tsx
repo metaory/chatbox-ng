@@ -3,7 +3,6 @@ import { ActionIcon, Button, Flex, Stack, Text } from '@mantine/core'
 import { IconArrowsMaximize, IconArrowsMinimize, IconExternalLink, IconReload, IconWorldUpload, IconX } from '@tabler/icons-react'
 import clsx from 'clsx'
 import { useCallback, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { Artifact } from '@/components/Artifact'
 import { ScalableIcon } from '@/components/common/ScalableIcon'
 import { Modal } from '@/components/layout/Overlay'
@@ -20,7 +19,6 @@ export interface ArtifactPreviewProps {
 const ArtifactPreview = NiceModal.create((props: ArtifactPreviewProps) => {
   const { htmlCode, previewUrl, uniqueId } = props
   const modal = useModal()
-  const { t } = useTranslation()
   const [reloadSign, setReloadSign] = useState(0)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const canOpenInBrowser = useMemo(() => !!previewUrl || !!htmlCode.trim(), [htmlCode, previewUrl])
@@ -60,11 +58,11 @@ const ArtifactPreview = NiceModal.create((props: ArtifactPreviewProps) => {
         !isSmallScreen ? (
           <Flex align="center" py="xs" className="w-full">
             <Text fw={600} size="md">
-              {t('Preview')}
+              Preview
             </Text>
           </Flex>
         ) : (
-          t('Preview')
+          'Preview'
         )
       }
       withCloseButton={false}
@@ -94,7 +92,7 @@ const ArtifactPreview = NiceModal.create((props: ArtifactPreviewProps) => {
             className="shrink-0 border-0 border-b border-solid border-[var(--chatbox-border-primary)] bg-[var(--chatbox-background-primary)] !outline-none"
           >
             <Text fw={600} size="md" className="shrink-0">
-              {t('Preview')}
+              Preview
             </Text>
             <Flex align="center" gap="xs" className="shrink-0">
               <Flex
@@ -103,19 +101,19 @@ const ArtifactPreview = NiceModal.create((props: ArtifactPreviewProps) => {
                 p={2}
                 className="rounded-lg border border-solid border-[var(--chatbox-border-primary)] bg-[var(--chatbox-background-secondary)]"
               >
-                <Tooltip label={t('Refresh')} withArrow openDelay={500}>
+                <Tooltip label="Refresh" withArrow openDelay={500}>
                   <ActionIcon
                     variant="transparent"
                     color="chatbox-tertiary"
                     size={mobileActionSize}
                     onClick={onReload}
-                    aria-label={t('Refresh')}
+                    aria-label="Refresh"
                   >
                     <ScalableIcon icon={IconReload} size={18} />
                   </ActionIcon>
                 </Tooltip>
                 <Tooltip
-                  label={canOpenInBrowser ? t('Open in Browser') : t('HTML content is empty, nothing to publish.')}
+                  label={canOpenInBrowser ? 'Open in Browser' : 'HTML content is empty, nothing to publish.'}
                   withArrow
                   openDelay={500}
                 >
@@ -124,14 +122,14 @@ const ArtifactPreview = NiceModal.create((props: ArtifactPreviewProps) => {
                     color="chatbox-tertiary"
                     size={mobileActionSize}
                     onClick={onOpenInBrowser}
-                    aria-label={t('Open in Browser')}
+                    aria-label="Open in Browser"
                     disabled={!canOpenInBrowser}
                   >
                     <ScalableIcon icon={IconExternalLink} size={18} />
                   </ActionIcon>
                 </Tooltip>
                 <Tooltip
-                  label={canPublish ? t('Publish Webpage') : t('HTML content is empty, nothing to publish.')}
+                  label={canPublish ? 'Publish Webpage' : 'HTML content is empty, nothing to publish.'}
                   withArrow
                   openDelay={500}
                 >
@@ -140,20 +138,20 @@ const ArtifactPreview = NiceModal.create((props: ArtifactPreviewProps) => {
                     color="chatbox-brand"
                     size={mobileActionSize}
                     onClick={onPublish}
-                    aria-label={t('Publish Webpage')}
+                    aria-label="Publish Webpage"
                     disabled={!canPublish}
                   >
                     <ScalableIcon icon={IconWorldUpload} size={18} />
                   </ActionIcon>
                 </Tooltip>
               </Flex>
-              <Tooltip label={t('Close')} withArrow openDelay={500}>
+              <Tooltip label="close" withArrow openDelay={500}>
                 <ActionIcon
                   variant="subtle"
                   color="chatbox-tertiary"
                   size={mobileActionSize}
                   onClick={onClose}
-                  aria-label={t('Close')}
+                  aria-label="close"
                 >
                   <ScalableIcon icon={IconX} size={20} />
                 </ActionIcon>
@@ -176,7 +174,7 @@ const ArtifactPreview = NiceModal.create((props: ArtifactPreviewProps) => {
               leftSection={<ScalableIcon icon={IconReload} size={16} />}
               onClick={onReload}
             >
-              {t('Refresh')}
+              Refresh
             </Button>
             <Button
               variant="subtle"
@@ -184,7 +182,7 @@ const ArtifactPreview = NiceModal.create((props: ArtifactPreviewProps) => {
               leftSection={<ScalableIcon icon={showFullscreen ? IconArrowsMinimize : IconArrowsMaximize} size={16} />}
               onClick={() => setIsFullscreen((value) => !value)}
             >
-              {showFullscreen ? t('Exit fullscreen') : t('Fullscreen')}
+              {showFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
             </Button>
             <Button
               variant="subtle"
@@ -193,7 +191,7 @@ const ArtifactPreview = NiceModal.create((props: ArtifactPreviewProps) => {
               onClick={onOpenInBrowser}
               disabled={!canOpenInBrowser}
             >
-              {t('Open in Browser')}
+              Open in Browser
             </Button>
             <Button
               variant="subtle"
@@ -202,10 +200,10 @@ const ArtifactPreview = NiceModal.create((props: ArtifactPreviewProps) => {
               onClick={onPublish}
               disabled={!canPublish}
             >
-              {t('Publish Webpage')}
+              Publish Webpage
             </Button>
             <Button variant="subtle" size="xs" leftSection={<ScalableIcon icon={IconX} size={16} />} onClick={onClose}>
-              {t('Close')}
+              close
             </Button>
           </Flex>
         )}

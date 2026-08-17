@@ -1,12 +1,10 @@
 import NiceModal, { useModal } from '@ebay/nice-modal-react'
 import { Button, Textarea } from '@mantine/core'
 import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { AdaptiveModal } from '@/components/common/AdaptiveModal'
 
 const AttachLink = NiceModal.create(() => {
   const modal = useModal()
-  const { t } = useTranslation()
   const [input, setInput] = useState('')
   const onClose = () => {
     modal.resolve([])
@@ -42,7 +40,7 @@ const AttachLink = NiceModal.create(() => {
         modal.hide()
       }}
       centered
-      title={t('Attach Link')}
+      title="Attach Link"
     >
       <Textarea
         autoFocus
@@ -57,7 +55,7 @@ const AttachLink = NiceModal.create(() => {
 
       <AdaptiveModal.Actions>
         <AdaptiveModal.CloseButton onClick={onClose} />
-        <Button onClick={onSubmit}>{t('Submit')}</Button>
+        <Button onClick={onSubmit}>Submit</Button>
       </AdaptiveModal.Actions>
     </AdaptiveModal>
   )

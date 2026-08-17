@@ -174,25 +174,25 @@ export function RouteComponent() {
 
   return (
     <Stack p="md" gap="xl">
-      <Title order={5}>{t('General Settings')}</Title>
+      <Title order={5}>General Settings</Title>
 
       {/* Display Settings */}
       <Stack gap="lg" maw={720}>
-        <Title order={5}>{t('Display Settings')}</Title>
+        <Title order={5}>Display Settings</Title>
 
         <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
           <AdaptiveSelect
             comboboxProps={{ withinPortal: true, withArrow: true }}
-            label={t('Theme')}
+            label="Theme"
             styles={{
               label: {
                 fontWeight: 400,
               },
             }}
             data={[
-              { value: `${Theme.System}`, label: t('Follow System') },
-              { value: `${Theme.Light}`, label: t('Light Mode') },
-              { value: `${Theme.Dark}`, label: t('Dark Mode') },
+              { value: `${Theme.System}`, label: 'Follow System' },
+              { value: `${Theme.Light}`, label: 'Light Mode' },
+              { value: `${Theme.Dark}`, label: 'Dark Mode' },
             ]}
             value={`${settings.theme}`}
             onChange={(val) => {
@@ -208,11 +208,11 @@ export function RouteComponent() {
         <Stack gap="md">
           <Stack gap="xxs">
             <Flex align="center" gap={2}>
-              <Text size="sm">{t('Color Presets')}</Text>
+              <Text size="sm">Color Presets</Text>
               <ActionIcon
                 variant={isEditingInterfaceColorPresets ? 'light' : 'subtle'}
                 size="sm"
-                aria-label={isEditingInterfaceColorPresets ? t('Save') : t('Edit')}
+                aria-label={isEditingInterfaceColorPresets ? 'Save' : 'Edit'}
                 disabled={
                   isEditingInterfaceColorPresets &&
                   Boolean(editingPresetId || isCreatingInterfaceColorPreset) &&
@@ -274,7 +274,7 @@ export function RouteComponent() {
                       color="red"
                       size={16}
                       radius="xl"
-                      aria-label={t('Delete')}
+                      aria-label="Delete"
                       onClick={() => deleteInterfaceColorPreset(preset.id)}
                     >
                       <IconTrash size={10} />
@@ -289,7 +289,7 @@ export function RouteComponent() {
                   className={presetBadgeButtonClassName}
                   circle
                   variant="outline"
-                  aria-label={t('New Preset')}
+                  aria-label="New Preset"
                   style={{ cursor: 'pointer', height: 30, width: 30 }}
                   styles={{ label: { display: 'flex', width: '100%', justifyContent: 'center' } }}
                   onClick={() => {
@@ -307,31 +307,31 @@ export function RouteComponent() {
             <Stack gap="md">
               <TextInput
                 autoFocus
-                label={t('Name')}
+                label="Name"
                 value={presetLabel}
                 onChange={(event) => setPresetLabel(event.currentTarget.value)}
               />
               <SimpleGrid cols={2} spacing="md">
                 <Stack gap="md">
                   <InterfaceColorInput
-                    label={t('Primary Background')}
+                    label="Primary Background"
                     value={currentInterfaceColors.backgroundPrimary}
                     onCommit={(value) => setInterfaceColor('backgroundPrimary', value)}
                   />
                   <InterfaceColorInput
-                    label={t('Secondary Background')}
+                    label="Secondary Background"
                     value={currentInterfaceColors.backgroundSecondary}
                     onCommit={(value) => setInterfaceColor('backgroundSecondary', value)}
                   />
                 </Stack>
                 <Stack gap="md">
                   <InterfaceColorInput
-                    label={t('Tertiary Background')}
+                    label="Tertiary Background"
                     value={currentInterfaceColors.backgroundTertiary}
                     onCommit={(value) => setInterfaceColor('backgroundTertiary', value)}
                   />
                   <InterfaceColorInput
-                    label={t('Brand Color')}
+                    label="Brand Color"
                     value={currentInterfaceColors.brand}
                     isColorAllowed={isInterfaceBrandColorAllowed}
                     onCommit={(value) => setInterfaceColor('brand', value)}
@@ -340,14 +340,14 @@ export function RouteComponent() {
               </SimpleGrid>
               <SimpleGrid cols={2} spacing="md">
                 <Button variant="outline" onClick={resetInterfaceColors}>
-                  {t('Reset Colors')}
+                  Reset Colors
                 </Button>
                 <Button
                   leftSection={<IconDeviceFloppy size={14} />}
                   disabled={!presetLabel.trim()}
                   onClick={editingPresetId ? saveEditedInterfaceColorPreset : saveInterfaceColorPreset}
                 >
-                  {editingPresetId ? t('Save') : t('Save Preset')}
+                  {editingPresetId ? 'Save' : 'Save Preset'}
                 </Button>
               </SimpleGrid>
             </Stack>
@@ -356,7 +356,7 @@ export function RouteComponent() {
 
         {/* Font Size */}
         <Stack>
-          <Text>{t('Font Size')}</Text>
+          <Text>Font Size</Text>
           <LazySlider
             step={1}
             min={10}
@@ -378,7 +378,7 @@ export function RouteComponent() {
 
         {/* Startup Page */}
         <Stack>
-          <Text>{t('Startup Page')}</Text>
+          <Text>Startup Page</Text>
           <Radio.Group
             value={settings.startupPage}
             defaultValue="home"
@@ -387,8 +387,8 @@ export function RouteComponent() {
             }}
           >
             <Flex gap="md">
-              <Radio label={t('Home Page')} value="home" />
-              <Radio label={t('Last Session')} value="session" />
+              <Radio label="Home Page" value="home" />
+              <Radio label="Last Session" value="session" />
             </Flex>
           </Radio.Group>
         </Stack>
@@ -398,7 +398,7 @@ export function RouteComponent() {
 
       {/* Network Proxy */}
       <Stack gap="xs">
-        <Title order={5}>{t('Network Proxy')}</Title>
+        <Title order={5}>Network Proxy</Title>
         <TextInput
           maw={320}
           placeholder="socks5://127.0.0.1:6153"
@@ -433,7 +433,7 @@ export function RouteComponent() {
 
           <Stack gap="xl">
             <Switch
-              label={t('Launch at system startup')}
+              label="Launch at system startup"
               checked={settings.autoLaunch}
               onChange={(e) =>
                 setSettings({
@@ -442,7 +442,7 @@ export function RouteComponent() {
               }
             />
             <Switch
-              label={t('Automatic updates')}
+              label="Automatic updates"
               checked={settings.autoUpdate}
               onChange={(e) =>
                 setSettings({
@@ -451,7 +451,7 @@ export function RouteComponent() {
               }
             />
             <Switch
-              label={t('Beta updates')}
+              label="Beta updates"
               checked={settings.betaUpdate}
               onChange={(e) =>
                 setSettings({
@@ -495,13 +495,13 @@ const DataRecoverySection = () => {
   return (
     <Stack gap="md">
       <Stack gap="xxs">
-        <Title order={5}>{t('Data Recovery')}</Title>
+        <Title order={5}>Data Recovery</Title>
         <Text c="chatbox-tertiary">
-          {t('If conversations are missing from the list, use this feature to scan and recover them from storage')}
+          If conversations are missing from the list, use this feature to scan and recover them from storage
         </Text>
       </Stack>
       <Button className="self-start" onClick={handleRecover} disabled={isRecovering} loading={isRecovering}>
-        {isRecovering ? t('Recovering...') : t('Recover Conversation List')}
+        {isRecovering ? 'Recovering...' : 'Recover Conversation List'}
       </Button>
       {recoveryResult && (
         <Alert
@@ -511,13 +511,13 @@ const DataRecoverySection = () => {
           title={
             recoveryResult.success
               ? t('Recovered {{count}} conversations', { count: recoveryResult.recovered })
-              : t('Recovery failed')
+              : 'Recovery failed'
           }
           icon={<IconInfoCircle />}
         >
           {recoveryResult.success ? (
             <Stack gap="xs">
-              <Text size="sm">{t('The conversation list has been successfully recovered')}</Text>
+              <Text size="sm">The conversation list has been successfully recovered</Text>
               {hasPartialFailure && (
                 <Text size="sm" c="orange">
                   {t('{{count}} conversations could not be recovered due to data read errors', {
@@ -527,7 +527,7 @@ const DataRecoverySection = () => {
               )}
             </Stack>
           ) : (
-            <Text size="sm">{recoveryResult.error || t('Unknown error')}</Text>
+            <Text size="sm">{recoveryResult.error || 'Unknown error'}</Text>
           )}
         </Alert>
       )}
@@ -541,32 +541,32 @@ const ImportExportDataSection = () => {
   const formatBackupWarning = (warning: BackupWarning) => {
     switch (warning.code) {
       case 'session-read-failed':
-        return t('Conversation data could not be read and was not included.')
+        return 'Conversation data could not be read and was not included.'
       case 'resource-read-failed':
-        return t('Managed attachment or image data could not be read and was not included.')
+        return 'Managed attachment or image data could not be read and was not included.'
       case 'external-resource-skipped':
-        return t('The original external file is not managed by Chatbox and was not included.')
+        return 'The original external file is not managed by Chatbox and was not included.'
       case 'rag-rebuild-failed':
-        return t('The attachment search index could not be restored.')
+        return 'The attachment search index could not be restored.'
     }
   }
 
   const formatBackupProgressPhase = (phase: BackupProgress['phase']) => {
     switch (phase) {
       case 'preparing':
-        return t('Preparing backup')
+        return 'Preparing backup'
       case 'sessions':
-        return t('Exporting conversations')
+        return 'Exporting conversations'
       case 'resources':
-        return t('Exporting attachments')
+        return 'Exporting attachments'
       case 'packing':
-        return t('Creating backup archive')
+        return 'Creating backup archive'
       case 'reading':
-        return t('Reading backup')
+        return 'Reading backup'
       case 'validating':
-        return t('Validating backup')
+        return 'Validating backup'
       case 'restoring':
-        return t('Restoring data')
+        return 'Restoring data'
     }
   }
 
@@ -669,13 +669,9 @@ const ImportExportDataSection = () => {
           : '',
         warningSummary,
         result.pendingDownload
-          ? String(
-              t(
-                "Your backup was created in memory. Select Download, then confirm it appears in your browser's downloads."
-              )
-            )
+          ? "Your backup was created in memory. Select Download, then confirm it appears in your browser's downloads."
           : !result.boundedMemory
-          ? String(t('This browser does not support streaming downloads, so the backup was buffered before saving.'))
+          ? 'This browser does not support streaming downloads, so the backup was buffered before saving.'
           : '',
       ]
         .filter(Boolean)
@@ -684,23 +680,23 @@ const ImportExportDataSection = () => {
         result.pendingDownload
           ? {
               color: warningCount > 0 ? 'yellow' : 'green',
-              title: String(t('Backup ready to download')),
+              title: 'Backup ready to download',
               body: warningBody,
             }
           : warningCount > 0 || !result.boundedMemory
           ? {
               color: 'yellow',
-              title: String(t('Backup exported with warnings')),
+              title: 'Backup exported with warnings',
               body: warningBody,
             }
-          : { color: 'green', title: String(t('Backup exported successfully')) }
+          : { color: 'green', title: 'Backup exported successfully' }
       )
     } catch (error) {
       if (error instanceof DOMException && error.name === 'AbortError') {
-        setExportNotice({ color: 'yellow', title: String(t('Export canceled')) })
+        setExportNotice({ color: 'yellow', title: 'Export canceled' })
       } else {
         console.error('Export failed:', error)
-        setExportNotice({ color: 'red', title: String(t('Export failed')), body: String(error) })
+        setExportNotice({ color: 'red', title: 'Export failed', body: String(error) })
       }
     } finally {
       operationAbortRef.current = null
@@ -758,13 +754,13 @@ const ImportExportDataSection = () => {
       }
       await platform.relaunch()
     } catch (error) {
-      if (error instanceof DOMException && error.name === 'AbortError') setImportTips(String(t('Import canceled')))
+      if (error instanceof DOMException && error.name === 'AbortError') setImportTips('Import canceled')
       else {
         console.error('Import failed:', error)
         setImportTips(
           String(
             t('Import failed: {{error}}', {
-              error: error instanceof Error ? error.message : t('Unsupported or damaged backup'),
+              error: error instanceof Error ? error.message : 'Unsupported or damaged backup',
             })
           )
         )
@@ -801,7 +797,7 @@ const ImportExportDataSection = () => {
     <>
       <Stack gap="md">
         <Title order={5} onDoubleClick={() => setShowStorageInfo(true)}>
-          {t('Data Backup')}
+          Data Backup
         </Title>
         {showStorageInfo && (
           <Text size="xs" c="chatbox-tertiary">
@@ -809,16 +805,16 @@ const ImportExportDataSection = () => {
           </Text>
         )}
         <Text c="chatbox-tertiary">
-          {t('ZIP backups include each conversation and its managed images and attachments.')}
+          ZIP backups include each conversation and its managed images and attachments.
         </Text>
         <Text size="sm" c="chatbox-tertiary">
-          {t('Backup files exported here can only be imported in Chatbox 1.22 or later.')}
+          Backup files exported here can only be imported in Chatbox 1.22 or later.
         </Text>
         {[
-          { label: t('Settings'), value: ExportDataItem.Setting },
-          { label: t('API KEY & License'), value: ExportDataItem.Key },
-          { label: t('Chat History'), value: ExportDataItem.Conversations },
-          { label: t('My Copilots'), value: ExportDataItem.Copilot },
+          { label: 'Settings', value: ExportDataItem.Setting },
+          { label: 'API KEY & License', value: ExportDataItem.Key },
+          { label: 'Chat History', value: ExportDataItem.Conversations },
+          { label: 'My Copilots', value: ExportDataItem.Copilot },
         ].map(({ label, value }) => (
           <Checkbox
             key={value}
@@ -837,11 +833,11 @@ const ImportExportDataSection = () => {
         ))}
         <Flex gap="sm">
           <Button className="self-start" onClick={onExport} disabled={isLoading} loading={isExporting}>
-            {isExporting ? t('Exporting...') : t('Export Selected Data')}
+            {isExporting ? 'Exporting...' : 'Export Selected Data'}
           </Button>
           {isExporting && (
             <Button variant="light" color="chatbox-gray" onClick={cancelOperation}>
-              {t('Cancel')}
+              Cancel
             </Button>
           )}
         </Flex>
@@ -870,14 +866,14 @@ const ImportExportDataSection = () => {
             )}
             {pendingDownload && pendingDownloadUrl && (
               <Flex gap="sm" mt="sm">
-                {canSharePendingDownload && <Button onClick={onSharePendingDownload}>{t('Save')}</Button>}
+                {canSharePendingDownload && <Button onClick={onSharePendingDownload}>Save</Button>}
                 <Button
                   component="a"
                   variant={canSharePendingDownload ? 'light' : 'filled'}
                   href={pendingDownloadUrl}
                   download={pendingDownload.filename}
                 >
-                  {t('Download')}
+                  Download
                 </Button>
               </Flex>
             )}
@@ -889,9 +885,9 @@ const ImportExportDataSection = () => {
 
       <Stack gap="lg">
         <Stack gap="xxs">
-          <Title order={5}>{t('Data Restore')}</Title>
+          <Title order={5}>Data Restore</Title>
           <Text c="chatbox-tertiary">
-            {t('Upon import, changes will take effect immediately and existing data will be overwritten')}
+            Upon import, changes will take effect immediately and existing data will be overwritten
           </Text>
         </Stack>
         {importTips && (
@@ -903,7 +899,7 @@ const ImportExportDataSection = () => {
             )}
             {importRequiresRestart && (
               <Button mt="sm" variant="light" onClick={() => platform.relaunch()}>
-                {t('Continue')}
+                Continue
               </Button>
             )}
           </Alert>
@@ -912,11 +908,11 @@ const ImportExportDataSection = () => {
           {(props) => (
             <Flex gap="sm">
               <Button {...props} className="self-start" disabled={isLoading} loading={isImporting}>
-                {isImporting ? t('Importing...') : t('Import and Restore')}
+                {isImporting ? 'Importing...' : 'Import and Restore'}
               </Button>
               {isImporting && (
                 <Button variant="light" color="chatbox-gray" onClick={cancelOperation}>
-                  {t('Cancel')}
+                  Cancel
                 </Button>
               )}
             </Flex>
@@ -935,7 +931,6 @@ enum ExportDataItem {
 }
 
 const ExportLogsSection = () => {
-  const { t } = useTranslation()
   const [isExporting, setIsExporting] = useState(false)
   const [exportResult, setExportResult] = useState<{
     success: boolean
@@ -976,24 +971,22 @@ const ExportLogsSection = () => {
   return (
     <Stack gap="md">
       <Stack gap="xxs">
-        <Title order={5}>{t('Diagnostic Logs')}</Title>
+        <Title order={5}>Diagnostic Logs</Title>
         <Text c="chatbox-tertiary">
-          {t(
-            'Export application logs for troubleshooting. These logs may be requested by support to help diagnose issues.'
-          )}
+          Export application logs for troubleshooting. These logs may be requested by support to help diagnose issues.
         </Text>
       </Stack>
       <Flex gap="md">
         <Button variant="filled" onClick={handleExportLogs} disabled={isExporting} loading={isExporting}>
-          {isExporting ? t('Exporting...') : t('Export Logs')}
+          {isExporting ? 'Exporting...' : 'Export Logs'}
         </Button>
         {/* <Button variant="subtle" color="red" onClick={handleClearLogs} disabled={isExporting}>
           {t('Clear Logs')}
         </Button> */}
       </Flex>
       {exportResult && !exportResult.success && (
-        <Alert className="self-start" variant="light" color="red" title={t('Export failed')} icon={<IconInfoCircle />}>
-          <Text size="sm">{exportResult.error || t('Unknown error')}</Text>
+        <Alert className="self-start" variant="light" color="red" title="Export failed" icon={<IconInfoCircle />}>
+          <Text size="sm">{exportResult.error || 'Unknown error'}</Text>
         </Alert>
       )}
     </Stack>

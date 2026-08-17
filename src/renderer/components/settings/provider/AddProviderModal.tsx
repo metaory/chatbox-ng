@@ -2,7 +2,6 @@ import { Button, Flex, Select, Stack, Text, TextInput } from '@mantine/core'
 import { ModelProviderType } from '@shared/types'
 import { useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { v4 as uuidv4 } from 'uuid'
 import { AdaptiveSelect } from '@/components/AdaptiveSelect'
 import { AdaptiveModal } from '@/components/common/AdaptiveModal'
@@ -14,7 +13,6 @@ interface AddProviderModalProps {
 }
 
 export function AddProviderModal({ opened, onClose }: AddProviderModalProps) {
-  const { t } = useTranslation()
   const navigate = useNavigate()
   const setSettings = useSettingsStore((s) => s.setSettings)
   const customProviders = useSettingsStore((s) => s.customProviders)
@@ -44,16 +42,16 @@ export function AddProviderModal({ opened, onClose }: AddProviderModalProps) {
   }
 
   return (
-    <AdaptiveModal size="sm" opened={opened} onClose={onClose} centered title={t('Add provider')}>
+    <AdaptiveModal size="sm" opened={opened} onClose={onClose} centered title="Add provider">
       <Stack gap="xs">
-        <Text>{t('Name')}</Text>
+        <Text>Name</Text>
         <TextInput
           value={newProviderName}
           onChange={(e) => setNewProviderName(e.currentTarget.value)}
           required
-          error={!newProviderName.trim() ? t('Name is required') : ''}
+          error={!newProviderName.trim() ? 'Name is required' : ''}
         />
-        <Text>{t('API Mode')}</Text>
+        <Text>API Mode</Text>
         <AdaptiveSelect
           value={newProviderMode}
           classNames={{ dropdown: 'pointer-events-auto' }}
@@ -61,26 +59,26 @@ export function AddProviderModal({ opened, onClose }: AddProviderModalProps) {
           data={[
             {
               value: ModelProviderType.OpenAI,
-              label: t('OpenAI API Compatible'),
+              label: 'OpenAI API Compatible',
             },
             {
               value: ModelProviderType.OpenAIResponses,
-              label: t('OpenAI Responses API Compatible'),
+              label: 'OpenAI Responses API Compatible',
             },
             {
               value: ModelProviderType.Claude,
-              label: t('Claude API Compatible'),
+              label: 'Claude API Compatible',
             },
             {
               value: ModelProviderType.Gemini,
-              label: t('Google Gemini API Compatible'),
+              label: 'Google Gemini API Compatible',
             },
           ]}
         />
         <AdaptiveModal.Actions>
           <AdaptiveModal.CloseButton onClick={onClose} />
           <Button onClick={handleAddProvider} disabled={!newProviderName.trim()}>
-            {t('Add')}
+            Add
           </Button>
         </AdaptiveModal.Actions>
       </Stack>

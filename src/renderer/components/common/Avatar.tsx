@@ -24,7 +24,7 @@ export const SystemAvatar: FC<SystemAvatarProps> = ({ size = 'md', className, ..
       classNames={{
         placeholder: 'border-0 bg-transparent !text-white flex flex-row items-center justify-center',
       }}
-      bg={'chatbox-warning'}
+      bg="chatbox-warning"
       {...avatarProps}
     >
       <ScalableIcon icon={IconSettingsFilled} size={iconSize} className="!text-inherit" />

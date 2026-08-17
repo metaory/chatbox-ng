@@ -13,7 +13,6 @@ import {
 import type { Settings } from '@shared/types'
 import { uniqBy } from 'lodash'
 import { useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { Accordion, AccordionDetails, AccordionSummary } from '@/components/Accordion'
 import TextFieldReset from '@/components/common/TextFieldReset'
 import { ShortcutConfig } from '@/components/Shortcut'
@@ -30,17 +29,16 @@ interface Props {
 
 export default function AdvancedSettingTab(props: Props) {
   const { settingsEdit, setSettingsEdit } = props
-  const { t } = useTranslation()
   const isSmallScreen = useIsSmallScreen()
   return (
     <Box>
       <Accordion>
         <AccordionSummary aria-controls="panel1a-content">
-          <Typography>{t('Network Proxy')}</Typography>
+          <Typography>Network Proxy</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <TextFieldReset
-            label={t('Proxy Address')}
+            label="Proxy Address"
             value={settingsEdit.proxy || ''}
             onValueChange={(value) => {
               setSettingsEdit({ ...settingsEdit, proxy: value.trim() })
@@ -55,7 +53,7 @@ export default function AdvancedSettingTab(props: Props) {
               className: platform.type === 'web' ? 'cursor-not-allowed' : '',
             }}
             helperText={
-              platform.type === 'web' ? <span className="text-red-600">{t('not available in browser')}</span> : null
+              platform.type === 'web' ? <span className="text-red-600">not available in browser</span> : null
             }
           />
         </AccordionDetails>
@@ -63,7 +61,7 @@ export default function AdvancedSettingTab(props: Props) {
       {platform.type !== 'mobile' && (
         <Accordion>
           <AccordionSummary aria-controls="panel1a-content">
-            <Typography>{t('Hotkeys')}</Typography>
+            <Typography>Hotkeys</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <ShortcutConfig
@@ -75,7 +73,7 @@ export default function AdvancedSettingTab(props: Props) {
       )}
       <Accordion>
         <AccordionSummary aria-controls="panel1a-content">
-          <Typography>{t('Data Backup and Restore')}</Typography>
+          <Typography>Data Backup and Restore</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <ExportAndImport onCancel={props.onCancel} />
@@ -87,7 +85,7 @@ export default function AdvancedSettingTab(props: Props) {
           <FormGroup>
             <FormControlLabel
               control={<Switch />}
-              label={t('Launch at system startup')}
+              label="Launch at system startup"
               checked={settingsEdit.autoLaunch}
               onChange={(e, checked) =>
                 setSettingsEdit({
@@ -104,7 +102,7 @@ export default function AdvancedSettingTab(props: Props) {
           <FormGroup>
             <FormControlLabel
               control={<Switch />}
-              label={t('Automatic updates')}
+              label="Automatic updates"
               checked={settingsEdit.autoUpdate}
               onChange={(e, checked) =>
                 setSettingsEdit({
@@ -116,7 +114,7 @@ export default function AdvancedSettingTab(props: Props) {
             {settingsEdit.autoUpdate && (
               <FormControlLabel
                 control={<Switch />}
-                label={t('Beta updates')}
+                label="Beta updates"
                 checked={settingsEdit.betaUpdate}
                 onChange={(e, checked) =>
                   setSettingsEdit({
@@ -141,7 +139,6 @@ enum ExportDataItem {
 }
 
 function ExportAndImport(props: { onCancel: () => void }) {
-  const { t } = useTranslation()
   const theme = useTheme()
   const [tab, setTab] = useState<'export' | 'import'>('export')
   const [exportItems, setExportItems] = useState<ExportDataItem[]>([
@@ -179,7 +176,7 @@ function ExportAndImport(props: { onCancel: () => void }) {
     platform.exporter.exportTextFile(`chatbox-exported-data-${dateStr}.json`, JSON.stringify(data))
   }
   const onImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const errTip = t('Import failed, unsupported data format')
+    const errTip = 'Import failed, unsupported data format'
     const file = e.target.files?.[0]
     if (!file) {
       return
@@ -252,21 +249,21 @@ function ExportAndImport(props: { onCancel: () => void }) {
       <Tabs value={tab} onChange={(_, value) => setTab(value)} className="mb-4">
         <Tab
           value="export"
-          label={<span className="inline-flex justify-center items-center">{t('Data Backup')}</span>}
+          label={<span className="inline-flex justify-center items-center">Data Backup</span>}
         />
         <Tab
           value="import"
-          label={<span className="inline-flex justify-center items-center">{t('Data Restore')}</span>}
+          label={<span className="inline-flex justify-center items-center">Data Restore</span>}
         />
       </Tabs>
       {tab === 'export' && (
         <Box sx={{}}>
           <FormGroup className="mb-2">
             {[
-              { label: t('Settings'), value: ExportDataItem.Setting },
-              { label: t('API KEY & License'), value: ExportDataItem.Key },
-              { label: t('Chat History'), value: ExportDataItem.Conversations },
-              { label: t('My Copilots'), value: ExportDataItem.Copilot },
+              { label: 'Settings', value: ExportDataItem.Setting },
+              { label: 'API KEY & License', value: ExportDataItem.Key },
+              { label: 'Chat History', value: ExportDataItem.Conversations },
+              { label: 'My Copilots', value: ExportDataItem.Copilot },
             ].map((item) => (
               <FormControlLabel
                 key={item.value}
@@ -287,19 +284,19 @@ function ExportAndImport(props: { onCancel: () => void }) {
             ))}
           </FormGroup>
           <Button variant="contained" color="primary" onClick={onExport}>
-            {t('Export Selected Data')}
+            Export Selected Data
           </Button>
         </Box>
       )}
       {tab === 'import' && (
         <Box>
           <Box className="p-1">
-            {t('Upon import, changes will take effect immediately and existing data will be overwritten')}
+            Upon import, changes will take effect immediately and existing data will be overwritten
           </Box>
           {importTips && <Box className="p-1 text-red-600">{importTips}</Box>}
           <input style={{ display: 'none' }} type="file" ref={importInputRef} onChange={onImport} />
           <Button variant="contained" color="primary" onClick={() => importInputRef.current?.click()}>
-            {t('Import and Restore')}
+            Import and Restore
           </Button>
         </Box>
       )}

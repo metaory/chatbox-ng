@@ -87,7 +87,7 @@ export function MessageAttachmentGrid({ files, links, align = 'start' }: Message
     setRetryingIds((prev) => [...prev, attachmentId])
     try {
       await platform.getSessionAttachmentRagController().retryAttachment(attachmentId)
-      toastActions.add(t('Retry queued'))
+      toastActions.add('Retry queued')
       await refetchSessionAttachments()
     } catch (error) {
       toastActions.add(
@@ -204,12 +204,12 @@ export function MessageAttachmentGrid({ files, links, align = 'start' }: Message
           {expanded ? (
             <>
               <ChevronUp className="w-3.5 h-3.5" />
-              {t('Collapse attachments')}
+              Collapse attachments
             </>
           ) : (
             <>
               <ChevronDown className="w-3.5 h-3.5" />
-              {t('Show all attachments')} ({totalCount})
+              Show all attachments ({totalCount})
             </>
           )}
         </button>

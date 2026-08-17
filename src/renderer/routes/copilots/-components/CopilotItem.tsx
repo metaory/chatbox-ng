@@ -112,7 +112,7 @@ export function CopilotItem({ copilot, type = 'local', highlightTerm = '' }: Cop
                 position="bottom-end"
                 items={[
                   {
-                    text: t('Edit'),
+                    text: 'Edit',
                     icon: IconEdit,
                     onClick: () => {
                       void NiceModal.show('copilot-settings', {
@@ -130,7 +130,7 @@ export function CopilotItem({ copilot, type = 'local', highlightTerm = '' }: Cop
                   ...(copilot.starred
                     ? [
                         {
-                          text: t('Unpin'),
+                          text: 'Unpin',
                           icon: IconPinnedFilled,
                           onClick: () => {
                             store.addOrUpdate({
@@ -142,7 +142,7 @@ export function CopilotItem({ copilot, type = 'local', highlightTerm = '' }: Cop
                       ]
                     : [
                         {
-                          text: t('Pin'),
+                          text: 'Pin',
                           icon: IconPinned,
                           onClick: () => {
                             store.addOrUpdate({
@@ -157,7 +157,7 @@ export function CopilotItem({ copilot, type = 'local', highlightTerm = '' }: Cop
                   },
                   {
                     doubleCheck: true,
-                    text: t('Delete'),
+                    text: 'Delete',
                     icon: IconTrash,
                     onClick: () => {
                       store.remove(copilot.id)

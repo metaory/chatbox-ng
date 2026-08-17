@@ -37,16 +37,16 @@ const ExportChat = NiceModal.create(() => {
         modal.hide()
       }}
       centered
-      title={t('Export Chat')}
+      title="Export Chat"
     >
       <Stack gap="md" p="sm">
         <div className="rounded-lg border border-solid border-chatbox-border-warning bg-chatbox-background-warning-secondary px-sm py-xs">
           <Text size="sm" c="chatbox-warning" className="leading-snug">
-            {t('Exports are for viewing only. Use Settings → Backup if you need a backup you can restore.')}
+            Exports are for viewing only. Use Settings → Backup if you need a backup you can restore.
           </Text>
         </div>
         <AdaptiveSelect
-          label={t('Scope')}
+          label="Scope"
           classNames={{ dropdown: 'pointer-events-auto' }}
           data={['all_threads', 'current_thread'].map((scope) => ({
             label: t((scope.charAt(0).toUpperCase() + scope.slice(1).toLowerCase()).split('_').join(' ')),
@@ -57,7 +57,7 @@ const ExportChat = NiceModal.create(() => {
         />
 
         <AdaptiveSelect
-          label={t('Format')}
+          label="Format"
           classNames={{ dropdown: 'pointer-events-auto' }}
           data={['Markdown', 'TXT', 'HTML']}
           value={format}
@@ -68,7 +68,7 @@ const ExportChat = NiceModal.create(() => {
       <AdaptiveModal.Actions>
         <AdaptiveModal.CloseButton onClick={onCancel} />
 
-        <Button onClick={onExport}>{t('Export')}</Button>
+        <Button onClick={onExport}>Export</Button>
       </AdaptiveModal.Actions>
     </AdaptiveModal>
   )

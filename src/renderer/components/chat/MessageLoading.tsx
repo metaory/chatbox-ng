@@ -21,16 +21,15 @@ export default function MessageStatuses(props: { statuses: Message['status'] }) 
 
 function MessageStatus(props: { status: NonNullable<Message['status']>[number] }) {
   const { status } = props
-  const { t } = useTranslation()
   if (status.type === 'sending_file') {
     return (
       <div>
         <LoadingBubble>
           <span className="flex flex-col">
-            <span>{t('Reading file...')}</span>
+            <span>Reading file...</span>
             {status.mode && (
               <span className="text-[10px] opacity-70 font-normal">
-                {status.mode === 'local' ? t('Local Mode') : t('Advanced Mode')}
+                {status.mode === 'local' ? 'Local Mode' : 'Advanced Mode'}
               </span>
             )}
           </span>
@@ -43,10 +42,10 @@ function MessageStatus(props: { status: NonNullable<Message['status']>[number] }
       <div>
         <LoadingBubble>
           <span className="flex flex-col">
-            <span>{t('Loading webpage...')}</span>
+            <span>Loading webpage...</span>
             {status.mode && (
               <span className="text-[10px] opacity-70 font-normal">
-                {status.mode === 'local' ? t('Local Mode') : t('Advanced Mode')}
+                {status.mode === 'local' ? 'Local Mode' : 'Advanced Mode'}
               </span>
             )}
           </span>
@@ -68,11 +67,8 @@ export function PreparingToolCallStatus(props: {
 }) {
   const { status } = props
   const { t } = useTranslation()
-  const translate = t as (key: string, options?: Record<string, unknown>) => string
-  const label = status.toolName
-    ? `${translate('Preparing')} ${getToolName(status.toolName)}`
-    : translate('Preparing tool call')
-  const progress = formatPreparingProgress(status.progress, translate)
+  const label = status.toolName ? `Preparing ${getToolName(status.toolName)}` : 'Preparing tool call'
+  const progress = formatPreparingProgress(status.progress, t)
 
   return (
     <Group gap={6} align="center" wrap="nowrap" mt={6} mb={2} className="max-w-full">

@@ -1,13 +1,12 @@
 import NiceModal, { useModal } from '@ebay/nice-modal-react'
 import { Button, Input } from '@mantine/core'
 import { type ChangeEvent, useEffect, useState } from 'react'
-import { Trans, useTranslation } from 'react-i18next'
+import { Trans } from 'react-i18next'
 import { AdaptiveModal } from '@/components/common/AdaptiveModal'
 import { clearConversationList } from '@/stores/sessionActions'
 
 const ClearSessionList = NiceModal.create(() => {
   const modal = useModal()
-  const { t } = useTranslation()
   const [value, setValue] = useState(100)
   const [cleaning, setCleaning] = useState(false)
   const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
@@ -44,7 +43,7 @@ const ClearSessionList = NiceModal.create(() => {
         modal.hide()
       }}
       centered
-      title={t('Clear Conversation List')}
+      title="Clear Conversation List"
     >
       <div>
         <Trans
@@ -53,7 +52,7 @@ const ClearSessionList = NiceModal.create(() => {
           components={{
             input: (
               <Input
-                key={'0'}
+                key="0"
                 value={value}
                 onChange={handleInput}
                 className="inline-block w-[4em]"
@@ -67,7 +66,7 @@ const ClearSessionList = NiceModal.create(() => {
       <AdaptiveModal.Actions>
         <AdaptiveModal.CloseButton onClick={handleClose} />
         <Button onClick={clean} loading={cleaning}>
-          {t('Archive')}
+          Archive
         </Button>
       </AdaptiveModal.Actions>
     </AdaptiveModal>

@@ -61,8 +61,8 @@ function SessionItem(props: Props) {
   const { session, selected } = props
   const { t } = useTranslation()
   const activity = useSessionActivity(session.id)
-  const pinActionLabel = session.starred ? t('Unpin') : t('Pin')
-  const archiveActionLabel = t('Archive')
+  const pinActionLabel = session.starred ? 'Unpin' : 'Pin'
+  const archiveActionLabel = 'Archive'
   const setShowSidebar = useUIStore((s) => s.setShowSidebar)
   const onClick = () => {
     if (props.isReordering) {
@@ -104,8 +104,8 @@ function SessionItem(props: Props) {
       return
     }
     localStorage.setItem(ARCHIVE_TIP_STORAGE_KEY, String(now))
-    toastActions.add(t('Archived. Manage archived chats in Settings.') || '', 8000, {
-      label: t('Manage') || '',
+    toastActions.add('Archived. Manage archived chats in Settings.', 8000, {
+      label: 'Manage',
       settingsPath: '/archive',
     })
   }
@@ -123,11 +123,11 @@ function SessionItem(props: Props) {
       const archivedSessionCount = await countArchivedSessionsMeta()
       if (archivedSessionCount > ARCHIVED_SESSION_CLEANUP_THRESHOLD) {
         const confirmed = await NiceModal.show('confirm', {
-          title: t('Too many archived chats'),
+          title: 'Too many archived chats',
           message: t('You have archived more than {{count}} chats. Do you want to clean them up now?', {
             count: ARCHIVED_SESSION_CLEANUP_THRESHOLD,
           }),
-          confirmText: t('Clean up'),
+          confirmText: 'Clean up',
         })
         if (confirmed === true) {
           navigateToSettings('/archive')
@@ -206,7 +206,7 @@ function SessionItem(props: Props) {
       },
     },
     {
-      text: t('Adjust order') || '',
+      text: 'Adjust order',
       icon: IconArrowsMoveVertical,
       disabled: !props.onStartReordering,
       onClick: props.onStartReordering,
@@ -278,8 +278,8 @@ function SessionItem(props: Props) {
           component="span"
           data-session-activity={activity}
           role="status"
-          aria-label={activity === 'generating' ? t('Generating...') : t('Completed')}
-          title={activity === 'generating' ? t('Generating...') : t('Completed')}
+          aria-label={activity === 'generating' ? 'Generating...' : 'Completed'}
+          title={activity === 'generating' ? 'Generating...' : 'Completed'}
           className={clsx(
             'shrink-0 flex h-5 w-5 items-center justify-center',
             !isSmallScreen && 'group-hover/session-item:hidden'

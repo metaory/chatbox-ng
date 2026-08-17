@@ -3,7 +3,6 @@ import type { SessionMetaRecord } from '@shared/types'
 import { IconArchiveOff, IconTrash } from '@tabler/icons-react'
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { AssistantAvatar } from '@/components/common/Avatar'
 import { ScalableIcon } from '@/components/common/ScalableIcon'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
@@ -14,7 +13,6 @@ export const Route = createFileRoute('/settings/archive')({
 })
 
 export function RouteComponent() {
-  const { t } = useTranslation()
   const { archivedSessionMetaList, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useArchivedSessionList()
   const [busySessionIds, setBusySessionIds] = useState<Set<string>>(() => new Set())
@@ -34,9 +32,9 @@ export function RouteComponent() {
   return (
     <Stack p="md" gap="xl">
       <Stack gap="xxs">
-        <Title order={5}>{t('Archived Chats')}</Title>
+        <Title order={5}>Archived Chats</Title>
         <Text size="sm" c="chatbox-tertiary">
-          {t('Archived chats are hidden from the chat list. You can restore or permanently delete them here.')}
+          Archived chats are hidden from the chat list. You can restore or permanently delete them here.
         </Text>
       </Stack>
 
@@ -64,14 +62,14 @@ export function RouteComponent() {
                   void fetchNextPage()
                 }}
               >
-                {t('Load More')}
+                Load More
               </Button>
             </Flex>
           )}
         </Stack>
       ) : (
         <Stack align="center" gap="sm" py="xl">
-          <Text c="chatbox-tertiary">{t('No archived chats')}</Text>
+          <Text c="chatbox-tertiary">No archived chats</Text>
         </Stack>
       )}
     </Stack>
@@ -87,7 +85,6 @@ function ArchivedSessionRow({
   busy: boolean
   setSessionBusy: (sessionId: string, busy: boolean) => void
 }) {
-  const { t } = useTranslation()
 
   return (
     <Flex
@@ -109,7 +106,7 @@ function ArchivedSessionRow({
         {session.name}
       </Text>
       <Group gap={4}>
-        <Tooltip label={t('Restore')} openDelay={1000} withArrow>
+        <Tooltip label="Restore" openDelay={1000} withArrow>
           <ActionIcon
             variant="subtle"
             color="chatbox-tertiary"
@@ -127,7 +124,7 @@ function ArchivedSessionRow({
             <ScalableIcon icon={IconArchiveOff} size={18} />
           </ActionIcon>
         </Tooltip>
-        <Tooltip label={t('Delete')} openDelay={1000} withArrow>
+        <Tooltip label="Delete" openDelay={1000} withArrow>
           <ActionIcon
             variant="subtle"
             color="red"

@@ -1,12 +1,10 @@
 import NiceModal, { useModal } from '@ebay/nice-modal-react'
 import { Button, Image, List, Paper, Stack, Text, Title } from '@mantine/core'
-import { useTranslation } from 'react-i18next'
 import { AdaptiveModal } from '@/components/common/AdaptiveModal'
 import icon from '../static/icon.png'
 import { navigateToSettings } from './Settings'
 
 const Welcome = NiceModal.create(() => {
-  const { t } = useTranslation()
   const modal = useModal()
 
   const onClose = () => {
@@ -31,20 +29,20 @@ const Welcome = NiceModal.create(() => {
             <Image src={icon} w={86} h={86} />
             <Stack gap="3xs" align="center">
               <Title order={3}>Chatbox</Title>
-              <Text size="md">{t('An easy-to-use AI client app')}</Text>
+              <Text size="md">An easy-to-use AI client app</Text>
             </Stack>
           </Stack>
 
           <List size="sm" c="chatbox-secondary" className="flex flex-col items-center">
-            <List.Item>{t('Supports a variety of advanced AI models')}</List.Item>
-            <List.Item>{t('All data is stored locally, ensuring privacy and rapid access')}</List.Item>
-            <List.Item>{t('Ideal for both work and educational scenarios')}</List.Item>
+            <List.Item>Supports a variety of advanced AI models</List.Item>
+            <List.Item>All data is stored locally, ensuring privacy and rapid access</List.Item>
+            <List.Item>Ideal for both work and educational scenarios</List.Item>
           </List>
         </Stack>
 
         <Paper shadow="none" radius="lg" withBorder p="lg">
           <Stack gap="sm">
-            <Text className="text-center">{t('Select and configure an AI model provider')}</Text>
+            <Text className="text-center">Select and configure an AI model provider</Text>
             <Button
               size="lg"
               h={54}
@@ -56,13 +54,13 @@ const Welcome = NiceModal.create(() => {
                 modal.hide()
               }}
             >
-              {t('Setup Provider')}
+              Setup Provider
             </Button>
           </Stack>
         </Paper>
 
         <Button variant="transparent" c="chatbox-secondary" size="compact-md" onClick={onClose}>
-          {t('Setup later')}
+          Setup later
         </Button>
       </Stack>
     </AdaptiveModal>

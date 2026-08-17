@@ -4,7 +4,6 @@ import { IconSearch } from '@tabler/icons-react'
 import clsx from 'clsx'
 import { useAtom } from 'jotai'
 import { forwardRef, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import SwipeableViews from 'react-swipeable-views'
 import { Drawer } from 'vaul'
 import { useProviders } from '@/hooks/useProviders'
@@ -55,7 +54,6 @@ export const MobileModelSelector = forwardRef<HTMLDivElement, MobileModelSelecto
     },
     _ref
   ) => {
-    const { t } = useTranslation()
     const { favoritedModels: allFavoritedModels, favoriteModel, unfavoriteModel, isFavoritedModel } = useProviders()
     const [collapsedProviders, setCollapsedProviders] = useAtom(collapsedProvidersAtom)
 
@@ -92,7 +90,7 @@ export const MobileModelSelector = forwardRef<HTMLDivElement, MobileModelSelecto
         return (
           <Flex align="center" justify="center" py="lg" px="xs">
             <Text c="chatbox-tertiary" size="sm">
-              {t('No favorite models')}
+              No favorite models
             </Text>
           </Flex>
         )
@@ -146,11 +144,11 @@ export const MobileModelSelector = forwardRef<HTMLDivElement, MobileModelSelecto
           <Drawer.Content className="flex flex-col rounded-t-[10px] h-fit fixed bottom-0 left-0 right-0 outline-none">
             <Stack gap={0} className="bg-chatbox-background-primary rounded-t-lg h-[85vh]">
               <div aria-hidden className="mx-auto w-16 h-1 flex-shrink-0 rounded-full bg-chatbox-tint-tertiary my-3" />
-              <Drawer.Title className="hidden">{t('Select Model')}</Drawer.Title>
+              <Drawer.Title className="hidden">Select Model</Drawer.Title>
               <Tabs value={activeTab} onChange={onTabChange}>
                 <Tabs.List grow>
-                  <Tabs.Tab value="all">{t('All')}</Tabs.Tab>
-                  <Tabs.Tab value="favorite">{t('Favorite')}</Tabs.Tab>
+                  <Tabs.Tab value="all">All</Tabs.Tab>
+                  <Tabs.Tab value="favorite">Favorite</Tabs.Tab>
                 </Tabs.List>
               </Tabs>
 
@@ -173,7 +171,7 @@ export const MobileModelSelector = forwardRef<HTMLDivElement, MobileModelSelecto
                     <TextInput
                       value={search}
                       onChange={(event) => onSearchChange(event.currentTarget.value)}
-                      placeholder={t('Search models') as string}
+                      placeholder={'Search models' as string}
                       leftSection={<ScalableIcon icon={IconSearch} />}
                       className="mt-2"
                     />
@@ -202,7 +200,7 @@ export const MobileModelSelector = forwardRef<HTMLDivElement, MobileModelSelecto
                           lineClamp={1}
                           className="flex-grow-0 flex-shrink text-left"
                         >
-                          {autoText || t('Auto')}
+                          {autoText || 'Auto'}
                         </Text>
                       </Flex>
                     )}

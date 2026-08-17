@@ -21,7 +21,6 @@ const ServerCard: FC<{
   triggerEdit: (serverConfig: MCPServerConfig) => void
   onEnabledChange: (id: string, enabled: boolean) => void
 }> = (props) => {
-  const { t } = useTranslation()
   const { config, triggerEdit, onEnabledChange } = props
   return (
     <Paper shadow="xs" radius="lg" withBorder p="sm">
@@ -40,7 +39,7 @@ const ServerCard: FC<{
           {config.transport.type}
         </Badge>
         <Anchor size="xs" c="chatbox-brand" onClick={() => triggerEdit(config)}>
-          {t('Edit')}
+          Edit
         </Anchor>
       </Flex>
     </Paper>
@@ -75,13 +74,13 @@ const CustomServersSection: FC<Props> = (props) => {
     })
     mcpController.updateServer(config)
     if (modal?.mode === 'add') {
-      toast.success(t('MCP server added'))
+      toast.success('MCP server added')
     }
     setModal(null)
   }
 
   const handleServerDelete = (id: string) => {
-    if (!window.confirm(t('Are you sure you want to delete this server?')!)) {
+    if (!window.confirm('Are you sure you want to delete this server?'!)) {
       return
     }
     setSettings((draft) => {
@@ -124,7 +123,7 @@ const CustomServersSection: FC<Props> = (props) => {
     const content = await navigator.clipboard.readText()
     const servers = parseServersFromJson(content)
     if (!servers.length) {
-      toastError(t('No MCP servers parsed from clipboard'))
+      toastError('No MCP servers parsed from clipboard')
       return
     }
     setSettings((draft) => {
@@ -138,7 +137,7 @@ const CustomServersSection: FC<Props> = (props) => {
   return (
     <>
       <Text size="sm" fw={600} mb={12}>
-        {t('Custom MCP Servers')}
+        Custom MCP Servers
       </Text>
       <SimpleGrid type="container" cols={{ base: 1, '450px': 2, '800px': 3, '1200px': 4 }}>
         <Paper
@@ -156,7 +155,7 @@ const CustomServersSection: FC<Props> = (props) => {
               <ScalableIcon icon={IconPlus} />
             </ActionIcon>
             <Text size="xs" c="chatbox-brand">
-              {t('Add Server')}
+              Add Server
             </Text>
           </Flex>
         </Paper>

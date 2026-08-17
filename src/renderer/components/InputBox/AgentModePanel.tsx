@@ -30,7 +30,6 @@ import {
 import { Link } from '@tanstack/react-router'
 import { PlusIcon } from 'lucide-react'
 import { type FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
 import { useKnowledgeBases } from '@/hooks/knowledge-base'
 import { useMCPServerStatus, useToggleMCPServer } from '@/hooks/mcp'
@@ -120,7 +119,6 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
   onSkillSelect,
   onClose,
 }) => {
-  const { t } = useTranslation()
   const [page, setPage] = useState<PanelPage>('main')
   const closeTimerRef = useRef<ReturnType<typeof setTimeout>>()
   const openTimerRef = useRef<ReturnType<typeof setTimeout>>()
@@ -401,8 +399,8 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
     const isModelDisabled = !modelSupportsAgentMode && value !== 'off'
     const isDisabled = isLockedDisabled || isModelDisabled
     const tooltipLabel = isModelDisabled
-      ? t('This model does not support Agent Mode')
-      : t('Locked after the chat starts to keep tools and context consistent — start a new chat to change')
+      ? 'This model does not support Agent Mode'
+      : 'Locked after the chat starts to keep tools and context consistent — start a new chat to change'
     return (
       <Tooltip label={tooltipLabel} disabled={!isDisabled} withArrow zIndex={3000}>
         <span className="flex min-w-0 flex-1">
@@ -431,11 +429,11 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
     !isNewSession && Boolean(currentSession?.messages.some((message) => message.role === 'user'))
   const isSmartSwitchingDisabled = entry.locked || !modelSupportsAgentMode || smartSwitchingExpired
   const modeDescription = agentModeUIState.isActive
-    ? t('Best for multi-step tasks with files, code execution, tools, MCP, skills, or knowledge bases.')
-    : t('Best for quick Q&A, writing, translation, explanations, and web search.')
+    ? 'Best for multi-step tasks with files, code execution, tools, MCP, skills, or knowledge bases.'
+    : 'Best for quick Q&A, writing, translation, explanations, and web search.'
   const smartSwitchingDescription = smartSwitchingExpired
-    ? t('Only available before the first message.')
-    : t('Suggest Work Mode on the first message.')
+    ? 'Only available before the first message.'
+    : 'Suggest Work Mode on the first message.'
 
   // --- Extension row ---
   const ExtensionRow: FC<{
@@ -548,7 +546,7 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
     if (page === 'web-search') {
       return (
         <>
-          <SubPanelHeader title={t('Web Search')} settingsPath="/web-search" />
+          <SubPanelHeader title="Web Search" settingsPath="/web-search" />
           <Divider my={4} />
           {WEB_SEARCH_PROVIDERS.map((provider) => {
             const available = isProviderAvailable(provider.value)
@@ -556,7 +554,7 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
             return (
               <Tooltip
                 key={provider.value}
-                label={t('Configure in Settings')}
+                label="Configure in Settings"
                 disabled={available}
                 withArrow
                 position="right"
@@ -595,7 +593,7 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
     if (page === 'code-execution') {
       return (
         <>
-          <SubPanelHeader title={t('Code Execution')} disabled={workModeCapabilitiesDisabled} />
+          <SubPanelHeader title="Code Execution" disabled={workModeCapabilitiesDisabled} />
           <Divider my={4} />
           <Flex
             justify="space-between"
@@ -615,10 +613,10 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
           >
             <Stack gap={0} className="min-w-0">
               <Text size="sm" c={!agentFullAccess ? 'chatbox-brand' : undefined}>
-                {t('Approve')}
+                Approve
               </Text>
               <Text size="xs" c="chatbox-secondary" className="leading-snug">
-                {t('Ask before running commands or changing files.')}
+                Ask before running commands or changing files.
               </Text>
             </Stack>
             {!agentFullAccess && <IconCheck size={14} className="text-[var(--chatbox-tint-brand)] shrink-0" />}
@@ -641,10 +639,10 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
           >
             <Stack gap={0} className="min-w-0">
               <Text size="sm" c="red" fw={500}>
-                {t('Full Access')}
+                Full Access
               </Text>
               <Text size="xs" c="red" className="leading-snug">
-                {t('Skip approval prompts for commands and file changes.')}
+                Skip approval prompts for commands and file changes.
               </Text>
             </Stack>
             {agentFullAccess && <IconCheck size={14} className="text-red-600 shrink-0" />}
@@ -707,7 +705,7 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
                 }}
               >
                 <PlusIcon size={14} className="mr-1" />
-                {t('Add Skills')}
+                Add Skills
               </Button>
             </Group>
           )}
@@ -743,7 +741,7 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
                 }}
               >
                 <PlusIcon size={14} className="mr-1" />
-                {t('Add your first MCP server')}
+                Add your first MCP server
               </Button>
             </Group>
           )}
@@ -754,7 +752,7 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
     if (page === 'knowledge-base') {
       return (
         <>
-          <SubPanelHeader title={t('Knowledge Base')} settingsPath="/knowledge-base" />
+          <SubPanelHeader title="Knowledge Base" settingsPath="/knowledge-base" />
           <Divider my={4} />
           {knowledgeBases && knowledgeBases.length > 0 ? (
             knowledgeBases.map((kb) => (
@@ -790,7 +788,7 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
                   }}
                 >
                   <PlusIcon size={14} className="mr-1" />
-                  {t('Create')}
+                  Create
                 </Button>
               </Link>
             </Group>
@@ -802,10 +800,10 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
     if (page === 'working-directory') {
       return (
         <>
-          <SubPanelHeader title={t('Working Directory')} disabled={workModeCapabilitiesDisabled} />
+          <SubPanelHeader title="Working Directory" disabled={workModeCapabilitiesDisabled} />
           <Divider my={4} />
           <Text size="xs" c="dimmed" px="sm" pb={4}>
-            {t('Grant the agent read/write access to local folders without per-action approval.')}
+            Grant the agent read/write access to local folders without per-action approval.
           </Text>
           {workingDirectories.map((dir) => (
             <Flex key={dir} justify="space-between" align="center" px="sm" py={6} gap="xs">
@@ -822,7 +820,7 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
                 size={20}
                 color="red"
                 disabled={workModeCapabilitiesDisabled}
-                aria-label={t('Remove')}
+                aria-label="Remove"
                 onClick={() => {
                   if (workModeCapabilitiesDisabled) return
                   void handleRemoveWorkingDirectory(dir)
@@ -834,7 +832,7 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
           ))}
           {availableRecentDirectories.length > 0 && (
             <>
-              <Divider my={4} mx="sm" label={t('Recent')} labelPosition="left" />
+              <Divider my={4} mx="sm" label="Recent" labelPosition="left" />
               {availableRecentDirectories.map((dir) => (
                 <UnstyledButton
                   key={dir}
@@ -876,7 +874,7 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
               }}
             >
               <PlusIcon size={14} className="mr-1" />
-              {t('Add Folder')}
+              Add Folder
             </Button>
           </Group>
         </>
@@ -907,11 +905,11 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
         {/* Header: mode switcher */}
         <Stack gap="xs" px="sm" py="xs" onMouseEnter={handleNonExtensionHover}>
           <Text fw={600} size="sm" c="chatbox-primary">
-            {t('Mode')}
+            Mode
           </Text>
           <Flex gap={6}>
-            <ModeButton value="off" label={t('Chat Mode')} />
-            <ModeButton value="on" label={t('Work Mode')} />
+            <ModeButton value="off" label="Chat Mode" />
+            <ModeButton value="on" label="Work Mode" />
           </Flex>
           <Text size="xs" c="chatbox-secondary" className="leading-snug max-w-[244px]">
             {modeDescription}
@@ -925,7 +923,7 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
             >
               <Stack gap={0} className="min-w-0">
                 <Text size="xs" fw={500} c="chatbox-primary">
-                  {t('Smart Switching')}
+                  Smart Switching
                 </Text>
                 <Text size="xs" c="chatbox-secondary" className="leading-snug max-w-[196px]">
                   {smartSwitchingDescription}
@@ -944,11 +942,11 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
         {/* Independent capabilities stay available in Chat Mode; agent capabilities require Work Mode. */}
         <div>
           {/* Built-in capabilities */}
-          <Divider my={4} mx="sm" label={t('Built-in')} labelPosition="left" />
+          <Divider my={4} mx="sm" label="Built-in" labelPosition="left" />
 
           <ExtensionRow
             icon={<IconWorldWww size={16} className="text-[var(--chatbox-tint-secondary)]" />}
-            label={t('Web Search')}
+            label="Web Search"
             subtitle={webBrowsingMode ? webSearchProviderLabel : undefined}
             active={page === 'web-search'}
             page="web-search"
@@ -971,7 +969,7 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
 
           <ExtensionRow
             icon={<IconCode size={16} className="text-[var(--chatbox-tint-secondary)]" />}
-            label={t('Code Execution')}
+            label="Code Execution"
             active={page === 'code-execution'}
             page="code-execution"
             disabled={workModeCapabilitiesDisabled}
@@ -980,11 +978,11 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
               <Flex gap="xs" align="center" className="shrink-0">
                 {agentFullAccess ? (
                   <Badge size="xs" variant="light" color="red">
-                    {t('Full Access')}
+                    Full Access
                   </Badge>
                 ) : (
                   <Badge size="xs" variant="light">
-                    {t('Approve')}
+                    Approve
                   </Badge>
                 )}
                 <IconChevronRight size={14} className="text-[var(--chatbox-tint-tertiary)]" />
@@ -993,7 +991,7 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
           />
 
           {/* Extensions */}
-          <Divider my={4} mx="sm" label={t('Extensions')} labelPosition="left" />
+          <Divider my={4} mx="sm" label="Extensions" labelPosition="left" />
 
           <ExtensionRow
             icon={<IconWand size={16} className="text-[var(--chatbox-tint-secondary)]" />}
@@ -1015,7 +1013,7 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
 
           <ExtensionRow
             icon={<IconVocabulary size={16} className="text-[var(--chatbox-tint-secondary)]" />}
-            label={t('Knowledge Base')}
+            label="Knowledge Base"
             subtitle={selectedKB?.name}
             active={page === 'knowledge-base'}
             page="knowledge-base"
@@ -1024,7 +1022,7 @@ const AgentModePanel: FC<AgentModePanelProps> = ({
           {supportsWorkingDirectories && (
             <ExtensionRow
               icon={<IconFolderCog size={16} className="text-[var(--chatbox-tint-secondary)]" />}
-              label={t('Working Directory')}
+              label="Working Directory"
               badge={workingDirectories.length > 0 ? workingDirectories.length : undefined}
               active={page === 'working-directory'}
               page="working-directory"

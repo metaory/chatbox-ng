@@ -24,7 +24,6 @@ import {
   useRef,
   useState,
 } from 'react'
-import { useTranslation } from 'react-i18next'
 import { type StateSnapshot, Virtuoso, type VirtuosoHandle } from 'react-virtuoso'
 import { buildMessageRenderItems, type MessageRenderItem } from '@/components/chat/message-render-items'
 import { platformTypeAtom } from '@/hooks/useNeedRoomForWinControls'
@@ -92,7 +91,6 @@ export interface MessageListProps {
 }
 
 const MessageList = forwardRef<MessageListRef, MessageListProps>((props, ref) => {
-  const { t } = useTranslation()
   const isSmallScreen = useIsSmallScreen()
   const widthFull = useUIStore((s) => s.widthFull)
 
@@ -413,7 +411,7 @@ const MessageList = forwardRef<MessageListRef, MessageListProps>((props, ref) =>
                 isLatestSummary={msg.id === latestSummaryMessageId}
                 onDelete={() => {
                   if (generationLocked) {
-                    toastActions.add(t('Wait for the current replies to finish'), 2500)
+                    toastActions.add('Wait for the current replies to finish', 2500)
                     return
                   }
                   void removeMessage(currentSession.id, msg.id)
@@ -452,7 +450,7 @@ const MessageList = forwardRef<MessageListRef, MessageListProps>((props, ref) =>
         </Stack>
       )
     },
-    [currentSession, currentThreadHash, generatingReplyCount, generationLocked, latestSummaryMessageId, t]
+    [currentSession, currentThreadHash, generatingReplyCount, generationLocked, latestSummaryMessageId]
   )
 
   useImperativeHandle(ref, () => ({
@@ -552,9 +550,9 @@ const MessageList = forwardRef<MessageListRef, MessageListProps>((props, ref) =>
                     className="absolute z-10 top-0 left-0 right-0 leading-tight bg-chatbox-background-secondary"
                   >
                     {[
-                      { text: t('Return to the top'), icon: IconArrowBarToUp, onClick: handleScrollToTop },
+                      { text: 'Return to the top', icon: IconArrowBarToUp, onClick: handleScrollToTop },
                       {
-                        text: t('Back to previous message'),
+                        text: 'Back to previous message',
                         icon: IconArrowUp,
                         onClick: handleScrollToPrev,
                       },
@@ -597,7 +595,6 @@ type ThreadLabelProps = {
   thread: SessionThreadBrief
 }
 const ThreadLabel: FC<ThreadLabelProps> = memo(({ thread, sessionId }) => {
-  const { t } = useTranslation()
   const setShowHistoryDrawer = useSetAtom(atoms.showThreadHistoryDrawerAtom)
 
   const handleOpenHistoryDrawer = useCallback(() => {
@@ -630,29 +627,29 @@ const ThreadLabel: FC<ThreadLabelProps> = memo(({ thread, sessionId }) => {
         position="bottom"
         items={[
           {
-            text: t('Edit Thread Name'),
+            text: 'Edit Thread Name',
             icon: IconPencil,
             onClick: handleEditThreadName,
           },
           {
-            text: t('Show in Thread List'),
+            text: 'Show in Thread List',
             icon: IconListTree,
             onClick: handleOpenHistoryDrawer,
           },
           {
-            text: t('Continue this thread'),
+            text: 'Continue this thread',
             icon: IconSwitch3,
             onClick: handleContinueThread,
           },
           {
-            text: t('Move to Conversations'),
+            text: 'Move to Conversations',
             icon: IconMessagePlus,
             onClick: handleMoveToConversations,
           },
           { divider: true },
           {
             doubleCheck: true,
-            text: t('delete'),
+            text: 'delete',
             icon: IconTrash,
             onClick: handleDeleteThread,
           },
@@ -665,7 +662,7 @@ const ThreadLabel: FC<ThreadLabelProps> = memo(({ thread, sessionId }) => {
         >
           <span className="pr-1 opacity-60">#</span>
           <span className="truncate inline-block align-bottom max-w-[calc(50%-4rem)] md:max-w-[calc(30%-4rem)]">
-            {thread.name || t('New Thread')}
+            {thread.name || 'New Thread'}
           </span>
           {thread.createdAtLabel && <span className="pl-1 opacity-60 text-xs">{thread.createdAtLabel}</span>}
         </span>

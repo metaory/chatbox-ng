@@ -36,14 +36,13 @@ export const KnowledgeBaseModelSelectors: React.FC<ModelSelectorsProps> = ({
   isEmbeddingDisabled = false,
   showEmbeddingModel = true,
 }) => {
-  const { t } = useTranslation()
 
   return (
     <>
       {showEmbeddingModel && (
         <Select
-          label={t('Embedding Model')}
-          description={t('Used to extract text feature vectors, add in Settings - Provider - Model List')}
+          label="Embedding Model"
+          description="Used to extract text feature vectors, add in Settings - Provider - Model List"
           data={embeddingModelList}
           value={embeddingModel}
           onChange={onEmbeddingModelChange}
@@ -55,8 +54,8 @@ export const KnowledgeBaseModelSelectors: React.FC<ModelSelectorsProps> = ({
         />
       )}
       <Select
-        label={t('Rerank Model (optional)')}
-        description={t('Used to get more accurate search results')}
+        label="Rerank Model (optional)"
+        description="Used to get more accurate search results"
         data={rerankModelList}
         value={rerankModel}
         onChange={onRerankModelChange}
@@ -65,8 +64,8 @@ export const KnowledgeBaseModelSelectors: React.FC<ModelSelectorsProps> = ({
         comboboxProps={{ withinPortal: false, position: 'bottom' }}
       />
       <Select
-        label={t('Vision Model (optional)')}
-        description={t('Used to preprocess image files, requires models with vision capabilities enabled')}
+        label="Vision Model (optional)"
+        description="Used to preprocess image files, requires models with vision capabilities enabled"
         data={visionModelList}
         value={visionModel}
         onChange={onVisionModelChange}
@@ -95,17 +94,16 @@ export const KnowledgeBaseFormActions: React.FC<KnowledgeBaseFormActionsProps> =
   showDelete = false,
   onDelete,
 }) => {
-  const { t } = useTranslation()
 
   if (showDelete && onDelete) {
     return (
       <Group justify="space-between">
         <Button variant="outline" color="red" leftSection={<IconTrash size={16} />} onClick={onDelete}>
-          {t('Delete')}
+          Delete
         </Button>
         <Group>
           <Button variant="default" onClick={onCancel}>
-            {t('Cancel')}
+            Cancel
           </Button>
           <Button onClick={onConfirm} disabled={isConfirmDisabled}>
             {confirmText}
@@ -118,7 +116,7 @@ export const KnowledgeBaseFormActions: React.FC<KnowledgeBaseFormActionsProps> =
   return (
     <Group justify="flex-end">
       <Button variant="default" onClick={onCancel}>
-        {t('Cancel')}
+        Cancel
       </Button>
       <Button onClick={onConfirm} disabled={isConfirmDisabled}>
         {confirmText}
@@ -142,14 +140,13 @@ export const KnowledgeBaseNameInput: React.FC<KnowledgeBaseNameInputProps> = ({
   placeholder,
   autoFocus = false,
 }) => {
-  const { t } = useTranslation()
 
   return (
     <Input.Wrapper label={label}>
       <Input
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder || t('New knowledge base name')}
+        placeholder={placeholder || 'New knowledge base name'}
         autoFocus={autoFocus}
       />
     </Input.Wrapper>
@@ -217,7 +214,7 @@ export const DocumentParserSelector: React.FC<DocumentParserSelectorProps> = ({
 
   const handleTestConnection = useCallback(async () => {
     if (!mineruToken.trim()) {
-      toastError(t('Please enter an API token'))
+      toastError('Please enter an API token')
       return
     }
 
@@ -229,9 +226,9 @@ export const DocumentParserSelector: React.FC<DocumentParserSelectorProps> = ({
       setConnectionResult(result)
 
       if (result.success) {
-        toast.success(t('Connection successful'))
+        toast.success('Connection successful')
       } else {
-        toastError(result.error || t('Connection failed'))
+        toastError(result.error || 'Connection failed')
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error)
@@ -247,8 +244,8 @@ export const DocumentParserSelector: React.FC<DocumentParserSelectorProps> = ({
   return (
     <Stack gap="xs">
       <Select
-        label={t('Document Parser')}
-        description={t('Parser used to process uploaded documents')}
+        label="Document Parser"
+        description="Parser used to process uploaded documents"
         data={PARSER_OPTIONS.map((opt) => ({
           value: opt.value,
           label: t(opt.label),
@@ -268,7 +265,7 @@ export const DocumentParserSelector: React.FC<DocumentParserSelectorProps> = ({
       {parserConfig.type === 'mineru' && !disabled && (
         <Stack gap="xs">
           <PasswordInput
-            placeholder={t('Enter your MinerU API token') as string}
+            placeholder={'Enter your MinerU API token' as string}
             value={mineruToken}
             onChange={(e) => handleMineruTokenChange(e.target.value)}
           />
@@ -280,7 +277,7 @@ export const DocumentParserSelector: React.FC<DocumentParserSelectorProps> = ({
               loading={testingConnection}
               disabled={!mineruToken.trim()}
             >
-              {t('Test Connection')}
+              Test Connection
             </Button>
             {connectionResult && (
               <Group gap={4}>
@@ -288,14 +285,14 @@ export const DocumentParserSelector: React.FC<DocumentParserSelectorProps> = ({
                   <>
                     <ScalableIcon icon={IconCheck} size={16} color="green" />
                     <Text size="xs" c="green">
-                      {t('Connected')}
+                      Connected
                     </Text>
                   </>
                 ) : (
                   <>
                     <ScalableIcon icon={IconX} size={16} color="red" />
                     <Text size="xs" c="red">
-                      {connectionResult.error || t('Failed')}
+                      {connectionResult.error || 'Failed'}
                     </Text>
                   </>
                 )}
@@ -318,8 +315,8 @@ export const DocumentParserDisplay: React.FC<DocumentParserDisplayProps> = ({ pa
 
   return (
     <Select
-      label={t('Document Parser')}
-      description={t('Parser used to process uploaded documents')}
+      label="Document Parser"
+      description="Parser used to process uploaded documents"
       data={PARSER_OPTIONS.map((opt) => ({
         value: opt.value,
         label: t(opt.label),

@@ -66,7 +66,7 @@ afterEach(() => {
 
 describe('Markdown images', () => {
   it('opens a rendered image in the shared viewer and preserves image metadata', async () => {
-    render(<Markdown>{'![Generated preview](https://example.com/image.png?x=1&y=2 "Result")'}</Markdown>)
+    render(<Markdown>![Generated preview](https://example.com/image.png?x=1&y=2 "Result")</Markdown>)
 
     const image = screen.getByRole('img', { name: 'Generated preview' })
     const viewerItem = screen.getByTestId('image-viewer-item')
@@ -91,7 +91,7 @@ describe('Markdown images', () => {
   })
 
   it('opens linked images without navigating the enclosing link', () => {
-    render(<Markdown>{'[![Linked preview](https://example.com/image.png)](https://example.com/destination)'}</Markdown>)
+    render(<Markdown>[![Linked preview](https://example.com/image.png)](https://example.com/destination)</Markdown>)
 
     const image = screen.getByRole('img', { name: 'Linked preview' })
     expect(fireEvent.click(image)).toBe(false)
@@ -100,7 +100,9 @@ describe('Markdown images', () => {
 
   it('groups all images from one Markdown block in one viewer', () => {
     render(
-      <Markdown>{'![First](https://example.com/first.png)\n\n![Second](https://example.com/second.png)'}</Markdown>
+      <Markdown>![First](https://example.com/first.png)
+
+![Second](https://example.com/second.png)</Markdown>
     )
 
     expect(screen.getAllByTestId('image-viewer')).toHaveLength(1)
@@ -110,7 +112,7 @@ describe('Markdown images', () => {
 
 describe('Markdown sandbox file links', () => {
   it('renders hallucinated sandbox links as a file chip instead of a dead anchor', () => {
-    render(<Markdown sessionId="session-1">{'[**Download plot.py**](sandbox:/mnt/data/plot.py)'}</Markdown>)
+    render(<Markdown sessionId="session-1">[**Download plot.py**](sandbox:/mnt/data/plot.py)</Markdown>)
 
     const chip = screen.getByRole('button', { name: /Download plot\.py/ })
     expect(chip.tagName).toBe('SPAN')
@@ -118,7 +120,7 @@ describe('Markdown sandbox file links', () => {
   })
 
   it('keeps ordinary links as anchors', () => {
-    render(<Markdown>{'[docs](https://example.com/docs)'}</Markdown>)
+    render(<Markdown>[docs](https://example.com/docs)</Markdown>)
 
     const link = screen.getByRole('link', { name: 'docs' })
     expect(link.getAttribute('href')).toBe('https://example.com/docs')
@@ -129,7 +131,7 @@ describe('Markdown sandbox file links', () => {
     sandboxPersistArtifact.mockResolvedValue({ success: true, artifactPath: '/durable/plot.py' })
     sandboxExportFile.mockResolvedValue({ success: true })
 
-    render(<Markdown sessionId="session-1">{'[download](sandbox:/mnt/data/plot.py)'}</Markdown>)
+    render(<Markdown sessionId="session-1">[download](sandbox:/mnt/data/plot.py)</Markdown>)
     fireEvent.click(screen.getByRole('button', { name: 'download' }))
 
     await waitFor(() => {
@@ -145,7 +147,7 @@ describe('Markdown sandbox file links', () => {
   it('degrades to an unavailable state when the file cannot be rescued', async () => {
     sandboxPersistArtifact.mockResolvedValue({ success: false, error: 'File not found' })
 
-    render(<Markdown sessionId="session-1">{'[download](sandbox:/mnt/data/gone.py)'}</Markdown>)
+    render(<Markdown sessionId="session-1">[download](sandbox:/mnt/data/gone.py)</Markdown>)
     fireEvent.click(screen.getByRole('button', { name: 'download' }))
 
     await waitFor(() => {
@@ -158,7 +160,7 @@ describe('Markdown sandbox file links', () => {
     sandboxPersistArtifact.mockResolvedValue({ success: true, artifactPath: '/durable/plot.py' })
     sandboxExportFile.mockResolvedValue({ success: false, error: 'Destination is not writable' })
 
-    render(<Markdown sessionId="session-1">{'[download](sandbox:/mnt/data/plot.py)'}</Markdown>)
+    render(<Markdown sessionId="session-1">[download](sandbox:/mnt/data/plot.py)</Markdown>)
     fireEvent.click(screen.getByRole('button', { name: /download/ }))
 
     await waitFor(() => {
@@ -173,7 +175,7 @@ describe('Markdown sandbox file links', () => {
     sandboxPersistArtifact.mockResolvedValue({ success: true, artifactPath: '/durable/plot.py' })
     sandboxExportFile.mockResolvedValue({ success: true })
 
-    render(<Markdown sessionId="session-1">{'[download](sandbox:/mnt/data/plot.py)'}</Markdown>)
+    render(<Markdown sessionId="session-1">[download](sandbox:/mnt/data/plot.py)</Markdown>)
     const chip = screen.getByRole('button', { name: 'download' })
     fireEvent.click(chip)
     fireEvent.click(chip)
@@ -188,7 +190,7 @@ describe('Markdown sandbox file links', () => {
     sandboxPersistArtifact.mockResolvedValue({ success: true, artifactPath: '/durable/plot.py' })
     sandboxExportFile.mockResolvedValue({ success: false, error: 'Save dialog cancelled' })
 
-    render(<Markdown sessionId="session-1">{'[download](sandbox:/mnt/data/plot.py)'}</Markdown>)
+    render(<Markdown sessionId="session-1">[download](sandbox:/mnt/data/plot.py)</Markdown>)
     fireEvent.click(screen.getByRole('button', { name: 'download' }))
 
     await waitFor(() => {

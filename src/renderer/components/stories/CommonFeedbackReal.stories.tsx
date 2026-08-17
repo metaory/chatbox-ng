@@ -188,7 +188,7 @@ export const InlineUtilityStates: StoryObj = {
               <LinkTargetBlank href="https://chatboxai.app">Chatbox homepage link</LinkTargetBlank>
             </Group>
             <Mark marks={['search', 'highlight']}>
-              {'Search results highlight matching content inside long assistant responses.'}
+              Search results highlight matching content inside long assistant responses.
             </Mark>
             <SegmentedControl
               value={segment}

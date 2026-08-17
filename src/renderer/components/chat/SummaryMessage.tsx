@@ -4,7 +4,6 @@ import type { Message } from '@shared/types'
 import { getMessageText } from '@shared/utils/message'
 import { IconChevronDown, IconChevronUp, IconPencil, IconTrash } from '@tabler/icons-react'
 import { type FC, memo, useCallback, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import Markdown from '@/components/Markdown'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
@@ -21,7 +20,6 @@ interface SummaryMessageProps {
 }
 
 const SummaryMessage: FC<SummaryMessageProps> = ({ msg, className, isLatestSummary, onDelete, sessionId }) => {
-  const { t } = useTranslation()
   const [expanded, setExpanded] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const enableMarkdownRendering = useSettingsStore((state) => state.enableMarkdownRendering)
@@ -50,7 +48,7 @@ const SummaryMessage: FC<SummaryMessageProps> = ({ msg, className, isLatestSumma
         <ScalableIcon icon={expanded ? IconChevronUp : IconChevronDown} size={14} />
       </ActionIcon>
       <Text size="xs" c="chatbox-tertiary" className="whitespace-nowrap">
-        {t('Earlier messages summarized')}
+        Earlier messages summarized
       </Text>
     </Flex>
   )
@@ -82,7 +80,7 @@ const SummaryMessage: FC<SummaryMessageProps> = ({ msg, className, isLatestSumma
 
           {isLatestSummary && (
             <Flex gap={0} mt="xs" className="opacity-0 group-hover/summary:opacity-100 transition-opacity">
-              <Tooltip label={t('Edit')} openDelay={1000} withArrow>
+              <Tooltip label="Edit" openDelay={1000} withArrow>
                 <ActionIcon
                   variant="subtle"
                   w="auto"
@@ -98,7 +96,7 @@ const SummaryMessage: FC<SummaryMessageProps> = ({ msg, className, isLatestSumma
                 </ActionIcon>
               </Tooltip>
               {onDelete && (
-                <Tooltip label={t('Delete')} openDelay={1000} withArrow>
+                <Tooltip label="Delete" openDelay={1000} withArrow>
                   <ActionIcon
                     variant="subtle"
                     w="auto"
@@ -122,18 +120,18 @@ const SummaryMessage: FC<SummaryMessageProps> = ({ msg, className, isLatestSumma
       <Modal
         opened={showDeleteConfirm}
         onClose={() => setShowDeleteConfirm(false)}
-        title={t('Delete Summary')}
+        title="Delete Summary"
         centered
         size="sm"
       >
         <Stack gap="md">
-          <Text size="sm">{t('Deleting this summary will restore original messages to context calculation.')}</Text>
+          <Text size="sm">Deleting this summary will restore original messages to context calculation.</Text>
           <Group justify="flex-end">
             <Button variant="default" onClick={() => setShowDeleteConfirm(false)}>
-              {t('Cancel')}
+              Cancel
             </Button>
             <Button color="red" onClick={handleConfirmDelete}>
-              {t('Delete')}
+              Delete
             </Button>
           </Group>
         </Stack>

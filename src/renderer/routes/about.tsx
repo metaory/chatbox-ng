@@ -16,7 +16,6 @@ import { useDisclosure } from '@mantine/hooks'
 import { IconChevronRight, IconFileText, IconHome, IconMail, IconPencil, IconRefresh } from '@tabler/icons-react'
 import { createFileRoute } from '@tanstack/react-router'
 import { Children, Fragment, type ReactElement, type ReactNode } from 'react'
-import { useTranslation } from 'react-i18next'
 import { ScalableIcon } from '@/components/common/ScalableIcon'
 import BrandGithub from '@/components/icons/BrandGithub'
 import BrandRedNote from '@/components/icons/BrandRedNote'
@@ -36,17 +35,16 @@ export const Route = createFileRoute('/about')({
 })
 
 function RouteComponent() {
-  const { t } = useTranslation()
   const version = useVersion()
   const language = useLanguage()
   const isSmallScreen = useIsSmallScreen()
 
   return (
-    <Page title={t('About')}>
+    <Page title="About">
       <Container size="md" p={0}>
         <Stack gap="xxl" px={isSmallScreen ? 'sm' : 'md'} py={isSmallScreen ? 'xl' : 'md'}>
           <Flex gap="xxl" p="md" className="rounded-lg bg-chatbox-background-secondary">
-            <Image h={100} w={100} mah={'20vw'} maw={'20vw'} src={iconPNG} />
+            <Image h={100} w={100} mah="20vw" maw="20vw" src={iconPNG} />
             <Stack flex={1} gap="xxs">
               <Flex justify="space-between" align="center" wrap="wrap" gap={isSmallScreen ? 'xs' : 'sm'} rowGap="xs">
                 <Title order={5} lh={1.5} lineClamp={1} title={`Chatbox v${version.version}`}>
@@ -55,15 +53,15 @@ function RouteComponent() {
 
                 <UpdateSection language={language} needCheckUpdate={version.needCheckUpdate} />
               </Flex>
-              <Text>{t('about-slogan')}</Text>
-              <Text c="chatbox-tertiary">{t('about-introduction')}</Text>
+              <Text>Boost your efficiency with AI, your ultimate copilot for work and learning</Text>
+              <Text c="chatbox-tertiary">A user-friendly AI desktop client that supports multiple advanced AI models, transforming cutting-edge artificial intelligence technology into an easy-to-use productivity tool.</Text>
             </Stack>
           </Flex>
 
           <List>
             <ListItem
               icon={<BrandGithub className="w-full h-full" />}
-              title={t('Github')}
+              title="Github"
               link="https://github.com/metaory/chatbox-ng"
               value="chatbox-ng"
             />
@@ -72,22 +70,22 @@ function RouteComponent() {
           <List>
             <ListItem
               icon={<IconHome className="w-full h-full" />}
-              title={t('Official Site')}
+              title="Official Site"
               link="https://github.com/metaory/chatbox-ng"
             />
             <ListItem
               icon={<IconPencil className="w-full h-full" />}
-              title={t('Feedback')}
+              title="Feedback"
               link="https://github.com/metaory/chatbox-ng/issues/new/choose"
             />
             <ListItem
               icon={<IconFileText className="w-full h-full" />}
-              title={t('Changelog')}
+              title="Changelog"
               link="https://github.com/metaory/chatbox-ng/releases"
             />
             <ListItem
               icon={<IconMail className="w-full h-full" />}
-              title={t('E-mail')}
+              title="E-mail"
               link={`mailto:metaory@gmail.com`}
               value="metaory@gmail.com"
             />
@@ -115,7 +113,6 @@ function UpdateSection({ language, needCheckUpdate }: { language: string; needCh
 }
 
 function MobileUpdateHint({ language, needCheckUpdate }: { language: string; needCheckUpdate: boolean }) {
-  const { t } = useTranslation()
 
   if (needCheckUpdate) {
     return (
@@ -127,7 +124,7 @@ function MobileUpdateHint({ language, needCheckUpdate }: { language: string; nee
         className="flex-shrink-0"
         onClick={() => platform.openLink(buildChatboxUrl(`/redirect_app/check_update/${language}`))}
       >
-        {t('New version available')}
+        New version available
       </Button>
     )
   }
@@ -140,13 +137,12 @@ function MobileUpdateHint({ language, needCheckUpdate }: { language: string; nee
       className="flex-shrink-0"
       onClick={() => platform.openLink(buildChatboxUrl(`/redirect_app/check_update/${language}`))}
     >
-      {t('Check Update')}
+      Check Update
     </Button>
   )
 }
 
 function DesktopUpdateSection() {
-  const { t } = useTranslation()
   const status = useUpdateStore((s) => s.status)
   const progress = useUpdateStore((s) => s.progress)
   const updateVersion = useUpdateStore((s) => s.version)
@@ -179,7 +175,7 @@ function DesktopUpdateSection() {
     case 'checking':
       return (
         <Button size="xs" variant="default" radius="lg" className="flex-shrink-0" loading>
-          {t('Checking...')}
+          Checking...
         </Button>
       )
 
@@ -189,8 +185,8 @@ function DesktopUpdateSection() {
         <Stack gap={4} flex={1} maw={200}>
           <Text size="xs" c="chatbox-brand" ta="right">
             {status === 'downloading'
-              ? `${t('Downloading...')} ${progress}%`
-              : `${t('New version available')}${updateVersion ? ` v${updateVersion}` : ''}`}
+              ? `Downloading... ${progress}%`
+              : `New version available${updateVersion ? ` v${updateVersion}` : ''}`}
           </Text>
           {status === 'downloading' && <Progress value={progress} size="xs" color="chatbox-brand" animated />}
         </Stack>
@@ -207,7 +203,7 @@ function DesktopUpdateSection() {
           leftSection={<ScalableIcon icon={IconRefresh} size={14} />}
           onClick={handleInstall}
         >
-          {t('Restart & Update')}
+          Restart & Update
           {updateVersion ? ` (v${updateVersion})` : ''}
         </Button>
       )
@@ -217,10 +213,10 @@ function DesktopUpdateSection() {
         <Stack gap={2} align="flex-end" className="flex-shrink-0">
           <Flex gap="xs" align="center">
             <Text size="xs" c="chatbox-error">
-              {t('Update failed')}
+              Update failed
             </Text>
             <Button size="xs" variant="default" radius="lg" onClick={handleCheck}>
-              {t('Retry')}
+              Retry
             </Button>
           </Flex>
           <Anchor
@@ -228,7 +224,7 @@ function DesktopUpdateSection() {
             c="chatbox-tertiary"
             onClick={() => platform.openLink(buildChatboxUrl('/redirect_app/homepage/'))}
           >
-            {t('Download from official site')}
+            Download from official site
           </Anchor>
         </Stack>
       )
@@ -236,27 +232,26 @@ function DesktopUpdateSection() {
     case 'up-to-date':
       return (
         <Text size="xs" c="chatbox-tertiary" className="flex-shrink-0">
-          {t('Already up to date')}
+          Already up to date
         </Text>
       )
 
     default:
       return (
         <Button size="xs" variant="default" radius="lg" className="flex-shrink-0" onClick={handleCheck}>
-          {t('Check Update')}
+          Check Update
         </Button>
       )
   }
 }
 
 function WechatQRCode() {
-  const { t } = useTranslation()
   const [opened, { close, open }] = useDisclosure(false)
   return (
     <Popover position="top" withArrow shadow="md" opened={opened}>
       <Popover.Target>
         <Text onMouseEnter={open} onMouseLeave={close} c="chatbox-brand" className="cursor-pointer">
-          {t('QR Code')}
+          QR Code
         </Text>
       </Popover.Target>
       <Popover.Dropdown style={{ pointerEvents: 'none' }}>

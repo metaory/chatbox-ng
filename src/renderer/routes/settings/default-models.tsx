@@ -4,7 +4,6 @@ import { SystemProviders } from '@shared/defaults'
 import { IconSelector } from '@tabler/icons-react'
 import { createFileRoute } from '@tanstack/react-router'
 import { forwardRef, useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
 import { ScalableIcon } from '@/components/common/ScalableIcon'
 import ModelSelector from '@/components/ModelSelector'
 import { enrichModelsFromRegistry, useModelRegistryVersion } from '@/packages/model-registry'
@@ -16,16 +15,15 @@ export const Route = createFileRoute('/settings/default-models')({
 })
 
 export function RouteComponent() {
-  const { t } = useTranslation()
   const { setSettings, ...settings } = useSettingsStore((state) => state)
-  const noneText = t('None')!
+  const noneText = 'None'!
 
   return (
     <Stack p="md" gap="xl">
-      <Title order={5}>{t('Default Models')}</Title>
+      <Title order={5}>Default Models</Title>
 
       <Stack gap="xs">
-        <Text fw={600}>{t('Default Chat Model')}</Text>
+        <Text fw={600}>Default Chat Model</Text>
 
         <ModelSelector
           position="bottom-start"
@@ -36,7 +34,7 @@ export function RouteComponent() {
           keepMounted
           width={320}
           showAuto={true}
-          autoText={t('Auto (Use Last Used)')!}
+          autoText={'Auto (Use Last Used)'!}
           selectedProviderId={settings.defaultChatModel?.provider}
           selectedModelId={settings.defaultChatModel?.model}
           searchPosition="top"
@@ -53,25 +51,25 @@ export function RouteComponent() {
           }}
         >
           <ModelSelectContent
-            autoText={t('Auto (Use Last Used)')!}
+            autoText={'Auto (Use Last Used)'!}
             provider={settings.defaultChatModel?.provider}
             model={settings.defaultChatModel?.model}
           />
         </ModelSelector>
 
         <Text c="chatbox-tertiary" size="xs">
-          {t('Chatbox will use this model as the default for new chats.')}
+          Chatbox will use this model as the default for new chats.
         </Text>
       </Stack>
 
       <Stack gap="xs">
-        <Text fw={600}>{t('Default Thread Naming Model')}</Text>
+        <Text fw={600}>Default Thread Naming Model</Text>
 
         <ModelSelector
           position="bottom-start"
           width={320}
           showAuto={true}
-          autoText={t('Auto (Use Chat Model)')!}
+          autoText={'Auto (Use Chat Model)'!}
           selectedProviderId={settings.threadNamingModel?.provider}
           selectedModelId={settings.threadNamingModel?.model}
           searchPosition="top"
@@ -88,25 +86,25 @@ export function RouteComponent() {
           }
         >
           <ModelSelectContent
-            autoText={t('Auto (Use Chat Model)')!}
+            autoText={'Auto (Use Chat Model)'!}
             provider={settings.threadNamingModel?.provider}
             model={settings.threadNamingModel?.model}
           />
         </ModelSelector>
 
         <Text c="chatbox-tertiary" size="xs">
-          {t('Chatbox will automatically use this model to rename threads.')}
+          Chatbox will automatically use this model to rename threads.
         </Text>
       </Stack>
 
       <Stack gap="xs">
-        <Text fw={600}>{t('Search Term Construction Model')}</Text>
+        <Text fw={600}>Search Term Construction Model</Text>
 
         <ModelSelector
           position="bottom-start"
           width={320}
           showAuto={true}
-          autoText={t('Auto (Use Chat Model)')!}
+          autoText={'Auto (Use Chat Model)'!}
           selectedProviderId={settings.searchTermConstructionModel?.provider}
           selectedModelId={settings.searchTermConstructionModel?.model}
           searchPosition="top"
@@ -123,18 +121,18 @@ export function RouteComponent() {
           }
         >
           <ModelSelectContent
-            autoText={t('Auto (Use Chat Model)')!}
+            autoText={'Auto (Use Chat Model)'!}
             provider={settings.searchTermConstructionModel?.provider}
             model={settings.searchTermConstructionModel?.model}
           />
         </ModelSelector>
 
         <Text c="chatbox-tertiary" size="xs">
-          {t('Chatbox will automatically use this model to construct search term.')}
+          Chatbox will automatically use this model to construct search term.
         </Text>
       </Stack>
       <Stack gap="xs">
-        <Text fw={600}>{t('OCR Model')}</Text>
+        <Text fw={600}>OCR Model</Text>
 
         <ModelSelector
           position="bottom-start"
@@ -165,12 +163,12 @@ export function RouteComponent() {
         </ModelSelector>
 
         <Text c="chatbox-tertiary" size="xs">
-          {t('Chatbox OCRs images with this model and sends the text to models without image support.')}
+          Chatbox OCRs images with this model and sends the text to models without image support.
         </Text>
       </Stack>
 
       <Stack gap="xs">
-        <Text fw={600}>{t('Default Embedding Model')}</Text>
+        <Text fw={600}>Default Embedding Model</Text>
 
         <ModelSelector
           position="bottom-start"
@@ -202,12 +200,12 @@ export function RouteComponent() {
         </ModelSelector>
 
         <Text c="chatbox-tertiary" size="xs">
-          {t('When selected, Chatbox will use this model instead of the automatic Chatbox AI embedding model.')}
+          When selected, Chatbox will use this model instead of the automatic Chatbox AI embedding model.
         </Text>
       </Stack>
 
       <Stack gap="xs">
-        <Text fw={600}>{t('Default Reranking Model')}</Text>
+        <Text fw={600}>Default Reranking Model</Text>
 
         <ModelSelector
           position="bottom-start"
@@ -239,7 +237,7 @@ export function RouteComponent() {
         </ModelSelector>
 
         <Text c="chatbox-tertiary" size="xs">
-          {t('When selected, Chatbox will use this model instead of the automatic Chatbox AI reranking model.')}
+          When selected, Chatbox will use this model instead of the automatic Chatbox AI reranking model.
         </Text>
       </Stack>
     </Stack>
@@ -257,8 +255,6 @@ const ModelSelectContent = forwardRef<
   }
 >(({ provider, model, autoText, onClick, modelType }, ref) => {
   useModelRegistryVersion()
-
-  const { t } = useTranslation()
   const customProviders = useSettingsStore((state) => state.customProviders)
   const providers = useSettingsStore((state) => state.providers)
   const modelOptions = useMemo(() => {
@@ -274,11 +270,11 @@ const ModelSelectContent = forwardRef<
   const displayText = useMemo(
     () =>
       !provider || !model
-        ? autoText || t('Auto')
+        ? autoText || 'Auto'
         : ([...SystemProviders(), ...(customProviders || [])].find((p) => p.id === provider)?.name || provider) +
           '/' +
           (modelOptions.find((candidate) => candidate.modelId === model)?.nickname || model),
-    [provider, model, autoText, t, customProviders, modelOptions]
+    [provider, model, autoText, customProviders, modelOptions]
   )
   return (
     <Flex

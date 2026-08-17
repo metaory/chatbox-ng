@@ -49,7 +49,7 @@ export const PopoverConfirm: FC<PopoverConfirmProps> = ({
           <Text>{title}</Text>
           <Flex justify="flex-end">
             <Button color={confirmButtonColor} onClick={handleConfirm}>
-              {confirmButtonText || t('Confirm')}
+              {confirmButtonText || 'Confirm'}
             </Button>
           </Flex>
         </Stack>

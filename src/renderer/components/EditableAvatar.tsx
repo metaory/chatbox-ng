@@ -52,8 +52,8 @@ export default function EditableAvatar(props: Props) {
           <Box>
             <IconButton
               onClick={props.onRemove}
-              edge={'end'}
-              size={'small'}
+              edge="end"
+              size="small"
               disableRipple
               sx={{
                 backgroundColor: theme.palette.error.main,

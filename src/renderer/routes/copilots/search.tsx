@@ -2,7 +2,6 @@ import { Button, Flex, Grid, Stack, Text } from '@mantine/core'
 import { createFileRoute } from '@tanstack/react-router'
 import { zodValidator } from '@tanstack/zod-adapter'
 import { useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 import { useMyCopilots, useRemoteCopilotsByCursor } from '@/hooks/useCopilots'
 import CopilotItem from './-components/CopilotItem'
@@ -19,7 +18,6 @@ export const Route = createFileRoute('/copilots/search' as never)({
 const PAGE_SIZE = 18
 
 function CopilotSearch() {
-  const { t } = useTranslation()
   const { copilots: myCopilots } = useMyCopilots()
   const searchParams = Route.useSearch() as { q?: string }
 
@@ -50,7 +48,7 @@ function CopilotSearch() {
     <Stack px="sm" py="xl" gap="lg" className="max-w-7xl">
       {filteredMyCopilots.length > 0 && (
         <Stack gap="md">
-          <Text>{t('My Created & Added Copilots')}</Text>
+          <Text>My Created & Added Copilots</Text>
 
           <Grid gutter="xs" align="stretch">
             {filteredMyCopilots.map((copilot) => (
@@ -63,12 +61,12 @@ function CopilotSearch() {
       )}
 
       <Stack gap="md">
-        <Text>{t('Chatbox Featured')}</Text>
+        <Text>Chatbox Featured</Text>
 
         {isLoading && (
           <div className="py-12 text-center">
             <Text c="dimmed" size="sm">
-              {t('Loading...')}
+              Loading...
             </Text>
           </div>
         )}
@@ -76,7 +74,7 @@ function CopilotSearch() {
         {!isLoading && normalizedTerm && remoteCopilots.length === 0 && (
           <div className="py-12 text-center">
             <Text c="dimmed" size="sm">
-              {t('No copilots matched your search.')}
+              No copilots matched your search.
             </Text>
           </div>
         )}
@@ -100,7 +98,7 @@ function CopilotSearch() {
               onClick={() => fetchNextPage()}
               loading={isFetchingNextPage}
             >
-              {t('Load More')}
+              Load More
             </Button>
           </Flex>
         )}

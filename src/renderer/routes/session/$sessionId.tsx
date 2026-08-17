@@ -3,7 +3,6 @@ import { Box, Button } from '@mantine/core'
 import type { ModelProvider } from '@shared/types'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useStore } from 'zustand'
 import MessageList, { type MessageListRef } from '@/components/chat/MessageList'
 import PendingApprovalPill from '@/components/chat/PendingApprovalPill'
@@ -48,7 +47,6 @@ const builtInTemplateSessionIds = new Set(
 )
 
 function RouteComponent() {
-  const { t } = useTranslation()
   const { sessionId: currentSessionId } = Route.useParams()
   const navigate = useNavigate()
   const { session: currentSession, isFetching } = useSession(currentSessionId)
@@ -285,9 +283,9 @@ function RouteComponent() {
     !isFetching && (
       <Page title="">
         <div className="flex flex-1 flex-col items-center justify-center min-h-[60vh]">
-          <div className="text-2xl font-semibold text-gray-700 mb-4">{t('Conversation not found')}</div>
+          <div className="text-2xl font-semibold text-gray-700 mb-4">Conversation not found</div>
           <Button variant="outline" onClick={goHome}>
-            {t('Back to HomePage')}
+            Back to HomePage
           </Button>
         </div>
       </Page>

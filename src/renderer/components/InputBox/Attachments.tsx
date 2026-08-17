@@ -21,23 +21,19 @@ import { ImageInStorage } from '../Image'
 function getTranslatedErrorMessage(errorCode: string | undefined, t: (key: string) => string): string | undefined {
   if (!errorCode) return undefined
   if (isSessionAttachmentRagAuthError(errorCode)) {
-    return t('This large file cannot be indexed here. Upload it through Knowledge Base, or use a smaller file.')
+    return 'This large file cannot be indexed here. Upload it through Knowledge Base, or use a smaller file.'
   }
   if (isSessionAttachmentRagIndexingError(errorCode)) {
-    return t(
-      'Large file indexing failed. Remove this file and try uploading it again. If the problem continues, use a smaller file or Knowledge Base.'
-    )
+    return 'Large file indexing failed. Remove this file and try uploading it again. If the problem continues, use a smaller file or Knowledge Base.'
   }
   if (errorCode === SESSION_ATTACHMENT_RAG_REQUIRES_KNOWLEDGE_BASE_ERROR) {
-    return t('This attachment is too large for chat attachments. Please upload it through Knowledge Base instead.')
+    return 'This attachment is too large for chat attachments. Please upload it through Knowledge Base instead.'
   }
   if (errorCode === SESSION_ATTACHMENT_RAG_PARSED_CONTENT_TOO_LARGE_ERROR) {
-    return t(
-      'This document contains too much text for chat attachments. Please upload it through Knowledge Base instead.'
-    )
+    return 'This document contains too much text for chat attachments. Please upload it through Knowledge Base instead.'
   }
   if (errorCode === SESSION_ATTACHMENT_RAG_REQUIRES_TOOL_USE_MODEL_ERROR) {
-    return t('Large file Q&A requires a model with tool use support. Switch to a compatible model or remove this file.')
+    return 'Large file Q&A requires a model with tool use support. Switch to a compatible model or remove this file.'
   }
   const errorDetail = ChatboxAIAPIError.codeNameMap[errorCode]
   if (errorDetail) {
@@ -46,26 +42,26 @@ function getTranslatedErrorMessage(errorCode: string | undefined, t: (key: strin
     // 移除 HTML/JSX 标签，只保留纯文本
     return translated.replace(/<[^>]*>/g, '')
   }
-  return t('Processing failed')
+  return 'Processing failed'
 }
 
 function getErrorStatusLabel(errorCode: string | undefined, t: (key: string) => string): string {
   if (errorCode === SESSION_ATTACHMENT_RAG_PARSED_CONTENT_TOO_LARGE_ERROR) {
-    return t('Too much text')
+    return 'Too much text'
   }
   if (errorCode === SESSION_ATTACHMENT_RAG_REQUIRES_KNOWLEDGE_BASE_ERROR) {
-    return t('Too large')
+    return 'Too large'
   }
   if (isSessionAttachmentRagAuthError(errorCode)) {
-    return t('Cannot index')
+    return 'Cannot index'
   }
   if (errorCode === SESSION_ATTACHMENT_RAG_REQUIRES_TOOL_USE_MODEL_ERROR) {
-    return t('Switch model')
+    return 'Switch model'
   }
   if (isSessionAttachmentRagIndexingError(errorCode)) {
-    return t('Indexing failed')
+    return 'Indexing failed'
   }
-  return t('Processing failed')
+  return 'Processing failed'
 }
 
 export function ImageMiniCard(props: { storageKey: string; onDelete: () => void }) {
@@ -137,7 +133,7 @@ export function FileMiniCard(props: {
   const translatedError = getTranslatedErrorMessage(errorMessage, t)
   // 解析完成后展示解析结果和点数消耗提示；处理中/错误时优先展示状态文案
   const miniCardParserLabel = getParserDisplayName(parserType, t)
-  const parserCostLabel = getParserCostLabel(parserType, t)
+  const parserCostLabel = getParserCostLabel(parserType)
   const parserLabel = [miniCardParserLabel, parserCostLabel].filter(Boolean).join('\n')
   const displayedStatusText =
     status === 'error'
@@ -159,7 +155,7 @@ export function FileMiniCard(props: {
           status === 'error' && translatedError
             ? translatedError
             : onPreviewClick
-              ? t('Click to view parsed content')
+              ? 'Click to view parsed content'
               : name
         }
       >
@@ -248,7 +244,7 @@ export function getParserDisplayName(
 ): string | undefined {
   switch (parserType) {
     case 'local':
-      return t('Parser: Local')
+      return 'Parser: Local'
     case 'mineru':
       return t('Parser: {{parser}}', { parser: 'MinerU' })
     default:
@@ -256,13 +252,10 @@ export function getParserDisplayName(
   }
 }
 
-function getParserCostLabel(
-  parserType: string | undefined,
-  t: (key: string, options?: Record<string, unknown>) => string
-): string | undefined {
+function getParserCostLabel(parserType: string | undefined): string | undefined {
   switch (parserType) {
     case 'local':
-      return t('No points consumed')
+      return 'No points consumed'
     default:
       return undefined
   }
@@ -273,24 +266,24 @@ export function getParserTypeLabel(
   t: (key: string, options?: Record<string, unknown>) => string
 ): string | undefined {
   const parserName = getParserDisplayName(parserType, t)
-  const costLabel = getParserCostLabel(parserType, t)
+  const costLabel = getParserCostLabel(parserType)
   return [parserName, costLabel].filter(Boolean).join(' · ') || undefined
 }
 
-function getIndexingStageLabel(stage: SessionAttachmentIndexingStage | undefined, t: (key: string) => string) {
+function getIndexingStageLabel(stage: SessionAttachmentIndexingStage | undefined) {
   switch (stage) {
     case 'queued':
-      return t('Queued')
+      return 'Queued'
     case 'chunking':
-      return t('Preparing')
+      return 'Preparing'
     case 'embedding':
-      return t('Indexing')
+      return 'Indexing'
     case 'finalizing':
-      return t('Finishing')
+      return 'Finishing'
     case 'ready':
-      return t('Indexed')
+      return 'Indexed'
     default:
-      return t('Indexing')
+      return 'Indexing'
   }
 }
 
@@ -353,17 +346,17 @@ export function MessageAttachment(props: {
     if (storageKey) {
       let title: string
       if (filename) {
-        title = `${t('File Content')}: ${filename}`
+        title = `File Content: ${filename}`
       } else if (url) {
         const truncatedUrl = url.length > 50 ? `${url.slice(0, 50)}...` : url
-        title = `${t('Link Content')}: ${truncatedUrl}`
+        title = `Link Content: ${truncatedUrl}`
       } else {
-        title = t('Content')
+        title = 'Content'
       }
       // 预览窗口展示完整的解析器与索引状态信息
       const metadata: Array<{ label?: string; value: string }> = []
       if (parserLabel) metadata.push({ value: parserLabel })
-      if (ragStatusLabel) metadata.push({ label: String(t('Status')), value: String(ragStatusLabel) })
+      if (ragStatusLabel) metadata.push({ label: 'Status', value: String(ragStatusLabel) })
       await NiceModal.show('content-viewer', {
         title,
         storageKey,
@@ -382,25 +375,23 @@ export function MessageAttachment(props: {
   const takingLong = effectiveIndexStatus !== 'ready' && isTakingLong(sessionAttachmentProcessingStartedAt)
   const progressLabel =
     progressValue !== undefined
-      ? `${getIndexingStageLabel(sessionAttachmentIndexingStage, t)} · ${sessionAttachmentEmbeddedChunks}/${sessionAttachmentTotalChunks} ${t(
-          'chunks'
-        )} (${progressValue}%)`
-      : getIndexingStageLabel(sessionAttachmentIndexingStage, t)
+      ? `${getIndexingStageLabel(sessionAttachmentIndexingStage)} · ${sessionAttachmentEmbeddedChunks}/${sessionAttachmentTotalChunks} chunks (${progressValue}%)`
+      : getIndexingStageLabel(sessionAttachmentIndexingStage)
   const activeProgressLabel = takingLong
     ? progressValue !== undefined
-      ? `${t('Still indexing')} · ${progressLabel}`
-      : t('Still indexing')
+      ? `Still indexing · ${progressLabel}`
+      : 'Still indexing'
     : progressLabel
   const ragStatusLabel =
     ragMode === 'session-retrieval'
       ? effectiveAvailability === 'blocked'
-        ? t('Unavailable')
+        ? 'Unavailable'
         : effectiveIndexStatus === 'ready'
           ? sessionAttachmentChunkCount && sessionAttachmentChunkCount > 0
             ? t('Indexed · {{count}} chunks', { count: sessionAttachmentChunkCount })
-            : t('Indexed')
+            : 'Indexed'
           : effectiveIndexStatus === 'failed'
-            ? t('Indexing failed')
+            ? 'Indexing failed'
             : activeProgressLabel
       : ''
   const showStatus = ragMode === 'session-retrieval'
@@ -415,7 +406,7 @@ export function MessageAttachment(props: {
       : showStatus && effectiveIndexStatus === 'failed' && sessionAttachmentError
         ? `${label}\n${sessionAttachmentError}`
         : isClickable
-          ? t('Click to view parsed content')
+          ? 'Click to view parsed content'
           : label
 
   return (

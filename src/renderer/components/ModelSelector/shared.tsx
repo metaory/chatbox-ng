@@ -3,7 +3,6 @@ import type { ProviderModelInfo } from '@shared/types'
 import { IconBulb, IconEye, IconStar, IconStarFilled, IconTool } from '@tabler/icons-react'
 import clsx from 'clsx'
 import type { ReactElement } from 'react'
-import { useTranslation } from 'react-i18next'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
 import { ScalableIcon } from '../common/ScalableIcon'
 import { ModelIcon } from '../icons/ModelIcon'
@@ -62,7 +61,6 @@ export const ModelItem = ({
   hideFavoriteIcon?: boolean
   disabledReason?: string
 }) => {
-  const { t } = useTranslation()
   const isDisabled = !!disabledReason
   const optionContent = (
     <Combobox.Option
@@ -100,21 +98,21 @@ export const ModelItem = ({
       )}
 
       {model.capabilities?.includes('reasoning') && (
-        <Tooltip label={t('Reasoning')}>
+        <Tooltip label="Reasoning">
           <Text span c="chatbox-warning" className="flex items-center ml-xxs" style={{ opacity: 0.7 }}>
             <ScalableIcon icon={IconBulb} size={14} />
           </Text>
         </Tooltip>
       )}
       {model.capabilities?.includes('vision') && (
-        <Tooltip label={t('Vision')}>
+        <Tooltip label="Vision">
           <Text span c="chatbox-brand" className="flex items-center ml-xxs" style={{ opacity: 0.7 }}>
             <ScalableIcon icon={IconEye} size={14} />
           </Text>
         </Tooltip>
       )}
       {model.capabilities?.includes('tool_use') && (
-        <Tooltip label={t('Tool Use')}>
+        <Tooltip label="Tool Use">
           <Text span c="chatbox-success" className="flex items-center ml-xxs" style={{ opacity: 0.7 }}>
             <ScalableIcon icon={IconTool} size={14} />
           </Text>
@@ -169,7 +167,6 @@ export const ModelItemInDrawer = ({
   hideFavoriteIcon?: boolean
   disabledReason?: string
 }) => {
-  const { t } = useTranslation()
   const isRecommended = model.labels?.includes('recommended')
   const isDisabled = !!disabledReason
   const content = (
@@ -214,21 +211,21 @@ export const ModelItemInDrawer = ({
       )}
 
       {model.capabilities?.includes('reasoning') && (
-        <Tooltip label={t('Reasoning')}>
+        <Tooltip label="Reasoning">
           <Text span c="chatbox-warning" className="flex items-center" style={{ opacity: 0.7 }}>
             <ScalableIcon icon={IconBulb} size={14} />
           </Text>
         </Tooltip>
       )}
       {model.capabilities?.includes('vision') && (
-        <Tooltip label={t('Vision')}>
+        <Tooltip label="Vision">
           <Text span c="chatbox-brand" className="flex items-center" style={{ opacity: 0.7 }}>
             <ScalableIcon icon={IconEye} size={14} />
           </Text>
         </Tooltip>
       )}
       {model.capabilities?.includes('tool_use') && (
-        <Tooltip label={t('Tool Use')}>
+        <Tooltip label="Tool Use">
           <Text span c="chatbox-success" className="flex items-center" style={{ opacity: 0.7 }}>
             <ScalableIcon icon={IconTool} size={14} />
           </Text>

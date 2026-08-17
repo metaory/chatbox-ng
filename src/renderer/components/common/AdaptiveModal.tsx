@@ -1,7 +1,6 @@
 import type { ModalProps as MantineModalProps } from '@mantine/core'
 import { Button, type ButtonProps, Flex, Stack, Text } from '@mantine/core'
 import type { HTMLAttributes, ReactNode } from 'react'
-import { useTranslation } from 'react-i18next'
 import { Drawer } from 'vaul'
 import { useIsSmallScreen } from '@/hooks/useScreenChange'
 import { Modal } from '../layout/Overlay'
@@ -72,14 +71,13 @@ AdaptiveModal.Actions = AdaptiveModalActions
 
 function AdaptiveModalCloseButton(props: ButtonProps & HTMLAttributes<HTMLButtonElement>) {
   const isSmallScreen = useIsSmallScreen()
-  const { t } = useTranslation()
   if (isSmallScreen) {
     return null
   }
 
   return (
     <Button color="chatbox-gray" variant="light" {...props}>
-      {props.children || t('Cancel')}
+      {props.children || 'Cancel'}
     </Button>
   )
 }

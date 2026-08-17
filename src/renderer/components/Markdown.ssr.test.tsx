@@ -19,7 +19,7 @@ import Markdown from './Markdown'
 describe('Markdown server rendering', () => {
   it('keeps image rendering available to HTML exports without client providers', () => {
     const html = ReactDOMServer.renderToStaticMarkup(
-      <Markdown>{'![Exported image](https://example.com/exported.png)'}</Markdown>
+      <Markdown>![Exported image](https://example.com/exported.png)</Markdown>
     )
 
     expect(html).toContain('src="https://example.com/exported.png"')

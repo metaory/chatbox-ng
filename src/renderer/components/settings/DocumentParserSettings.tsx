@@ -101,7 +101,7 @@ export function DocumentParserSettings({ showTitle = true }: DocumentParserSetti
 
   return (
     <Stack p="md" gap="xxl">
-      {showTitle && <Title order={5}>{t('Document Parser')}</Title>}
+      {showTitle && <Title order={5}>Document Parser</Title>}
 
       <AdaptiveSelect
         comboboxProps={{ withinPortal: true, withArrow: true }}
@@ -111,7 +111,7 @@ export function DocumentParserSettings({ showTitle = true }: DocumentParserSetti
         }))}
         value={currentParserType}
         onChange={handleParserTypeChange}
-        label={t('Parser Type')}
+        label="Parser Type"
         maw={320}
       />
 
@@ -121,7 +121,7 @@ export function DocumentParserSettings({ showTitle = true }: DocumentParserSetti
 
       {currentParserType === 'mineru' && (
         <Stack gap="xs">
-          <Text fw="600">{t('MinerU API Token')}</Text>
+          <Text fw="600">MinerU API Token</Text>
           <Flex align="center" gap="xs">
             <PasswordInput
               flex={1}
@@ -137,18 +137,18 @@ export function DocumentParserSettings({ showTitle = true }: DocumentParserSetti
               loading={testingConnection}
               disabled={!mineruToken.trim()}
             >
-              {t('Check')}
+              Check
             </Button>
           </Flex>
 
           {typeof connectionResult === 'boolean' ? (
             connectionResult ? (
               <Text size="xs" c="chatbox-success">
-                {t('Connection successful!')}
+                Connection successful!
               </Text>
             ) : (
               <Text size="xs" c="chatbox-error">
-                {t('API key invalid!')}
+                API key invalid!
               </Text>
             )
           ) : null}
@@ -159,7 +159,7 @@ export function DocumentParserSettings({ showTitle = true }: DocumentParserSetti
             className="self-start"
             onClick={() => platform.openLink('https://mineru.net/apiManage')}
           >
-            {t('Get API Token')}
+            Get API Token
           </Button>
         </Stack>
       )}

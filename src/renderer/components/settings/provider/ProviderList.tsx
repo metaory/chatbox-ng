@@ -66,7 +66,7 @@ export function ProviderList({ providers, onAddProvider }: ProviderListProps) {
               key={provider.id}
               to="/settings/provider/$providerId"
               params={{ providerId: provider.id }}
-              className={'block no-underline'}
+              className="block no-underline"
             >
               <Flex
                 component="span"
@@ -117,7 +117,7 @@ export function ProviderList({ providers, onAddProvider }: ProviderListProps) {
       </ScrollArea>
       <Stack gap="xs" mx="md" my="sm">
         <Button variant="outline" leftSection={<ScalableIcon icon={IconPlus} />} onClick={onAddProvider}>
-          {t('Add')}
+          Add
         </Button>
       </Stack>
     </Stack>

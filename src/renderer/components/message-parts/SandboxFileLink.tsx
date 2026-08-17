@@ -1,7 +1,6 @@
 import { IconFileDownload, IconLoader } from '@tabler/icons-react'
 import clsx from 'clsx'
 import { type FC, type ReactNode, useCallback, useEffect, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import type { SandboxLinkTarget } from './sandbox-link'
 
 type RescueState = 'idle' | 'saving' | 'unavailable'
@@ -22,7 +21,6 @@ export const SandboxFileLink: FC<{
   sessionId?: string
   children?: ReactNode
 }> = ({ target, sessionId, children }) => {
-  const { t } = useTranslation()
   const [state, setState] = useState<RescueState>('idle')
   const [exportError, setExportError] = useState<string | null>(null)
   // Synchronous re-entrancy guard: the `saving` render state only updates after a
@@ -68,7 +66,7 @@ export const SandboxFileLink: FC<{
             safeSetState('idle')
             return
           }
-          if (mountedRef.current) setExportError(exported.error || t('Export failed'))
+          if (mountedRef.current) setExportError(exported.error || 'Export failed')
           safeSetState('idle')
           return
         }
@@ -80,7 +78,7 @@ export const SandboxFileLink: FC<{
     } finally {
       rescueInFlightRef.current = false
     }
-  }, [sessionId, target, t])
+  }, [sessionId, target])
 
   const unavailable = state === 'unavailable'
   const saving = state === 'saving'
@@ -90,7 +88,7 @@ export const SandboxFileLink: FC<{
       role="button"
       tabIndex={unavailable ? -1 : 0}
       aria-disabled={unavailable}
-      title={unavailable ? t('File no longer available') || '' : target.rawPath}
+      title={unavailable ? 'File no longer available' : target.rawPath}
       className={clsx(
         'inline-flex max-w-full items-center gap-1 rounded-sm bg-chatbox-background-secondary px-1.5 py-0.5 mx-0.5 align-[-3px] text-[0.9em] font-medium',
         unavailable ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'
@@ -117,7 +115,7 @@ export const SandboxFileLink: FC<{
         />
       )}
       <span className="truncate">{children ?? target.fileName}</span>
-      {unavailable && <span className="shrink-0 text-[0.85em] opacity-75">({t('File no longer available')})</span>}
+      {unavailable && <span className="shrink-0 text-[0.85em] opacity-75">(File no longer available)</span>}
       {!unavailable && exportError && (
         <span className="shrink-0 text-[0.85em] text-red-600 dark:text-red-400">({exportError})</span>
       )}

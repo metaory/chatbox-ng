@@ -4,7 +4,6 @@ import type { ModelProviderEnum, ProviderInfo, ProviderSettings } from '@shared/
 import { createFileRoute, Outlet, useNavigate, useRouterState } from '@tanstack/react-router'
 import { zodValidator } from '@tanstack/zod-adapter'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 import { AddProviderModal } from '@/components/settings/provider/AddProviderModal'
 import { ImportProviderModal } from '@/components/settings/provider/ImportProviderModal'
@@ -29,7 +28,6 @@ export const Route = createFileRoute('/settings/provider')({
 })
 
 export function RouteComponent() {
-  const { t } = useTranslation()
   const navigate = useNavigate()
   const isSmallScreen = useIsSmallScreen()
   const routerState = useRouterState()
@@ -91,10 +89,10 @@ export function RouteComponent() {
   // Show toast for import errors
   useEffect(() => {
     if (importError) {
-      addToast(`${t('Import Error')}: ${importError}`)
+      addToast(`Import Error: ${importError}`)
       setImportError(null) // Clear the error after showing toast
     }
-  }, [importError, t, setImportError])
+  }, [importError, setImportError])
 
   useEffect(() => {
     if (searchParams.custom) {
@@ -113,7 +111,7 @@ export function RouteComponent() {
         setDeepLinkConfig(parseProviderFromJson(decoded) || null)
       } catch (err) {
         console.error('Failed to parse deep link config:', err)
-        setImportError(t('Invalid deep link config format'))
+        setImportError('Invalid deep link config format')
         setDeepLinkConfig(null)
       } finally {
         // 暂时禁用了，会导致页面路径不对，获取不到assets
@@ -126,7 +124,7 @@ export function RouteComponent() {
         })
       }
     }
-  }, [searchParams.import, setImportError, t, navigate])
+  }, [searchParams.import, setImportError, navigate])
 
   useEffect(() => {
     if (deepLinkConfig) {

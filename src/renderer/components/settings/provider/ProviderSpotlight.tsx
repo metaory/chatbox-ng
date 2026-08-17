@@ -60,8 +60,8 @@ function useProviderPickerGroups({
     const quickActions: PickerAction[] = [
       {
         id: 'add-custom',
-        label: String(t('Add Custom Provider')),
-        description: String(t('Configure a custom OpenAI-compatible provider')),
+        label: 'Add Custom Provider',
+        description: 'Configure a custom OpenAI-compatible provider',
         onSelect: () => {
           providerSpotlight.close()
           onAddCustomProvider()
@@ -73,8 +73,8 @@ function useProviderPickerGroups({
     if (platform.type !== 'mobile') {
       quickActions.push({
         id: 'import-clipboard',
-        label: isImporting ? String(t('Importing...')) : String(t('Import from clipboard')),
-        description: String(t('Import provider config from clipboard')),
+        label: isImporting ? 'Importing...' : 'Import from clipboard',
+        description: 'Import provider config from clipboard',
         onSelect: () => {
           if (isImporting) return
           providerSpotlight.close()
@@ -86,7 +86,7 @@ function useProviderPickerGroups({
 
     return [
       {
-        group: String(t('Popular')),
+        group: 'Popular',
         actions: featured.map((p) => ({
           id: `provider-${p.id}`,
           label: String(t(p.name)),
@@ -98,7 +98,7 @@ function useProviderPickerGroups({
         })),
       },
       {
-        group: String(t('More Providers')),
+        group: 'More Providers',
         actions: others.map((p) => ({
           id: `provider-${p.id}`,
           label: String(t(p.name)),
@@ -110,7 +110,7 @@ function useProviderPickerGroups({
         })),
       },
       {
-        group: String(t('Custom Additions')),
+        group: 'Custom Additions',
         actions: quickActions,
       },
     ]
@@ -152,7 +152,6 @@ function filterPickerGroups(query: string, groups: PickerGroup[]): PickerGroup[]
  * scrolling in mobile WebViews (especially with the keyboard open).
  */
 const MobileProviderPicker: FC<ProviderPickerProps> = (props) => {
-  const { t } = useTranslation()
   const { opened } = useSpotlight(providerSpotlightStore)
   const [query, setQuery] = useState('')
   const groups = useProviderPickerGroups(props)
@@ -180,7 +179,7 @@ const MobileProviderPicker: FC<ProviderPickerProps> = (props) => {
             <TextInput
               value={query}
               onChange={(e) => setQuery(e.currentTarget.value)}
-              placeholder={String(t('Search providers...'))}
+              placeholder={'Search providers...'}
               leftSection={<ScalableIcon icon={IconSearch} size={18} stroke={1.5} />}
               autoFocus
               size="md"
@@ -203,7 +202,7 @@ const MobileProviderPicker: FC<ProviderPickerProps> = (props) => {
           >
             {filtered.length === 0 ? (
               <Text c="chatbox-tertiary" size="sm" ta="center" py="lg">
-                {t('Nothing found...')}
+                Nothing found...
               </Text>
             ) : (
               filtered.map((group) => (
@@ -245,7 +244,6 @@ const MobileProviderPicker: FC<ProviderPickerProps> = (props) => {
 }
 
 const DesktopProviderSpotlight: FC<ProviderPickerProps> = (props) => {
-  const { t } = useTranslation()
   const groups = useProviderPickerGroups(props)
   const actions = useMemo(() => toSpotlightActions(groups), [groups])
 
@@ -253,14 +251,14 @@ const DesktopProviderSpotlight: FC<ProviderPickerProps> = (props) => {
     <Spotlight
       store={providerSpotlightStore}
       actions={actions}
-      nothingFound={String(t('Nothing found...'))}
+      nothingFound={'Nothing found...'}
       scrollable
       maxHeight="min(600px, calc(100dvh - 180px))"
       shortcut={null}
       classNames={{ actionsList: classes.actionsList }}
       searchProps={{
         leftSection: <ScalableIcon icon={IconSearch} size={20} stroke={1.5} />,
-        placeholder: String(t('Search providers...')),
+        placeholder: 'Search providers...',
       }}
     />
   )

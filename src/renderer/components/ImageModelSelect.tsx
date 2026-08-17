@@ -9,7 +9,6 @@ import {
   type PropsWithChildren,
   type ReactElement,
 } from 'react'
-import { useTranslation } from 'react-i18next'
 import type { ImageModelGroup } from '@/hooks/useImageModelGroups'
 import { ScalableIcon } from './common/ScalableIcon'
 import ProviderIcon from './icons/ProviderIcon'
@@ -38,7 +37,6 @@ export type ImageModelSelectProps = PropsWithChildren<
 
 export const ImageModelSelect = forwardRef<HTMLButtonElement, ImageModelSelectProps>(
   ({ modelGroups, onSelect, children, ...comboboxProps }, ref) => {
-    const { t } = useTranslation()
 
     const combobox = useCombobox({
       onDropdownClose: () => {
@@ -94,7 +92,7 @@ export const ImageModelSelect = forwardRef<HTMLButtonElement, ImageModelSelectPr
           <Combobox.Options mah={400} style={{ overflowY: 'auto' }} className="p-1">
             {modelGroups.length === 0 ? (
               <Text size="sm" c="dimmed" px="sm" py="xs">
-                {t('No models available')}
+                No models available
               </Text>
             ) : (
               modelGroups.map((group) => (

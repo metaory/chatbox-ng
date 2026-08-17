@@ -1,5 +1,4 @@
 import { TextField, Slider, Typography, Box } from '@mui/material'
-import { useTranslation } from 'react-i18next'
 
 export interface Props {
   value: number
@@ -8,11 +7,10 @@ export interface Props {
 }
 
 export default function ImageCountSlider(props: Props) {
-  const { t } = useTranslation()
   return (
     <Box sx={{ margin: '10px' }} className={props.className}>
       <Box>
-        <Typography gutterBottom>{t('Number of Images per Reply')}</Typography>
+        <Typography gutterBottom>Number of Images per Reply</Typography>
       </Box>
       <Box
         sx={{

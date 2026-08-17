@@ -13,7 +13,6 @@ import {
 } from '@tabler/icons-react'
 import { useSetAtom } from 'jotai'
 import { useCallback } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useIsLargeScreen, useIsSmallScreen } from '@/hooks/useScreenChange'
 import { copyToClipboard } from '@/packages/navigator'
 import { router } from '@/router'
@@ -33,7 +32,6 @@ import LayoutShrink from '../icons/LayoutShrink'
  * @returns
  */
 export default function Toolbar({ sessionId }: { sessionId: string }) {
-  const { t } = useTranslation()
   const isSmallScreen = useIsSmallScreen()
   const isLargeScreen = useIsLargeScreen()
 
@@ -63,9 +61,9 @@ export default function Toolbar({ sessionId }: { sessionId: string }) {
   const handleViewSessionJson = useCallback(async () => {
     const session = await getSession(sessionId)
     if (session) {
-      await NiceModal.show('json-viewer', { title: t('Session Raw JSON'), data: session })
+      await NiceModal.show('json-viewer', { title: 'Session Raw JSON', data: session })
     }
-  }, [sessionId, t])
+  }, [sessionId])
 
   const handleCopySession = useCallback(async () => {
     const session = await getSession(sessionId)
@@ -76,8 +74,8 @@ export default function Toolbar({ sessionId }: { sessionId: string }) {
 
   const handleCopySessionId = useCallback(() => {
     copyToClipboard(sessionId)
-    toastActions.add(t('copied to clipboard'), 2000)
-  }, [sessionId, t])
+    toastActions.add('copied to clipboard', 2000)
+  }, [sessionId])
 
   return !isSmallScreen ? (
     <Flex align="center" gap="md" className="controls">
@@ -95,7 +93,7 @@ export default function Toolbar({ sessionId }: { sessionId: string }) {
           }}
           onClick={() => setOpenSearchDialog(true)}
         >
-          {t('Search')}...
+          Search...
         </Button>
       ) : (
         <ActionIcon variant="subtle" size={28} color="chatbox-secondary" onClick={() => setOpenSearchDialog(true)}>
@@ -109,14 +107,14 @@ export default function Toolbar({ sessionId }: { sessionId: string }) {
           ...(isLargeScreen
             ? [
                 {
-                  text: widthFull ? t('Standard Width') : t('Full Width'),
+                  text: widthFull ? 'Standard Width' : 'Full Width',
                   icon: widthFull ? LayoutExpand : LayoutShrink,
                   onClick: () => setWidthFull(!widthFull),
                 },
               ]
             : []),
           {
-            text: t('Thread History'),
+            text: 'Thread History',
             icon: IconHistory,
             onClick: () => setThreadHistoryDrawerOpen(true),
           },
@@ -124,24 +122,24 @@ export default function Toolbar({ sessionId }: { sessionId: string }) {
             divider: true,
           },
           {
-            text: t('Duplicate Conversation'),
+            text: 'Duplicate Conversation',
             icon: IconCopy,
             onClick: handleCopySession,
           },
           {
-            text: t('Copy Conversation ID'),
+            text: 'Copy Conversation ID',
             icon: IconId,
             onClick: handleCopySessionId,
           },
           {
-            text: t('Export Chat'),
+            text: 'Export Chat',
             icon: IconDeviceFloppy,
             onClick: handleExportAndSave,
           },
           ...(process.env.NODE_ENV === 'development'
             ? [
                 {
-                  text: t('View Session JSON'),
+                  text: 'View Session JSON',
                   icon: IconCode,
                   onClick: handleViewSessionJson,
                 },
@@ -154,7 +152,7 @@ export default function Toolbar({ sessionId }: { sessionId: string }) {
             doubleCheck: {
               color: 'chatbox-error',
             },
-            text: t('Clear All Messages'),
+            text: 'Clear All Messages',
             icon: Broom,
             color: 'chatbox-primary',
             onClick: handleSessionClean,
@@ -163,7 +161,7 @@ export default function Toolbar({ sessionId }: { sessionId: string }) {
             doubleCheck: {
               color: 'chatbox-error',
             },
-            text: t('Delete Current Session'),
+            text: 'Delete Current Session',
             icon: IconTrash,
             color: 'chatbox-primary',
             onClick: handleSessionDelete,
@@ -184,29 +182,29 @@ export default function Toolbar({ sessionId }: { sessionId: string }) {
         position="bottom-end"
         items={[
           {
-            text: t('Thread History'),
+            text: 'Thread History',
             icon: IconHistory,
             onClick: () => setThreadHistoryDrawerOpen(true),
           },
           {
-            text: t('Duplicate Conversation'),
+            text: 'Duplicate Conversation',
             icon: IconCopy,
             onClick: handleCopySession,
           },
           {
-            text: t('Copy Conversation ID'),
+            text: 'Copy Conversation ID',
             icon: IconId,
             onClick: handleCopySessionId,
           },
           {
-            text: t('Export Chat'),
+            text: 'Export Chat',
             icon: IconDeviceFloppy,
             onClick: handleExportAndSave,
           },
           ...(process.env.NODE_ENV === 'development'
             ? [
                 {
-                  text: t('View Session JSON'),
+                  text: 'View Session JSON',
                   icon: IconCode,
                   onClick: handleViewSessionJson,
                 },
@@ -219,7 +217,7 @@ export default function Toolbar({ sessionId }: { sessionId: string }) {
             doubleCheck: {
               color: 'chatbox-error',
             },
-            text: t('Clear All Messages'),
+            text: 'Clear All Messages',
             icon: IconClearAll,
             color: 'chatbox-primary',
             onClick: handleSessionClean,
@@ -228,7 +226,7 @@ export default function Toolbar({ sessionId }: { sessionId: string }) {
             doubleCheck: {
               color: 'chatbox-error',
             },
-            text: t('Delete Current Session'),
+            text: 'Delete Current Session',
             icon: IconTrash,
             color: 'chatbox-primary',
             onClick: handleSessionDelete,

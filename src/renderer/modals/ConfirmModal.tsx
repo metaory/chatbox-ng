@@ -1,6 +1,5 @@
 import NiceModal, { useModal } from '@ebay/nice-modal-react'
 import { Button, Text } from '@mantine/core'
-import { useTranslation } from 'react-i18next'
 import { AdaptiveModal } from '@/components/common/AdaptiveModal'
 
 export interface ConfirmModalProps {
@@ -18,7 +17,6 @@ export interface ConfirmModalProps {
  */
 const ConfirmModal = NiceModal.create(({ title, message, confirmText, cancelText, danger }: ConfirmModalProps) => {
   const modal = useModal()
-  const { t } = useTranslation()
 
   const close = (result: boolean) => {
     modal.resolve(result)
@@ -32,9 +30,9 @@ const ConfirmModal = NiceModal.create(({ title, message, confirmText, cancelText
       </Text>
 
       <AdaptiveModal.Actions>
-        <AdaptiveModal.CloseButton onClick={() => close(false)}>{cancelText || t('Cancel')}</AdaptiveModal.CloseButton>
+        <AdaptiveModal.CloseButton onClick={() => close(false)}>{cancelText || 'Cancel'}</AdaptiveModal.CloseButton>
         <Button color={danger ? 'chatbox-error' : undefined} onClick={() => close(true)}>
-          {confirmText || t('Confirm')}
+          {confirmText || 'Confirm'}
         </Button>
       </AdaptiveModal.Actions>
     </AdaptiveModal>

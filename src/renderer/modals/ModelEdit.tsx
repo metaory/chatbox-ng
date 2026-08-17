@@ -2,7 +2,6 @@ import NiceModal, { useModal } from '@ebay/nice-modal-react'
 import { Button, Checkbox, Flex, Loader, NumberInput, Stack, Text, TextInput } from '@mantine/core'
 import type { ProviderModelInfo } from '@shared/types'
 import { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { createModelDependencies } from '@/adapters'
 import { AdaptiveSelect } from '@/components/AdaptiveSelect'
 import { AdaptiveModal } from '@/components/common/AdaptiveModal'
@@ -13,7 +12,6 @@ import { type ModelTestState, testModelCapabilities } from '@/utils/model-tester
 
 const ModelEdit = NiceModal.create((props: { model?: ProviderModelInfo; providerId?: string }) => {
   const modal = useModal()
-  const { t } = useTranslation()
 
   const isNew = !props.model
   const [modelId, setModelId] = useState(props.model?.modelId || '')
@@ -27,10 +25,10 @@ const ModelEdit = NiceModal.create((props: { model?: ProviderModelInfo; provider
   })
 
   const typeOptions = [
-    { value: 'chat', label: t('Chat')?.toString() ?? 'Chat' },
-    { value: 'image', label: t('Image')?.toString() ?? 'Image' },
-    { value: 'embedding', label: t('Embedding')?.toString() ?? 'Embedding' },
-    { value: 'rerank', label: t('Rerank')?.toString() ?? 'Rerank' },
+    { value: 'chat', label: 'Chat'?.toString() ?? 'Chat' },
+    { value: 'image', label: 'Image'?.toString() ?? 'Image' },
+    { value: 'embedding', label: 'Embedding'?.toString() ?? 'Embedding' },
+    { value: 'rerank', label: 'Rerank'?.toString() ?? 'Rerank' },
   ]
 
   useEffect(() => {
@@ -91,7 +89,7 @@ const ModelEdit = NiceModal.create((props: { model?: ProviderModelInfo; provider
       keepMounted={false}
       opened={modal.visible}
       onClose={handleCancel}
-      title={t('Edit Model')}
+      title="Edit Model"
       centered={true}
       w={456}
     >
@@ -100,18 +98,18 @@ const ModelEdit = NiceModal.create((props: { model?: ProviderModelInfo; provider
         <Stack gap="xs">
           <Flex align="center" gap="lg">
             <Stack gap={0}>
-              <Text>{t('Model ID')}</Text>
-              <Text className="select-none h-0 overflow-hidden opacity-0">{t('Nickname')}</Text>
+              <Text>Model ID</Text>
+              <Text className="select-none h-0 overflow-hidden opacity-0">Nickname</Text>
             </Stack>
             <TextInput disabled={!isNew} flex={1} value={modelId} onChange={(e) => setModelId(e.currentTarget.value)} />
           </Flex>
           <Flex align="center" gap="lg">
             <Stack gap={0}>
-              <Text className="select-none h-0 overflow-hidden opacity-0">{t('Model ID')}</Text>
-              <Text>{t('Nickname')}</Text>
+              <Text className="select-none h-0 overflow-hidden opacity-0">Model ID</Text>
+              <Text>Nickname</Text>
             </Stack>
             <TextInput
-              placeholder={String(t('optional') ?? 'optional')}
+              placeholder={'optional'}
               flex={1}
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
@@ -121,7 +119,7 @@ const ModelEdit = NiceModal.create((props: { model?: ProviderModelInfo; provider
 
         {/* Model Type */}
         <Stack gap="xs">
-          <Text fw="600">{t('Model Type')}</Text>
+          <Text fw="600">Model Type</Text>
           <AdaptiveSelect
             classNames={{ dropdown: 'pointer-events-auto' }}
             comboboxProps={{ withinPortal: false }}
@@ -140,11 +138,11 @@ const ModelEdit = NiceModal.create((props: { model?: ProviderModelInfo; provider
         {/* Capabilities */}
         {type === 'chat' && (
           <Stack gap="xs">
-            <Text fw="600">{t('Capabilities')}</Text>
+            <Text fw="600">Capabilities</Text>
             <Flex align="center" gap="md">
               <Checkbox
                 flex={1}
-                label={t('Vision')}
+                label="Vision"
                 checked={capabilities?.includes('vision')}
                 onChange={(e) => {
                   const checked = e.currentTarget.checked
@@ -157,7 +155,7 @@ const ModelEdit = NiceModal.create((props: { model?: ProviderModelInfo; provider
               />
               <Checkbox
                 flex={1}
-                label={t('Reasoning')}
+                label="Reasoning"
                 checked={capabilities?.includes('reasoning')}
                 onChange={(e) => {
                   const checked = e.currentTarget.checked
@@ -170,7 +168,7 @@ const ModelEdit = NiceModal.create((props: { model?: ProviderModelInfo; provider
               />
               <Checkbox
                 flex={1}
-                label={t('Tool use')}
+                label="Tool use"
                 checked={capabilities?.includes('tool_use')}
                 onChange={(e) => {
                   const checked = e.currentTarget.checked
@@ -187,12 +185,12 @@ const ModelEdit = NiceModal.create((props: { model?: ProviderModelInfo; provider
 
         {/* Context Window and Max Output */}
         <Stack gap="xs">
-          <Text fw="600">{t('Advanced Settings')}</Text>
+          <Text fw="600">Advanced Settings</Text>
           <Flex gap="md">
             <Stack gap="xs" flex={1}>
-              <Text size="sm">{t('Context Window')}</Text>
+              <Text size="sm">Context Window</Text>
               <NumberInput
-                placeholder={String(t('e.g. 128000'))}
+                placeholder={'e.g. 128000'}
                 value={contextWindow}
                 onChange={(value) => setContextWindow(typeof value === 'number' ? value : undefined)}
                 min={1}
@@ -203,9 +201,9 @@ const ModelEdit = NiceModal.create((props: { model?: ProviderModelInfo; provider
               />
             </Stack>
             <Stack gap="xs" flex={1}>
-              <Text size="sm">{t('Max Output Tokens')}</Text>
+              <Text size="sm">Max Output Tokens</Text>
               <NumberInput
-                placeholder={String(t('e.g. 4096'))}
+                placeholder={'e.g. 4096'}
                 value={maxOutput}
                 onChange={(value) => setMaxOutput(typeof value === 'number' ? value : undefined)}
                 min={1}
@@ -221,20 +219,20 @@ const ModelEdit = NiceModal.create((props: { model?: ProviderModelInfo; provider
         <AdaptiveModal.Actions>
           {testState.basicTest?.status === 'success' ? (
             <Text c="chatbox-success" className="text-center">
-              {t('Test successful')}
+              Test successful
             </Text>
           ) : testState.basicTest?.status === 'error' ? (
             <Tooltip label={testState.basicTest.error} multiline maw={300}>
               <Text c="chatbox-error" style={{ cursor: 'help' }} className="text-center">
-                {t('Test failed')}
+                Test failed
               </Text>
             </Tooltip>
           ) : null}
           <AdaptiveModal.CloseButton onClick={handleCancel} />
           <Button variant="light" onClick={handleTestModel}>
-            {testState.testing ? <Loader size="xs" /> : t('Test Model')}
+            {testState.testing ? <Loader size="xs" /> : 'Test Model'}
           </Button>
-          <Button onClick={handleSave}>{t('Save')}</Button>
+          <Button onClick={handleSave}>Save</Button>
         </AdaptiveModal.Actions>
       </Stack>
     </AdaptiveModal>

@@ -7,7 +7,6 @@ import {
   shortcutToggleWindowValues,
 } from '@shared/types'
 import { IconAlertHexagon } from '@tabler/icons-react'
-import { useTranslation } from 'react-i18next'
 import { getOS } from '@/packages/navigator'
 import { ScalableIcon } from './common/ScalableIcon'
 
@@ -98,26 +97,25 @@ export function ShortcutConfig(props: {
   setShortcuts: (shortcuts: Settings['shortcuts']) => void
 }) {
   const { shortcuts, setShortcuts } = props
-  const { t } = useTranslation()
   const items: ShortcutDataItem[] = [
     {
-      label: t('Show/Hide the Application Window'),
+      label: 'Show/Hide the Application Window',
       name: 'quickToggle',
       keys: shortcuts.quickToggle,
       options: shortcutToggleWindowValues,
     },
     {
-      label: t('Focus on the Input Box'),
+      label: 'Focus on the Input Box',
       name: 'inputBoxFocus',
       keys: shortcuts.inputBoxFocus,
     },
     {
-      label: t('Focus on the Input Box and Enter Web Browsing Mode'),
+      label: 'Focus on the Input Box and Enter Web Browsing Mode',
       name: 'inputBoxWebBrowsingMode',
       keys: shortcuts.inputBoxWebBrowsingMode,
     },
     {
-      label: t('Send'),
+      label: 'Send',
       name: 'inputBoxSendMessage',
       keys: shortcuts.inputBoxSendMessage,
       options: shortcutSendValues,
@@ -128,53 +126,53 @@ export function ShortcutConfig(props: {
     //     keys: shortcuts.inputBoxInsertNewLine,
     // },
     {
-      label: t('Send Without Generating Response'),
+      label: 'Send Without Generating Response',
       name: 'inputBoxSendMessageWithoutResponse',
       keys: shortcuts.inputBoxSendMessageWithoutResponse,
       options: shortcutSendValues,
     },
     {
-      label: t('Create a New Conversation'),
+      label: 'Create a New Conversation',
       name: 'newChat',
       keys: shortcuts.newChat,
     },
     {
-      label: t('New Thread'),
+      label: 'New Thread',
       name: 'messageListRefreshContext',
       keys: shortcuts.messageListRefreshContext,
     },
     {
-      label: t('Navigate to the Next Conversation'),
+      label: 'Navigate to the Next Conversation',
       name: 'sessionListNavNext',
       keys: shortcuts.sessionListNavNext,
     },
     {
-      label: t('Navigate to the Previous Conversation'),
+      label: 'Navigate to the Previous Conversation',
       name: 'sessionListNavPrev',
       keys: shortcuts.sessionListNavPrev,
     },
     {
-      label: t('Navigate to the Specific Conversation'),
+      label: 'Navigate to the Specific Conversation',
       // name: 'sessionListNavTargetIndex',
       keys: 'mod+1-9',
     },
     {
-      label: t('Show/Hide the Search Dialog'),
+      label: 'Show/Hide the Search Dialog',
       name: 'dialogOpenSearch',
       keys: shortcuts.dialogOpenSearch,
     },
     {
-      label: t('Navigate to the Previous Option (in search dialog)'),
+      label: 'Navigate to the Previous Option (in search dialog)',
       // name: 'optionNavUp',
       keys: shortcuts.optionNavUp,
     },
     {
-      label: t('Navigate to the Next Option (in search dialog)'),
+      label: 'Navigate to the Next Option (in search dialog)',
       // name: 'optionNavDown',
       keys: shortcuts.optionNavDown,
     },
     {
-      label: t('Select the Current Option (in search dialog)'),
+      label: 'Select the Current Option (in search dialog)',
       // name: 'optionSelect',
       keys: shortcuts.optionSelect,
     },
@@ -192,8 +190,8 @@ export function ShortcutConfig(props: {
       <Table>
         <Table.Thead>
           <Table.Tr>
-            <Table.Th>{t('Action')}</Table.Th>
-            <Table.Th>{t('Hotkeys')}</Table.Th>
+            <Table.Th>Action</Table.Th>
+            <Table.Th>Hotkeys</Table.Th>
           </Table.Tr>
         </Table.Thead>
 
@@ -230,9 +228,8 @@ export function ShortcutConfig(props: {
 
 function ShortcutText(props: { shortcut: string; isConflict?: boolean; className?: string }) {
   const { shortcut, isConflict, className } = props
-  const { t } = useTranslation()
   if (shortcut === '') {
-    return <span className={`px-2 py-0.5 text-xs ${className || ''}`}>{t('None')}</span>
+    return <span className={`px-2 py-0.5 text-xs ${className || ''}`}>None</span>
   }
   return (
     <Flex align="center" component="span" className={`py-0.5 text-xs ${className || ''}`} c="chatbox-error">

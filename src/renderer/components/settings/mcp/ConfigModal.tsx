@@ -2,7 +2,6 @@ import { Anchor, Badge, Button, Group, Kbd, Paper, Radio, Stack, Text, Textarea,
 import { useForm } from '@mantine/form'
 import pTimeout from 'p-timeout'
 import { type FC, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { Modal } from '@/components/layout/Overlay'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
 import { MCPServer } from '@/packages/mcp/controller'
@@ -16,7 +15,6 @@ interface ConnectionTestingResult {
 }
 
 const TestingResult: FC<{ result: ConnectionTestingResult }> = ({ result }) => {
-  const { t } = useTranslation()
   if (result.error) {
     return (
       <Paper withBorder p="md" mt="md">
@@ -25,7 +23,7 @@ const TestingResult: FC<{ result: ConnectionTestingResult }> = ({ result }) => {
         </Text>
         {result.error.message.includes('ENOENT') && result.config.transport.type === 'stdio' && (
           <Text size="sm" c="chatbox-primary" mt="sm">
-            {t('Make sure you have the following command installed:')} <Kbd>{result.config.transport.command}</Kbd>
+            Make sure you have the following command installed: <Kbd>{result.config.transport.command}</Kbd>
           </Text>
         )}
       </Paper>
@@ -34,7 +32,7 @@ const TestingResult: FC<{ result: ConnectionTestingResult }> = ({ result }) => {
   return (
     <Paper withBorder p="md" mt="md">
       <Text fw="bold" mb="sm">
-        {t('Tools')}
+        Tools
       </Text>
       <Group gap="xs">
         {result.tools.map((tool) => (
@@ -53,7 +51,6 @@ const ConfigForm: FC<{
   onSave: (config: MCPServerConfig) => void
   onDelete: (id: string) => void
 }> = (props) => {
-  const { t } = useTranslation()
   const formRef = useRef<HTMLFormElement>(null)
   const [testing, setTesting] = useState(false)
   const [testingResult, setTestingResult] = useState<ConnectionTestingResult | null>()
@@ -106,22 +103,22 @@ const ConfigForm: FC<{
   return (
     <form ref={formRef} onSubmit={form.onSubmit(handleSubmit)}>
       <Stack gap="md">
-        <TextInput label={t('Name')} data-autofocus required {...form.getInputProps('name')} />
+        <TextInput label="Name" data-autofocus required {...form.getInputProps('name')} />
         <Radio.Group
           required
-          label={t('Type')}
+          label="Type"
           {...form.getInputProps('transport.type')}
           labelProps={{ fw: 600, mb: 'xs' }}
         >
           <Group>
-            <Radio variant="outline" size="sm" value="http" label={t('Remote (http/sse)')} />
-            <Radio variant="outline" size="sm" value="stdio" label={t('Local (stdio)')} />
+            <Radio variant="outline" size="sm" value="http" label="Remote (http/sse)" />
+            <Radio variant="outline" size="sm" value="stdio" label="Local (stdio)" />
           </Group>
         </Radio.Group>
         {form.values.transport.type === 'stdio' && (
           <>
             <Textarea
-              label={t('Command')}
+              label="Command"
               placeholder="npx mcp-server arg1 arg2..."
               required
               autosize
@@ -129,7 +126,7 @@ const ConfigForm: FC<{
               {...form.getInputProps('transport.command')}
             />
             <Textarea
-              label={t('Environment Variables')}
+              label="Environment Variables"
               placeholder="KEY=VALUE"
               autosize
               minRows={3}
@@ -152,7 +149,7 @@ const ConfigForm: FC<{
         <Group justify="space-between">
           {props.mode === 'edit' ? (
             <Anchor c="chatbox-error" onClick={() => props.onDelete(props.config.id)}>
-              {t('Delete')}
+              Delete
             </Anchor>
           ) : (
             <Text />
@@ -160,18 +157,18 @@ const ConfigForm: FC<{
           <Group justify="flex-end" gap="sm">
             {testing && (
               <Button variant="subtle" color="red" onClick={() => testingAbortController.current?.abort()}>
-                {t('Cancel')}
+                Cancel
               </Button>
             )}
             <Button variant="outline" onClick={testConnection} loading={testing} disabled={testing}>
-              {t('Test')}
+              Test
             </Button>
             {props.mode === 'edit' || testingResult ? (
-              <Button type="submit">{t('Save')}</Button>
+              <Button type="submit">Save</Button>
             ) : (
-              <Tooltip label={t('Please test before saving')} withArrow zIndex={3000}>
+              <Tooltip label="Please test before saving" withArrow zIndex={3000}>
                 <Button data-disabled type="submit" onClick={(e) => e.preventDefault()}>
-                  {t('Save')}
+                  Save
                 </Button>
               </Tooltip>
             )}
@@ -192,13 +189,12 @@ interface Props {
 }
 
 export const ConfigModal: FC<Props> = (props) => {
-  const { t } = useTranslation()
   return (
     <Modal
       size="lg"
       opened={!!props.config}
       onClose={props.onClose}
-      title={props.mode === 'edit' ? t('Edit MCP Server') : t('Add MCP Server')}
+      title={props.mode === 'edit' ? 'Edit MCP Server' : 'Add MCP Server'}
       centered
       overlayProps={{ backgroundOpacity: 0.35, blur: 7 }}
     >

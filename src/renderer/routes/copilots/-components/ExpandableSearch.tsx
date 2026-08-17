@@ -1,7 +1,6 @@
 import { ActionIcon, Flex, TextInput, Transition } from '@mantine/core'
 import { IconSearch, IconX } from '@tabler/icons-react'
 import { useEffect, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { ScalableIcon } from '@/components/common/ScalableIcon'
 import { useIsSmallScreen } from '@/hooks/useScreenChange'
 
@@ -10,7 +9,6 @@ export interface ExpandableSearchProps {
 }
 
 export function ExpandableSearch({ onSearch }: ExpandableSearchProps) {
-  const { t } = useTranslation()
   const isSmallScreen = useIsSmallScreen()
   const [isOpen, setIsOpen] = useState(false)
   const [value, setValue] = useState('')
@@ -57,7 +55,7 @@ export function ExpandableSearch({ onSearch }: ExpandableSearchProps) {
             <TextInput
               ref={inputRef}
               autoFocus
-              placeholder={t('Search copilots...') ?? ''}
+              placeholder="Search copilots..."
               value={value}
               onChange={handleChange}
               onKeyUp={handleKeyUp}

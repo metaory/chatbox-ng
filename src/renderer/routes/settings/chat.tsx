@@ -31,21 +31,21 @@ export function RouteComponent() {
 
   return (
     <Stack gap="xxl" p="md">
-      <Title order={5}>{t('Chat Settings')}</Title>
+      <Title order={5}>Chat Settings</Title>
 
       {/* Avatars */}
       <Stack gap="md">
         <Stack gap="xxs">
-          <Text fw="600">{t('Edit Avatars')}</Text>
+          <Text fw="600">Edit Avatars</Text>
           <Text size="xs" c="chatbox-tertiary">
-            {t('Support jpg or png file smaller than 5MB')}
+            Support jpg or png file smaller than 5MB
           </Text>
         </Stack>
 
         {/* User Avatar' */}
         <Stack>
           <Text size="xs" c="chatbox-secondary">
-            {t('User Avatar')}
+            User Avatar
           </Text>
           <Flex align="center" gap="xs">
             <UserAvatar size={56} avatarKey={settings.userAvatarKey} />
@@ -53,7 +53,7 @@ export function RouteComponent() {
               onChange={(file) => {
                 if (file) {
                   if (file.size > MAX_IMAGE_SIZE) {
-                    addToast(t('Support jpg or png file smaller than 5MB'))
+                    addToast('Support jpg or png file smaller than 5MB')
                     return
                   }
                   const key = StorageKeyGenerator.picture('user-avatar')
@@ -69,13 +69,13 @@ export function RouteComponent() {
             >
               {(props) => (
                 <Button {...props} variant="outline" size="xs">
-                  {t('Upload Image')}
+                  Upload Image
                 </Button>
               )}
             </FileButton>
             {!!settings.userAvatarKey && (
               <Button color="chatbox-gray" size="xs" onClick={() => setSettings({ userAvatarKey: undefined })}>
-                {t('Delete')}
+                Delete
               </Button>
             )}
           </Flex>
@@ -84,7 +84,7 @@ export function RouteComponent() {
         {/* Default Assistant Avatar */}
         <Stack>
           <Text size="xs" c="chatbox-secondary">
-            {t('Default Assistant Avatar')}
+            Default Assistant Avatar
           </Text>
           <Flex align="center" gap="xs">
             <AssistantAvatar avatarKey={settings.defaultAssistantAvatarKey} size={56} />
@@ -92,7 +92,7 @@ export function RouteComponent() {
               onChange={(file) => {
                 if (file) {
                   if (file.size > MAX_IMAGE_SIZE) {
-                    addToast(t('Support jpg or png file smaller than 5MB'))
+                    addToast('Support jpg or png file smaller than 5MB')
                     return
                   }
                   const key = StorageKeyGenerator.picture('default-assistant-avatar')
@@ -108,7 +108,7 @@ export function RouteComponent() {
             >
               {(props) => (
                 <Button {...props} variant="outline" size="xs">
-                  {t('Upload Image')}
+                  Upload Image
                 </Button>
               )}
             </FileButton>
@@ -118,7 +118,7 @@ export function RouteComponent() {
                 size="xs"
                 onClick={() => setSettings({ defaultAssistantAvatarKey: undefined })}
               >
-                {t('Delete')}
+                Delete
               </Button>
             )}
           </Flex>
@@ -129,9 +129,9 @@ export function RouteComponent() {
 
       {/* Default Settings */}
       <Stack gap="md">
-        <Text fw="600">{t('Default Settings for New Conversation')}</Text>
+        <Text fw="600">Default Settings for New Conversation</Text>
         <Stack gap="xxs">
-          <Text fw="500">{t('Prompt')}</Text>
+          <Text fw="500">Prompt</Text>
           <Textarea
             value={settings.defaultPrompt || ''}
             autosize
@@ -155,7 +155,7 @@ export function RouteComponent() {
             py={6}
             className=" self-start"
           >
-            {t('Reset to Default')}
+            Reset to Default
           </Button>
         </Stack>
 
@@ -172,11 +172,9 @@ export function RouteComponent() {
         {/* Temperature */}
         <Stack gap="xxs">
           <Flex align="center" gap="xs">
-            <Text size="sm">{t('Temperature')}</Text>
+            <Text size="sm">Temperature</Text>
             <Tooltip
-              label={t(
-                'Modify the creativity of AI responses; the higher the value, the more random and intriguing the answers become, while a lower value ensures greater stability and reliability.'
-              )}
+              label="Modify the creativity of AI responses; the higher the value, the more random and intriguing the answers become, while a lower value ensures greater stability and reliability."
               withArrow={true}
               maw={320}
               className="!whitespace-normal"
@@ -194,9 +192,7 @@ export function RouteComponent() {
           <Flex align="center" gap="xs">
             <Text size="sm">Top P</Text>
             <Tooltip
-              label={t(
-                'The topP parameter controls the diversity of AI responses: lower values make the output more focused and predictable, while higher values allow for more varied and creative replies.'
-              )}
+              label="The topP parameter controls the diversity of AI responses: lower values make the output more focused and predictable, while higher values allow for more varied and creative replies."
               withArrow={true}
               maw={320}
               className="!whitespace-normal"
@@ -211,7 +207,7 @@ export function RouteComponent() {
 
         {/* Background Image */}
         <Stack gap="xs">
-          <Text>{t('Background Image')}</Text>
+          <Text>Background Image</Text>
           <Flex align="center" gap="sm" wrap="wrap">
             {settings.backgroundImageKey ? (
               <Box w={160} h={90} className="overflow-hidden rounded bg-chatbox-tertiary/20 flex-shrink-0">
@@ -223,7 +219,7 @@ export function RouteComponent() {
                 onChange={(file) => {
                   if (file) {
                     if (file.size > MAX_IMAGE_SIZE) {
-                      addToast(t('Support jpg or png file smaller than 5MB'))
+                      addToast('Support jpg or png file smaller than 5MB')
                       return
                     }
                     const key = StorageKeyGenerator.picture('background-image')
@@ -239,20 +235,20 @@ export function RouteComponent() {
               >
                 {(props) => (
                   <Button {...props} variant="outline" size="xs">
-                    {t('Upload Image')}
+                    Upload Image
                   </Button>
                 )}
               </FileButton>
               {!!settings.backgroundImageKey && (
                 <Button color="chatbox-gray" size="xs" onClick={() => setSettings({ backgroundImageKey: undefined })}>
-                  {t('Remove')}
+                  Remove
                 </Button>
               )}
             </Flex>
           </Flex>
           {!!settings.backgroundImageKey && (
             <Stack gap="xxs">
-              <Text size="sm">{t('Background Image Opacity')}</Text>
+              <Text size="sm">Background Image Opacity</Text>
               <SliderWithInput
                 value={Math.round(settings.backgroundImageOpacity * 100)}
                 onChange={(value) => setSettings({ backgroundImageOpacity: (value ?? 16) / 100 })}
@@ -267,7 +263,7 @@ export function RouteComponent() {
         {/* Stream output */}
         <Stack gap="xxs">
           <Flex align="center" gap="xs" justify="space-between">
-            <Text size="sm">{t('Stream output')}</Text>
+            <Text size="sm">Stream output</Text>
             <Switch
               // label={t('Stream output')}
               checked={settings?.stream ?? true}
@@ -280,11 +276,11 @@ export function RouteComponent() {
 
       {/* Conversation Settings */}
       <Stack gap="md">
-        <Text fw="600">{t('Conversation Settings')}</Text>
+        <Text fw="600">Conversation Settings</Text>
 
         {/* Display */}
         <Stack gap="sm">
-          <Text c="chatbox-tertiary">{t('Display')}</Text>
+          <Text c="chatbox-tertiary">Display</Text>
 
           <MessageLayoutSelector
             value={settings.messageLayout ?? 'bubble'}
@@ -292,7 +288,7 @@ export function RouteComponent() {
           />
 
           <Switch
-            label={t('Show Avatar')}
+            label="Show Avatar"
             checked={settings.showAvatar ?? true}
             onChange={() =>
               setSettings((draft) => {
@@ -302,7 +298,7 @@ export function RouteComponent() {
           />
 
           <Switch
-            label={t('show message word count')}
+            label="show message word count"
             checked={settings.showWordCount}
             onChange={() =>
               setSettings((draft) => {
@@ -322,7 +318,7 @@ export function RouteComponent() {
           /> */}
 
           <Switch
-            label={t('show message token usage')}
+            label="show message token usage"
             checked={settings.showTokenUsed}
             onChange={() =>
               setSettings({
@@ -332,7 +328,7 @@ export function RouteComponent() {
           />
 
           <Switch
-            label={t('show model name')}
+            label="show model name"
             checked={settings.showModelName}
             onChange={() =>
               setSettings({
@@ -342,7 +338,7 @@ export function RouteComponent() {
           />
 
           <Switch
-            label={t('show message timestamp')}
+            label="show message timestamp"
             checked={settings.showMessageTimestamp}
             onChange={() =>
               setSettings({
@@ -352,7 +348,7 @@ export function RouteComponent() {
           />
 
           <Switch
-            label={t('show first token latency')}
+            label="show first token latency"
             checked={settings.showFirstTokenLatency}
             onChange={() =>
               setSettings({
@@ -364,10 +360,10 @@ export function RouteComponent() {
 
         {/* Function */}
         <Stack gap="sm">
-          <Text c="chatbox-tertiary">{t('Function')}</Text>
+          <Text c="chatbox-tertiary">Function</Text>
 
           <Switch
-            label={t('Auto-collapse code blocks')}
+            label="Auto-collapse code blocks"
             checked={settings.autoCollapseCodeBlock}
             onChange={() =>
               setSettings({
@@ -376,7 +372,7 @@ export function RouteComponent() {
             }
           />
           <Switch
-            label={t('Auto-Generate Chat Titles')}
+            label="Auto-Generate Chat Titles"
             checked={settings.autoGenerateTitle}
             onChange={() =>
               setSettings({
@@ -400,7 +396,7 @@ export function RouteComponent() {
             }
           />
           <Switch
-            label={t('Spell Check')}
+            label="Spell Check"
             checked={settings.spellCheck}
             onChange={() =>
               setSettings({
@@ -410,7 +406,7 @@ export function RouteComponent() {
             }
           />
           <Switch
-            label={t('Markdown Rendering')}
+            label="Markdown Rendering"
             checked={settings.enableMarkdownRendering}
             onChange={() =>
               setSettings({
@@ -420,7 +416,7 @@ export function RouteComponent() {
             }
           />
           <Switch
-            label={t('LaTeX Rendering (Requires Markdown)')}
+            label="LaTeX Rendering (Requires Markdown)"
             checked={settings.enableLaTeXRendering}
             onChange={() =>
               setSettings({
@@ -430,7 +426,7 @@ export function RouteComponent() {
             }
           />
           <Switch
-            label={t('Mermaid Diagrams & Charts Rendering')}
+            label="Mermaid Diagrams & Charts Rendering"
             checked={settings.enableMermaidRendering}
             onChange={() =>
               setSettings({
@@ -440,9 +436,9 @@ export function RouteComponent() {
             }
           />
           <Switch
-            label={t('Inject default metadata')}
+            label="Inject default metadata"
             checked={settings.injectDefaultMetadata}
-            description={t('e.g., Model Name, Current Date')}
+            description="e.g., Model Name, Current Date"
             onChange={() =>
               setSettings({
                 ...settings,
@@ -451,9 +447,9 @@ export function RouteComponent() {
             }
           />
           <Switch
-            label={t('Auto-preview artifacts')}
+            label="Auto-preview artifacts"
             checked={settings.autoPreviewArtifacts}
-            description={t('Automatically render generated artifacts (e.g., HTML with CSS, JS, Tailwind)')}
+            description="Automatically render generated artifacts (e.g., HTML with CSS, JS, Tailwind)"
             onChange={() =>
               setSettings({
                 ...settings,
@@ -462,11 +458,9 @@ export function RouteComponent() {
             }
           />
           <Switch
-            label={t('Paste long text as a file')}
+            label="Paste long text as a file"
             checked={settings.pasteLongTextAsAFile}
-            description={t(
-              'Pasting long text will automatically insert it as a file, keeping chats clean and reducing token usage with prompt caching.'
-            )}
+            description="Pasting long text will automatically insert it as a file, keeping chats clean and reducing token usage with prompt caching."
             onChange={() =>
               setSettings({
                 ...settings,
@@ -486,34 +480,31 @@ export function RouteComponent() {
 }
 
 function ContextManagementSection() {
-  const { t } = useTranslation()
   const { setSettings, ...settings } = useSettingsStore((state) => state)
 
   // Get strategy hint based on threshold value
   const strategyHint = useMemo(() => {
     const threshold = settings.compactionThreshold ?? 0.6
     if (threshold <= 0.5) {
-      return t('Cost Priority: Compacts early to save tokens, may lose some context')
+      return 'Cost Priority: Compacts early to save tokens, may lose some context'
     }
     if (threshold >= 0.8) {
-      return t('Context Priority: Preserves more context, uses more tokens')
+      return 'Context Priority: Preserves more context, uses more tokens'
     }
-    return t('Balanced: Good balance between cost and context preservation')
-  }, [settings.compactionThreshold, t])
+    return 'Balanced: Good balance between cost and context preservation'
+  }, [settings.compactionThreshold])
 
   return (
     <Stack gap="xl">
-      <Text fw="600">{t('Context Management')}</Text>
+      <Text fw="600">Context Management</Text>
 
       {/* Auto Compaction Toggle */}
       <Stack gap="sm">
         <Flex align="center" gap="xs" justify="space-between">
           <Flex align="center" gap="xs">
-            <Text size="sm">{t('Auto Compaction')}</Text>
+            <Text size="sm">Auto Compaction</Text>
             <Tooltip
-              label={t(
-                'Automatically summarize and compact conversation history when context size exceeds the threshold, preserving key information while reducing token usage.'
-              )}
+              label="Automatically summarize and compact conversation history when context size exceeds the threshold, preserving key information while reducing token usage."
               withArrow={true}
               maw={320}
               className="!whitespace-normal"
@@ -532,18 +523,16 @@ function ContextManagementSection() {
           />
         </Flex>
         <Text c="chatbox-tertiary" size="xs">
-          {t('When enabled, conversations will be automatically summarized to manage context window usage.')}
+          When enabled, conversations will be automatically summarized to manage context window usage.
         </Text>
       </Stack>
 
       {/* Compaction Threshold Slider */}
       <Stack gap="sm">
         <Flex align="center" gap="xs">
-          <Text size="sm">{t('Compaction Threshold')}</Text>
+          <Text size="sm">Compaction Threshold</Text>
           <Tooltip
-            label={t(
-              'The percentage of context window usage that triggers automatic compaction. Lower values save tokens but may lose context earlier.'
-            )}
+            label="The percentage of context window usage that triggers automatic compaction. Lower values save tokens but may lose context earlier."
             withArrow={true}
             maw={320}
             className="!whitespace-normal"
@@ -565,10 +554,10 @@ function ContextManagementSection() {
           />
           <Flex justify="space-between" px={2}>
             <Text size="xs" c="chatbox-tertiary">
-              {t('Cost')}
+              Cost
             </Text>
             <Text size="xs" c="chatbox-tertiary">
-              {t('Context')}
+              Context
             </Text>
           </Flex>
         </Stack>

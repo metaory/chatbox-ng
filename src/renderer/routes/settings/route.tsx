@@ -112,14 +112,13 @@ export const Route = createFileRoute('/settings')({
 })
 
 export function RouteComponent() {
-  const { t } = useTranslation()
   const router = useRouter()
   const canGoBack = useCanGoBack()
   const isSmallScreen = useIsSmallScreen()
 
   return (
     <Page
-      title={t('Settings')}
+      title="Settings"
       left={
         isSmallScreen && canGoBack ? (
           <ActionIcon
@@ -167,7 +166,7 @@ export function SettingsRoot() {
               }
               key={item.key}
               to={`/settings/${item.key}` as any}
-              className={'block no-underline w-full'}
+              className="block no-underline w-full"
             >
               <Flex
                 component="span"
@@ -204,7 +203,7 @@ export function SettingsRoot() {
           ))}
 
           {isSmallScreen && (
-            <Link to={`/about`} className={'block no-underline w-full'}>
+            <Link to={`/about`} className="block no-underline w-full">
               <Flex
                 component="span"
                 gap="xs"
@@ -212,7 +211,7 @@ export function SettingsRoot() {
                 pr="xl"
                 py="sm"
                 align="center"
-                c={'chatbox-secondary'}
+                c="chatbox-secondary"
                 className={clsx(' cursor-pointer select-none rounded-lg')}
               >
                 <Box component="span" flex="0 0 auto" w={20} h={20} mr="xs">
@@ -224,7 +223,7 @@ export function SettingsRoot() {
                   span={true}
                   className={`!text-inherit ${isSmallScreen ? 'min-h-[32px] leading-[32px]' : ''}`}
                 >
-                  {t('About')}
+                  About
                 </Text>
                 <ScalableIcon icon={IconChevronRight} size={20} className="!text-chatbox-tint-tertiary" />
               </Flex>

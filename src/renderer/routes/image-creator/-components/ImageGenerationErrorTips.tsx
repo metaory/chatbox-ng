@@ -2,7 +2,7 @@ import { ActionIcon, Button, Flex, Paper, Text } from '@mantine/core'
 import { ChatboxAIAPIError } from '@shared/models/errors'
 import type { ImageGeneration } from '@shared/types'
 import { IconCheck, IconCopy, IconRefresh, IconSettings, IconX } from '@tabler/icons-react'
-import { Trans, useTranslation } from 'react-i18next'
+import { Trans } from 'react-i18next'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
 import { useCopied } from '@/hooks/useCopied'
 import { navigateToSettings } from '@/modals/Settings'
@@ -36,7 +36,6 @@ function ImageGenerationTaskErrorMessage({ errorCode }: { errorCode: ImageGenera
 }
 
 export function ImageGenerationErrorTips({ record, onRetry, isRetrying }: ImageGenerationErrorTipsProps) {
-  const { t } = useTranslation()
 
   const chatboxAIErrorDetail =
     typeof record.errorCode === 'number' ? ChatboxAIAPIError.getDetail(record.errorCode) : null
@@ -64,7 +63,7 @@ export function ImageGenerationErrorTips({ record, onRetry, isRetrying }: ImageG
         </div>
 
         <Text fw={500} size="sm">
-          {t('Generation Failed')}
+          Generation Failed
         </Text>
 
         {chatboxAIErrorDetail ? (
@@ -112,8 +111,8 @@ export function ImageGenerationErrorTips({ record, onRetry, isRetrying }: ImageG
                 </Text>
               )}
             </Flex>
-            <Tooltip label={copied ? t('Copied') : t('Copy')} withArrow openDelay={500}>
-              <ActionIcon variant="subtle" size="xs" color="gray" onClick={copy} aria-label={t('Copy')}>
+            <Tooltip label={copied ? 'Copied' : 'Copy'} withArrow openDelay={500}>
+              <ActionIcon variant="subtle" size="xs" color="gray" onClick={copy} aria-label="Copy">
                 {copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
               </ActionIcon>
             </Tooltip>
@@ -129,7 +128,7 @@ export function ImageGenerationErrorTips({ record, onRetry, isRetrying }: ImageG
               onClick={() => navigateToSettings()}
               radius="lg"
             >
-              {t('Settings')}
+              Settings
             </Button>
           )}
           <Button
@@ -141,7 +140,7 @@ export function ImageGenerationErrorTips({ record, onRetry, isRetrying }: ImageG
             loading={isRetrying}
             radius="lg"
           >
-            {t('Retry')}
+            Retry
           </Button>
         </Flex>
       </Flex>

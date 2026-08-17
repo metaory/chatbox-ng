@@ -40,14 +40,14 @@ function TieredPricingDetails({
   return (
     <Stack gap={8} className="min-w-[260px] p-0.5">
       <Text size="sm" fw={750} c="chatbox-primary" lh={1.1}>
-        {t('Tiered pricing')}
+        Tiered pricing
       </Text>
       <table className="w-full border-collapse text-xs">
         <thead>
           <tr className="text-chatbox-tint-tertiary">
-            <th className="pb-1.5 pr-3 text-left font-semibold">{t('Condition')}</th>
-            <th className="pb-1.5 pr-3 text-left font-semibold">{t('Input')}</th>
-            <th className="pb-1.5 text-left font-semibold">{t('Output')}</th>
+            <th className="pb-1.5 pr-3 text-left font-semibold">Condition</th>
+            <th className="pb-1.5 pr-3 text-left font-semibold">Input</th>
+            <th className="pb-1.5 text-left font-semibold">Output</th>
           </tr>
         </thead>
         <tbody>
@@ -56,9 +56,9 @@ function TieredPricingDetails({
             const outputLimit = formatTokenLimit(tier.max_output_tokens, isCN)
             const tierKey = `${tier.max_input_tokens}-${tier.max_output_tokens}-${tier.price_input}-${tier.price_output}`
             const conditions: string[] = []
-            if (inputLimit) conditions.push(`${t('Input')} ≤ ${inputLimit}`)
-            if (outputLimit) conditions.push(`${t('Output')} ≤ ${outputLimit}`)
-            const condition = conditions.length > 0 ? conditions.join(' · ') : t('Otherwise')
+            if (inputLimit) conditions.push(`Input ≤ ${inputLimit}`)
+            if (outputLimit) conditions.push(`Output ≤ ${outputLimit}`)
+            const condition = conditions.length > 0 ? conditions.join(' · ') : 'Otherwise'
             return (
               <tr key={tierKey} className="border-0 border-t border-solid border-chatbox-border-primary">
                 <td className="py-1.5 pr-3 text-chatbox-tint-secondary whitespace-nowrap">{condition}</td>
@@ -98,7 +98,7 @@ function TieredPricingTag({
       size="xs"
       className="cursor-help normal-case border border-solid border-chatbox-border-primary bg-chatbox-background-secondary px-1 py-0.5 text-[10px] font-medium leading-none text-chatbox-tint-secondary"
     >
-      {t('Tiered pricing')}
+      Tiered pricing
     </Badge>
   )
 
@@ -203,27 +203,27 @@ function PricingBlock({
     <Stack gap={10} className="border-0 border-y border-solid border-chatbox-border-primary py-4">
       <Flex align="center" justify="space-between" gap="xs">
         <Text size="xs" fw={750} c="chatbox-primary" className="uppercase tracking-[0.08em]">
-          {t('Pricing')}
+          Pricing
         </Text>
       </Flex>
       {pricing.tokensPerComputePoint > 0 && (
-        <PriceMetric label={t('Compute point exchange')} value={formatTokenValue(pricing.tokensPerComputePoint)} />
+        <PriceMetric label="Compute point exchange" value={formatTokenValue(pricing.tokensPerComputePoint)} />
       )}
       {(pricing.officialInput > 0 || pricing.officialOutput > 0) && (
         <Stack gap={5}>
           <Text size="xs" c="chatbox-tertiary" className="uppercase tracking-[0.04em]">
-            {t('Official API price')}
+            Official API price
           </Text>
           <div className={clsx('grid gap-y-3', mobile ? 'grid-cols-1' : 'grid-cols-2 gap-x-8')}>
             {pricing.officialInput > 0 && (
               <PriceMetric
-                label={t('Input')}
+                label="Input"
                 value={formatPrice(pricing.officialInput, isCN)}
                 labelRightSection={tieredPricingTag}
               />
             )}
             {pricing.officialOutput > 0 && (
-              <PriceMetric label={t('Output')} value={formatPrice(pricing.officialOutput, isCN)} />
+              <PriceMetric label="Output" value={formatPrice(pricing.officialOutput, isCN)} />
             )}
           </div>
         </Stack>
@@ -264,7 +264,7 @@ function CostLevelIndicator({
   return (
     <Stack gap={8}>
       <Text size="sm" fw={750} c="chatbox-secondary">
-        {t('Pricing')}
+        Pricing
       </Text>
       <Flex gap={8} wrap="nowrap" aria-label={`Cost level ${filledBarCount} of 3`}>
         {bars}
@@ -322,7 +322,7 @@ export function DetailCard({
       {showPricing && <PricingBlock model={model} mobile={mobile} t={t} isCN={isCN} />}
       <Stack gap="xs" mt="sm">
         <Text size="sm" fw={750} c="chatbox-secondary">
-          {t('Capabilities')}
+          Capabilities
         </Text>
         <CapabilityIconRow capabilities={model.capabilities} />
       </Stack>
@@ -341,7 +341,7 @@ export function DetailCard({
               className="flex-shrink-0"
               styles={{ root: { height: mobile ? 46 : 42, minHeight: mobile ? 46 : 42, minWidth: mobile ? 88 : 76 } }}
             >
-              {t('Close')}
+              close
             </Button>
           )}
         </Flex>

@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next'
+
 import type { SessionSettings } from '../../shared/types'
 import { AdaptiveSelect } from './AdaptiveSelect'
 
@@ -9,18 +9,17 @@ export interface Props {
 }
 
 export default function ImageStyleSelect(props: Props) {
-  const { t } = useTranslation()
 
   return (
     <AdaptiveSelect
-      label={t('Image Style')}
+      label="Image Style"
       data={[
         {
-          label: t('Vivid'),
+          label: 'Vivid',
           value: 'vivid',
         },
         {
-          label: t('Natural'),
+          label: 'Natural',
           value: 'natural',
         },
       ]}

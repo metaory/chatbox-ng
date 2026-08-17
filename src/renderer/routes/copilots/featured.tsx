@@ -29,7 +29,7 @@ function FeaturedCopilots() {
       <Flex align="flex-start" gap="md" className="flex gap-2 flex-wrap">
         <Flex className="flex-1" gap="xxs" wrap="wrap">
           <TagChip selected={selectedTag === undefined} onClick={() => handleTagChange(undefined)}>
-            {t('All')}
+            All
           </TagChip>
           {tags.map((tag) => (
             <TagChip key={tag} selected={selectedTag === tag} onClick={() => handleTagChange(tag)}>
@@ -42,7 +42,7 @@ function FeaturedCopilots() {
       {isLoading && (
         <div className="py-12 text-center">
           <Text c="dimmed" size="sm">
-            {t('Loading...')}
+            Loading...
           </Text>
         </div>
       )}
@@ -50,7 +50,7 @@ function FeaturedCopilots() {
       {!isLoading && copilots.length === 0 && (
         <div className="py-12 text-center">
           <Text c="dimmed" size="sm">
-            {t('No featured copilots available.')}
+            No featured copilots available.
           </Text>
         </div>
       )}
@@ -72,7 +72,7 @@ function FeaturedCopilots() {
             onClick={() => fetchNextPage()}
             loading={isFetchingNextPage}
           >
-            {t('Load More')}
+            Load More
           </Button>
         </Flex>
       )}

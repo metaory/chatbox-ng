@@ -4,7 +4,6 @@ import type { AgentModeValue, KnowledgeBase } from '@shared/types'
 import { IconRobot, IconX } from '@tabler/icons-react'
 import { useLocation } from '@tanstack/react-router'
 import { type FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useSessionAgentMode } from '@/stores/session/agent-mode'
 import AgentModePanel from './AgentModePanel'
 import AgentModeStatusIcon from './AgentModeStatusIcon'
@@ -56,7 +55,6 @@ const AgentModeButton: FC<AgentModeButtonProps> = ({
   onKnowledgeBaseSelect,
   onSkillSelect,
 }) => {
-  const { t } = useTranslation()
   const location = useLocation()
   const [opened, setOpened] = useState(false)
   const [showWebSearchMovedTip, setShowWebSearchMovedTip] = useState(() => !isWebSearchMovedTipDismissed())
@@ -79,11 +77,11 @@ const AgentModeButton: FC<AgentModeButtonProps> = ({
   const modeLabel = useMemo(() => {
     switch (agentModeUIState.displayValue) {
       case 'on':
-        return t('Work Mode')
+        return 'Work Mode'
       default:
-        return t('Chat Mode')
+        return 'Chat Mode'
     }
-  }, [agentModeUIState.displayValue, t])
+  }, [agentModeUIState.displayValue])
 
   // Hover open/close with delays, matching Menu trigger="hover" behavior
   const handleMouseEnter = useCallback(() => {
@@ -137,9 +135,7 @@ const AgentModeButton: FC<AgentModeButtonProps> = ({
       <Popover.Target>
         <span className="inline-flex">
           <Tooltip
-            label={t(
-              'This model is older and has limited capabilities, so it does not support more advanced features.'
-            )}
+            label="This model is older and has limited capabilities, so it does not support more advanced features."
             disabled={!disabled}
             position="top-start"
             withArrow
@@ -187,13 +183,13 @@ const AgentModeButton: FC<AgentModeButtonProps> = ({
           <div className="flex items-start gap-2" role="status">
             <div className="min-w-0 flex-1">
               <Text size="sm" fw={600}>
-                {t('Web Search has moved')}
+                Web Search has moved
               </Text>
               <Text size="xs" c="dimmed" mt={2}>
-                {t('Web Search is now available in the mode menu.')}
+                Web Search is now available in the mode menu.
               </Text>
             </div>
-            <ActionIcon variant="subtle" size="sm" aria-label={t('Close')} onClick={handleDismissWebSearchMovedTip}>
+            <ActionIcon variant="subtle" size="sm" aria-label="close" onClick={handleDismissWebSearchMovedTip}>
               <IconX size={14} />
             </ActionIcon>
           </div>

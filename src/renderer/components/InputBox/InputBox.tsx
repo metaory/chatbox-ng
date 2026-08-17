@@ -201,17 +201,17 @@ function getSessionAttachmentStageLabel(
 ): string {
   switch (stage) {
     case 'queued':
-      return t('Queued')
+      return 'Queued'
     case 'chunking':
-      return t('Preparing')
+      return 'Preparing'
     case 'embedding':
-      return t('Indexing')
+      return 'Indexing'
     case 'finalizing':
-      return t('Finishing')
+      return 'Finishing'
     case 'ready':
-      return t('Indexed')
+      return 'Indexed'
     default:
-      return t('Indexing')
+      return 'Indexing'
   }
 }
 
@@ -628,7 +628,7 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
     }, [preprocessedAttachmentStates, setPreConstructedMessage])
     const modelSelectorDisplayText = useMemo(() => {
       if (!model) {
-        return t('Select Model')
+        return 'Select Model'
       }
       const modelInfo = (selectedProviderInfo?.models || selectedProviderInfo?.defaultSettings?.models)?.find(
         (m) => m.modelId === model.modelId
@@ -637,7 +637,7 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
     }, [selectedProviderInfo, model, t])
 
     // When agent mode is on, block models that don't support agent tools in the model selector.
-    const agentModeDisabledMessage = t('This model does not support Agent Mode')
+    const agentModeDisabledMessage = 'This model does not support Agent Mode'
     const modelDisabledCheck = useCallback(
       (m: ProviderModelInfo) => {
         if (agentModeEntry.value !== 'on') return undefined
@@ -934,7 +934,7 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
 
       } catch (e) {
         console.error('Error submitting message:', e)
-        toastActions.add((e as Error)?.message || t('An error occurred while sending the message.'))
+        toastActions.add((e as Error)?.message || 'An error occurred while sending the message.')
       } finally {
         setIsSubmitting(false)
       }
@@ -1166,17 +1166,17 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
             const unsupportedType = getUnsupportedFileType(file.name)
             let errorMsg = t('Unsupported file type: {{fileName}}', { fileName: file.name })
             if (unsupportedType === 'iwork') {
-              errorMsg = t('iWork files (Pages, Keynote) are not supported. Please export to PDF or Office format.')
+              errorMsg = 'iWork files (Pages, Keynote) are not supported. Please export to PDF or Office format.'
             } else if (unsupportedType === 'audio') {
-              errorMsg = t('Audio files are not supported')
+              errorMsg = 'Audio files are not supported'
             } else if (unsupportedType === 'video') {
-              errorMsg = t('Video files are not supported')
+              errorMsg = 'Video files are not supported'
             } else if (unsupportedType === 'binary') {
-              errorMsg = t('Binary/executable files are not supported')
+              errorMsg = 'Binary/executable files are not supported'
             } else if (unsupportedType === 'archive') {
-              errorMsg = t('Archive files are not supported. Please extract and upload individual files.')
+              errorMsg = 'Archive files are not supported. Please extract and upload individual files.'
             } else if (unsupportedType === 'image') {
-              errorMsg = t('Advanced image formats are not supported. Please convert to JPG or PNG.')
+              errorMsg = 'Advanced image formats are not supported. Please convert to JPG or PNG.'
             }
             toastActions.add(errorMsg)
             continue
@@ -1372,10 +1372,10 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
             align="center"
           >
             <Text size="sm" c="chatbox-tertiary" ta="center">
-              {t('This image session is no longer active. Please use the new Image Creator for image generation.')}
+              This image session is no longer active. Please use the new Image Creator for image generation.
             </Text>
             <Button variant="light" size="xs" onClick={() => navigate({ to: '/image-creator' })}>
-              {t('Go to Image Creator')}
+              Go to Image Creator
             </Button>
           </Stack>
         </Box>
@@ -1465,9 +1465,9 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
                 viewportHeight={viewportHeight}
                 isReadOnly={isCompactionRunning || isAwaitingToolApproval}
                 placeholder={
-                  isAwaitingToolApproval ? t('Waiting for approval') || '' : t('Type your question here...') || ''
+                  isAwaitingToolApproval ? 'Waiting for approval' : 'Type your question here...'
                 }
-                ariaLabel={t('Type your question here...') || ''}
+                ariaLabel="Type your question here..."
                 autoFocus={!isSmallScreen}
                 onValueChange={onMessageInputValueChange}
                 onUserInput={onUserInput}
@@ -1479,7 +1479,7 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
               <Tooltip
                 // `n` rather than `count`, so i18next does not engage plural resolution for a
                 // label that is only ever shown for more than one reply.
-                label={generatingCount > 1 ? t('Stop all {{n}} replies', { n: generatingCount }) : t('Stop')}
+                label={generatingCount > 1 ? t('Stop all {{n}} replies', { n: generatingCount }) : 'Stop'}
                 disabled={!generating}
                 withArrow
               >
@@ -1535,9 +1535,7 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
                       <ScalableIcon icon={IconAlertCircle} size={14} />
                     </Box>
                     <Text size="xs" lh={1.35} c="chatbox-warning" className="min-w-0">
-                      {t(
-                        'This model may not be able to read the uploaded document. Try another model if you want to ask about the file.'
-                      )}
+                      This model may not be able to read the uploaded document. Try another model if you want to ask about the file.
                     </Text>
                   </Flex>
                 )}
@@ -1566,9 +1564,7 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
                       <ScalableIcon icon={IconAlertCircle} size={14} />
                     </Box>
                     <Text size="xs" lh={1.35} c="chatbox-warning" className="min-w-0">
-                      {t(
-                        'This attachment is very large and may consume more points. You can send it anyway, or remove it and use a smaller file.'
-                      )}
+                      This attachment is very large and may consume more points. You can send it anyway, or remove it and use a smaller file.
                     </Text>
                   </Flex>
                 )}
@@ -1606,12 +1602,12 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
                   const statusText =
                     preprocessedFile?.ragMode === 'session-retrieval' && effectiveIndexStatus !== 'ready'
                       ? progressValue !== undefined
-                        ? `${isSessionAttachmentTakingLong ? t('Still indexing') : getSessionAttachmentStageLabel(indexingStage, t)} · ${progressValue}%`
+                        ? `${isSessionAttachmentTakingLong ? 'Still indexing' : getSessionAttachmentStageLabel(indexingStage, t)} · ${progressValue}%`
                         : isSessionAttachmentTakingLong
-                          ? t('Still indexing')
+                          ? 'Still indexing'
                           : getSessionAttachmentStageLabel(indexingStage, t)
                       : status === 'processing'
-                        ? t('Preparing')
+                        ? 'Preparing'
                         : undefined
                   return (
                     <FileMiniCard
@@ -1646,7 +1642,7 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
                           ? () => {
                               const parserLabel = getParserTypeLabel(preprocessedFile?.parserType, t)
                               void NiceModal.show('content-viewer', {
-                                title: `${t('File Content')}: ${file.name}`,
+                                title: `File Content: ${file.name}`,
                                 storageKey: preprocessedFile.storageKey,
                                 metadata: parserLabel ? [{ value: parserLabel }] : undefined,
                               })
@@ -1709,7 +1705,7 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
                 {/* Desktop owns Web Search in AgentModePanel for both Chat and Work modes.
                     Mobile/Web keep this standalone entry because they do not render that panel. */}
                 {platform.type !== 'desktop' && (
-                  <Tooltip label={t('Web Search')} position="top" withArrow disabled={isSmallScreen}>
+                  <Tooltip label="Web Search" position="top" withArrow disabled={isSmallScreen}>
                     <UnstyledButton
                       data-testid={TestId.chat.webSearchToggle}
                       onClick={() => {
@@ -1760,7 +1756,7 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
 
                 {!isSmallScreen &&
                   (showRollbackThreadButton ? (
-                    <Tooltip label={t('Rollback Thread')} position="top" withArrow>
+                    <Tooltip label="Rollback Thread" position="top" withArrow>
                       <UnstyledButton
                         onClick={rollbackThread}
                         className="flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-[var(--chatbox-background-tertiary)] transition-colors"
@@ -1773,7 +1769,7 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
                       </UnstyledButton>
                     </Tooltip>
                   ) : (
-                    <Tooltip label={t('New Thread')} position="top" withArrow>
+                    <Tooltip label="New Thread" position="top" withArrow>
                       <UnstyledButton
                         onClick={startNewThread}
                         disabled={!onStartNewThread}
@@ -1789,7 +1785,7 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
                   ))}
 
                 {!isSmallScreen && (
-                  <Tooltip label={t('Conversation Settings')} position="top" withArrow>
+                  <Tooltip label="Conversation Settings" position="top" withArrow>
                     <UnstyledButton
                       onClick={onClickSessionSettings}
                       disabled={!onClickSessionSettings}
@@ -1827,13 +1823,13 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
                     </Menu.Target>
                     <Menu.Dropdown>
                       <Menu.Item leftSection={<ScalableIcon icon={IconPlus} size={16} />} onClick={startNewThread}>
-                        {t('New Thread')}
+                        New Thread
                       </Menu.Item>
                       <Menu.Item
                         leftSection={<ScalableIcon icon={IconAdjustmentsHorizontal} size={16} />}
                         onClick={onClickSessionSettings}
                       >
-                        {t('Conversation Settings')}
+                        Conversation Settings
                       </Menu.Item>
                     </Menu.Dropdown>
                   </Menu>
@@ -1928,7 +1924,7 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
         <AdaptiveModal
           opened={unreadyAttachmentSubmitPrompt.opened}
           onClose={() => setUnreadyAttachmentSubmitPrompt((prev) => ({ ...prev, opened: false }))}
-          title={t('Document is still indexing')}
+          title="Document is still indexing"
           centered
           size="sm"
         >
@@ -1944,7 +1940,7 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
                 variant="default"
                 onClick={() => setUnreadyAttachmentSubmitPrompt((prev) => ({ ...prev, opened: false }))}
               >
-                {t('Wait')}
+                Wait
               </Button>
               <Button
                 onClick={() => {
@@ -1952,7 +1948,7 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
                   void handleSubmit(true, { allowUnreadySessionAttachments: true })
                 }}
               >
-                {t('Send anyway')}
+                Send anyway
               </Button>
             </AdaptiveModal.Actions>
           </Stack>
@@ -1997,14 +1993,14 @@ const AttachmentMenu: React.FC<{
           leftSection={<IconPhoto size={16} />}
           onClick={onImageUploadClick}
         >
-          {t('Attach Image')}
+          Attach Image
         </Menu.Item>
         <Menu.Item
           data-testid={TestId.chat.attachmentSelectFile}
           leftSection={<IconFolder size={16} />}
           onClick={onFileUploadClick}
         >
-          {t('Select File')}
+          Select File
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>

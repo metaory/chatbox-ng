@@ -1,7 +1,6 @@
 import NiceModal, { useModal } from '@ebay/nice-modal-react'
 import { Button, Flex, Loader, Text } from '@mantine/core'
 import { IconCheck, IconCopy } from '@tabler/icons-react'
-import { useTranslation } from 'react-i18next'
 import { AdaptiveModal } from '@/components/common/AdaptiveModal'
 import { ScalableIcon } from '@/components/common/ScalableIcon'
 import { useBlob } from '@/hooks/useBlob'
@@ -18,7 +17,6 @@ interface ContentViewerProps {
 const ContentViewer = NiceModal.create(
   ({ title, content: directContent, storageKey, metadata }: ContentViewerProps) => {
     const modal = useModal()
-    const { t } = useTranslation()
 
     const { data: blobData, isLoading: isBlobLoading } = useBlob(
       modal.visible && !directContent ? storageKey : undefined
@@ -37,7 +35,7 @@ const ContentViewer = NiceModal.create(
     const { copied, copy: onCopy } = useCopied(content)
 
     return (
-      <AdaptiveModal opened={modal.visible} onClose={onClose} size="lg" centered title={title || t('Content')}>
+      <AdaptiveModal opened={modal.visible} onClose={onClose} size="lg" centered title={title || 'Content'}>
         {metadata && metadata.length > 0 && (
           <div className="mb-sm flex flex-col gap-0.5">
             {metadata.map((m) => (
@@ -65,7 +63,7 @@ const ContentViewer = NiceModal.create(
           </div>
         ) : (
           <div className="bg-chatbox-background-secondary border border-solid border-chatbox-border-secondary rounded-lg p-sm">
-            <Text c="dimmed">{t('No content available')}</Text>
+            <Text c="dimmed">No content available</Text>
           </div>
         )}
 
@@ -77,7 +75,7 @@ const ContentViewer = NiceModal.create(
             disabled={!content}
             leftSection={<ScalableIcon size={16} icon={copied ? IconCheck : IconCopy} />}
           >
-            {t('Copy')}
+            Copy
           </Button>
         </AdaptiveModal.Actions>
       </AdaptiveModal>

@@ -1,7 +1,6 @@
 import { Flex, Text, UnstyledButton } from '@mantine/core'
 import { useNavigate } from '@tanstack/react-router'
 import { type FC, memo, useCallback } from 'react'
-import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
 
 interface ForkMarkerMessageProps {
@@ -10,7 +9,6 @@ interface ForkMarkerMessageProps {
 }
 
 const ForkMarkerMessage: FC<ForkMarkerMessageProps> = ({ sourceSessionId, className }) => {
-  const { t } = useTranslation()
   const navigate = useNavigate()
 
   const handleOpenSourceSession = useCallback(() => {
@@ -30,7 +28,7 @@ const ForkMarkerMessage: FC<ForkMarkerMessageProps> = ({ sourceSessionId, classN
       )}
     >
       <Text size="xs" c="chatbox-tertiary" className="whitespace-nowrap">
-        {t('Forked from conversation')}
+        Forked from conversation
       </Text>
     </Flex>
   )
@@ -42,7 +40,7 @@ const ForkMarkerMessage: FC<ForkMarkerMessageProps> = ({ sourceSessionId, classN
         {sourceSessionId ? (
           <UnstyledButton
             type="button"
-            aria-label={t('Forked from conversation')}
+            aria-label="Forked from conversation"
             onClick={handleOpenSourceSession}
             className="rounded-full"
           >

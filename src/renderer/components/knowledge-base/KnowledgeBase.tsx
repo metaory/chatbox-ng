@@ -63,12 +63,12 @@ const ModelPill: React.FC<ModelPillProps> = ({
         icon={IconAlertTriangle}
         size={12}
         color="red"
-        title={unavailableTooltip || t('Provider unavailable')}
+        title={unavailableTooltip || 'Provider unavailable'}
       />
     )
     if (onUnavailableClick) {
       return (
-        <Tooltip label={unavailableTooltip || t('Provider unavailable')} withArrow multiline maw={200} position="top">
+        <Tooltip label={unavailableTooltip || 'Provider unavailable'} withArrow multiline maw={200} position="top">
           <span style={{ cursor: 'pointer' }} onClick={onUnavailableClick}>
             {icon}
           </span>
@@ -81,13 +81,13 @@ const ModelPill: React.FC<ModelPillProps> = ({
   const maxWidth = isEmbedding ? 200 : 150
 
   const modelText = useMemo(
-    () => (hasModel ? formatModelName(modelValue) : t('None')),
+    () => (hasModel ? formatModelName(modelValue) : 'None'),
     [hasModel, modelValue, formatModelName, t]
   )
 
   return (
     <Pill style={{ display: 'flex', alignItems: 'center' }}>
-      <Flex align="center" gap="xs" maw={maxWidth} h={'100%'}>
+      <Flex align="center" gap="xs" maw={maxWidth} h="100%">
         <Text
           c={getColor()}
           size="xs"
@@ -200,7 +200,7 @@ const KnowledgeBasePage: React.FC = () => {
 
   function formatModelName(model: string) {
     const parsed = parseKnowledgeBaseModelString(model)
-    if (!parsed) return t('Unknown')
+    if (!parsed) return 'Unknown'
     const { providerId, modelId } = parsed
     const providerName = getProviderName(providerId)
     const modelName = getModelName(providerId, modelId) || modelId
@@ -212,7 +212,7 @@ const KnowledgeBasePage: React.FC = () => {
       case 'mineru':
         return 'MinerU'
       default:
-        return t('Local')
+        return 'Local'
     }
   }
 
@@ -312,12 +312,12 @@ const KnowledgeBasePage: React.FC = () => {
   return (
     <Stack p="md" gap="xl">
       <Group justify="space-between" align="center">
-        <Title order={5}>{t('Knowledge Base')}</Title>
+        <Title order={5}>Knowledge Base</Title>
         <Button variant="outline" onClick={() => setShowCreate(true)} disabled={isUnsupportedPlatform}>
           <Group gap="xs">
             <ScalableIcon icon={IconPlus} size={16} />
             <Text size="sm" c="chatbox-brand" fw={400}>
-              {t('Add')}
+              Add
             </Text>
           </Group>
         </Button>
@@ -327,18 +327,16 @@ const KnowledgeBasePage: React.FC = () => {
         <Alert
           variant="light"
           color="orange"
-          title={t('Platform Not Supported')}
+          title="Platform Not Supported"
           icon={<ScalableIcon icon={IconInfoCircle} size={16} />}
         >
           <Text size="sm">
-            {t(
-              'Knowledge Base functionality is not available on Windows ARM64 due to library compatibility issues. This feature is supported on Windows x64, macOS, and Linux.'
-            )}
+            Knowledge Base functionality is not available on Windows ARM64 due to library compatibility issues. This feature is supported on Windows x64, macOS, and Linux.
           </Text>
         </Alert>
       )}
 
-      <Modal opened={showCreate} onClose={() => setShowCreate(false)} title={t('Create Knowledge Base')} centered>
+      <Modal opened={showCreate} onClose={() => setShowCreate(false)} title="Create Knowledge Base" centered>
         <Stack gap="md">
           <KnowledgeBaseNameInput value={newKbName} onChange={setNewKbName} autoFocus />
 
@@ -358,17 +356,17 @@ const KnowledgeBasePage: React.FC = () => {
           <KnowledgeBaseFormActions
             onCancel={() => setShowCreate(false)}
             onConfirm={createKb}
-            confirmText={t('Create')}
+            confirmText="Create"
             isConfirmDisabled={!newKbName || !newEmbeddingModel}
           />
         </Stack>
       </Modal>
-      <Modal opened={!!editKb} onClose={() => setEditKb(null)} title={t('Edit Knowledge Base')} centered>
+      <Modal opened={!!editKb} onClose={() => setEditKb(null)} title="Edit Knowledge Base" centered>
         <Stack gap="md">
           <KnowledgeBaseNameInput
             value={editKb?.name || ''}
             onChange={(value) => editKb && setEditKb({ ...editKb, name: value })}
-            label={t('Name') as string}
+            label={'Name' as string}
           />
           <DocumentParserDisplay parserType={editKb?.documentParser?.type} />
           <KnowledgeBaseModelSelectors
@@ -385,7 +383,7 @@ const KnowledgeBasePage: React.FC = () => {
           <KnowledgeBaseFormActions
             onCancel={() => setEditKb(null)}
             onConfirm={handleSaveEditKb}
-            confirmText={t('Save')}
+            confirmText="Save"
             showDelete
             onDelete={() => setDeleteConfirmKb(editKb)}
           />
@@ -395,23 +393,23 @@ const KnowledgeBasePage: React.FC = () => {
       <Modal
         opened={!!deleteConfirmKb}
         onClose={() => setDeleteConfirmKb(null)}
-        title={t('Delete Knowledge Base')}
+        title="Delete Knowledge Base"
         centered
         size="sm"
       >
         <Stack gap="md">
           <Text size="sm">
-            {t('Are you sure you want to delete the knowledge base')} "{deleteConfirmKb?.name}"?
+            Are you sure you want to delete the knowledge base "{deleteConfirmKb?.name}"?
           </Text>
           <Text size="sm" c="dimmed">
-            {t('This action cannot be undone. All documents and their embeddings will be permanently deleted.')}
+            This action cannot be undone. All documents and their embeddings will be permanently deleted.
           </Text>
           <Group justify="flex-end">
             <Button variant="default" onClick={() => setDeleteConfirmKb(null)}>
-              {t('Cancel')}
+              Cancel
             </Button>
             <Button color="red" onClick={handleDeleteKb}>
-              {t('Delete')}
+              Delete
             </Button>
           </Group>
         </Stack>
@@ -424,18 +422,16 @@ const KnowledgeBasePage: React.FC = () => {
                 <ScalableIcon icon={IconInfoCircle} size={48} color="var(--chatbox-tint-tertiary)" />
                 <Stack gap="xs" align="center">
                   <Text fw={500} size="lg">
-                    {t('No Knowledge Base Yet')}
+                    No Knowledge Base Yet
                   </Text>
                   <Text size="sm" c="dimmed" style={{ maxWidth: 400 }}>
-                    {t(
-                      'Create your first knowledge base to start adding documents and enhance your AI conversations with contextual information.'
-                    )}
+                    Create your first knowledge base to start adding documents and enhance your AI conversations with contextual information.
                   </Text>
                 </Stack>
                 <Button variant="outline" onClick={() => setShowCreate(true)} size="sm">
                   <Group gap="xs">
                     <ScalableIcon icon={IconPlus} size={16} />
-                    {t('Create First Knowledge Base')}
+                    Create First Knowledge Base
                   </Group>
                 </Button>
               </Stack>
@@ -450,16 +446,16 @@ const KnowledgeBasePage: React.FC = () => {
                         {kb.name}
                       </Text>
                       <Button size="xs" variant="subtle" onClick={() => handleEditKb(kb)}>
-                        {t('Edit')}
+                        Edit
                       </Button>
                     </Group>
                     <Group gap="xs" wrap="wrap" align="center">
                       <Text size="xs" c="dimmed">
-                        {t('Parser')}:
+                        Parser:
                       </Text>
                       <Pill>{formatParserType(kb.documentParser?.type)}</Pill>
                       <Text size="xs" c="dimmed">
-                        {t('Embedding')}:
+                        Embedding:
                       </Text>
                       <ModelPill
                         modelValue={kb.embeddingModel}
@@ -469,7 +465,7 @@ const KnowledgeBasePage: React.FC = () => {
                         t={t}
                       />
                       <Text size="xs" c="dimmed">
-                        {t('Rerank')}:
+                        Rerank:
                       </Text>
                       <ModelPill
                         modelValue={kb.rerankModel}
@@ -479,7 +475,7 @@ const KnowledgeBasePage: React.FC = () => {
                         t={t}
                       />
                       <Text size="xs" c="dimmed">
-                        {t('Vision')}:
+                        Vision:
                       </Text>
                       <ModelPill
                         modelValue={kb.visionModel}

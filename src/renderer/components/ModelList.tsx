@@ -63,7 +63,7 @@ export function ModelList({
     <Stack gap="sm" className={className}>
       {showSearch && models.length > 0 && (
         <TextInput
-          placeholder={t('Search models...') as string}
+          placeholder={'Search models...' as string}
           leftSection={<ScalableIcon icon={IconSearch} size={16} />}
           value={searchQuery}
           onChange={(event) => setSearchQuery(event.currentTarget.value)}
@@ -120,21 +120,21 @@ export function ModelList({
                     {model.type && model.type !== 'chat' && <Badge color="blue">{t(capitalize(model.type))}</Badge>}
 
                     {model.capabilities?.includes('reasoning') && (
-                      <Tooltip label={t('Reasoning')}>
+                      <Tooltip label="Reasoning">
                         <Text span c="chatbox-warning" className="flex items-center" style={{ opacity: 0.7 }}>
                           <ScalableIcon icon={IconBulb} size={14} />
                         </Text>
                       </Tooltip>
                     )}
                     {model.capabilities?.includes('vision') && (
-                      <Tooltip label={t('Vision')}>
+                      <Tooltip label="Vision">
                         <Text span c="chatbox-brand" className="flex items-center" style={{ opacity: 0.7 }}>
                           <ScalableIcon icon={IconEye} size={14} />
                         </Text>
                       </Tooltip>
                     )}
                     {model.capabilities?.includes('tool_use') && (
-                      <Tooltip label={t('Tool Use')}>
+                      <Tooltip label="Tool Use">
                         <Text span c="chatbox-success" className="flex items-center" style={{ opacity: 0.7 }}>
                           <ScalableIcon icon={IconTool} size={14} />
                         </Text>
@@ -143,7 +143,7 @@ export function ModelList({
 
                     {model.contextWindow && (
                       <Tooltip
-                        label={`${t('Context Window')}: ${formatTokenCount(model.contextWindow)} ${t('tokens')}`}
+                        label={`Context Window: ${formatTokenCount(model.contextWindow)} tokens`}
                       >
                         <Flex gap={2} align="center" c="dimmed" style={{ flexShrink: 0, opacity: 0.8 }}>
                           <ScalableIcon icon={IconDatabase} size={12} />
@@ -154,7 +154,7 @@ export function ModelList({
                       </Tooltip>
                     )}
                     {model.maxOutput && (
-                      <Tooltip label={`${t('Max Output')}: ${formatTokenCount(model.maxOutput)} ${t('tokens')}`}>
+                      <Tooltip label={`Max Output: ${formatTokenCount(model.maxOutput)} tokens`}>
                         <Flex gap={2} align="center" c="dimmed" style={{ flexShrink: 0, opacity: 0.8 }}>
                           <ScalableIcon icon={IconLogout} size={12} />
                           <Text size="xs" style={{ whiteSpace: 'nowrap' }}>
@@ -223,7 +223,7 @@ export function ModelList({
         ) : (
           <Flex align="center" justify="center" py="lg" px="xs">
             <Text component="span" size="sm" c="chatbox-tertiary">
-              {searchQuery.trim() ? t('No models found matching your search') : t('No models available')}
+              {searchQuery.trim() ? 'No models found matching your search' : 'No models available'}
             </Text>
           </Flex>
         )}

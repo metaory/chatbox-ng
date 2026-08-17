@@ -421,9 +421,17 @@ function RichContentFixture() {
       <Paper withBorder radius="md" p="md">
         <BlockCodeCollapsedStateProvider>
           <Markdown uniqueId="story-markdown" forceColorScheme="light">
-            {
-              '### Model response\n\n| Feature | State |\n| --- | --- |\n| Markdown | **ready** |\n\n```ts\nconst answer = "real preview"\n```\n\nInline math $a^2+b^2=c^2$.'
-            }
+            ### Model response
+
+| Feature | State |
+| --- | --- |
+| Markdown | **ready** |
+
+```ts
+const answer = "real preview"
+```
+
+Inline math $a^2+b^2=c^2$.
           </Markdown>
         </BlockCodeCollapsedStateProvider>
       </Paper>

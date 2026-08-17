@@ -2,7 +2,6 @@ import NiceModal, { useModal } from '@ebay/nice-modal-react'
 import { Button, Combobox, Input, InputBase, Stack, Text, Textarea, useCombobox } from '@mantine/core'
 import { type Message, type MessageContentParts, type MessageRole, MessageRoleEnum } from '@shared/types'
 import { useCallback, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { AdaptiveModal } from '@/components/common/AdaptiveModal'
 import { AssistantAvatar, SystemAvatar, UserAvatar } from '@/components/common/Avatar'
 import { useIsSmallScreen } from '@/hooks/useScreenChange'
@@ -45,7 +44,6 @@ const MessageEditModal = ({
   onClose(): void
   hideSaveAndResend?: boolean
 }) => {
-  const { t } = useTranslation()
   const isSmallScreen = useIsSmallScreen()
 
   // Store initial content for dirty checking
@@ -329,10 +327,10 @@ const MessageEditModal = ({
           <AdaptiveModal.CloseButton onClick={handleClose} />
           {!hideSaveAndResend && (
             <Button onClick={onSaveAndReply} variant="light">
-              {t('Save & Resend')}
+              Save & Resend
             </Button>
           )}
-          <Button onClick={onSave}>{t('Save')}</Button>
+          <Button onClick={onSave}>Save</Button>
         </AdaptiveModal.Actions>
       </AdaptiveModal>
 
@@ -342,16 +340,16 @@ const MessageEditModal = ({
         centered
         size="sm"
         onClose={() => setShowConfirmDialog(false)}
-        title={t('Discard Changes?')}
+        title="Discard Changes?"
       >
         <Stack gap="md">
-          <Text size="sm">{t('You have unsaved changes. Exiting will discard these changes.')}</Text>
+          <Text size="sm">You have unsaved changes. Exiting will discard these changes.</Text>
           <AdaptiveModal.Actions>
             <Button variant="light" onClick={() => setShowConfirmDialog(false)}>
-              {t('Continue Editing')}
+              Continue Editing
             </Button>
             <Button color="red" onClick={forceClose}>
-              {t('Discard Changes')}
+              Discard Changes
             </Button>
           </AdaptiveModal.Actions>
         </Stack>

@@ -1,7 +1,6 @@
 import { ActionIcon, Box, Flex, ScrollArea, Stack, Text, UnstyledButton } from '@mantine/core'
 import type { ImageGeneration } from '@shared/types'
 import { IconPlus, IconServer } from '@tabler/icons-react'
-import { useTranslation } from 'react-i18next'
 import { Drawer } from 'vaul'
 import { ScalableIcon } from '@/components/common/ScalableIcon'
 import ProviderIcon from '@/components/icons/ProviderIcon'
@@ -40,7 +39,6 @@ export function MobileHistoryDrawer({
   onNewCreation,
   onDelete,
 }: MobileHistoryDrawerProps) {
-  const { t } = useTranslation()
 
   return (
     <Drawer.Root open={open} onOpenChange={onOpenChange} noBodyStyles>
@@ -57,7 +55,7 @@ export function MobileHistoryDrawer({
           >
             <Drawer.Title asChild>
               <Text size="xs" fw={600} c="dimmed" tt="uppercase" style={{ letterSpacing: 0.5 }}>
-                {t('History')}
+                History
               </Text>
             </Drawer.Title>
             <ActionIcon
@@ -122,7 +120,6 @@ export function MobileModelDrawer({
   selectedModel,
   onSelect,
 }: MobileModelDrawerProps) {
-  const { t } = useTranslation()
 
   return (
     <Drawer.Root open={open} onOpenChange={onOpenChange} noBodyStyles>
@@ -139,7 +136,7 @@ export function MobileModelDrawer({
           >
             <Drawer.Title asChild>
               <Text size="xs" fw={600} c="dimmed" tt="uppercase" style={{ letterSpacing: 0.5 }}>
-                {t('Select Model')}
+                Select Model
               </Text>
             </Drawer.Title>
           </Flex>
@@ -204,7 +201,6 @@ export interface MobileRatioDrawerProps {
 }
 
 export function MobileRatioDrawer({ open, onOpenChange, options, selectedRatio, onSelect }: MobileRatioDrawerProps) {
-  const { t } = useTranslation()
 
   return (
     <Drawer.Root open={open} onOpenChange={onOpenChange} noBodyStyles>
@@ -221,7 +217,7 @@ export function MobileRatioDrawer({ open, onOpenChange, options, selectedRatio, 
           >
             <Drawer.Title asChild>
               <Text size="xs" fw={600} c="dimmed" tt="uppercase" style={{ letterSpacing: 0.5 }}>
-                {t('Aspect Ratio')}
+                Aspect Ratio
               </Text>
             </Drawer.Title>
           </Flex>

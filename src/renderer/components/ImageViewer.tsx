@@ -3,7 +3,6 @@ import { concat } from 'lodash'
 import type PhotoSwipe from 'photoswipe'
 import type { UIElementData } from 'photoswipe'
 import { type ReactNode, useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
 import { Gallery, Item as GalleryItem } from 'react-photoswipe-gallery'
 import platform from '@/platform'
 
@@ -68,9 +67,8 @@ export function ImageViewer({
   pictures?: readonly MessagePicture[]
   onReport?(picture: MessagePicture): void
 }) {
-  const { t } = useTranslation()
-  const downloadLabel = String(t('Download'))
-  const reportLabel = String(t('report'))
+  const downloadLabel = 'Download'
+  const reportLabel = 'report'
   const uiElements = useMemo<UIElementData[]>(
     () =>
       concat(

@@ -25,7 +25,6 @@ import {
 } from '@tabler/icons-react'
 import { createFileRoute } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { ChatboxWelcomeCard } from '@/components/common/ChatboxWelcomeCard'
 import { ImageModelSelect } from '@/components/ImageModelSelect'
 import Page from '@/components/layout/Page'
@@ -103,7 +102,6 @@ function InputToolbar({
   onAddReference,
   onNewCreation,
 }: InputToolbarProps) {
-  const { t } = useTranslation()
 
   return (
     <Flex align="center" gap={0} className="shrink-0 w-full" justify="space-between">
@@ -175,7 +173,7 @@ function InputToolbar({
         >
           <IconPhoto size={16} className="text-[var(--chatbox-tint-secondary)]" />
           <Text size="sm" className="text-[var(--chatbox-tint-secondary)]">
-            {t('Upload')}
+            Upload
           </Text>
         </UnstyledButton>
       </Flex>
@@ -196,7 +194,7 @@ function InputToolbar({
             leftSection={<IconPlus size={16} />}
             onClick={onNewCreation}
           >
-            {t('New Creation')}
+            New Creation
           </Button>
         )}
       </Flex>
@@ -209,7 +207,6 @@ function InputToolbar({
    ============================================ */
 
 function ImageCreatorPage() {
-  const { t } = useTranslation()
   const isSmallScreen = useIsSmallScreen()
   const { providers } = useProviders()
   const imageModelGroups = useImageModelGroups()
@@ -357,7 +354,7 @@ function ImageCreatorPage() {
   const handleSubmit = useCallback(async () => {
     if (!prompt.trim() || isCurrentlyGenerating) return
     if (!selectedModel) {
-      toastActions.add(t('Please select a model'))
+      toastActions.add('Please select a model')
       return
     }
 
@@ -386,13 +383,13 @@ function ImageCreatorPage() {
     } catch (error) {
       log.error('Failed to generate image:', error)
     }
-  }, [prompt, referenceImages, selectedProvider, selectedModel, selectedRatio, isCurrentlyGenerating, t])
+  }, [prompt, referenceImages, selectedProvider, selectedModel, selectedRatio, isCurrentlyGenerating])
 
   const handleQuickPromptSubmit = useCallback(
     async (quickPrompt: string) => {
       if (isCurrentlyGenerating) return
       if (!selectedModel) {
-        toastActions.add(t('Please select a model'))
+        toastActions.add('Please select a model')
         return
       }
 
@@ -411,7 +408,7 @@ function ImageCreatorPage() {
         log.error('Failed to generate image:', error)
       }
     },
-    [selectedProvider, selectedModel, isCurrentlyGenerating, t]
+    [selectedProvider, selectedModel, isCurrentlyGenerating]
   )
 
   const handleUseAsReference = useCallback((storageKey: string, sourceRecordId?: string) => {
@@ -488,12 +485,12 @@ function ImageCreatorPage() {
   )
 
   const modelDisplayName = useMemo(() => {
-    if (!selectedModel) return t('No models available')
+    if (!selectedModel) return 'No models available'
     return getImageModelDisplayName({
       provider: selectedProvider,
       modelId: selectedModel,
     })
-  }, [selectedProvider, selectedModel, getImageModelDisplayName, t])
+  }, [selectedProvider, selectedModel, getImageModelDisplayName])
 
   const getHistoryImageModelDisplayName = useCallback(
     (model: ImageGenerationModel) => {
@@ -530,13 +527,13 @@ function ImageCreatorPage() {
     >
       <IconHistory size={18} className="text-[var(--chatbox-tint-secondary)]" />
       <Text size="sm" className="text-[var(--chatbox-tint-secondary)]">
-        {t('History')}
+        History
       </Text>
     </UnstyledButton>
   )
 
   return (
-    <Page title={t('Image Creator')} right={headerRight}>
+    <Page title="Image Creator" right={headerRight}>
       <Flex flex={1} h="100%" className="overflow-hidden relative">
         {/* Main Content Area */}
         <Flex direction="column" flex={1} h="100%" className="overflow-hidden relative">
@@ -570,7 +567,7 @@ function ImageCreatorPage() {
                   {currentRecord.status === 'generating' && currentRecord.taskId && !isCurrentlyGenerating && (
                     <Flex justify="center" w="100%">
                       <Button variant="light" onClick={() => void resumeImageGenerationWithFollowUp(currentRecord.id)}>
-                        {t('Resume Generation')}
+                        Resume Generation
                       </Button>
                     </Flex>
                   )}
@@ -616,7 +613,7 @@ function ImageCreatorPage() {
                   <Flex align="flex-end" gap={4}>
                     <Textarea
                       ref={textareaRef}
-                      placeholder={t('Describe the image you want to create...') || ''}
+                      placeholder="Describe the image you want to create..."
                       value={prompt}
                       onChange={(e) => setPrompt(e.target.value)}
                       minRows={2}
@@ -681,7 +678,7 @@ function ImageCreatorPage() {
               </Box>
 
               <Text className="disclaimer-safe-area" size="xs" c="dimmed" ta="center">
-                {t('AI-generated images may not be accurate. Review output carefully.')}
+                AI-generated images may not be accurate. Review output carefully.
               </Text>
             </Stack>
           </Box>

@@ -16,7 +16,6 @@ import {
   useRef,
   useState,
 } from 'react'
-import { useTranslation } from 'react-i18next'
 import { Drawer } from 'vaul'
 import { useProviders } from '@/hooks/useProviders'
 import { useIsSmallScreen } from '@/hooks/useScreenChange'
@@ -58,7 +57,6 @@ export const ModelSelectorV2 = forwardRef<HTMLDivElement, ModelSelectorV2Props>(
     },
     ref
   ) => {
-    const { t } = useTranslation()
     const isMobile = useIsSmallScreen()
     const { providers, favoritedModels, favoriteModel, unfavoriteModel, isFavoritedModel } = useProviders()
     const favoritedModelsSetting = useSettingsStore((state) => state.favoritedModels)
@@ -218,7 +216,7 @@ export const ModelSelectorV2 = forwardRef<HTMLDivElement, ModelSelectorV2Props>(
           data-testid={TestId.model.searchInput}
           value={search}
           onChange={(event) => setSearch(event.currentTarget.value)}
-          placeholder={t('Search models') as string}
+          placeholder={'Search models' as string}
           variant="unstyled"
           className="flex-1"
           styles={{ input: { fontSize: 'var(--mantine-font-size-sm)', minHeight: 24, height: 24, padding: 0 } }}
@@ -227,8 +225,8 @@ export const ModelSelectorV2 = forwardRef<HTMLDivElement, ModelSelectorV2Props>(
           value={activeTab}
           onChange={setActiveTab}
           data={[
-            { label: t('All'), value: 'all' },
-            { label: t('Favorite'), value: 'favorite' },
+            { label: 'All', value: 'all' },
+            { label: 'Favorite', value: 'favorite' },
           ]}
           size="xs"
           styles={{ label: { paddingInline: 10 } }}
@@ -267,8 +265,8 @@ export const ModelSelectorV2 = forwardRef<HTMLDivElement, ModelSelectorV2Props>(
               value={activeTab}
               onChange={setActiveTab}
               data={[
-                { label: t('All'), value: 'all' },
-                { label: t('Favorite'), value: 'favorite' },
+                { label: 'All', value: 'all' },
+                { label: 'Favorite', value: 'favorite' },
               ]}
               fullWidth
               radius="lg"
@@ -296,7 +294,7 @@ export const ModelSelectorV2 = forwardRef<HTMLDivElement, ModelSelectorV2Props>(
               data-testid={TestId.model.searchInput}
               value={search}
               onChange={(event) => setSearch(event.currentTarget.value)}
-              placeholder={t('Search models') as string}
+              placeholder={'Search models' as string}
               variant="unstyled"
               className="flex-1"
               styles={{ input: { fontSize: 'var(--mantine-font-size-sm)', height: 28, minHeight: 28 } }}
@@ -324,14 +322,14 @@ export const ModelSelectorV2 = forwardRef<HTMLDivElement, ModelSelectorV2Props>(
               )}
               onClick={() => handleSelect('', '')}
             >
-              {autoText || t('Auto')}
+              {autoText || 'Auto'}
             </button>
           )}
           {visibleModelCount === 0 ? (
             showAuto && activeTab === 'all' ? null : (
               <Stack gap="xs" py="md" px="sm" align="center">
                 <Text c="chatbox-tertiary" size="xs">
-                  {activeTab === 'favorite' ? t('No favorite models') : t('No eligible models available')}
+                  {activeTab === 'favorite' ? 'No favorite models' : 'No eligible models available'}
                 </Text>
               </Stack>
             )
@@ -400,7 +398,7 @@ export const ModelSelectorV2 = forwardRef<HTMLDivElement, ModelSelectorV2Props>(
                   style={DRAWER_SURFACE_STYLE}
                 >
                   <div aria-hidden className="mx-auto my-3 h-1 w-14 rounded-full bg-chatbox-tint-tertiary opacity-70" />
-                  <Drawer.Title className="hidden">{t('Select Model')}</Drawer.Title>
+                  <Drawer.Title className="hidden">Select Model</Drawer.Title>
                   {content}
                   <div className="h-[--mobile-safe-area-inset-bottom] min-h-4" />
                 </Stack>
@@ -424,7 +422,7 @@ export const ModelSelectorV2 = forwardRef<HTMLDivElement, ModelSelectorV2Props>(
                   style={DRAWER_SURFACE_STYLE}
                 >
                   <div aria-hidden className="mx-auto my-3 h-1 w-14 rounded-full bg-chatbox-tint-tertiary opacity-70" />
-                  <Drawer.Title className="hidden">{t('Model details')}</Drawer.Title>
+                  <Drawer.Title className="hidden">Model details</Drawer.Title>
                   {mobileDetail && (
                     <DetailCard model={mobileDetail} onClose={() => setMobileDetail(null)} mobile />
                   )}

@@ -1,7 +1,6 @@
 import { CloseButton, Flex, Slider, Text, TextInput } from '@mantine/core'
 import clsx from 'clsx'
 import { type ChangeEvent, type KeyboardEvent, useCallback, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
 export type Props = {
   value?: number
@@ -15,7 +14,6 @@ export type Props = {
 
 // SliderChangeEnd触发 或者 input blur的时候才触发onChange
 export default function SliderWithInput({ value, onChange, min = 0, max = 1, step = 0.01, className, suffix }: Props) {
-  const { t } = useTranslation()
   const [tempSliderValue, setTempSliderValue] = useState<number>()
   const sliderValue = useMemo(() => tempSliderValue ?? value ?? 0, [tempSliderValue, value])
   const handleSliderChange = useCallback((v: number) => {
@@ -71,7 +69,7 @@ export default function SliderWithInput({ value, onChange, min = 0, max = 1, ste
       <TextInput
         w={64}
         size="sm"
-        placeholder={t('Not set') || ''}
+        placeholder="Not set"
         value={inputValue}
         onChange={handleInputChange}
         onFocus={(e) => e.currentTarget.select()}

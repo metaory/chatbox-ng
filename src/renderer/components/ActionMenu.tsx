@@ -1,7 +1,6 @@
 import { Menu, type MenuItemProps, type MenuProps, Popover, Stack, Text, useMantineTheme } from '@mantine/core'
 import { IconCheck, type IconProps } from '@tabler/icons-react'
 import { type FC, type MouseEventHandler, type ReactElement, useEffect, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { Drawer } from 'vaul'
 import { useIsSmallScreen } from '@/hooks/useScreenChange'
 import { Divider } from './common/Divider'
@@ -214,11 +213,10 @@ const ContextualDoubleCheckMenuItem: FC<{
   const [showConfirm, setShowConfirm] = useState(false)
   const [confirming, setConfirming] = useState(false)
   const confirmingRef = useRef(false)
-  const { t } = useTranslation()
   const theme = useMantineTheme()
 
   const doubleCheckConfig = item.doubleCheck === true ? {} : item.doubleCheck
-  const doubleCheckText = doubleCheckConfig.text ?? t('Confirm?')
+  const doubleCheckText = doubleCheckConfig.text ?? 'Confirm?'
   const doubleCheckIcon = doubleCheckConfig.icon ?? IconCheck
   const doubleCheckColor = doubleCheckConfig.color ?? item.color ?? 'chatbox-error'
 
@@ -363,12 +361,11 @@ const MobileDoubleCheckMenuItem: FC<{
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [confirming, setConfirming] = useState(false)
   const confirmingRef = useRef(false)
-  const { t } = useTranslation()
 
   if (!item.doubleCheck) return null
 
   const doubleCheckConfig = item.doubleCheck === true ? {} : item.doubleCheck
-  const doubleCheckText = doubleCheckConfig.text ?? t('Confirm?')
+  const doubleCheckText = doubleCheckConfig.text ?? 'Confirm?'
   const doubleCheckColor = doubleCheckConfig.color ?? item.color ?? 'chatbox-error'
 
   return (
@@ -422,7 +419,7 @@ const MobileDoubleCheckMenuItem: FC<{
               <Drawer.Close asChild>
                 <button className="border-0 bg-transparent p-2.5">
                   <Text c="chatbox-tertiary" span lineClamp={1} fw={600}>
-                    {t('Cancel')}
+                    Cancel
                   </Text>
                 </button>
               </Drawer.Close>
@@ -460,7 +457,6 @@ const DoubleCheckMenuItem = ({
   testId?: string
   confirmTestId?: string
 } & MenuItemProps) => {
-  const { t } = useTranslation()
   const [showConfirm, setShowConfirm] = useState(false)
   const [confirming, setConfirming] = useState(false)
   const confirmingRef = useRef(false)
@@ -518,7 +514,7 @@ const DoubleCheckMenuItem = ({
             : undefined,
       }}
     >
-      {doubleCheckText ?? t('Confirm?')}
+      {doubleCheckText ?? 'Confirm?'}
     </Menu.Item>
   )
 }

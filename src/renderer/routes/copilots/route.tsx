@@ -1,7 +1,6 @@
 import { ActionIcon, Flex, Text } from '@mantine/core'
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
 import { createFileRoute, Outlet, useCanGoBack, useNavigate, useRouter, useRouterState } from '@tanstack/react-router'
-import { useTranslation } from 'react-i18next'
 import { ScalableIcon } from '@/components/common/ScalableIcon'
 import Page from '@/components/layout/Page'
 import { useIsSmallScreen } from '@/hooks/useScreenChange'
@@ -12,7 +11,6 @@ export const Route = createFileRoute('/copilots')({
 })
 
 export function RouteComponent() {
-  const { t } = useTranslation()
   const navigate = useNavigate()
   const router = useRouter()
   const routerState = useRouterState()
@@ -27,9 +25,9 @@ export function RouteComponent() {
 
   // Determine current page title
   const getSubPageTitle = () => {
-    if (isFeatured) return t('Chatbox Featured')
-    if (isMy) return t('My Created & Added Copilots')
-    if (isSearch) return t('Search')
+    if (isFeatured) return 'Chatbox Featured'
+    if (isMy) return 'My Created & Added Copilots'
+    if (isSearch) return 'Search'
     return null
   }
 
@@ -70,7 +68,7 @@ export function RouteComponent() {
           c={subPageTitle ? 'chatbox-secondary' : 'chatbox-primary'}
           onClick={subPageTitle ? handleRootClick : undefined}
         >
-          {t('My Copilots')}
+          My Copilots
         </Text>
 
         {subPageTitle && (
@@ -87,7 +85,7 @@ export function RouteComponent() {
 
       {
         <Text size="lg" fw={600} className="md:hidden">
-          {subPageTitle || t('My Copilots')}
+          {subPageTitle || 'My Copilots'}
         </Text>
       }
     </>

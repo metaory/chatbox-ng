@@ -2,7 +2,6 @@ import { ActionIcon, Button, Flex, Group, Menu, Switch } from '@mantine/core'
 import { IconSettings2 } from '@tabler/icons-react'
 import { Link } from '@tanstack/react-router'
 import { type FC, type ReactNode, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useMCPServerStatus, useToggleMCPServer } from '@/hooks/mcp'
 import { navigateToSettings } from '@/modals/Settings'
 import { useMcpSettings } from '@/stores/settingsStore'
@@ -39,7 +38,6 @@ const ServerItem: FC<{
 }
 
 const MCPMenu: FC<{ children: (enabledTools: number) => ReactNode }> = ({ children }) => {
-  const { t } = useTranslation()
   const mcp = useMcpSettings()
   const onEnabledChange = useToggleMCPServer()
   const enabledToolsCount = mcp.servers.filter((s) => s.enabled).length
@@ -85,7 +83,7 @@ const MCPMenu: FC<{ children: (enabledTools: number) => ReactNode }> = ({ childr
           <Group justify="center">
             <Link to="/settings/mcp">
               <Button size="xs" my={12} variant="outline">
-                {t('Add your first MCP server')}
+                Add your first MCP server
               </Button>
             </Link>
           </Group>

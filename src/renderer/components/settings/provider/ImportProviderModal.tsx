@@ -86,7 +86,7 @@ export function ImportProviderModal({ opened, onClose, importedConfig, existingP
         params: { providerId },
       })
     } catch (error) {
-      addToast(error instanceof Error ? error.message : t('Failed to import provider'))
+      addToast(error instanceof Error ? error.message : 'Failed to import provider')
     }
   }, [providerId, existingProvider, providers, customProviders, setSettings, navigate, t, onClose, importedConfig])
 
@@ -94,7 +94,7 @@ export function ImportProviderModal({ opened, onClose, importedConfig, existingP
     <AdaptiveModal
       opened={opened}
       onClose={onClose}
-      title={t('Import Provider Configuration')}
+      title="Import Provider Configuration"
       centered
       size="lg"
       styles={{
@@ -125,10 +125,10 @@ export function ImportProviderModal({ opened, onClose, importedConfig, existingP
             <ScalableIcon icon={IconAlertTriangle} color="var(--chatbox-tint-error)" />
             <Box flex={1}>
               <Text size="sm" fw={600} c="chatbox-error">
-                {t('Provider already exists')}
+                Provider already exists
               </Text>
               <Text size="sm" c="chatbox-error">
-                {t('A provider with this ID already exists. Continuing will overwrite the existing configuration.')}
+                A provider with this ID already exists. Continuing will overwrite the existing configuration.
               </Text>
             </Box>
           </Flex>
@@ -154,7 +154,7 @@ export function ImportProviderModal({ opened, onClose, importedConfig, existingP
           {importedConfig?.models && importedConfig.models.length > 0 && (
             <Box>
               <Text size="sm" fw={600} mb="xs">
-                {t('Model')}
+                Model
               </Text>
               <ScrollArea h={200}>
                 <ModelList models={uniqueModels} showActions={false} />
@@ -167,7 +167,7 @@ export function ImportProviderModal({ opened, onClose, importedConfig, existingP
         <AdaptiveModal.Actions>
           <AdaptiveModal.CloseButton onClick={onClose} />
           <Button onClick={handleConfirmImport} disabled={!providerName || !providerId}>
-            {t('Save')}
+            Save
           </Button>
         </AdaptiveModal.Actions>
       </Stack>

@@ -1,6 +1,5 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText } from '@mui/material'
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 import Markdown from '@/components/Markdown'
 import platform from '@/platform'
 import { settingsStore } from '@/stores/settingsStore'
@@ -9,7 +8,6 @@ import * as remote from '../packages/remote'
 const { useEffect, useState } = React
 
 export default function RemoteDialogWindow() {
-  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const [dialogConfig, setDialogConfig] = useState<remote.DialogConfig | null>(null)
 
@@ -64,7 +62,7 @@ export default function RemoteDialogWindow() {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => onClose()}>{t('Cancel')}</Button>
+        <Button onClick={() => onClose()}>Cancel</Button>
       </DialogActions>
     </Dialog>
   )

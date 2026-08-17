@@ -75,7 +75,7 @@ export const GitHubInstallModal: FC<GitHubInstallModalProps> = ({
     if (!selectedSkills.length) return
 
     setInstalling(true)
-    const installFailedText = String(t('Install failed'))
+    const installFailedText = 'Install failed'
     let anyFailed = false
 
     for (const skill of selectedSkills) {
@@ -148,7 +148,7 @@ export const GitHubInstallModal: FC<GitHubInstallModalProps> = ({
               disabled={installing}
               label={
                 <Text size="xs" fw={500}>
-                  {t('Select all')}
+                  Select all
                 </Text>
               }
             />
@@ -188,7 +188,7 @@ export const GitHubInstallModal: FC<GitHubInstallModalProps> = ({
                 />
                 {status === 'loading' && (
                   <Badge size="xs" style={statusBadgeStyle}>
-                    {t('Installing')}
+                    Installing
                   </Badge>
                 )}
                 {status === 'success' && (
@@ -198,7 +198,7 @@ export const GitHubInstallModal: FC<GitHubInstallModalProps> = ({
                     leftSection={<ScalableIcon icon={IconCheck} size={12} />}
                     style={statusBadgeStyle}
                   >
-                    {t('Installed')}
+                    Installed
                   </Badge>
                 )}
                 {status === 'error' && (
@@ -208,7 +208,7 @@ export const GitHubInstallModal: FC<GitHubInstallModalProps> = ({
                     leftSection={<ScalableIcon icon={IconX} size={12} />}
                     style={statusBadgeStyle}
                   >
-                    {t('Failed')}
+                    Failed
                   </Badge>
                 )}
               </Flex>
@@ -223,10 +223,10 @@ export const GitHubInstallModal: FC<GitHubInstallModalProps> = ({
 
         <Flex justify="flex-end" gap="xs" mt="xs">
           <Button variant="default" onClick={onClose} disabled={installing}>
-            {t('Cancel')}
+            Cancel
           </Button>
           <Button loading={installing} onClick={handleInstallSelected} disabled={!selectedPaths.length}>
-            {t('Install Selected')}
+            Install Selected
           </Button>
         </Flex>
       </Stack>

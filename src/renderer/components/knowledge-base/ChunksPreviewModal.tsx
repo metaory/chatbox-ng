@@ -66,7 +66,7 @@ const ChunksPreviewModal: React.FC<ChunksPreviewModalProps> = ({
   }, [opened, file, knowledgeBaseId, maxChunks, knowledgeBaseController])
 
   return (
-    <Modal opened={opened} onClose={onClose} title={t('File Chunks Preview')} size="lg" centered>
+    <Modal opened={opened} onClose={onClose} title="File Chunks Preview" size="lg" centered>
       {file && (
         <Stack gap="md">
           <Group gap="xs">
@@ -81,7 +81,7 @@ const ChunksPreviewModal: React.FC<ChunksPreviewModalProps> = ({
               <Group gap="xs">
                 <Loader size="sm" />
                 <Text size="sm" c="dimmed">
-                  {t('Loading chunks...')}
+                  Loading chunks...
                 </Text>
               </Group>
             </Center>
@@ -96,9 +96,7 @@ const ChunksPreviewModal: React.FC<ChunksPreviewModalProps> = ({
           ) : (
             <Center py="xl">
               <Text size="sm" c="dimmed">
-                {t(
-                  'No chunks available. Try converting the file to a text format before adding it to the knowledge base.'
-                )}
+                No chunks available. Try converting the file to a text format before adding it to the knowledge base.
               </Text>
             </Center>
           )}
@@ -113,17 +111,16 @@ interface ChunkCardProps {
 }
 
 const ChunkCard: React.FC<ChunkCardProps> = ({ chunk }) => {
-  const { t } = useTranslation()
 
   return (
     <Paper withBorder p="md">
       <Stack gap="xs">
         <Group justify="space-between">
           <Text fw={500} size="sm">
-            {t('Chunk')} {chunk.chunkIndex}
+            Chunk {chunk.chunkIndex}
           </Text>
           <Text size="xs" c="dimmed">
-            {chunk.text.length} {t('characters')}
+            {chunk.text.length} characters
           </Text>
         </Group>
         <Code

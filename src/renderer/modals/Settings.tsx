@@ -10,7 +10,6 @@ import {
 } from '@tanstack/react-router'
 import clsx from 'clsx'
 import { type FC, useCallback, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
 import { Toaster } from 'sonner'
 import { z } from 'zod'
 import { ScalableIcon } from '@/components/common/ScalableIcon'
@@ -38,7 +37,6 @@ import { RouteComponent as SettingsWebSearchRouteComponent } from '@/routes/sett
 export type SettingsModalProps = {}
 
 export const SettingsModal: FC<SettingsModalProps> = (props) => {
-  const { t } = useTranslation()
   const location = useLocation()
   const search = location.search as { settings?: string }
   const { needRoomForMacWindowControls } = useNeedRoomForWinControls()
@@ -77,9 +75,9 @@ export const SettingsModal: FC<SettingsModalProps> = (props) => {
     >
       <Flex flex="0 0 auto" className="title-bar border-0 border-b border-chatbox-border-primary border-solid">
         <div className={clsx('flex-[1_1_0]', needRoomForMacWindowControls ? 'min-w-16' : '')} />
-        <Flex p="sm" align="center" w={'100%'} maw={1200} gap="xs">
+        <Flex p="sm" align="center" w="100%" maw={1200} gap="xs">
           <Title order={3} flex={1}>
-            {t('Settings')}
+            Settings
           </Title>
 
           <Text c="chatbox-tertiary" size="xs">

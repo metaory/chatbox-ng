@@ -2,7 +2,6 @@
 import DataObjectIcon from '@mui/icons-material/DataObject'
 import { ChartBarStacked } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { Gallery, Item } from 'react-photoswipe-gallery'
 import { cn } from '@/lib/utils'
 import { copyToClipboard } from '@/packages/navigator'
@@ -108,7 +107,6 @@ export function MermaidSVGPreviewDangerous(props: {
   generating?: boolean
 }) {
   const { svgId, svgCode, mermaidCode, className, generating } = props
-  const { t } = useTranslation()
   const setPictureShow = useUIStore((s) => s.setPictureShow)
   if (!svgCode.includes('</svg') && generating) {
     return <Loading />
@@ -132,7 +130,7 @@ export function MermaidSVGPreviewDangerous(props: {
             {
               onClick: () => {
                 copyToClipboard(mermaidCode)
-                toastActions.add(t('copied to clipboard'))
+                toastActions.add('copied to clipboard')
               },
               icon: <DataObjectIcon />,
             },

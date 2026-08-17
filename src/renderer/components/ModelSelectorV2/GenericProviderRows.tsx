@@ -1,7 +1,6 @@
 import type { ProviderModelInfo } from '@shared/types'
 import { ModelProviderEnum } from '@shared/types'
 import clsx from 'clsx'
-import { useTranslation } from 'react-i18next'
 import { modelMatchesSearch } from './chatboxCatalog'
 import { groupFavorites } from './helpers'
 import { ModelRow } from './ModelRow'
@@ -9,7 +8,6 @@ import { ProviderRowHeader } from './ProviderRowHeader'
 import type { DetailModel, FavoriteModel, FilteredProvider } from './types'
 
 function ByokSectionDivider({ mobile }: { mobile: boolean }) {
-  const { t } = useTranslation()
   const byokLabel = 'BYOK'
 
   return (
@@ -20,7 +18,7 @@ function ByokSectionDivider({ mobile }: { mobile: boolean }) {
       )}
     >
       <span className="min-w-0 flex-1 truncate text-xs font-semibold text-chatbox-tint-secondary">
-        {t('More Providers')}
+        More Providers
       </span>
       <span className="text-[11px] font-semibold text-chatbox-tint-tertiary">{byokLabel}</span>
     </div>

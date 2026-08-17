@@ -1,10 +1,8 @@
 import type { ModelProviderEnum, ProviderInfo, ProviderSettings } from '@shared/types'
 import { useCallback, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { parseProviderFromJson } from '@/utils/provider-config'
 
 export function useProviderImport(providers: ProviderInfo[]) {
-  const { t } = useTranslation()
   const [importModalOpened, setImportModalOpened] = useState(false)
   const [importedConfig, setImportedConfig] = useState<
     ProviderInfo | (ProviderSettings & { id: ModelProviderEnum }) | null
@@ -34,7 +32,7 @@ export function useProviderImport(providers: ProviderInfo[]) {
       const config = parseProviderFromJson(text)
 
       if (!config) {
-        setImportError(t('Invalid provider configuration format'))
+        setImportError('Invalid provider configuration format')
         return
       }
 
@@ -45,7 +43,7 @@ export function useProviderImport(providers: ProviderInfo[]) {
       setImportModalOpened(true)
     } catch (err) {
       console.error('Clipboard import failed:', err)
-      setImportError(t('Failed to read from clipboard'))
+      setImportError('Failed to read from clipboard')
     } finally {
       setIsImporting(false)
     }

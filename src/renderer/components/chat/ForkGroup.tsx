@@ -58,7 +58,7 @@ export default function ForkGroup(props: ForkGroupProps) {
   const compactionStateMap = useAtomValue(compactionUIStateMapAtom)
   const compactionRunning = compactionStateMap[sessionId]?.status === 'running'
   const forkControlsLocked = generationLocked || compactionRunning
-  const lockReason = generationLocked ? t('Wait for the current replies to finish') : t('Wait for compaction to finish')
+  const lockReason = generationLocked ? 'Wait for the current replies to finish' : 'Wait for compaction to finish'
 
   useEffect(() => {
     if (forks.lists.length > prevLength.current) {
@@ -157,7 +157,7 @@ export default function ForkGroup(props: ForkGroupProps) {
         size={20}
         radius="lg"
         color={flash ? 'chatbox-secondary' : 'chatbox-tertiary'}
-        aria-label={forkControlsLocked ? lockReason : t('Previous reply')}
+        aria-label={forkControlsLocked ? lockReason : 'Previous reply'}
         aria-disabled={forkControlsLocked}
         data-disabled={forkControlsLocked || undefined}
         onClick={() => handleSwitch('prev')}
@@ -170,7 +170,7 @@ export default function ForkGroup(props: ForkGroupProps) {
           ...(!expanded
             ? [
                 {
-                  text: t('Expand view'),
+                  text: 'Expand view',
                   icon: IconAlignRight,
                   onClick: () => setExpanded(true),
                 },
@@ -179,7 +179,7 @@ export default function ForkGroup(props: ForkGroupProps) {
           ...(expanded || revealedBranchIds.size > 0
             ? [
                 {
-                  text: t('Collapse other branches'),
+                  text: 'Collapse other branches',
                   icon: IconFold,
                   onClick: () => {
                     setExpanded(false)
@@ -193,7 +193,7 @@ export default function ForkGroup(props: ForkGroupProps) {
           },
           {
             doubleCheck: !forkControlsLocked,
-            text: t('delete'),
+            text: 'delete',
             icon: IconTrash,
             disabled: forkControlsLocked && !isSmallScreen,
             onClick: handleDelete,
@@ -209,7 +209,7 @@ export default function ForkGroup(props: ForkGroupProps) {
         size={20}
         radius="lg"
         color={flash ? 'chatbox-secondary' : 'chatbox-tertiary'}
-        aria-label={forkControlsLocked ? lockReason : t('Next reply')}
+        aria-label={forkControlsLocked ? lockReason : 'Next reply'}
         aria-disabled={forkControlsLocked}
         data-disabled={forkControlsLocked || undefined}
         onClick={() => handleSwitch('next')}
@@ -240,7 +240,7 @@ export default function ForkGroup(props: ForkGroupProps) {
             aria-disabled={forkControlsLocked}
             onClick={() => handleSwitchTo(index)}
           >
-            {t('Switch to this branch')}
+            Switch to this branch
           </Button>
         )
 
@@ -260,7 +260,7 @@ export default function ForkGroup(props: ForkGroupProps) {
                 {followupCount > 0 && (
                   <Text size="xs" c="chatbox-tertiary">
                     {followupCount === 1
-                      ? t('1 follow-up message')
+                      ? '1 follow-up message'
                       : t('{{count}} follow-up messages', { count: followupCount })}
                   </Text>
                 )}

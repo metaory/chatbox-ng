@@ -88,7 +88,7 @@ const PendingApprovalPill: FC<{ session: Session }> = ({ session }) => {
                 void revealApprovalCard(session.id, current.messageId, current.toolCallId)
               }}
             >
-              {t('View')}
+              View
               <IconArrowUp size={12} />
             </UnstyledButton>
             <Button
@@ -99,7 +99,7 @@ const PendingApprovalPill: FC<{ session: Session }> = ({ session }) => {
               className="shrink-0"
               onClick={() => continuePausedToolCall(session.id, current.messageId, current.toolCallId)}
             >
-              {t('Approve')}
+              Approve
             </Button>
             <Button
               data-testid={TestId.toolCall.approvalPillDeny}
@@ -110,7 +110,7 @@ const PendingApprovalPill: FC<{ session: Session }> = ({ session }) => {
               className="shrink-0"
               onClick={() => stopPausedToolCall(session.id, current.messageId, current.toolCallId)}
             >
-              {t('Deny')}
+              Deny
             </Button>
           </Box>
         </Box>

@@ -3,7 +3,6 @@ import { IconCheck, IconX } from '@tabler/icons-react'
 import { createFileRoute } from '@tanstack/react-router'
 import { ofetch } from 'ofetch'
 import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { AdaptiveSelect } from '@/components/AdaptiveSelect'
 import { AppTooltip as Tooltip } from '@/components/ui/tooltip'
 import { PROVIDERS_WITH_PARSE_LINK } from '@/packages/web-search'
@@ -18,7 +17,6 @@ export const Route = createFileRoute('/settings/web-search')({
 })
 
 export function RouteComponent() {
-  const { t } = useTranslation()
   const setSettings = useSettingsStore((state) => state.setSettings)
   const extension = useSettingsStore((state) => state.extension)
 
@@ -94,7 +92,7 @@ export function RouteComponent() {
 
   return (
     <Stack p="md" gap="xxl">
-      <Title order={5}>{t('Web Search')}</Title>
+      <Title order={5}>Web Search</Title>
 
       <AdaptiveSelect
         comboboxProps={{ withinPortal: true, withArrow: true }}
@@ -112,18 +110,18 @@ export function RouteComponent() {
             },
           })
         }
-        label={t('Search Provider')}
+        label="Search Provider"
         maw={320}
       />
       <Stack gap={4}>
         <Text size="xs" c="chatbox-gray">
-          {t('Provided tools')}
+          Provided tools
         </Text>
         {(() => {
           const supportsParseLink = PROVIDERS_WITH_PARSE_LINK.has(extension.webSearch.provider)
           const tools: { label: string; supported: boolean }[] = [
-            { label: t('Web Search'), supported: true },
-            { label: t('Read Webpage'), supported: supportsParseLink },
+            { label: 'Web Search', supported: true },
+            { label: 'Read Webpage', supported: supportsParseLink },
           ]
           return tools.map(({ label, supported }) => (
             <Flex key={label} align="center" gap="xs">
@@ -141,15 +139,13 @@ export function RouteComponent() {
       </Stack>
       {extension.webSearch.provider === 'bing' && (
         <Text size="xs" c="chatbox-gray">
-          {t(
-            'Bing Search is provided for free use, but it may have limitations and is subject to change by Microsoft.'
-          )}
+          Bing Search is provided for free use, but it may have limitations and is subject to change by Microsoft.
         </Text>
       )}
       {/* Tavily API Key */}
       {extension.webSearch.provider === 'tavily' && (
         <Stack gap="xs">
-          <Text fw="600">{t('Tavily API Key')}</Text>
+          <Text fw="600">Tavily API Key</Text>
           <Flex align="center" gap="xs">
             <PasswordInput
               flex={1}
@@ -176,18 +172,18 @@ export function RouteComponent() {
               loading={checkingTavily}
               disabled={!extension.webSearch.tavilyApiKey?.trim()}
             >
-              {t('Check')}
+              Check
             </Button>
           </Flex>
 
           {typeof tavilyAvaliable === 'boolean' ? (
             tavilyAvaliable ? (
               <Text size="xs" c="chatbox-success">
-                {t('Connection successful!')}
+                Connection successful!
               </Text>
             ) : (
               <Text size="xs" c="chatbox-error">
-                {t('API key invalid!')}
+                API key invalid!
               </Text>
             )
           ) : null}
@@ -198,14 +194,14 @@ export function RouteComponent() {
             className="self-start"
             onClick={() => platform.openLink('https://app.tavily.com?utm_source=chatbox')}
           >
-            {t('Get API Key')}
+            Get API Key
           </Button>
         </Stack>
       )}
       {/* BoCha API Key */}
       {extension.webSearch.provider === 'bocha' && (
         <Stack gap="xs">
-          <Text fw="600">{t('BoCha API Key')}</Text>
+          <Text fw="600">BoCha API Key</Text>
           <Flex align="center" gap="xs">
             <PasswordInput
               flex={1}
@@ -232,18 +228,18 @@ export function RouteComponent() {
               loading={checkingBocha}
               disabled={!extension.webSearch.bochaApiKey?.trim()}
             >
-              {t('Check')}
+              Check
             </Button>
           </Flex>
 
           {typeof bochaAvailable === 'boolean' ? (
             bochaAvailable ? (
               <Text size="xs" c="chatbox-success">
-                {t('Connection successful!')}
+                Connection successful!
               </Text>
             ) : (
               <Text size="xs" c="chatbox-error">
-                {t('API key invalid!')}
+                API key invalid!
               </Text>
             )
           ) : null}
@@ -254,14 +250,14 @@ export function RouteComponent() {
             className="self-start"
             onClick={() => platform.openLink('https://open.bochaai.com')}
           >
-            {t('Get API Key')}
+            Get API Key
           </Button>
         </Stack>
       )}
       {/* Querit API Key */}
       {extension.webSearch.provider === 'querit' && (
         <Stack gap="xs">
-          <Text fw="600">{t('Querit API Key')}</Text>
+          <Text fw="600">Querit API Key</Text>
           <Flex align="center" gap="xs">
             <PasswordInput
               flex={1}
@@ -279,7 +275,7 @@ export function RouteComponent() {
                   },
                 })
               }}
-              placeholder={t('Enter your Querit API Key') || 'Enter your Querit API Key'}
+              placeholder="Enter your Querit API Key"
               error={queritAvailable === false}
             />
             <Button
@@ -289,18 +285,18 @@ export function RouteComponent() {
               loading={checkingQuerit}
               disabled={!extension.webSearch.queritApiKey?.trim()}
             >
-              {t('Check')}
+              Check
             </Button>
           </Flex>
 
           {typeof queritAvailable === 'boolean' ? (
             queritAvailable ? (
               <Text size="xs" c="chatbox-success">
-                {t('Connection successful!')}
+                Connection successful!
               </Text>
             ) : (
               <Text size="xs" c="chatbox-error">
-                {t('API key invalid!')}
+                API key invalid!
               </Text>
             )
           ) : null}
@@ -312,18 +308,18 @@ export function RouteComponent() {
             className="self-start"
             onClick={() => platform.openLink('https://www.querit.ai')}
           >
-            {t('Get API Key')}
+            Get API Key
           </Button>
 
           {/* Querit Configuration Options */}
           <Stack mt="md" gap="sm">
-            <Title order={6}>{t('Querit Search Options')}</Title>
+            <Title order={6}>Querit Search Options</Title>
 
             {/* Max Results */}
             <Stack gap="xs">
               <Flex align="center" gap="xs">
-                <Text size="sm">{t('Max Results')}</Text>
-                <Tooltip label={t('Maximum number of results to return.')}>
+                <Text size="sm">Max Results</Text>
+                <Tooltip label="Maximum number of results to return.">
                   <Text size="sm" c="gray">
                     ⓘ
                   </Text>
@@ -363,8 +359,8 @@ export function RouteComponent() {
             {/* Time Range */}
             <Stack gap="xs">
               <Flex align="center" gap="xs">
-                <Text size="sm">{t('Time Range')}</Text>
-                <Tooltip label={t('Time range of the search. For example, the last month.')}>
+                <Text size="sm">Time Range</Text>
+                <Tooltip label="Time range of the search. For example, the last month.">
                   <Text size="sm" c="gray">
                     ⓘ
                   </Text>

@@ -4,7 +4,6 @@ import StopCircleOutlinedIcon from '@mui/icons-material/StopCircleOutlined'
 import { ButtonGroup, IconButton } from '@mui/material'
 import type { Message } from '@shared/types/session'
 import { useEffect, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useIsSmallScreen } from '@/hooks/useScreenChange'
 import { cn } from '@/lib/utils'
 import { getMessageThreadContext } from '@/stores/sessionActions'
@@ -82,7 +81,6 @@ export function ArtifactWithButtons(props: {
   uniqueId?: string
 }) {
   const { htmlCode, previewUrl, preview, setPreview, sessionId, uniqueId } = props
-  const { t } = useTranslation()
   const [reloadSign, setReloadSign] = useState(0)
   const isSmallScreen = useIsSmallScreen()
 
@@ -127,7 +125,7 @@ export function ArtifactWithButtons(props: {
               </svg>
             </div>
             <span className="text-lg font-semibold text-chatbox-tint-primary group-hover:text-chatbox-tint-brand transition-colors duration-300">
-              {t('Preview')}
+              Preview
             </span>
           </div>
           <div className="flex items-center justify-center">

@@ -9,7 +9,6 @@ import {
 } from '@tabler/icons-react'
 import { useLocation } from '@tanstack/react-router'
 import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { ScalableIcon } from '@/components/common/ScalableIcon'
 import { useIsSmallScreen } from '@/hooks/useScreenChange'
 import { buildChatboxUrl } from '@/packages/remote'
@@ -21,7 +20,6 @@ const ANDROID_APK_URL = 'https://metaory.app/install?download=android_apk'
 const DISMISS_KEY = 'desktop-download-reminder-dismissed'
 
 export default function DesktopDownloadReminder() {
-  const { t } = useTranslation()
   const location = useLocation()
   const language = useLanguage()
   const isSmallScreen = useIsSmallScreen()
@@ -35,9 +33,7 @@ export default function DesktopDownloadReminder() {
     return null
   }
 
-  const mobileDescription = `${t(
-    'Your chat history on web version can only be stored in the browser cache (unreliable - it may be cleaned by browser).'
-  )}\n${t('Recommended to use Chatbox App')}`
+  const mobileDescription = `Your chat history on web version can only be stored in the browser cache (unreliable - it may be cleaned by browser).\nRecommended to use Chatbox App`
 
   return (
     <div
@@ -58,10 +54,10 @@ export default function DesktopDownloadReminder() {
               />
               {isSmallScreen ? (
                 <Stack gap={2} flex={1}>
-                  <Text fw={600}>{t('Recommended to use Chatbox App')}</Text>
+                  <Text fw={600}>Recommended to use Chatbox App</Text>
                 </Stack>
               ) : (
-                <Text fw={600}>{t('More advanced features are available in Chatbox Desktop.')}</Text>
+                <Text fw={600}>More advanced features are available in Chatbox Desktop.</Text>
               )}
             </Flex>
 
@@ -72,7 +68,7 @@ export default function DesktopDownloadReminder() {
                 localStorage.setItem(DISMISS_KEY, '1')
                 setDismissed(true)
               }}
-              aria-label={t('Close') || 'Close'}
+              aria-label="close"
             >
               <ScalableIcon icon={IconX} size={16} />
             </ActionIcon>
@@ -84,9 +80,8 @@ export default function DesktopDownloadReminder() {
             </Text>
           ) : (
             <Text size="xs" c="chatbox-secondary" style={{ whiteSpace: 'pre-line' }}>
-              {t(
-                '1. Your chat history on web version can only be stored in the browser cache (unreliable - it may be cleaned by browser). \n2. MCP and Knowledge Base are currently supported on the desktop app only. '
-              )}
+              1. Your chat history on web version can only be stored in the browser cache (unreliable - it may be cleaned by browser). 
+2. MCP and Knowledge Base are currently supported on the desktop app only. 
             </Text>
           )}
 
@@ -125,7 +120,7 @@ export default function DesktopDownloadReminder() {
                 )
               }
             >
-              {t('Download Desktop App')}
+              Download Desktop App
             </Button>
           )}
         </Stack>
