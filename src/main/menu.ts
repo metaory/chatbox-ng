@@ -63,17 +63,17 @@ export default class MenuBuilder {
 
   buildDarwinTemplate(): MenuItemConstructorOptions[] {
     const subMenuAbout: DarwinMenuItemConstructorOptions = {
-      label: 'Chatbox',
+      label: 'Unbundled',
       submenu: [
         {
-          label: 'About Chatbox',
+          label: 'About Unbundled',
           selector: 'orderFrontStandardAboutPanel:',
         },
         { type: 'separator' },
         { label: 'Services', submenu: [] },
         { type: 'separator' },
         {
-          label: 'Hide Chatbox',
+          label: 'Hide Unbundled',
           accelerator: 'Command+H',
           selector: 'hide:',
         },
@@ -205,13 +205,13 @@ export default class MenuBuilder {
         {
           label: 'Learn More',
           click() {
-            shell.openExternal('https://chatboxai.app')
+            shell.openExternal('https://chatbox-unbundled.pages.dev/')
           },
         },
         {
           label: 'Github Repo',
           click() {
-            shell.openExternal('https://github.com/chatboxai/chatbox')
+            shell.openExternal('https://github.com/metaory/chatbox-unbundled')
           },
         },
         // {
@@ -223,7 +223,7 @@ export default class MenuBuilder {
         {
           label: 'Search Issues',
           click() {
-            shell.openExternal('https://github.com/chatboxai/chatbox/issues?q=is%3Aissue')
+            shell.openExternal('https://github.com/metaory/chatbox-unbundled/issues?q=is%3Aissue')
           },
         },
       ],
@@ -296,27 +296,27 @@ export default class MenuBuilder {
           {
             label: 'Learn More',
             click() {
-              shell.openExternal('https://chatboxai.app')
+              shell.openExternal('https://chatbox-unbundled.pages.dev/')
             },
           },
-          {
-            label: 'Github Repo',
-            click() {
-              shell.openExternal('https://github.com/chatboxai/chatbox')
-            },
+        {
+          label: 'Github Repo',
+          click() {
+            shell.openExternal('https://github.com/metaory/chatbox-unbundled')
           },
-          // {
-          //   label: 'Community Discussions',
-          //   click() {
-          //     shell.openExternal('https://www.electronjs.org/community');
-          //   },
-          // },
-          {
-            label: 'Search Issues',
-            click() {
-              shell.openExternal('https://github.com/chatboxai/chatbox/issues?q=is%3Aissue')
-            },
+        },
+        // {
+        //   label: 'Community Discussions',
+        //   click() {
+        //     shell.openExternal('https://www.electronjs.org/community');
+        //   },
+        // },
+        {
+          label: 'Search Issues',
+          click() {
+            shell.openExternal('https://github.com/metaory/chatbox-unbundled/issues?q=is%3Aissue')
           },
+        },
         ],
       },
     ]

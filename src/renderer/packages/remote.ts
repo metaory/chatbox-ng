@@ -2,7 +2,7 @@ import { ofetch } from 'ofetch'
 import { z } from 'zod'
 import { getLogger } from '@/lib/utils'
 import platform from '@/platform'
-import { CHATBOX_BUILD_CHANNEL, USE_BETA_CHATBOX, USE_LOCAL_CHATBOX } from '@/variables'
+import { CHATBOX_BUILD_CHANNEL, USE_LOCAL_CHATBOX } from '@/variables'
 import * as chatboxaiAPI from '../../shared/request/chatboxai_pool'
 import { createAfetch, createAuthenticatedAfetch } from '../../shared/request/request'
 import { reportNativeContent } from '../../shared/services/native-report'
@@ -79,7 +79,7 @@ async function getAuthenticatedAfetch() {
 
 // ========== API ORIGIN 根据可用性维护 ==========
 
-// const RELEASE_ORIGIN = 'https://releases.chatboxai.app'
+// const RELEASE_ORIGIN = 'https://chatbox-unbundled.pages.dev'
 export function getAPIOrigin() {
   return chatboxaiAPI.getChatboxAPIOrigin()
 }
@@ -87,11 +87,8 @@ export function getAPIOrigin() {
 export function getChatboxOrigin() {
   if (USE_LOCAL_CHATBOX) {
     return 'http://localhost:3002'
-  } else if (USE_BETA_CHATBOX) {
-    return 'https://beta.chatboxai.app'
-  } else {
-    return 'https://chatboxai.app'
   }
+  return 'https://chatbox-unbundled.pages.dev'
 }
 
 export function buildChatboxUrl(path: string) {
@@ -232,21 +229,11 @@ export async function getDialogConfig(params: { uuid: string; language: string; 
 }
 
 export async function parseUserLinkFree(params: { url: string }) {
-  type Response = {
-    title: string
-    text: string
-  }
   const afetch = await getAfetch()
-  const res = await afetch(`https://cors-proxy.chatboxai.app/api/fetch-webpage`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      ...(await getChatboxHeaders()),
-    },
-    body: JSON.stringify(params),
-  })
-  const json: Response = await res.json()
-  return json
+  const res = await afetch(params.url)
+  const html = await res.text()
+  const title = html.match(/<title[^>]*>([^<]*)/i)?.[1]?.trim() || params.url
+  return { title, text: html }
 }
 
 

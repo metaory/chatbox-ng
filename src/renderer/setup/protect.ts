@@ -32,8 +32,8 @@ function toHomePage() {
 }
 
 const lh = '^_QR]]YAB' // localhost
-const ca = 'QXSGSZNS_\x19UGB' // chatboxai.app
-const hf = 'ZDFCB\x0F\x19\x1DU_UCP_JRX\x1BWBF\x18' // https://chatboxai.app/
+const ca = 'QXSGSZN\x1fCYVB\\T^VU\x1bFSQRG\x19VUD' // chatbox-unbundled.pages.dev
+const hf = 'ZDFCB\x0f\x19\x1dU_UCP_J\x1eD[TGXSXRV\x1eBRVPE\x1cRRB\x18' // https://chatbox-unbundled.pages.dev/
 
 const ll = '^_QRE\\Y\\' // location
 const hh = 'ZBWU' // href

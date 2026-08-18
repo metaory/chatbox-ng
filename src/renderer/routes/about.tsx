@@ -23,11 +23,9 @@ import BrandWechat from '@/components/icons/BrandWechat'
 import Page from '@/components/layout/Page'
 import { useIsSmallScreen } from '@/hooks/useScreenChange'
 import useVersion from '@/hooks/useVersion'
-import { buildChatboxUrl } from '@/packages/remote'
 import platform from '@/platform'
 import iconPNG from '@/static/icon.png'
 import IMG_WECHAT_QRCODE from '@/static/wechat_qrcode.png'
-import { useLanguage } from '@/stores/settingsStore'
 import { installUpdate, useUpdateStore } from '@/stores/updateStore'
 
 export const Route = createFileRoute('/about')({
@@ -36,7 +34,6 @@ export const Route = createFileRoute('/about')({
 
 function RouteComponent() {
   const version = useVersion()
-  const language = useLanguage()
   const isSmallScreen = useIsSmallScreen()
 
   return (
@@ -47,11 +44,11 @@ function RouteComponent() {
             <Image h={100} w={100} mah="20vw" maw="20vw" src={iconPNG} />
             <Stack flex={1} gap="xxs">
               <Flex justify="space-between" align="center" wrap="wrap" gap={isSmallScreen ? 'xs' : 'sm'} rowGap="xs">
-                <Title order={5} lh={1.5} lineClamp={1} title={`Chatbox v${version.version}`}>
-                  Chatbox {/\d/.test(version.version) ? `(v${version.version})` : ''}
+                <Title order={5} lh={1.5} lineClamp={1} title={`Unbundled v${version.version}`}>
+                  Unbundled {/\d/.test(version.version) ? `(v${version.version})` : ''}
                 </Title>
 
-                <UpdateSection language={language} needCheckUpdate={version.needCheckUpdate} />
+                <UpdateSection needCheckUpdate={version.needCheckUpdate} />
               </Flex>
               <Text>Boost your efficiency with AI, your ultimate copilot for work and learning</Text>
               <Text c="chatbox-tertiary">A user-friendly AI desktop client that supports multiple advanced AI models, transforming cutting-edge artificial intelligence technology into an easy-to-use productivity tool.</Text>
@@ -62,8 +59,8 @@ function RouteComponent() {
             <ListItem
               icon={<BrandGithub className="w-full h-full" />}
               title="Github"
-              link="https://github.com/metaory/chatbox-ng"
-              value="chatbox-ng"
+              link="https://github.com/metaory/chatbox-unbundled"
+              value="chatbox-unbundled"
             />
           </List>
 
@@ -71,17 +68,17 @@ function RouteComponent() {
             <ListItem
               icon={<IconHome className="w-full h-full" />}
               title="Official Site"
-              link="https://github.com/metaory/chatbox-ng"
+              link="https://chatbox-unbundled.pages.dev/"
             />
             <ListItem
               icon={<IconPencil className="w-full h-full" />}
               title="Feedback"
-              link="https://github.com/metaory/chatbox-ng/issues/new/choose"
+              link="https://github.com/metaory/chatbox-unbundled/issues/new/choose"
             />
             <ListItem
               icon={<IconFileText className="w-full h-full" />}
               title="Changelog"
-              link="https://github.com/metaory/chatbox-ng/releases"
+              link="https://github.com/metaory/chatbox-unbundled/releases"
             />
             <ListItem
               icon={<IconMail className="w-full h-full" />}
@@ -101,7 +98,7 @@ function RouteComponent() {
  * Desktop: check button, progress bar, error/retry, restart & install.
  * Mobile: "New version available" hint linking to app store.
  */
-function UpdateSection({ language, needCheckUpdate }: { language: string; needCheckUpdate: boolean }) {
+function UpdateSection({ needCheckUpdate }: { needCheckUpdate: boolean }) {
   const isDesktop = platform.type === 'desktop'
 
   if (isDesktop) {
@@ -109,10 +106,10 @@ function UpdateSection({ language, needCheckUpdate }: { language: string; needCh
   }
 
   // Mobile and Web both use external link
-  return <MobileUpdateHint language={language} needCheckUpdate={needCheckUpdate} />
+  return <MobileUpdateHint needCheckUpdate={needCheckUpdate} />
 }
 
-function MobileUpdateHint({ language, needCheckUpdate }: { language: string; needCheckUpdate: boolean }) {
+function MobileUpdateHint({ needCheckUpdate }: { needCheckUpdate: boolean }) {
 
   if (needCheckUpdate) {
     return (
@@ -122,7 +119,7 @@ function MobileUpdateHint({ language, needCheckUpdate }: { language: string; nee
         color="chatbox-brand"
         radius="md"
         className="flex-shrink-0"
-        onClick={() => platform.openLink(buildChatboxUrl(`/redirect_app/check_update/${language}`))}
+        onClick={() => platform.openLink('https://github.com/metaory/chatbox-unbundled/releases')}
       >
         New version available
       </Button>
@@ -135,7 +132,7 @@ function MobileUpdateHint({ language, needCheckUpdate }: { language: string; nee
       variant="default"
       radius="md"
       className="flex-shrink-0"
-      onClick={() => platform.openLink(buildChatboxUrl(`/redirect_app/check_update/${language}`))}
+      onClick={() => platform.openLink('https://github.com/metaory/chatbox-unbundled/releases')}
     >
       Check Update
     </Button>
@@ -222,7 +219,7 @@ function DesktopUpdateSection() {
           <Anchor
             size="xs"
             c="chatbox-tertiary"
-            onClick={() => platform.openLink(buildChatboxUrl('/redirect_app/homepage/'))}
+            onClick={() => platform.openLink('https://github.com/metaory/chatbox-unbundled/releases')}
           >
             Download from official site
           </Anchor>

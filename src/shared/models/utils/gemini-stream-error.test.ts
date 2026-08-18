@@ -180,7 +180,7 @@ describe('findSseFrameBoundary', () => {
 
 describe('shouldWrapGeminiErrorStream / maybeWrapGeminiErrorResponse', () => {
   const streamUrl =
-    'https://api.chatboxai.app/gateway/google-ai-studio/v1beta/models/gemini-2.5-pro:streamGenerateContent?alt=sse'
+    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:streamGenerateContent?alt=sse'
 
   it('only wraps Google streaming endpoint URLs', () => {
     const res = new Response('ok', {
@@ -194,13 +194,13 @@ describe('shouldWrapGeminiErrorStream / maybeWrapGeminiErrorResponse', () => {
       headers: { 'content-type': 'text/event-stream' },
     })
     expect(shouldWrapGeminiErrorStream(streamUrl, streamRes)).toBe(true)
-    expect(shouldWrapGeminiErrorStream('https://api.chatboxai.app/gateway/openai/v1/chat/completions', streamRes)).toBe(
+    expect(shouldWrapGeminiErrorStream('https://example.com/v1/chat/completions', streamRes)).toBe(
       false
     )
     // Non-streaming Google endpoint: wrapping would buffer the whole JSON body.
     expect(
       shouldWrapGeminiErrorStream(
-        'https://api.chatboxai.app/gateway/google-ai-studio/v1beta/models/gemini-2.5-pro:generateContent',
+        'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent',
         streamRes
       )
     ).toBe(false)
@@ -215,6 +215,6 @@ describe('shouldWrapGeminiErrorStream / maybeWrapGeminiErrorResponse', () => {
       status: 200,
       headers: { 'content-type': 'application/json' },
     })
-    expect(maybeWrapGeminiErrorResponse('https://api.chatboxai.app/gateway/openai/v1/x', response)).toBe(response)
+    expect(maybeWrapGeminiErrorResponse('https://example.com/v1/x', response)).toBe(response)
   })
 })

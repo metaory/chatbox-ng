@@ -45,15 +45,7 @@ MCP 支持两种传输方式，分别解决不同部署场景：
 
 ### 内置 MCP 服务器
 
-Chatbox Pro 预置了一组云端 MCP 服务器（`src/renderer/packages/mcp/builtin.ts`），通过 HTTP 传输连接到 `mcp.chatboxai.app`：
-
-- **Fetch**：网页内容抓取与 HTML 转 Markdown
-- **Sequential Thinking**：结构化思维推理辅助
-- **EdgeOne Pages**：HTML 内容部署与公开 URL 获取
-- **arXiv**：学术论文检索
-- **Context7**：编程库文档与代码示例检索
-
-内置服务器需要许可证密钥认证（通过 `x-chatbox-license` 请求头传递），用户无需额外配置即可使用。
+Chatbox Unbundled 预置 Context7（`src/renderer/packages/mcp/builtin.ts`），通过 HTTP 传输连接到官方 `mcp.context7.com`。其它 MCP 服务器由用户自行添加。
 
 ## Web Search 系统
 

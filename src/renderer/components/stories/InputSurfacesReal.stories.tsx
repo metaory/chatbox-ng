@@ -185,7 +185,7 @@ export const MessageAttachmentStates: StoryObj = {
           />
           <MessageAttachment
             label="Reference URL"
-            url="https://chatboxai.app/docs/model-settings"
+            url="https://chatbox-unbundled.pages.dev/"
             storageKey="storybook-url"
           />
           <MessageAttachment

@@ -663,9 +663,9 @@ function SeedAppBase() {
   mutablePlatform.openDirectoryDialog = async () => ({ canceled: false, path: '/Users/themez/Projects' })
   mutablePlatform.getSessionAttachmentRagController = () => ({
     getDebugSnapshot: async () => ({
-      dbPath: '/Users/themez/Library/Application Support/xyz.chatboxapp.app/session-rag.db',
+      dbPath: '/Users/themez/Library/Application Support/xyz.chatboxunbundled.app/session-rag.db',
       dbSizeBytes: 245760,
-      vectorDbPath: '/Users/themez/Library/Application Support/xyz.chatboxapp.app/session-rag-vector.db',
+      vectorDbPath: '/Users/themez/Library/Application Support/xyz.chatboxunbundled.app/session-rag-vector.db',
       vectorDbSizeBytes: 98304,
       attachmentCount: 4,
       parentCount: 2,

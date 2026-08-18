@@ -11,9 +11,7 @@ import { useLocation } from '@tanstack/react-router'
 import { useState } from 'react'
 import { ScalableIcon } from '@/components/common/ScalableIcon'
 import { useIsSmallScreen } from '@/hooks/useScreenChange'
-import { buildChatboxUrl } from '@/packages/remote'
 import platform from '@/platform'
-import { useLanguage } from '@/stores/settingsStore'
 
 const IOS_APP_STORE_URL = 'https://apps.apple.com/app/metaory/id6471368056'
 const ANDROID_APK_URL = 'https://metaory.app/install?download=android_apk'
@@ -21,7 +19,6 @@ const DISMISS_KEY = 'desktop-download-reminder-dismissed'
 
 export default function DesktopDownloadReminder() {
   const location = useLocation()
-  const language = useLanguage()
   const isSmallScreen = useIsSmallScreen()
   const [dismissed, setDismissed] = useState(() => localStorage.getItem(DISMISS_KEY) === '1')
 
@@ -113,13 +110,7 @@ export default function DesktopDownloadReminder() {
               variant="filled"
               leftSection={<ScalableIcon icon={IconDownload} size={14} />}
               className="mx-2"
-              onClick={() =>
-                platform.openLink(
-                  buildChatboxUrl(
-                    `/redirect_app/homepage/${language}?utm_source=web&utm_content=floating_desktop_prompt#download`
-                  )
-                )
-              }
+              onClick={() => platform.openLink('https://github.com/metaory/chatbox-unbundled/releases')}
             >
               Download Desktop App
             </Button>

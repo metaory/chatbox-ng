@@ -1,8 +1,10 @@
 {
-  "name": "chatbox-ng",
-  "productName": "chatbox-ng",
+  "name": "chatbox-unbundled",
+  "productName": "chatbox-unbundled",
   "version": "2.0.0",
-  "description": "A desktop client for multiple cutting-edge AI models",
+  "description": "A Chatbox fork without gated features",
+  "homepage": "https://chatbox-unbundled.pages.dev/",
+  "license": "GPL-3.0-only",
   "author": {
     "name": "metaory",
     "email": "metaory@gmail.com"

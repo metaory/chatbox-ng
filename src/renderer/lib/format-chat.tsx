@@ -117,24 +117,24 @@ export async function formatChatAsHtml(sessionName: string, threads: SessionThre
         }
     </script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
-    <link rel="shortcut icon" href="https://chatboxai.app/icon.png">
+    <link rel="shortcut icon" href="https://chatbox-unbundled.pages.dev/favicon.ico">
 </head>
 <body class='bg-slate-100'>
     <div class='mx-auto max-w-5xl shadow-md prose bg-white px-2 py-4'>
         <h1 class='flex flex-row justify-between items-center my-4 h-8'>
             <span>${sessionName}</span>
-            <a href="https://chatboxai.app" target="_blank" >
-                <img src='https://chatboxai.app/icon.png' class="w-12">
+            <a href="https://chatbox-unbundled.pages.dev/" target="_blank" >
+                <img src='https://chatbox-unbundled.pages.dev/logo192.png' class="w-12">
             </a>
         </h1>
         <hr />
         ${content}
         <hr />
-        <a href="https://chatboxai.app" style="display: flex; align-items: center;" class="text-sky-500" target="_blank">
-            <img src='https://chatboxai.app/icon.png' class="w-12 pr-2">
-            <b style='font-size:30px'>Chatbox AI</b>
+        <a href="https://chatbox-unbundled.pages.dev/" style="display: flex; align-items: center;" class="text-sky-500" target="_blank">
+            <img src='https://chatbox-unbundled.pages.dev/logo192.png' class="w-12 pr-2">
+            <b style='font-size:30px'>Unbundled</b>
         </a>
-        <p><a a href="https://chatboxai.app" target="_blank">https://chatboxai.app</a></p>
+        <p><a a href="https://chatbox-unbundled.pages.dev/" target="_blank">https://chatbox-unbundled.pages.dev/</a></p>
     </div>
 </body>
 </html>

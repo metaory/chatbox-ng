@@ -58,7 +58,6 @@ async function doRequest(url: string, options: RequestOptions): Promise<Response
   if (useProxy && !isLocalHost(url) && platform.type !== 'mobile') {
     const version = await platform.getVersion()
     headers.set('CHATBOX-VERSION', version || 'unknown')
-    requestUrl = 'https://cors-proxy.chatboxai.app/proxy-api/completions'
   }
 
   const makeRequest = async () => {

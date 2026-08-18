@@ -100,7 +100,7 @@ function getApiOrigin(): string {
   if (process.env.USE_LOCAL_API) {
     return 'http://localhost:8002'
   }
-  return 'https://api.chatboxai.app'
+  return 'https://chatbox-unbundled.pages.dev'
 }
 
 function readManifest(): SnapshotManifest {

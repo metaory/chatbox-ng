@@ -13,8 +13,8 @@ Use this skill when the user asks about Chatbox AI product capabilities, subscri
 
 ## Source of truth
 
-- Start from https://chatboxai.app/llms.txt for current machine-readable discovery links.
-- For pricing, subscriptions, paid plans, usage limits, or billing, follow the "Machine-readable pricing" link from llms.txt, currently https://chatboxai.app/pricing.md.
+- Start from https://chatbox-unbundled.pages.dev/ for current product information.
+- For source, issues, and docs, see https://github.com/metaory/chatbox-unbundled.
 - For product guides, follow the guide link from llms.txt.
 - For developer, authentication, API, MCP, or integration questions, follow the relevant docs links from llms.txt.
 

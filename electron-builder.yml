@@ -1,5 +1,5 @@
-productName: Chatbox
-appId: xyz.chatboxapp.app
+productName: Unbundled
+appId: xyz.chatboxunbundled.app
 asar: true
 asarUnpack:
   - "**/*.{node,dll}"

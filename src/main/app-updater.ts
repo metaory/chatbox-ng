@@ -100,12 +100,8 @@ export class AppUpdater {
 
     this.isChecking = true
     try {
-      const feedUrls = [
-        'https://chatboxai.app/api/auto_upgrade',
-        'https://api.chatboxai.app/api/auto_upgrade',
-        'https://api.ai-chatbox.com/api/auto_upgrade',
-        'https://api.chatboxapp.xyz/api/auto_upgrade',
-        'https://api.chatboxai.com/api/auto_upgrade',
+      const feedUrls: Array<string | { provider: 'github'; owner: string; repo: string }> = [
+        { provider: 'github', owner: 'metaory', repo: 'chatbox-unbundled' },
       ]
 
       const settings = getSettings()
@@ -123,7 +119,7 @@ export class AppUpdater {
           return result
         } catch (e) {
           lastError = e instanceof Error ? e : new Error(String(e))
-          log.error(`auto_updater: attempt failed: ${url}. `, e)
+          log.error(`auto_updater: attempt failed: ${typeof url === 'string' ? url : JSON.stringify(url)}. `, e)
         }
       }
       this.suppressError = false

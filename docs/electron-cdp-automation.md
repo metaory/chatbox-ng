@@ -136,32 +136,13 @@ await evaluate(`
 
 ### License 激活
 
-仅设置 `licenseKey` 不够，`isPremium` 检查需要 `licenseInstances[licenseKey]` 有值：
-
-```bash
-# 1. 调用激活 API 获取 instanceId
-curl -X POST https://api.chatboxai.app/api/license/activate \
-  -H 'Content-Type: application/json' \
-  -d '{"licenseKey":"xxx","instanceName":"test"}'
-# 返回: {"data":{"valid":true,"instanceId":"instant-id-xxx"}}
-```
-
-```python
-# 2. 写入 config.json
-settings['licenseKey'] = 'xxx'
-settings['licenseActivationMethod'] = 'manual'
-settings['licenseInstances'] = { 'xxx': 'instant-id-xxx' }
-```
-
-Premium 状态影响的功能：
-- MCP 内置云端服务器（Fetch, Sequential Thinking, EdgeOne Pages, arXiv, Context7）
-- 部分高级 Skills
+Chatbox AI license activation is removed in this fork. Premium checks and `licenseInstances` are leftover-free.
 
 ### MCP 内置服务器配置
 
 ```python
 settings['mcp'] = {
-    'enabledBuiltinServers': ['fetch', 'sequentialthinking', 'edgeone-pages', 'arxiv', 'context7'],
+    'enabledBuiltinServers': ['context7'],
     'servers': []
 }
 ```

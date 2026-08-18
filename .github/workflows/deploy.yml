@@ -64,6 +64,6 @@ jobs:
           packageManager: npm
           command: >-
             pages deploy ${{ github.workspace }}/release/app/dist/renderer
-            --project-name=${{ vars.CLOUDFLARE_PAGES_PROJECT || 'chatbox-ng' }}
+            --project-name=${{ vars.CLOUDFLARE_PAGES_PROJECT || 'chatbox-unbundled' }}
             --branch=${{ github.head_ref || github.ref_name }}
             --commit-hash=${{ github.sha }}

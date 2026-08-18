@@ -185,7 +185,7 @@ export const InlineUtilityStates: StoryObj = {
             <Group h={36}>
               <Text size="sm">Vertical divider</Text>
               <Divider orientation="vertical" className="h-full" />
-              <LinkTargetBlank href="https://chatboxai.app">Chatbox homepage link</LinkTargetBlank>
+              <LinkTargetBlank href="https://chatbox-unbundled.pages.dev/">Unbundled homepage link</LinkTargetBlank>
             </Group>
             <Mark marks={['search', 'highlight']}>
               Search results highlight matching content inside long assistant responses.

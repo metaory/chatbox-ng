@@ -9,7 +9,7 @@ import { _electron } from 'playwright'
 
 const DEFAULT_FIXTURES_REPO = '../../chatbox-session-rag-eval-fixtures'
 const DEFAULT_CASE_ID = 'long-citrine-threshold'
-const DEFAULT_CONFIG_PATH = path.join(os.homedir(), 'Library/Application Support/xyz.chatboxapp.app/config.json')
+const DEFAULT_CONFIG_PATH = path.join(os.homedir(), 'Library/Application Support/xyz.chatboxunbundled.app/config.json')
 
 function parseArgs(argv) {
   const args = {

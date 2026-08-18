@@ -162,8 +162,8 @@ CI 中 `build-windows` job 的签名流程：
 | `AZURE_SIGNTOOL_TIMESTAMP_URL` | `http://timestamp.globalsign.com/tsa/advanced` |
 | `AZURE_SIGNTOOL_FILE_DIGEST` | `sha256` |
 | `AZURE_SIGNTOOL_TIMESTAMP_DIGEST` | `sha256` |
-| `AZURE_SIGNTOOL_DESCRIPTION` | `Chatbox` |
-| `AZURE_SIGNTOOL_DESCRIPTION_URL` | `https://chatboxai.app` |
+| `AZURE_SIGNTOOL_DESCRIPTION` | `Unbundled` |
+| `AZURE_SIGNTOOL_DESCRIPTION_URL` | `https://chatbox-unbundled.pages.dev` |
 | `WINDOWS_CODE_SIGNING_DISABLED` | 未设置；设为 `true`/`1`/`yes` 可显式跳过签名 |
 
 alpha 通道沿用原行为，不注入签名 secrets，因此会跳过 Windows 代码签名。本地构建如果没有任何 Azure Key Vault 签名配置，也会跳过签名；如果只配置了一部分变量，脚本会失败并列出缺失项，避免误产出未签名的发布包。

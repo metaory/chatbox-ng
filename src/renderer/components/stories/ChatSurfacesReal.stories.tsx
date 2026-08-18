@@ -122,7 +122,7 @@ const sampleLinks: MessageLink[] = [
   {
     id: 'link-pricing',
     title: 'Chatbox pricing research',
-    url: 'https://chatboxai.app/pricing',
+    url: 'https://chatbox-unbundled.pages.dev/',
     byteLength: 21_000,
     storageKey: 'storybook/pricing-page',
     tokenCalculatedAt: 0,

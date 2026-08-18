@@ -4,7 +4,7 @@
  * `packages/remote.ts` which injects its `afetch` and Chatbox headers.
  */
 
-const CHATBOX_DEFAULT_ORIGIN = 'https://api.chatboxai.app'
+const CHATBOX_DEFAULT_ORIGIN = 'https://chatbox-unbundled.pages.dev'
 
 export interface ReportNativeContentOptions {
   id: string

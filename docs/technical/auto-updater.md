@@ -47,11 +47,10 @@ Main Process                           Renderer Process
 
 ### Feed URL Fallback
 
-为应对 CDN 或 DNS 故障，`tryUpdate()` 会依次尝试 5 个 feed URL：
+为应对 CDN 或 DNS 故障，`tryUpdate()` 会依次尝试配置的 feed：
 
 ```
-chatboxai.app → api.chatboxai.app → api.ai-chatbox.com
-→ api.chatboxapp.xyz → api.chatboxai.com
+GitHub releases (metaory/chatbox-unbundled)
 ```
 
 - 每次尝试通过 `autoUpdater.setFeedURL()` 切换源
@@ -222,7 +221,7 @@ pnpm test -- --run src/renderer/stores/updateStore.test.ts
 
    ```bash
    # macOS
-   tail -f ~/Library/Logs/xyz.chatboxapp.app/main.log | grep auto_updater
+   tail -f ~/Library/Logs/xyz.chatboxunbundled.app/main.log | grep auto_updater
    ```
 
    正常情况下第一个 URL 成功即返回；如果失败会看到 `attempt failed: <url>` 日志。

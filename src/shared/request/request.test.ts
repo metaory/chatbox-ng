@@ -19,7 +19,7 @@ describe('createAfetch', () => {
     vi.stubGlobal('fetch', fetchMock)
 
     const afetch = createAfetch(platformInfo)
-    const url = 'https://api.chatboxai.app/gateway/openai/v1/chat/completions'
+    const url = 'https://chatbox-unbundled.pages.dev/gateway/openai/v1/chat/completions'
 
     await afetch(url, {
       headers: {
@@ -59,7 +59,7 @@ describe('createAfetch', () => {
     const afetch = createAfetch(platformInfo)
 
     await expect(
-      afetch('https://api.chatboxai.app/gateway/openai/v1/chat/completions', {}, { parseChatboxRemoteError: true })
+      afetch('https://chatbox-unbundled.pages.dev/gateway/openai/v1/chat/completions', {}, { parseChatboxRemoteError: true })
     ).rejects.toMatchObject({
       code: 10004,
       requestId: 'req-from-body',
@@ -80,7 +80,7 @@ describe('createAfetch', () => {
     const afetch = createAfetch(platformInfo)
 
     await expect(
-      afetch('https://api.chatboxai.app/gateway/openai/v1/chat/completions', {}, { parseChatboxRemoteError: true })
+      afetch('https://chatbox-unbundled.pages.dev/gateway/openai/v1/chat/completions', {}, { parseChatboxRemoteError: true })
     ).rejects.toMatchObject({
       code: 10001,
       statusCode: 500,

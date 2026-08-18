@@ -1,13 +1,16 @@
 {
-  "name": "chatbox-ng",
-  "productName": "chatbox-ng",
+  "name": "chatbox-unbundled",
+  "productName": "chatbox-unbundled",
   "version": "2.0.0",
   "engines": {
     "node": ">=22.23.2 <23.0.0",
     "pnpm": ">=11.22.0"
   },
   "private": true,
-  "description": "A desktop client for multiple cutting-edge AI models",
+  "description": "A Chatbox fork without gated features",
+  "homepage": "https://chatbox-unbundled.pages.dev/",
+  "bugs": "https://github.com/metaory/chatbox-unbundled/issues",
+  "license": "GPL-3.0-only",
   "main": "out/main/main.js",
   "scripts": {
     "generate:model-snapshot": "pnpm exec tsx scripts/generate-model-snapshot.ts",
@@ -68,9 +71,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/chatboxai/chatbox.git"
+    "url": "https://github.com/metaory/chatbox-unbundled.git"
   },
-  "keywords": [],
+  "keywords": [
+    "unbundled",
+    "chatbox",
+    "fork",
+    "electron",
+    "llm",
+    "chatgpt",
+    "claude",
+    "desktop",
+    "ai"
+  ],
   "author": {
     "name": "metaory",
     "email": "metaory@gmail.com"

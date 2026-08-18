@@ -2,14 +2,9 @@ import uniq from 'lodash/uniq'
 import { ofetch } from 'ofetch'
 import { cache } from '../utils/cache'
 
-let API_ORIGIN = 'https://api.chatboxai.app'
+let API_ORIGIN = 'https://chatbox-unbundled.pages.dev'
 
-let POOL = [
-  'https://api.chatboxai.app',
-  'https://chatboxai.app',
-  'https://api.ai-chatbox.com',
-  'https://api.chatboxapp.xyz',
-]
+let POOL = ['https://chatbox-unbundled.pages.dev']
 
 export function isChatboxAPI(input: RequestInfo | URL) {
   const url = typeof input === 'string' ? input : ((input as Request).url ?? input.toString())
@@ -19,12 +14,6 @@ export function isChatboxAPI(input: RequestInfo | URL) {
 export function getChatboxAPIOrigin() {
   if (process.env.USE_LOCAL_API) {
     return 'http://localhost:8002'
-  }
-  if (process.env.USE_BETA_API) {
-    return 'https://api-beta.chatboxai.app'
-  }
-  if (process.env.USE_NEWDB_API) {
-    return 'https://beta-new-db.chatboxai.app'
   }
   return API_ORIGIN
 }
