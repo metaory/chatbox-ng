@@ -3,6 +3,7 @@ import type { ModelProvider } from '@shared/types'
 import { createModel } from '@/adapters'
 import { generateText } from '@/packages/model-calls'
 import * as promptFormat from '@/packages/prompts'
+import * as settingActions from '@/stores/settingActions'
 import * as chatStore from '../chatStore'
 import { settingsStore } from '../settingsStore'
 import { activeNameGenerations, pendingNameGenerations } from './state'
@@ -25,6 +26,10 @@ export async function modifyThreadName(sessionId: string, threadName: string) {
  * Internal function to generate a name for a session/thread
  */
 async function _generateName(sessionId: string, modifyName: (sessionId: string, name: string) => Promise<void>) {
+  if (settingActions.needEditSetting()) {
+    return
+  }
+
   const session = await chatStore.getSession(sessionId)
   const globalSettings = settingsStore.getState().getSettings()
   if (!session) {

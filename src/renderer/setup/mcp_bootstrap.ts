@@ -29,7 +29,11 @@ initSettingsStore()
       ...(mcp.enabledBuiltinServers || []).map((id) => getBuiltinServerConfig(id)).filter((s) => !!s),
       ...(mcp.servers || []), // user defined servers
     ]
-    console.info(`mcp bootstrap ${servers.length} servers`)
+    if (servers.length > 0) {
+      console.info(`mcp bootstrap ${servers.length} servers`)
+    } else {
+      console.debug('mcp bootstrap 0 servers')
+    }
     mcpController.bootstrap(servers)
     if (NODE_ENV === 'development') {
       monitorServerStatus()

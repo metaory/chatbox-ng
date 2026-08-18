@@ -140,17 +140,21 @@ export function RouteComponent() {
   )
 }
 
-export function SettingsRoot() {
+export function SettingsRoot({ overlayHeader = false }: { overlayHeader?: boolean }) {
   const { t } = useTranslation()
   const routerState = useRouterState()
   const key = routerState.location.pathname.split('/')[2]
   const isSmallScreen = useIsSmallScreen()
+  const headerOffset = overlayHeader && !isSmallScreen
+  const overlaySidebarPt = 'calc(4rem + var(--mantine-spacing-xs))'
 
   return (
     <Flex flex={1} h="100%" miw={isSmallScreen ? undefined : 800}>
       {(!isSmallScreen || routerState.location.pathname === '/settings') && (
         <Stack
-          p={isSmallScreen ? 0 : 'xs'}
+          px={isSmallScreen ? 0 : 'xs'}
+          pb={isSmallScreen ? 0 : 'xs'}
+          pt={headerOffset ? overlaySidebarPt : isSmallScreen ? 0 : 'xs'}
           gap={isSmallScreen ? 0 : 'xs'}
           maw={isSmallScreen ? undefined : 256}
           className={clsx(
@@ -237,7 +241,13 @@ export function SettingsRoot() {
         </Stack>
       )}
       {!(isSmallScreen && routerState.location.pathname === '/settings') && (
-        <Box flex="1 1 80%" className="overflow-auto">
+        <Box
+          flex="1 1 80%"
+          className={clsx(
+            'overflow-auto',
+            headerOffset && '-mt-16 [&>.mantine-Stack-root]:mt-[7rem]'
+          )}
+        >
           <Outlet />
         </Box>
       )}

@@ -62,6 +62,7 @@ export function useRemoteCopilotTags() {
   const { data: tags, ...others } = useQuery({
     queryKey: ['remote-copilot-tags', language],
     queryFn: () => remote.listCopilotTags(language),
+    retry: false,
     initialData: [],
     initialDataUpdatedAt: 0,
     staleTime: 3600 * 1000,
@@ -82,6 +83,7 @@ export function useRemoteCopilotsByCursor(filters?: RemoteCopilotsByCursorFilter
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, ...others } = useInfiniteQuery({
     queryKey: ['remote-copilots-cursor', language, limit, tag, search],
     queryFn: ({ pageParam }) => remote.listCopilotsByCursor(language, { limit, cursor: pageParam, tag, search }),
+    retry: false,
     getNextPageParam: (lastPage) => lastPage.next_cursor,
     initialPageParam: undefined as string | undefined,
     staleTime: 60 * 1000,

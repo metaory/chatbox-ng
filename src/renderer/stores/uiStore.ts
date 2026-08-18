@@ -63,6 +63,7 @@ export const uiStore = createStore(
         } | null,
         widthFull: false, // Stored UI preference
         showCopilotsInNewSession: false,
+        disclaimerDismissed: false,
         sidebarWidth: null as number | null, // Custom sidebar width, null means use default
         agentModeSmartSwitchingDefault: true,
         sessionAgentModeMap: {} as Record<string, AgentModeEntry>,
@@ -216,6 +217,10 @@ export const uiStore = createStore(
           set({ showCopilotsInNewSession })
         },
 
+        setDisclaimerDismissed: (disclaimerDismissed: boolean) => {
+          set({ disclaimerDismissed })
+        },
+
         setSidebarWidth: (sidebarWidth: number | null) => {
           set({ sidebarWidth })
         },
@@ -243,6 +248,7 @@ export const uiStore = createStore(
       partialize: (state) => ({
         widthFull: state.widthFull,
         showCopilotsInNewSession: state.showCopilotsInNewSession,
+        disclaimerDismissed: state.disclaimerDismissed,
         sidebarWidth: state.sidebarWidth,
         agentModeSmartSwitchingDefault: state.agentModeSmartSwitchingDefault,
         sessionWebBrowsingMap: state.sessionWebBrowsingMap,

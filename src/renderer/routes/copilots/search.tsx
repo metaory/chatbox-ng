@@ -61,8 +61,6 @@ function CopilotSearch() {
       )}
 
       <Stack gap="md">
-        <Text>Chatbox Featured</Text>
-
         {isLoading && (
           <div className="py-12 text-center">
             <Text c="dimmed" size="sm">

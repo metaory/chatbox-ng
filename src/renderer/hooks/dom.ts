@@ -3,6 +3,8 @@
 // ------ 消息输入框 ------
 
 export const InputBoxID = 'input-box-2024-02-22'
+export const ComposerOverlayID = 'chat-composer-overlay'
+export const inputOverlayHeightVar = '--chatbox-input-overlay-height'
 
 export function getInputBoxHeight(): number {
   const element = document.getElementById(InputBoxID)

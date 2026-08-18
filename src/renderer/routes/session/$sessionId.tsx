@@ -11,9 +11,9 @@ import { ErrorBoundary } from '@/components/common/ErrorBoundary'
 import InputBox, { type InputBoxPayload } from '@/components/InputBox/InputBox'
 import Header from '@/components/layout/Header'
 import Page from '@/components/layout/Page'
+import * as dom from '@/hooks/dom'
 import ThreadHistoryDrawer from '@/components/session/ThreadHistoryDrawer'
 import { useProviders } from '@/hooks/useProviders'
-import { useIsSmallScreen } from '@/hooks/useScreenChange'
 import useVersion from '@/hooks/useVersion'
 import { defaultSessionsForCN, defaultSessionsForEN } from '@/packages/initial_data'
 import * as remote from '@/packages/remote'
@@ -54,7 +54,6 @@ function RouteComponent() {
   const defaultChatModel = useSettingsStore((s) => s.defaultChatModel)
   const { isExceeded, isExceededResolved } = useVersion()
   const widthFull = useUIStore((s) => s.widthFull)
-  const isSmallScreen = useIsSmallScreen()
   const setLastUsedChatModel = useStore(lastUsedModelStore, (state) => state.setChatModel)
   const setLastUsedPictureModel = useStore(lastUsedModelStore, (state) => state.setPictureModel)
 
@@ -230,7 +229,7 @@ function RouteComponent() {
   }, [currentSessionWithDefaultModel?.settings?.provider, currentSessionWithDefaultModel?.settings?.modelId])
 
   return currentSession ? (
-    <div className={`flex flex-col h-full ${!isSmallScreen ? 'relative' : ''}`}>
+    <div className="relative flex flex-col h-full">
       <Header session={currentSession} />
 
       {/* MessageList 设置 key，确保每个 session 对应新的 MessageList 实例 */}
@@ -238,9 +237,11 @@ function RouteComponent() {
         ref={messageListRef}
         key={`message-list${currentSessionId}`}
         currentSession={currentSession}
+        className="min-h-0 flex-1"
+        bottomSpacerExtra={shouldShowTemplateWelcomeCard ? 148 : 0}
       />
 
-      <Box className="relative">
+      <Box id={dom.ComposerOverlayID} className="pointer-events-none absolute inset-x-0 bottom-0 z-10">
         {shouldShowTemplateWelcomeCard && (
           // absolute — taken out of flow, doesn't affect layout of siblings
           // bottom: '100%' — positioned right above the parent box's top edge (like a tooltip anchoring upward)
@@ -260,7 +261,8 @@ function RouteComponent() {
 
         {/* <ScrollButtons /> */}
         <ErrorBoundary name="session-inputbox">
-          <InputBox
+          <Box className="pointer-events-auto">
+            <InputBox
             key={`input-box${currentSession.id}`}
             sessionId={currentSession.id}
             sessionType={currentSession.type}
@@ -274,6 +276,7 @@ function RouteComponent() {
             onSubmit={onSubmit}
             onStopGenerating={onStopGenerating}
           />
+          </Box>
         </ErrorBoundary>
       </Box>
       <ThreadHistoryDrawer session={currentSession} />

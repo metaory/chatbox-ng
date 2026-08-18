@@ -88,17 +88,45 @@ export interface MessageListRef {
 export interface MessageListProps {
   className?: string
   currentSession: Session
+  bottomSpacerExtra?: number
 }
 
 function SessionListTopGutter() {
   return <div className="h-12" />
 }
 
+function InputOverlaySpacer({ extra = 0 }: { extra?: number }) {
+  return (
+    <div
+      aria-hidden
+      style={{
+        height:
+          extra > 0
+            ? `calc(var(--chatbox-input-overlay-height, 140px) + ${extra}px)`
+            : 'var(--chatbox-input-overlay-height, 140px)',
+      }}
+    />
+  )
+}
+
+const createInputOverlaySpacer = (extra: number) =>
+  function InputOverlaySpacerFooter() {
+    return <InputOverlaySpacer extra={extra} />
+  }
+
 const MessageList = forwardRef<MessageListRef, MessageListProps>((props, ref) => {
   const isSmallScreen = useIsSmallScreen()
   const widthFull = useUIStore((s) => s.widthFull)
 
-  const { currentSession } = props
+  const { currentSession, bottomSpacerExtra = 0 } = props
+
+  const virtuosoComponents = useMemo(
+    () => ({
+      ...(!isSmallScreen ? { Header: SessionListTopGutter } : {}),
+      Footer: createInputOverlaySpacer(bottomSpacerExtra),
+    }),
+    [isSmallScreen, bottomSpacerExtra]
+  )
 
   const currentThreadHash = useMemo(
     () => currentSession && getCurrentThreadHistoryHash(currentSession),
@@ -493,7 +521,7 @@ const MessageList = forwardRef<MessageListRef, MessageListProps>((props, ref) =>
                   initialTopMostItemIndex: renderItems.length - 1,
                 })}
             increaseViewportBy={{ top: 2000, bottom: 2000 }}
-            components={!isSmallScreen ? { Header: SessionListTopGutter } : undefined}
+            components={virtuosoComponents}
             itemContent={(index, item) => {
               const itemClassName = widthFull ? 'w-full' : 'max-w-4xl mx-auto'
               const isFirstItem = index === 0

@@ -267,6 +267,25 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
       updateCurrentWebBrowsingDisplay(currentSessionId || 'new', webBrowsingMode)
     }, [currentSessionId, webBrowsingMode, updateCurrentWebBrowsingDisplay])
 
+    useLayoutEffect(() => {
+      const syncOverlayHeight = () => {
+        const input = document.getElementById(dom.InputBoxID)
+        const overlay = document.getElementById(dom.ComposerOverlayID)
+        const height = Math.max(input?.offsetHeight ?? 0, overlay?.offsetHeight ?? 0)
+        if (height > 0) {
+          document.documentElement.style.setProperty(dom.inputOverlayHeightVar, `${height}px`)
+        }
+      }
+
+      syncOverlayHeight()
+      const observer = new ResizeObserver(syncOverlayHeight)
+      ;[document.getElementById(dom.InputBoxID), document.getElementById(dom.ComposerOverlayID)]
+        .filter((element): element is HTMLElement => element instanceof HTMLElement)
+        .forEach((element) => observer.observe(element))
+
+      return () => observer.disconnect()
+    }, [])
+
     const setWebBrowsingMode = useCallback(
       (enabled: boolean) => {
         setSessionWebBrowsing(currentSessionId || 'new', enabled)
@@ -1397,10 +1416,13 @@ const InputBox = forwardRef<InputBoxRef, InputBoxProps>(
             ref={skillMenuAnchorRef}
             className={cn(
               // min-h + justify-between 必须同层，桌面空输入时工具栏贴底
-              'relative flex flex-col justify-between gap-xs rounded-lg bg-chatbox-background-secondary px-3 py-2 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_20px_-2px_rgba(0,0,0,0.3)]',
+              'relative flex flex-col justify-between gap-xs rounded-lg backdrop-blur-md px-3 py-2 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_20px_-2px_rgba(0,0,0,0.3)]',
               !isSmallScreen && 'min-h-[92px]'
             )}
-            style={{ border: 'var(--chatbox-border-width) solid var(--chatbox-border-primary)' }}
+            style={{
+              border: 'var(--chatbox-border-width) solid var(--chatbox-border-primary)',
+              backgroundColor: 'color-mix(in srgb, var(--chatbox-background-primary) 50%, transparent)',
+            }}
           >
             {/*
               skill 列表：Portal + Floating UI autoUpdate

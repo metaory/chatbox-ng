@@ -1,5 +1,7 @@
 import { ofetch } from 'ofetch'
 import { z } from 'zod'
+import { REMOTE_PARTNER_API_ENABLED } from '@shared/config/remote-api'
+import * as copilotCatalog from '@shared/copilots/catalog'
 import { getLogger } from '@/lib/utils'
 import platform from '@/platform'
 import { CHATBOX_BUILD_CHANNEL, USE_LOCAL_CHATBOX } from '@/variables'
@@ -131,6 +133,7 @@ const getChatboxHeaders = async () => {
 // }
 
 export async function listCopilotTags(lang: string) {
+  if (!REMOTE_PARTNER_API_ENABLED) return copilotCatalog.listCopilotTags()
   type Response = {
     data: string[]
   }
@@ -150,6 +153,7 @@ export async function listCopilotsByCursor(
     search?: string
   }
 ) {
+  if (!REMOTE_PARTNER_API_ENABLED) return copilotCatalog.listCopilotsByCursor(filters)
   type Response = {
     data: CopilotDetail[]
     next_cursor: string | null
@@ -166,6 +170,7 @@ export async function recordCopilotUsage(params: {
   id: string
   action: 'create_session' | 'create_thread' | 'create_message' | 'use_copilot'
 }) {
+  if (!REMOTE_PARTNER_API_ENABLED) return
   await ofetch(`${getAPIOrigin()}/api/system_copilots/record_usage`, {
     method: 'POST',
     body: {
@@ -176,6 +181,7 @@ export async function recordCopilotUsage(params: {
 }
 
 export async function recordCopilotShare(detail: CopilotDetail) {
+  if (!REMOTE_PARTNER_API_ENABLED) return
   await ofetch(`${getAPIOrigin()}/api/copilots/share-record`, {
     method: 'POST',
     body: {
@@ -185,6 +191,9 @@ export async function recordCopilotShare(detail: CopilotDetail) {
 }
 
 export async function getPremiumPrice() {
+  if (!REMOTE_PARTNER_API_ENABLED) {
+    return { price: 0, discount: 0, discountLabel: '' }
+  }
   type Response = {
     data: {
       price: number
@@ -199,6 +208,10 @@ export async function getPremiumPrice() {
 }
 
 export async function getRemoteConfig(config: keyof RemoteConfig) {
+  if (!REMOTE_PARTNER_API_ENABLED) {
+    if (config === 'setting_chatboxai_first') return { setting_chatboxai_first: false }
+    return {} as Pick<RemoteConfig, typeof config>
+  }
   type Response = {
     data: Pick<RemoteConfig, typeof config>
   }
@@ -216,6 +229,7 @@ export interface DialogConfig {
 }
 
 export async function getDialogConfig(params: { uuid: string; language: string; version: string }) {
+  if (!REMOTE_PARTNER_API_ENABLED) return null
   type Response = {
     data: null | DialogConfig
   }
@@ -259,6 +273,9 @@ const ModelManifestResponseSchema = z.object({
 })
 
 export async function getModelManifest(params: { aiProvider: ModelProvider; licenseKey?: string; language?: string }) {
+  if (!REMOTE_PARTNER_API_ENABLED) {
+    return { groupName: '', models: [], imageModels: [] }
+  }
   const afetch = await getAfetch()
   const res = await afetch(
     `${getAPIOrigin()}/api/model_manifest`,
@@ -348,6 +365,9 @@ const ChatboxAIModelListResponseSchema = z.object({
 export type ChatboxAIModelList = z.infer<typeof ChatboxAIModelListResponseSchema>['data']
 
 export async function getChatboxAIModelList(params: { licenseKey?: string; language?: string }) {
+  if (!REMOTE_PARTNER_API_ENABLED) {
+    throw new Error('Chatbox AI model list is not available')
+  }
   const afetch = await getAfetch()
   const res = await afetch(
     `${getAPIOrigin()}/api/chatbox_ai/model_list`,
@@ -376,6 +396,7 @@ export async function getChatboxAIModelList(params: { licenseKey?: string; langu
 }
 
 export async function reportContent(params: { id: string; type: string; details: string }) {
+  if (!REMOTE_PARTNER_API_ENABLED) return
   const afetch = await getAfetch()
   await reportNativeContent({
     ...params,
@@ -391,6 +412,7 @@ const ProviderInfoResponseSchema = z.object({
 })
 
 export async function getProviderModelsInfo(params: { modelIds: string[] }) {
+  if (!REMOTE_PARTNER_API_ENABLED) return {}
   const afetch = await getAfetch()
   const res = await afetch(
     `${getAPIOrigin()}/api/provider_models_info`,

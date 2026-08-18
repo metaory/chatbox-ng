@@ -19,13 +19,10 @@ export function RouteComponent() {
 
   // Get current sub-route
   const pathname = routerState.location.pathname
-  const isFeatured = pathname.includes('/copilots/featured')
   const isMy = pathname.includes('/copilots/my')
   const isSearch = pathname.includes('/copilots/search')
 
-  // Determine current page title
   const getSubPageTitle = () => {
-    if (isFeatured) return 'Chatbox Featured'
     if (isMy) return 'My Created & Added Copilots'
     if (isSearch) return 'Search'
     return null

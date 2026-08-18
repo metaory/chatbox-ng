@@ -1,15 +1,15 @@
 <h1 align="center">
-<img src='./doc/statics/icon.png' width='30'>
-<div>
-  <b>Unbundled</b>
-  A Chatbox fork without gated features
-</div>
+  <img src='./doc/statics/icon.png' width='40%'>
+  <div>
+    <b>Unbundled</b>
+    A Chatbox.ai fork without <b>gated features</b>
+  </div>
 </h1>
 <p align="center">
   <em>
     Your Ultimate AI Copilot on the Desktop.
     <br />
-    Chatbox Unbundled is a desktop client for ChatGPT, Claude and other LLMs, available on Windows, Mac, Linux
+    A free, privacy-focused desktop AI client with knowledge bases, web search, and tool calling for ChatGPT, Claude and other LLMs
   </em>
 </p>
 
@@ -17,35 +17,40 @@
 
 Fork of [Chatbox](https://github.com/chatboxai/chatbox). Changes vs upstream:
 
-- [ ] **Telemetry removed**
+- [x] **Telemetry removed**
   - Sentry, Plausible, Google Analytics
   - first-party click tracking, page views, and conversion events
   - remote error-reporting code and docs
-- [ ] **Chatbox AI pro account, license keys, and billing removed**
+- [x] **Chatbox AI pro account, license keys, and billing removed**
   - login, license keys, LemonSqueezy payment
   - premium, quota, and reward UI
   - pro onboarding guide and Chatbox AI provider settings
-- [ ] **Chatbox AI model provider removed**
+- [x] **Chatbox AI model provider removed**
   - Chatbox-hosted chat models from the model selector
   - Chatbox image and paint models
   - no longer the default chat model
-- [ ] **Chatbox partner backends unbundled**
+- [x] **Chatbox partner backends unbundled**
   - built-in Chatbox web search provider
   - cloud/remote KB parser and the remote API client
+  - partner API calls disabled
+  - remote feature flags, marketing dialog, and copilot usage analytics removed
+  - bundled copilot catalog offline with browse/search
+  - local-only: chat sessions, settings, user-created copilots, bundled builtin skill seeds
   - HTML artifact preview runs locally
   - publish to VibeDrop with an auto or user-owned API key
-- [ ] **English only**
+- [x] **English only**
   - non-English locales, translation scripts, and language picker removed
   - English i18n runtime kept
-- [ ] **Identity and theme**
+- [x] **Identity and theme**
   - package renamed to `chatbox-unbundled`
   - icons and splash replaced
   - color presets and CSS cleaned up
   - copyright notice [added](LICENSE) for metaory (still GPL-3)
-- [ ] **CI and tooling**
+- [x] **CI and tooling**
   - GitHub Actions CI and Cloudflare Pages deploy
   - dead webpack/`.erb` leftovers and unused deps removed
   - pack scripts live under `scripts/`
+- [ ] Add dynamic React and Vue component rendering in preview
 
 ---
 

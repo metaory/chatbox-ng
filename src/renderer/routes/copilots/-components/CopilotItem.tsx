@@ -40,14 +40,14 @@ export function CopilotItem({ copilot, type = 'local', highlightTerm = '' }: Cop
     navigate({ to: '/', search: { copilot: JSON.stringify(detail) } })
   }
 
-  // Format the publish date
-  const formattedDate = createdAt
-    ? new Date(createdAt).toLocaleDateString(i18n.language, {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      })
-    : null
+  const formattedDate =
+    type === 'local' && createdAt && createdAt > 946684800000
+      ? new Date(createdAt).toLocaleDateString(i18n.language, {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })
+      : null
 
   return (
     <>
@@ -213,12 +213,9 @@ export function CopilotItem({ copilot, type = 'local', highlightTerm = '' }: Cop
             ))}
           </Flex>
 
-          {/* Publish Date */}
           {formattedDate && (
             <Text size="xs" c="chatbox-tertiary" className="whitespace-nowrap ml-2">
-              {type === 'local'
-                ? t('Created on {{date}}', { date: formattedDate })
-                : t('Published on {{date}}', { date: formattedDate })}
+              {t('Created on {{date}}', { date: formattedDate })}
             </Text>
           )}
         </Flex>

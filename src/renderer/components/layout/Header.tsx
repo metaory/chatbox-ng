@@ -27,7 +27,7 @@ export default function Header(props: { session: Session }) {
 
   useEffect(() => {
     const autoGenerateTitle = settingActions.getAutoGenerateTitle()
-    if (!autoGenerateTitle) {
+    if (!autoGenerateTitle || settingActions.needEditSetting()) {
       return
     }
 

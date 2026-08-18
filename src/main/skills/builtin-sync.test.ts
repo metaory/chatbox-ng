@@ -26,6 +26,10 @@ vi.mock('./builtin', () => ({
   builtinSkills: [],
 }))
 
+vi.mock('@shared/config/remote-api', () => ({
+  REMOTE_PARTNER_API_ENABLED: true,
+}))
+
 import { getBuiltinSkillsDir, syncBuiltinSkills } from './builtin-sync'
 
 describe('syncBuiltinSkills', () => {

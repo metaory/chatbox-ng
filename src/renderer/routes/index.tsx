@@ -22,6 +22,7 @@ import { ImageInStorage } from '@/components/Image'
 import InputBox, { type InputBoxPayload } from '@/components/InputBox/InputBox'
 import HomepageIcon from '@/components/icons/HomepageIcon'
 import Page from '@/components/layout/Page'
+import * as dom from '@/hooks/dom'
 import { getForceShowNewUserScenarioCardsFlag } from '@/dev/devToolsFlags'
 import { useMyCopilots, useRemoteCopilotsByCursor } from '@/hooks/useCopilots'
 import { useProviders } from '@/hooks/useProviders'
@@ -360,9 +361,12 @@ function Index() {
 
   return (
     <Page title="">
-      <div className="p-0 flex flex-col h-full min-h-0 overflow-hidden">
+      <div className="relative flex flex-col h-full min-h-0 overflow-hidden">
         <div
-          className={clsx('min-h-0 flex-1 overflow-y-auto', welcomeCardMode !== 'none' ? 'pb-36 sm:pb-32' : 'pb-md')}
+          className="min-h-0 flex-1 overflow-y-auto"
+          style={{
+            paddingBottom: `calc(var(--chatbox-input-overlay-height, 140px) + ${welcomeCardMode !== 'none' ? 148 : 0}px)`,
+          }}
         >
           {showNewUserScenarios ? (
             <Stack justify="center" className="min-h-full" py="xl">
@@ -378,9 +382,9 @@ function Index() {
           )}
         </div>
 
-        <Stack gap="sm" className="shrink-0">
+        <Stack id={dom.ComposerOverlayID} gap="sm" className="pointer-events-none absolute inset-x-0 bottom-0 z-10">
           {session.copilotId ? (
-            <Box px="md">
+            <Box px="md" className="pointer-events-auto">
               <Stack gap="sm" className={widthFull ? 'w-full' : 'w-full max-w-4xl mx-auto'}>
                 <Flex align="center" gap="sm">
                   <CopilotItem
@@ -413,11 +417,13 @@ function Index() {
             </Box>
           ) : (
             showCopilotsInNewSession && (
-              <CopilotPicker onSelect={(copilot) => setSession((old) => ({ ...old, copilotId: copilot?.id }))} />
+              <Box className="pointer-events-auto">
+                <CopilotPicker onSelect={(copilot) => setSession((old) => ({ ...old, copilotId: copilot?.id }))} />
+              </Box>
             )
           )}
 
-          <Box className="relative">
+          <Box className="relative pointer-events-auto">
             {welcomeCardMode !== 'none' && (
               <Box
                 className="pointer-events-none absolute left-0 right-0 z-10"

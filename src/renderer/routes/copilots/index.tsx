@@ -3,8 +3,14 @@ import { Button, Flex, Stack, Switch, Text, Title } from '@mantine/core'
 import type { CopilotDetail } from '@shared/types'
 import { IconChevronRight, IconPlus } from '@tabler/icons-react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { type PropsWithChildren, useCallback, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { ScalableIcon } from '@/components/common/ScalableIcon'
-import { useMyCopilots, useRemoteCopilotsByCursor } from '@/hooks/useCopilots'
+import {
+  useMyCopilots,
+  useRemoteCopilotTags,
+  useRemoteCopilotsByCursor,
+} from '@/hooks/useCopilots'
 import { useUIStore } from '@/stores/uiStore'
 import CopilotItem from './-components/CopilotItem'
 
@@ -12,12 +18,22 @@ export const Route = createFileRoute('/copilots/')({
   component: Copilots,
 })
 
-const MAX_ITEMS_PER_SECTION = 6
+const MY_PAGE_SIZE = 6
+const CATALOG_PAGE_SIZE = 18
 
 function Copilots() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const store = useMyCopilots()
-  const { copilots: remoteCopilots } = useRemoteCopilotsByCursor({ limit: MAX_ITEMS_PER_SECTION })
+  const { tags } = useRemoteCopilotTags()
+  const [selectedTag, setSelectedTag] = useState<string | undefined>()
+  const {
+    copilots: catalogCopilots,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading: isCatalogLoading,
+  } = useRemoteCopilotsByCursor({ limit: CATALOG_PAGE_SIZE, tag: selectedTag })
   const showCopilotsInNewSession = useUIStore((s) => s.showCopilotsInNewSession)
   const setShowCopilotsInNewSession = useUIStore((s) => s.setShowCopilotsInNewSession)
 
@@ -25,11 +41,12 @@ function Copilots() {
     ...store.copilots.filter((item) => item.starred),
     ...store.copilots.filter((item) => !item.starred),
   ]
+  const myCopilotsList = myCopilotsSorted.slice(0, MY_PAGE_SIZE)
+  const showMyCopilotsSeeAll = myCopilotsSorted.length > MY_PAGE_SIZE
 
-  const myCopilotsList = myCopilotsSorted.slice(0, MAX_ITEMS_PER_SECTION)
-
-  const showMyCopilotsSeeAll = myCopilotsSorted.length > 0
-  const showRemoteCopilotsSeeAll = remoteCopilots.length > 0
+  const handleTagChange = useCallback((tag: string | undefined) => {
+    setSelectedTag((prev) => (prev === tag ? undefined : tag))
+  }, [])
 
   const handleCreateCopilot = () => {
     void NiceModal.show('copilot-settings', {
@@ -43,7 +60,6 @@ function Copilots() {
 
   return (
     <Stack px="sm" py="xl" gap="lg" className="max-w-7xl">
-      {/* My Created & Added Copilots Section */}
       <section>
         <Flex align="center" gap="md" justify="space-between" mb="md">
           <Flex align="center" gap="md">
@@ -91,37 +107,57 @@ function Copilots() {
         )}
       </section>
 
-      {/* Chatbox Featured Section */}
-      {remoteCopilots.length > 0 && (
-        <section>
-          <Flex align="center" gap="md" justify="space-between" mb="md">
-            <Title order={5} c="chatbox-primary" className="font-normal">
-              Chatbox Featured
-            </Title>
-            {showRemoteCopilotsSeeAll && (
-              <Flex
-                align="center"
-                gap={4}
-                className="cursor-pointer text-chatbox-tint-secondary hover:text-chatbox-tint-primary transition-colors"
-                onClick={() => navigate({ to: '/copilots/featured' })}
-              >
-                <Text c="chatbox-secondary" size="xs" className="whitespace-nowrap">
-                  See All
-                </Text>
-                <ScalableIcon icon={IconChevronRight} size={12} className="text-chatbox-tint-secondary" />
-              </Flex>
-            )}
-          </Flex>
+      <section>
+        <Flex className="flex-1 mb-md" gap="xxs" wrap="wrap">
+          <TagChip selected={selectedTag === undefined} onClick={() => handleTagChange(undefined)}>
+            All
+          </TagChip>
+          {tags.map((tag) => (
+            <TagChip key={tag} selected={selectedTag === tag} onClick={() => handleTagChange(tag)}>
+              {t(tag)}
+            </TagChip>
+          ))}
+        </Flex>
 
+        {isCatalogLoading && (
+          <div className="py-12 text-center">
+            <Text c="dimmed" size="sm">
+              Loading...
+            </Text>
+          </div>
+        )}
+
+        {!isCatalogLoading && catalogCopilots.length === 0 && (
+          <div className="py-12 text-center">
+            <Text c="dimmed" size="sm">
+              No copilots available.
+            </Text>
+          </div>
+        )}
+
+        {catalogCopilots.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {remoteCopilots.map((copilot) => (
+            {catalogCopilots.map((copilot) => (
               <CopilotItem key={copilot.id} type="remote" copilot={copilot} />
             ))}
           </div>
-        </section>
-      )}
+        )}
 
-      {/* Settings Section */}
+        {hasNextPage && (
+          <Flex justify="center" className="pt-sm">
+            <Button
+              variant="outline"
+              color="chatbox-brand"
+              size="sm"
+              onClick={() => fetchNextPage()}
+              loading={isFetchingNextPage}
+            >
+              Load More
+            </Button>
+          </Flex>
+        )}
+      </section>
+
       <section>
         <Title order={4} mb="md" className="text-chatbox-tint-primary">
           Settings
@@ -134,5 +170,31 @@ function Copilots() {
         />
       </section>
     </Stack>
+  )
+}
+
+function TagChip({
+  selected,
+  onClick,
+  children,
+}: PropsWithChildren & {
+  selected: boolean
+  onClick: () => void
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`
+        px-sm py-xxs rounded-full text-xs font-normal transition-colors cursor-pointer select-none
+        ${
+          selected
+            ? 'border border-chatbox-tint-brand text-chatbox-tint-brand bg-transparent'
+            : 'border border-transparent bg-chatbox-background-gray-secondary text-chatbox-tint-secondary'
+        }
+      `}
+    >
+      {children}
+    </button>
   )
 }

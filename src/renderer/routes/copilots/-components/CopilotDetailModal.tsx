@@ -101,13 +101,14 @@ export function CopilotDetailModal({ opened, onClose, type, copilot, onUse }: Co
 
   const { name, avatar, picUrl, description, prompt, tags, screenshots, createdAt } = copilot
 
-  const formattedDate = createdAt
-    ? new Date(createdAt).toLocaleDateString(i18n.language, {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      })
-    : null
+  const formattedDate =
+    type === 'local' && createdAt && createdAt > 946684800000
+      ? new Date(createdAt).toLocaleDateString(i18n.language, {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })
+      : null
 
   return (
     <AdaptiveModal
@@ -169,9 +170,7 @@ export function CopilotDetailModal({ opened, onClose, type, copilot, onUse }: Co
                 ))}
                 {formattedDate && (
                   <Text size="xxs" c="chatbox-tertiary" className="whitespace-nowrap">
-                    {type === 'remote'
-                      ? t('Published on {{date}}', { date: formattedDate })
-                      : t('Created on {{date}}', { date: formattedDate })}
+                    {t('Created on {{date}}', { date: formattedDate })}
                   </Text>
                 )}
               </Flex>

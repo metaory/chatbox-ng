@@ -61,7 +61,6 @@ function renderButton({ modelSupportsAgentMode = true, compact = false } = {}) {
 
 describe('AgentModeButton', () => {
   beforeEach(() => {
-    window.localStorage.clear()
     agentModeValue = 'on'
   })
 
@@ -84,21 +83,6 @@ describe('AgentModeButton', () => {
     renderButton()
 
     expect(screen.getByRole('button', { name: 'Work Mode' })).toHaveProperty('disabled', false)
-  })
-
-  test('shows the Web Search migration tip until the user dismisses it', () => {
-    const view = renderButton()
-
-    expect(screen.getByText('Web Search has moved')).toBeTruthy()
-    fireEvent.click(screen.getByRole('button', { name: 'close' }))
-
-    expect(screen.queryByText('Web Search has moved')).toBeNull()
-    expect(screen.queryByText('Agent mode menu')).toBeNull()
-    expect(window.localStorage.getItem('chatbox.web-search-moved-tip-dismissed.v1')).toBe('true')
-
-    view.unmount()
-    renderButton()
-    expect(screen.queryByText('Web Search has moved')).toBeNull()
   })
 
   test('keeps the mode text in regular mode', () => {

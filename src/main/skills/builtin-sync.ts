@@ -2,6 +2,7 @@ import crypto from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
 import type { SkillInfo, SkillMetadata } from '@shared/types/skills'
+import { REMOTE_PARTNER_API_ENABLED } from '@shared/config/remote-api'
 import { app } from 'electron'
 import { getLogger } from '../util'
 import { builtinSkills } from './builtin'
@@ -288,6 +289,10 @@ function buildMetadataFromDetail(detail: RemoteSkillDetail): SkillMetadata {
  */
 export async function syncBuiltinSkills(lang?: string): Promise<boolean> {
   ensureBuiltinSeeded()
+
+  if (!REMOTE_PARTNER_API_ENABLED) {
+    return false
+  }
 
   const origin = getApiOrigin()
   const langQuery = lang ? `?lang=${encodeURIComponent(lang)}` : ''

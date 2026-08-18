@@ -774,7 +774,7 @@ const ImportExportDataSection = () => {
         </Text>
         {[
           { label: 'Settings', value: ExportDataItem.Setting },
-          { label: 'API KEY & License', value: ExportDataItem.Key },
+          { label: 'API KEY', value: ExportDataItem.Key },
           { label: 'Chat History', value: ExportDataItem.Conversations },
           { label: 'My Copilots', value: ExportDataItem.Copilot },
         ].map(({ label, value }) => (
