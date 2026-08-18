@@ -49,7 +49,7 @@ describe('MessageInputField', () => {
     )
 
     const input = screen.getByRole('textbox', { name: 'Type your question here...' })
-    expect(screen.getByText('Waiting for approval')).toBeInTheDocument()
+    expect(screen.getByText('Waiting for approval')).toBeTruthy()
     expect(input).toHaveProperty('readOnly', true)
   })
 })
