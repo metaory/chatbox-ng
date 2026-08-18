@@ -1,15 +1,15 @@
 <h1 align="center">
 <img src='./doc/statics/icon.png' width='30'>
-<span>
-  chatbox-ng
-  <span style="font-size:8px; font-weight: normal;">(Fork NextGeneration Edition)</span>
-</span>
+<div>
+  <b>Chatbox Unbundled<b>
+  A Chatbox fork without gated features
+</div>
 </h1>
 <p align="center">
   <em>
     Your Ultimate AI Copilot on the Desktop. 
     <br />
-    chatbox-ng is a desktop client for ChatGPT, Claude and other LLMs, available on Windows, Mac, Linux
+    Chatbox Unbundled is a desktop client for ChatGPT, Claude and other LLMs, available on Windows, Mac, Linux
   </em>
 </p>
 
@@ -118,6 +118,7 @@ For more information: [metaory.app](https://metaory.app/)
 
 - **Support for Multiple LLM Providers**  
   :gear: Seamlessly integrate with a variety of cutting-edge language models:
+
   - OpenAI (ChatGPT)
   - Azure OpenAI
   - Claude
