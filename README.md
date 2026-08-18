@@ -1,13 +1,13 @@
 <h1 align="center">
 <img src='./doc/statics/icon.png' width='30'>
 <div>
-  <b>Chatbox Unbundled<b>
+  <b>Unbundled</b>
   A Chatbox fork without gated features
 </div>
 </h1>
 <p align="center">
   <em>
-    Your Ultimate AI Copilot on the Desktop. 
+    Your Ultimate AI Copilot on the Desktop.
     <br />
     Chatbox Unbundled is a desktop client for ChatGPT, Claude and other LLMs, available on Windows, Mac, Linux
   </em>
@@ -15,9 +15,37 @@
 
 ## Fork Notes
 
-- [x] Remove all Tracking and Telemetry
-- [ ] Remove all paid marketing interface
-- [x] Remove all i18n
+Fork of [Chatbox](https://github.com/chatboxai/chatbox). Changes vs upstream:
+
+- [ ] **Telemetry removed**
+  - Sentry, Plausible, Google Analytics
+  - first-party click tracking, page views, and conversion events
+  - remote error-reporting code and docs
+- [ ] **Chatbox AI pro account, license keys, and billing removed**
+  - login, license keys, LemonSqueezy payment
+  - premium, quota, and reward UI
+  - pro onboarding guide and Chatbox AI provider settings
+- [ ] **Chatbox AI model provider removed**
+  - Chatbox-hosted chat models from the model selector
+  - Chatbox image and paint models
+  - no longer the default chat model
+- [ ] **Chatbox partner backends unbundled**
+  - built-in Chatbox web search provider
+  - cloud/remote KB parser and the remote API client
+  - HTML artifact preview runs locally
+  - publish to VibeDrop with an auto or user-owned API key
+- [ ] **English only**
+  - non-English locales, translation scripts, and language picker removed
+  - English i18n runtime kept
+- [ ] **Identity and theme**
+  - package renamed to `chatbox-unbundled`
+  - icons and splash replaced
+  - color presets and CSS cleaned up
+  - copyright notice [added](LICENSE) for metaory (still GPL-3)
+- [ ] **CI and tooling**
+  - GitHub Actions CI and Cloudflare Pages deploy
+  - dead webpack/`.erb` leftovers and unused deps removed
+  - pack scripts live under `scripts/`
 
 ---
 
@@ -85,7 +113,7 @@
 <a href='https://apps.apple.com/app/metaory/id6471368056' style='margin-right: 4px'>
 <img src='./doc/statics/app_store.webp' style="height:38px;" />
 </a>
-<a href='https://play.google.com/store/apps/details?id=xyz.chatboxapp.chatbox' style='margin-right: 4px'>
+<a href='https://github.com/metaory/chatbox-unbundled/releases' style='margin-right: 4px'>
 <img src='./doc/statics/google_play.png' style="height:38px;" />
 </a>
 <a href='https://metaory.app/install?download=android_apk' style='margin-right: 4px; display: inline-flex; justify-content: center'>
@@ -93,14 +121,14 @@
 .APK
 </a>
 
-For more information: [metaory.app](https://metaory.app/)
+For more information: [chatbox-unbundled.pages.dev](https://chatbox-unbundled.pages.dev/)
 
 ## Quick Start
 
 ### For End Users
 
-1. Download the appropriate installer for your platform from the [releases page](https://github.com/metaory/chatbox-ng/releases)
-2. Install and launch chatbox-ng
+1. Download the appropriate installer for your platform from the [releases page](https://github.com/metaory/chatbox-unbundled/releases)
+2. Install and launch chatbox-unbundled
 3. Configure your AI provider (OpenAI, Claude, etc.) in settings
 4. Start chatting!
 
@@ -165,7 +193,7 @@ For more information: [metaory.app](https://metaory.app/)
 ### 🌐 Platform Availability
 
 - **Cross-Platform Desktop**  
-  :computer: chatbox-ng is ready for Windows, Mac, and Linux users.
+  :computer: chatbox-unbundled is ready for Windows, Mac, and Linux users.
 
 - **Web Version**  
   :globe_with_meridians: Use the web application on any device with a browser, anywhere.
@@ -184,11 +212,11 @@ For more information: [metaory.app](https://metaory.app/)
 
 ## How to Contribute
 
-We welcome contributions from the community! Here's how you can help make chatbox-ng better:
+We welcome contributions from the community! Here's how you can help make chatbox-unbundled better:
 
 ### 🐛 Reporting Issues
 
-- Use [GitHub Issues](https://github.com/metaory/chatbox-ng/issues) to report bugs or request features
+- Use [GitHub Issues](https://github.com/metaory/chatbox-unbundled/issues) to report bugs or request features
 - Before creating a new issue, please search existing issues to avoid duplicates
 - Provide detailed information including steps to reproduce, expected behavior, and screenshots if applicable
 
@@ -209,8 +237,8 @@ We welcome contributions from the community! Here's how you can help make chatbo
 ### 🌟 Other Ways to Contribute
 
 - Star the repository to show your support
-- Share chatbox-ng with others
-- Answer questions in [GitHub Discussions](https://github.com/metaory/chatbox-ng/discussions)
+- Share chatbox-unbundled with others
+- Answer questions in [GitHub Discussions](https://github.com/metaory/chatbox-unbundled/discussions)
 - Provide feedback and suggestions
 
 **Thank you for contributing! 🙏**
@@ -230,8 +258,8 @@ Before you begin, ensure you have the following installed:
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/metaory/chatbox-ng.git
-   cd chatbox-ng
+   git clone https://github.com/metaory/chatbox-unbundled.git
+   cd chatbox-unbundled
    ```
 
 2. **Install dependencies**
@@ -260,7 +288,7 @@ Before you begin, ensure you have the following installed:
 ### Project Structure
 
 ```
-chatbox-ng/
+chatbox-unbundled/
 ├── src/
 │   ├── main/               # Electron main process
 │   ├── renderer/           # React renderer (UI)
