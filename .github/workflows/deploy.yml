@@ -13,7 +13,6 @@ concurrency:
 
 permissions:
   contents: read
-  deployments: write
 
 jobs:
   ci:
@@ -61,7 +60,6 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           workingDirectory: ${{ runner.temp }}
           packageManager: npm
           command: >-
